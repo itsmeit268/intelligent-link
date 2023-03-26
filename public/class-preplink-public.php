@@ -54,7 +54,7 @@ class Preplink_Public
         global $wp_query;
         wp_enqueue_style('global' . $this->plugin_name, plugin_dir_url(__FILE__) . 'css/global.css', array(), $this->version, 'all');
 
-        if (!isset($wp_query->query_vars[$this->getEndPointValue()]) || !is_singular('post')) {
+        if (!isset($wp_query->query_vars[$this->getEndPointValue()])) {
             return;
         }
 
@@ -79,7 +79,7 @@ class Preplink_Public
 
         }
 
-        if (!isset($wp_query->query_vars[$this->getEndPointValue()]) || !is_singular('post')) {
+        if (!isset($wp_query->query_vars[$this->getEndPointValue()])) {
             return;
         }
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/prep-link.js', array('jquery'), $this->version, false);
@@ -88,11 +88,6 @@ class Preplink_Public
     public function preplink_rewrite_endpoint()
     {
         add_rewrite_endpoint($this->getEndPointValue(), EP_PERMALINK | EP_PAGES );
-
-//        function init_endpoint() {
-//            add_rewrite_endpoint( 'getlink', EP_PERMALINK | EP_PAGES );
-//        }
-//        add_action( 'init', 'init_endpoint' );
 
         function preplink_template() {
             global $wp_query, $post;
@@ -103,31 +98,15 @@ class Preplink_Public
                 $endpoint = $settings['preplink_endpoint'];
             }
 
-            if (!isset( $wp_query->query_vars[$endpoint]) || !is_singular('post')) {
+            if (!isset( $wp_query->query_vars[$endpoint])) {
                 return;
             }
 
             include dirname( __FILE__ ) . '/templates/preplink_template.php';
             exit;
         }
-//        add_action( 'wp_enqueue_scripts', array($this, 'setJsValue'));
+
         add_action( 'template_redirect', 'preplink_template');
-    }
-
-    public function setJsValue()
-    {
-        global $post, $wp_query;
-
-        if (!isset($wp_query->query_vars[$this->getEndPointValue()]) || !is_singular('post')) {
-            return;
-        }
-
-        $settings = get_option('preplink_setting');
-        wp_localize_script('global-preplink', 'prep_vars', array(
-            'endPoints' => $this->getEndPointValue(),
-            'prepUrls'  => isset($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com,fshare.vn',
-            'postURL'   => !empty(get_permalink( get_the_ID())) ? get_permalink( get_the_ID()) : get_permalink($post->ID)
-        ));
     }
 
     public function getEndPointValue()

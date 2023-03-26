@@ -15,7 +15,6 @@
 
 class Preplink_i18n {
 
-
 	/**
 	 * Load the plugin text domain for translation.
 	 *
@@ -30,7 +29,4 @@ class Preplink_i18n {
 		);
 
 	}
-
-
-
 }
