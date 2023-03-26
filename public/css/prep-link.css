@@ -130,7 +130,7 @@ h1.s-title{
     color: #ff0059 !important;
 }
 
-.download-item .download-btn a {
+.download-item .prep-link-download-btn a {
     display: inline-block;
     background-color: #0693e3;
     color: #fff;
@@ -139,7 +139,7 @@ h1.s-title{
     line-height: 1;
 }
 
-.download-item .download-btn a:hover {
+.download-item .prep-link-download-btn a:hover {
     background: #026eab;
     opacity: 1;
 }
@@ -154,8 +154,9 @@ h1.s-title{
     overflow: hidden;
 }
 
-.app-title {
+.app-title,.suggestions-post {
     margin-bottom: 5px;
+    font-size: 20px;
 }
 
 tr {
@@ -380,6 +381,11 @@ h3.rank-math-title {
         width: 68px;
     }
 
+    .prep-link-download-btn{
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+
     .tittle {
         line-height: 22px;
     }
@@ -415,7 +421,7 @@ h3.rank-math-title {
         margin: 0;
     }
 
-    .single-header, .s-feat-outer, .post-excerpt, .faq-download, .related_post, .e-shared-sec, .comment {
+    .single-header,.s-feat-outer,.post-excerpt,.faq-download,.related_post,.e-shared-sec,.comment {
         padding: 0 15px;
     }
 }

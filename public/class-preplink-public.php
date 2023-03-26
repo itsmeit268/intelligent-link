@@ -44,33 +44,23 @@ class Preplink_Public
         add_action('init', array($this, 'preplink_rewrite_endpoint'), 10, 0);
     }
 
-    /**
-     * Register the stylesheets for the public-facing side of the site.
-     *
-     * @since    1.0.0
-     */
     public function enqueue_styles()
     {
         global $wp_query;
         wp_enqueue_style('global' . $this->plugin_name, plugin_dir_url(__FILE__) . 'css/global.css', array(), $this->version, 'all');
 
-        if (!isset($wp_query->query_vars[$this->getEndPointValue()])) {
+        if (!isset($wp_query->query_vars[$this->getEndPointValue()]) || !is_singular('post')) {
             return;
         }
 
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/prep-link.css', array(), $this->version, 'all');
     }
 
-    /**
-     * Register the JavaScript for the public-facing side of the site.
-     *
-     * @since    1.0.0
-     */
     public function enqueue_scripts()
     {
-        global $wp_query, $post;
+        global $wp_query;
         $settings = get_option('preplink_setting');
-        if (!empty($settings['preplink_endpoint'])) {
+        if (!empty($settings['preplink_endpoint']) && !is_front_page()) {
             wp_enqueue_script('global-preplink', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, false);
             wp_localize_script('global-preplink', 'prep_vars', array(
                 'end_point' => $this->getEndPointValue(),
@@ -79,7 +69,7 @@ class Preplink_Public
 
         }
 
-        if (!isset($wp_query->query_vars[$this->getEndPointValue()])) {
+        if (!isset($wp_query->query_vars[$this->getEndPointValue()]) || !is_singular('post')) {
             return;
         }
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/prep-link.js', array('jquery'), $this->version, false);
@@ -90,7 +80,7 @@ class Preplink_Public
         add_rewrite_endpoint($this->getEndPointValue(), EP_PERMALINK | EP_PAGES );
 
         function preplink_template() {
-            global $wp_query, $post;
+            global $wp_query;
 
             $endpoint = 'download';
             $settings = get_option('preplink_setting');
@@ -98,7 +88,7 @@ class Preplink_Public
                 $endpoint = $settings['preplink_endpoint'];
             }
 
-            if (!isset( $wp_query->query_vars[$endpoint])) {
+            if (!isset( $wp_query->query_vars[$endpoint]) || !is_singular('post')) {
                 return;
             }
 
@@ -109,6 +99,9 @@ class Preplink_Public
         add_action( 'template_redirect', 'preplink_template');
     }
 
+    /**
+     * @return mixed|string
+     */
     public function getEndPointValue()
     {
         $endpoint = 'download';

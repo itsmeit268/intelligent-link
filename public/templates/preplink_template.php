@@ -102,7 +102,7 @@ function add_script_ads()
                                 </div>
                             </div>
                             <div class="right">
-                                <div class="download-btn">
+                                <div class="prep-link-download-btn">
                                     <a href="<?= $downloadURL ?>" class="clickable">
                                         <svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                                              width="24"

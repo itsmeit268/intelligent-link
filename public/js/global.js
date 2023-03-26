@@ -27,7 +27,7 @@
             isCountdownRunning = true;
 
             downloadTimer = setInterval(() => {
-                $link.html(`<strong>Waiting ${timeleft}s...</strong>`);
+                $link.html(`<strong>[waiting ${timeleft}s...]</strong>`);
                 timeleft--;
                 if (timeleft < 0) {
                     clearInterval(downloadTimer);
@@ -52,6 +52,10 @@
 
         $('a').on('click', function (e) {
             const $this = $(this);
+            if ($this.closest('.prep-link-download-btn').hasClass('prep-link-download-btn')) {
+                return;
+            }
+
             const text_link = $this.text();
             const full_link = $this.attr('href');
             const urls = prep_url.split(",");
