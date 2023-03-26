@@ -12,3 +12,4 @@
 ##### Step2. Navigate to Admin: Prepare Link->Settings->Save
 ##### Step3. Navigate to Admin: Settings->Permalinks->Save
 
+#### Note: You need to update the permalinks (Settings->Permalinks->Save) every time you change the prepare link config
