@@ -1,0 +1,19 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+#preplink_endpoint_field{
+    width: 400px;
+}
+.prep-link-admin-settings ul li {
+    font-size: 16px;
+    color: #312d2d;
+}
+.prep-link-admin-settings h3 {
+    font-size: 18px;
+}
+@media only screen and (max-device-width: 480px) {
+    #preplink_endpoint_field{
+        width: inherit;
+    }
+}
