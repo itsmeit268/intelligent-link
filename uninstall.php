@@ -19,7 +19,6 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @since      1.0.0
  * @link       https://github.com/itsmeit268/preplink
  * @author     itsmeit <itsmeit.biz@gmail.com>
  * Website     https://itsmeit.co | https://itsmeit.biz

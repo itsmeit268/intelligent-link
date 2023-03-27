@@ -5,7 +5,7 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * @since      1.0.0
+ *
  * @link       https://github.com/itsmeit268/preplink
  * @package    Preplink
  * @subpackage Preplink/admin
@@ -19,7 +19,6 @@ class Preplink_Admin
     /**
      * The ID of this plugin.
      *
-     * @since    1.0.0
      * @access   private
      * @var      string $plugin_name The ID of this plugin.
      */
@@ -28,7 +27,6 @@ class Preplink_Admin
     /**
      * The version of this plugin.
      *
-     * @since    1.0.0
      * @access   private
      * @var      string $version The current version of this plugin.
      */
@@ -39,7 +37,7 @@ class Preplink_Admin
      *
      * @param string $plugin_name The name of this plugin.
      * @param string $version The version of this plugin.
-     * @since    1.0.0
+
      */
     public function __construct($plugin_name, $version)
     {
@@ -52,49 +50,21 @@ class Preplink_Admin
     /**
      * Register the stylesheets for the admin area.
      *
-     * @since    1.0.0
+
      */
     public function enqueue_styles()
     {
-
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Prep_Link_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Prep_Link_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
-
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/preplink-admin.css', array(), $this->version, 'all');
-
     }
 
     /**
      * Register the JavaScript for the admin area.
      *
-     * @since    1.0.0
+
      */
     public function enqueue_scripts()
     {
-
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Prep_Link_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Prep_Link_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
-
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/preplink-admin.js', array('jquery'), $this->version, false);
-
     }
 
     public function addPluginAdminMenu()
@@ -151,7 +121,7 @@ class Preplink_Admin
 
         add_settings_field(
             'preplink_textarea',
-            __('Multiple URL', 'preplink'),
+            __('Links allowed', 'preplink'),
             array($this, 'preplink_textarea_field'),
             'preplink_general_settings',
             'preplink_general_section'
@@ -255,8 +225,9 @@ class Preplink_Admin
     {
         $settings = get_option('preplink_setting', array());
         ?>
-        <input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]" value="<?= esc_attr(!empty($settings['preplink_endpoint']) ? $settings['preplink_endpoint'] : false) ?>" />
-        <p class="description">Enter your description here.</p>
+        <input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]"
+               value="<?= esc_attr(!empty($settings['preplink_endpoint']) ? $settings['preplink_endpoint'] : false) ?>" />
+        <p class="description">The default endpoint is set to "download", so the link format will be: domain.com/post/download.</p>
         <?php
     }
 
@@ -264,10 +235,12 @@ class Preplink_Admin
     public function preplink_textarea_field()
     {
         $settings = get_option('preplink_setting', array());
-        ?>
-        <textarea id="preplink_url" cols='44' rows='4' name='preplink_setting[preplink_url]'><?= isset($settings['preplink_url']) ? $settings['preplink_url'] : false; ?></textarea>
-        <p class="description">Enter your FAQ here.</p>
-        <?php
+        $html = '<textarea id="preplink_url" cols="50" rows="5" name="preplink_setting[preplink_url]">';
+        $html .= isset($settings["preplink_url"]) ? $settings["preplink_url"] : false;
+        $html .= '</textarea>';
+        $html .= '<p class="description">These links/URLs will be redirected to the endpoint (Prepare Link), each separated by a comma (,).</p>';
+        $html .= '<p class="description">Default: drive.google.com, play.google.com.</p>';
+        echo $html;
     }
 
     function preplink_image_field($args)
@@ -313,22 +286,24 @@ class Preplink_Admin
             <tr class="preplink_faq1_title">
                 <th scope="row">FAQ Title:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_faq1_title]" value="<?= esc_attr(isset($settings['preplink_faq1_title']) ? $settings['preplink_faq1_title'] : false); ?>" />
+                    <input type="text" name="preplink_setting[preplink_faq1_title]"
+                           value="<?= esc_attr(isset($settings['preplink_faq1_title']) ? $settings['preplink_faq1_title'] : false); ?>" />
                 </td>
             </tr>
             <tr class="preplink_faq1_description">
                 <th scope="row">FAQ HTML:</th>
                 <td>
-                    <textarea name="preplink_setting[preplink_faq1_description]" rows="5" cols="50"><?= esc_html(isset($settings['preplink_faq1_description']) ? $settings['preplink_faq1_description'] : false); ?></textarea>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-        if ( isset( $_POST['preplink_setting'] ) ) {
-            $settings = $_POST['preplink_setting'];
-            update_option( 'preplink_setting', $settings );
-        }
+          <?php
+          $html = '<textarea name="preplink_setting[preplink_faq1_description]" rows="5" cols="50">';
+          $html .= esc_html(isset($settings['preplink_faq1_description']) ? $settings['preplink_faq1_description'] : false);
+          $html .= '</textarea>';
+          echo $html;
+          ?></td></tr></tbody></table>
+            <?php
+            if ( isset( $_POST['preplink_setting'] ) ) {
+                $settings = $_POST['preplink_setting'];
+                update_option( 'preplink_setting', $settings );
+            }
     }
 
     function preplink_display_faq_2() {
@@ -348,15 +323,21 @@ class Preplink_Admin
             <tr class="preplink_faq2_title">
                 <th scope="row">FAQ 2 Title:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_faq2_title]" value="<?= esc_attr(isset($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : false); ?>" />
+                    <input type="text" name="preplink_setting[preplink_faq2_title]"
+                           value="<?= esc_attr(isset($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : false); ?>" />
                 </td>
             </tr>
             <tr class="preplink_faq2_description">
                 <th scope="row">FAQ HTML:</th>
                 <td>
-                    <textarea name="preplink_setting[preplink_faq2_description]" rows="5" cols="50"><?= esc_html(isset($settings['preplink_faq2_description']) ? $settings['preplink_faq2_description'] : false); ?></textarea>
+           <?php
+                $html = '<textarea name="preplink_setting[preplink_faq2_description]" rows="5" cols="50">';
+                $html .= esc_html(isset($settings['preplink_faq2_description']) ? $settings['preplink_faq2_description'] : false);
+                $html .= '</textarea>';
+                echo $html;
+            ?>
                 </td>
-            </tr>
+               </tr>
             </tbody>
         </table>
         <?php
@@ -384,7 +365,8 @@ class Preplink_Admin
             <tr class="preplink_related_number">
                 <th scope="row">Number of related post:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_related_number]" placeholder="default 10" value="<?= esc_attr(!empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : false); ?>" />
+                    <input type="text" name="preplink_setting[preplink_related_number]"
+                           placeholder="default 10" value="<?= esc_attr(!empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : false); ?>" />
                 </td>
             </tr>
             </tbody>

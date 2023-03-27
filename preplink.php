@@ -5,7 +5,6 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * @since      1.0.0
  * @link       https://github.com/itsmeit268/preplink
  * @author     itsmeit <itsmeit.biz@gmail.com>
  * Website     https://itsmeit.co | https://itsmeit.biz
@@ -16,12 +15,7 @@ if (!defined('WPINC')) {
     die;
 }
 
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define('PREPLINK_VERSION', '1.0.0');
+define('PREPLINK_VERSION', '1.0.2');
 
 /**
  * The code that runs during plugin activation.
@@ -52,15 +46,6 @@ register_deactivation_hook(__FILE__, 'deactivate_preplink');
  */
 require plugin_dir_path(__FILE__) . 'includes/class-preplink.php';
 
-/**
- * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    1.0.0
- */
 function run_preplink()
 {
     $plugin = new Preplink();

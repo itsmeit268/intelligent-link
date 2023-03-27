@@ -5,7 +5,7 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * @since      1.0.0
+ *
  * @link       https://github.com/itsmeit268/preplink
  * @package    Preplink
  * @subpackage Preplink/admin
@@ -20,7 +20,6 @@ class Preplink
      * The loader that's responsible for maintaining and registering all hooks that power
      * the plugin.
      *
-     * @since    1.0.0
      * @access   protected
      * @var      Preplink_Loader $loader Maintains and registers all hooks for the plugin.
      */
@@ -29,7 +28,6 @@ class Preplink
     /**
      * The unique identifier of this plugin.
      *
-     * @since    1.0.0
      * @access   protected
      * @var      string $plugin_name The string used to uniquely identify this plugin.
      */
@@ -38,7 +36,6 @@ class Preplink
     /**
      * The current version of the plugin.
      *
-     * @since    1.0.0
      * @access   protected
      * @var      string $version The current version of the plugin.
      */
@@ -51,7 +48,6 @@ class Preplink
      * Load the dependencies, define the locale, and set the hooks for the admin area and
      * the public-facing side of the site.
      *
-     * @since    1.0.0
      */
     public function __construct()
     {
@@ -82,7 +78,6 @@ class Preplink
      * Create an instance of the loader which will be used to register the hooks
      * with WordPress.
      *
-     * @since    1.0.0
      * @access   private
      */
     private function load_dependencies()
@@ -121,7 +116,6 @@ class Preplink
      * Uses the Preplink_i18n class in order to set the domain and to register the hook
      * with WordPress.
      *
-     * @since    1.0.0
      * @access   private
      */
     private function set_locale()
@@ -137,7 +131,6 @@ class Preplink
      * Register all of the hooks related to the admin area functionality
      * of the plugin.
      *
-     * @since    1.0.0
      * @access   private
      */
     private function define_admin_hooks()
@@ -153,7 +146,6 @@ class Preplink
      * Register all of the hooks related to the public-facing functionality
      * of the plugin.
      *
-     * @since    1.0.0
      * @access   private
      */
     private function define_public_hooks()
@@ -167,7 +159,6 @@ class Preplink
     /**
      * Run the loader to execute all of the hooks with WordPress.
      *
-     * @since    1.0.0
      */
     public function run()
     {
@@ -179,7 +170,6 @@ class Preplink
      * WordPress and to define internationalization functionality.
      *
      * @return    string    The name of the plugin.
-     * @since     1.0.0
      */
     public function get_plugin_name()
     {
@@ -190,7 +180,6 @@ class Preplink
      * The reference to the class that orchestrates the hooks with the plugin.
      *
      * @return    Preplink_Loader    Orchestrates the hooks of the plugin.
-     * @since     1.0.0
      */
     public function get_loader()
     {
@@ -201,7 +190,6 @@ class Preplink
      * Retrieve the version number of the plugin.
      *
      * @return    string    The version number of the plugin.
-     * @since     1.0.0
      */
     public function get_version()
     {

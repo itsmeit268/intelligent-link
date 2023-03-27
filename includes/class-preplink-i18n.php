@@ -5,7 +5,7 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * @since      1.0.0
+ *
  * @link       https://github.com/itsmeit268/preplink
  * @package    Preplink
  * @subpackage Preplink/admin
@@ -18,7 +18,6 @@ class Preplink_i18n {
 	/**
 	 * Load the plugin text domain for translation.
 	 *
-	 * @since    1.0.0
 	 */
 	public function load_plugin_textdomain() {
 

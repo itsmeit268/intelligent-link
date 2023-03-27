@@ -5,7 +5,7 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * @since      1.0.0
+ * 
  * @link       https://github.com/itsmeit268/preplink
  * @author     itsmeit <itsmeit.biz@gmail.com>
  * Website     https://itsmeit.co | https://itsmeit.biz
@@ -16,8 +16,6 @@ class Preplink_Public
 
     /**
      * The ID of this plugin.
-     *
-     * @since    1.0.0
      * @access   private
      * @var      string $plugin_name The ID of this plugin.
      */
@@ -25,8 +23,6 @@ class Preplink_Public
 
     /**
      * The version of this plugin.
-     *
-     * @since    1.0.0
      * @access   private
      * @var      string $version The current version of this plugin.
      */

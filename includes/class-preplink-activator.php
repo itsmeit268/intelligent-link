@@ -5,7 +5,7 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * @since      1.0.0
+
  * @link       https://github.com/itsmeit268/preplink
  * @package    Preplink
  * @subpackage Preplink/admin
@@ -20,10 +20,8 @@ class Preplink_Activator {
 	 *
 	 * Long Description.
 	 *
-	 * @since    1.0.0
 	 */
 	public static function activate() {
 
 	}
-
 }

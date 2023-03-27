@@ -5,7 +5,7 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * @since      1.0.0
+ *
  * @link       https://github.com/itsmeit268/preplink
  * @package    Preplink
  * @subpackage Preplink/admin
@@ -19,7 +19,7 @@ class Preplink_Loader
     /**
      * The array of actions registered with WordPress.
      *
-     * @since    1.0.0
+     * 
      * @access   protected
      * @var      array $actions The actions registered with WordPress to fire when the plugin loads.
      */
@@ -28,7 +28,7 @@ class Preplink_Loader
     /**
      * The array of filters registered with WordPress.
      *
-     * @since    1.0.0
+     * 
      * @access   protected
      * @var      array $filters The filters registered with WordPress to fire when the plugin loads.
      */
@@ -37,7 +37,7 @@ class Preplink_Loader
     /**
      * Initialize the collections used to maintain the actions and filters.
      *
-     * @since    1.0.0
+     * 
      */
     public function __construct()
     {
@@ -55,7 +55,7 @@ class Preplink_Loader
      * @param string $callback The name of the function definition on the $component.
      * @param int $priority Optional. The priority at which the function should be fired. Default is 10.
      * @param int $accepted_args Optional. The number of arguments that should be passed to the $callback. Default is 1.
-     * @since    1.0.0
+     * 
      */
     public function add_action($hook, $component, $callback, $priority = 10, $accepted_args = 1)
     {
@@ -70,7 +70,7 @@ class Preplink_Loader
      * @param string $callback The name of the function definition on the $component.
      * @param int $priority Optional. The priority at which the function should be fired. Default is 10.
      * @param int $accepted_args Optional. The number of arguments that should be passed to the $callback. Default is 1
-     * @since    1.0.0
+     * 
      */
     public function add_filter($hook, $component, $callback, $priority = 10, $accepted_args = 1)
     {
@@ -88,7 +88,6 @@ class Preplink_Loader
      * @param int $priority The priority at which the function should be fired.
      * @param int $accepted_args The number of arguments that should be passed to the $callback.
      * @return   array                                  The collection of actions and filters registered with WordPress.
-     * @since    1.0.0
      * @access   private
      */
     private function add($hooks, $hook, $component, $callback, $priority, $accepted_args)
@@ -109,7 +108,7 @@ class Preplink_Loader
     /**
      * Register the filters and actions with WordPress.
      *
-     * @since    1.0.0
+     * 
      */
     public function run()
     {
