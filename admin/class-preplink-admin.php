@@ -253,9 +253,9 @@ class Preplink_Admin
 
     function preplink_endpoint_field()
     {
-        $options = get_option('preplink_setting');
+        $settings = get_option('preplink_setting', array());
         ?>
-        <input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]" value="<?= esc_attr($options['preplink_endpoint']) ?>" />
+        <input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]" value="<?= esc_attr(!empty($settings['preplink_endpoint']) ? $settings['preplink_endpoint'] : false) ?>" />
         <p class="description">Enter your description here.</p>
         <?php
     }
@@ -263,17 +263,17 @@ class Preplink_Admin
 
     public function preplink_textarea_field()
     {
-        $options = get_option('preplink_setting', array());
+        $settings = get_option('preplink_setting', array());
         ?>
-        <textarea id="preplink_url" cols='44' rows='4' name='preplink_setting[preplink_url]'><?= isset($options['preplink_url']) ? $options['preplink_url'] : false; ?></textarea>
+        <textarea id="preplink_url" cols='44' rows='4' name='preplink_setting[preplink_url]'><?= isset($settings['preplink_url']) ? $settings['preplink_url'] : false; ?></textarea>
         <p class="description">Enter your FAQ here.</p>
         <?php
     }
 
     function preplink_image_field($args)
     {
-        $options = get_option('preplink_setting');
-        $selected = isset($options['preplink_image']) ? $options['preplink_image'] : '1';
+        $settings = get_option('preplink_setting', array());
+        $selected = isset($settings['preplink_image']) ? $settings['preplink_image'] : '1';
         $html = '<select id="preplink_image" name="preplink_setting[preplink_image]" class="preplink_image">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
@@ -285,8 +285,8 @@ class Preplink_Admin
 
     function preplink_excerpt_field($args)
     {
-        $options = get_option('preplink_setting');
-        $selected = isset($options['preplink_excerpt']) ? $options['preplink_excerpt'] : '1';
+        $settings = get_option('preplink_setting', array());
+        $selected = isset($settings['preplink_excerpt']) ? $settings['preplink_excerpt'] : '1';
         $html = '<select id="preplink_excerpt" name="preplink_setting[preplink_excerpt]" class="preplink_excerpt">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
@@ -297,7 +297,7 @@ class Preplink_Admin
     }
 
     function preplink_display_faq_1() {
-        $settings = get_option('preplink_setting');
+        $settings = get_option('preplink_setting', array());
         ?>
         <table class="form-table">
             <tbody>
@@ -313,13 +313,13 @@ class Preplink_Admin
             <tr class="preplink_faq1_title">
                 <th scope="row">FAQ Title:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_faq1_title]" value="<?= esc_attr(!empty($settings['preplink_faq1_title']) ? : ''); ?>" />
+                    <input type="text" name="preplink_setting[preplink_faq1_title]" value="<?= esc_attr(isset($settings['preplink_faq1_title']) ? $settings['preplink_faq1_title'] : false); ?>" />
                 </td>
             </tr>
             <tr class="preplink_faq1_description">
                 <th scope="row">FAQ HTML:</th>
                 <td>
-                    <textarea name="preplink_setting[preplink_faq1_description]" rows="5" cols="50"><?= esc_html(!empty($settings['preplink_faq1_description'] ? : $settings['preplink_faq1_description'])); ?></textarea>
+                    <textarea name="preplink_setting[preplink_faq1_description]" rows="5" cols="50"><?= esc_html(isset($settings['preplink_faq1_description']) ? $settings['preplink_faq1_description'] : false); ?></textarea>
                 </td>
             </tr>
             </tbody>
@@ -332,7 +332,7 @@ class Preplink_Admin
     }
 
     function preplink_display_faq_2() {
-        $settings = get_option('preplink_setting');
+        $settings = get_option('preplink_setting', array());
         ?>
         <table class="form-table">
             <tbody>
@@ -348,13 +348,13 @@ class Preplink_Admin
             <tr class="preplink_faq2_title">
                 <th scope="row">FAQ 2 Title:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_faq2_title]" value="<?= esc_attr(!empty($settings['preplink_faq2_title']) ? : ''); ?>" />
+                    <input type="text" name="preplink_setting[preplink_faq2_title]" value="<?= esc_attr(isset($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : false); ?>" />
                 </td>
             </tr>
             <tr class="preplink_faq2_description">
                 <th scope="row">FAQ HTML:</th>
                 <td>
-                    <textarea name="preplink_setting[preplink_faq2_description]" rows="5" cols="50"><?= esc_html(!empty($settings['preplink_faq2_description'] ? : '' )); ?></textarea>
+                    <textarea name="preplink_setting[preplink_faq2_description]" rows="5" cols="50"><?= esc_html(isset($settings['preplink_faq2_description']) ? $settings['preplink_faq2_description'] : false); ?></textarea>
                 </td>
             </tr>
             </tbody>
@@ -368,7 +368,7 @@ class Preplink_Admin
 
     function preplink_related_post($args)
     {
-        $settings = get_option('preplink_setting');
+        $settings = get_option('preplink_setting', array());
         ?>
         <table class="form-table">
             <tbody>
@@ -384,7 +384,7 @@ class Preplink_Admin
             <tr class="preplink_related_number">
                 <th scope="row">Number of related post:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_related_number]" placeholder="default 10" value="<?= esc_attr(!empty($settings['preplink_related_number']) ? : ''); ?>" />
+                    <input type="text" name="preplink_setting[preplink_related_number]" placeholder="default 10" value="<?= esc_attr(!empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : false); ?>" />
                 </td>
             </tr>
             </tbody>
@@ -398,8 +398,8 @@ class Preplink_Admin
 
     function preplink_comment($args)
     {
-        $options = get_option('preplink_setting');
-        $selected = isset($options['preplink_comment']) ? $options['preplink_comment'] : '1';
+        $settings = get_option('preplink_setting', array());
+        $selected = isset($settings['preplink_comment']) ? $settings['preplink_comment'] : '1';
         $html = '<select id="preplink_comment" name="preplink_setting[preplink_comment]">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);

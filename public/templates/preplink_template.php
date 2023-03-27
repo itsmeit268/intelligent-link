@@ -100,8 +100,7 @@ if (empty($downloadURL)) {
                     </div>
                     <span style="display: inline-block; margin-left: 10px;">
                         <img style="width: 20px;" draggable="false" role="img" class="emoji entered pmloaded lazyloaded"
-                             alt="📌" src="https://s.w.org/images/core/emoji/14.0.0/svg/1f4cc.svg">
-                        If the download link is not ready after a few seconds, please disable your <strong>Adblock</strong> and try refreshing the page again.
+                             alt="📌" src="https://s.w.org/images/core/emoji/14.0.0/svg/1f4cc.svg">If the download link is not ready after a few seconds, please disable your <strong>Adblock</strong> and try refreshing the page again.
                     </span>
 
                     <?php
@@ -135,9 +134,7 @@ if (empty($downloadURL)) {
                                 <div class="right">
                                     <div class="prep-link-download-btn">
                                         <a href="<?= $downloadURL ?>" class="clickable">
-                                            <svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                                 width="24"
-                                                 height="24" viewBox="0 0 24 24">
+                                            <svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                                 <path d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path>
                                             </svg>
@@ -155,116 +152,25 @@ if (empty($downloadURL)) {
 
                     <?php if (!empty($settings['preplink_faq1_enabled']) && $settings['preplink_faq1_enabled'] == 1) :?>
                         <div class="faq-download">
-                            <h3 class="faq-title">Notes before continuing</h3>
-                            <div id="rank-math-faq" class="rank-math-block">
-                                <div class="rank-math-list ">
-                                    <div class="rank-math-list-item">
-                                        <h4 class="rank-math-question"><strong>Never mind the Play Protect warning!</strong>
-                                        </h4>
-                                        <div class="rank-math-answer">
-                                            <ul>
-                                                <li>As you know, MOD means editing APK files. As a result, the MOD APK files
-                                                    will not match the version available on the Google Play Store.
-                                                </li>
-                                                <li>That's why Play Protect now warns you every time you want to install MOD
-                                                    APK.
-                                                </li>
-                                                <li>So the best way is to "turn off Play Protect" completely and never mind it
-                                                    if you want to install and use the MOD APK.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="rank-math-list-item">
-                                        <h4 class="rank-math-question"><strong>How to install Application?</strong></h4>
-                                        <div class="rank-math-answer">
-                                            <ul>
-                                                <li>Each App/Software/Tool version has a different installation method. So on
-                                                    the download page of each version, we have specific installation
-                                                    instructions.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <h3 class="faq-title"><?= !empty($settings['preplink_faq1_title']) ? $settings['preplink_faq1_title'] : 'FAQ' ?></h3>
+                            <?php if (!empty($settings['preplink_faq1_description'])) : ?>
+                                <?= $settings['preplink_faq1_description']?>
+                            <?php endif;?>
                         </div>
                     <?php endif;?>
 
                     <div class="ads-itsmeit" style="max-width: 850px;">
-                <div class="aicp">
-                    <!--  ads 3-->
-                </div>
-            </div>
+                        <div class="aicp">
+                            <!--  ads 3-->
+                        </div>
+                    </div>
 
-                    <?php if (!empty($settings['preplink_faq1_enabled']) && $settings['preplink_faq1_enabled'] == 1) :?>
-                        <div class="faq-download"><h3 class="faq-title">Download FAQs</h3>
-                            <div id="rank-math-faq" class="rank-math-block">
-                                <div class="rank-math-list ">
-                                    <div class="rank-math-list-item">
-                                        <h4 class="rank-math-question"><strong>How to download?</strong></h4>
-                                        <div class="rank-math-answer">
-                                            <ul>
-                                                <li>Just wait a few seconds and the download button will appear.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="rank-math-list-item">
-                                        <h4 class="rank-math-question"><strong>Experiencing Game Download Issues? Try These Solutions.</strong></h4>
-                                        <div class="rank-math-answer">
-                                            <ul>
-                                                <li>If the game download link is slow, it may be due to my server being under
-                                                    maintenance or overloaded. You can try downloading again in a few minutes.
-                                                </li>
-                                                <li>If the download link does not exist or returns a 404 error, please leave a
-                                                    comment or send an email to itsmeit.biz@gmail.com for support.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="rank-math-list-item">
-                                        <h4 class="rank-math-question"><strong>How to update without data loss?</strong></h4>
-                                        <div class="rank-math-answer">
-                                            <ul>
-                                                <li>If you uninstall the old version before installing the new one, you will
-                                                    lose all your data. To preserve your data, never uninstall old versions;
-                                                    instead, install the new version and choose to override the old one.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="rank-math-list-item">
-                                        <h4 class="rank-math-question"><strong>MOD menu not showing?</strong></h4>
-                                        <div class="rank-math-answer">
-                                            <ul>
-                                                <li>Make sure you have manually granted "show over other apps" permission if
-                                                    Android 6.0 or later, by going to Settings &gt; Apps &gt; Game Name &gt;
-                                                    Permissions | Display over other apps (Display over other apps).
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="rank-math-list-item">
-                                        <h4 class="rank-math-question"><strong>The description is not correct with the downloaded file?</strong></h4>
-                                        <div class="rank-math-answer">
-                                            <ul>
-                                                <li>If there is a mistake between the description and the downloaded file,
-                                                    please report it to us via the contact section at the bottom of the page.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="rank-math-list-item">
-                                        <h4 class="rank-math-question"><strong>Is the file I download from ITSMEIT safe?</strong></h4>
-                                        <div class="rank-math-answer">
-                                            <ul>
-                                                <li>Of course, every file is checked by antivirus software before being uploaded to the system.</li>
-                                                <li>Our hosting server is also regularly checked to avoid any threats.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <?php if (!empty($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == 1) :?>
+                        <div class="faq-download">
+                            <h3 class="faq-title"><?= !empty($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : 'FAQ' ?></h3>
+                            <?php if (!empty($settings['preplink_faq2_description'])) : ?>
+                                <?= $settings['preplink_faq2_description']?>
+                            <?php endif;?>
                         </div>
                     <?php endif;?>
 
