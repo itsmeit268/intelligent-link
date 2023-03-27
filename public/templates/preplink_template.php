@@ -68,6 +68,7 @@ if (empty($downloadURL)) {
     <?php
 } else {
     ?>
+    <?php if (!empty($settings['preplink_custom_style'])) {echo "<style>{$settings['preplink_custom_style']}</style>";} ?>
     <div class="site-wrap">
         <div class="s-ct-wrap has-lsl">
             <div class="s-ct-inner">

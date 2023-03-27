@@ -205,6 +205,14 @@ class Preplink_Admin
             )
         );
 
+        add_settings_field(
+            'preplink_custom_style',
+            __('Custom Style', 'preplink'),
+            array($this, 'preplink_custom_style'),
+            'preplink_general_settings',
+            'preplink_general_section'
+        );
+
         register_setting(
             'preplink_general_settings',
             'preplink_setting'
@@ -388,6 +396,16 @@ class Preplink_Admin
         }
         $html .= '</select>';
         $html .= '<p class="description">Enable or disable comments.</p>';
+        echo $html;
+    }
+
+    public function preplink_custom_style()
+    {
+        $settings = get_option('preplink_setting', array());
+        $html = '<textarea id="preplink_custom_style" cols="50" rows="5" name="preplink_setting[preplink_custom_style]">';
+        $html .= isset($settings["preplink_custom_style"]) ? $settings["preplink_custom_style"] : false;
+        $html .= '</textarea>';
+        $html .= '<p class="description">Your CSS code, for example: .backgroud{background-color: transparent;}.</p>';
         echo $html;
     }
 }
