@@ -5,6 +5,7 @@
         var end_point = $.trim(prep_vars.end_point);
         var prep_url = prep_vars.prep_url;
         var current_url = window.location.href.replace(/#.*/, '');
+        var count_down   = $.trim(prep_vars.count_down);
 
         let isLinkReady = false;
         let isCountdownRunning = false;
@@ -12,7 +13,7 @@
 
         const startCountdown = ($link, href, text_link) => {
             let downloadTimer;
-            let timeleft = 5;
+            let timeleft = count_down;
 
             isCountdownRunning = true;
 
@@ -54,29 +55,30 @@
             countdown();
         };
 
-        $urls.each(function() {
-            var href = $(this).attr('href');
-            var prep_urls = prep_url.split(',');
-            var found = false;
+        // $urls.each(function() {
+        //     var href = $(this).attr('href');
+        //     var prep_urls = prep_url.split(',');
+        //     var found = false;
+        //
+        //     const btnDownload = $('.prep-link-download-btn').hasClass('prep-link-download-btn');
+        //     if (btnDownload || href === undefined || href === null || !href.length) {
+        //         return;
+        //     }
+        //
+        //     for (var i = 0; i < prep_urls.length; i++) {
+        //         if (href.indexOf(prep_urls[i]) !== -1) {
+        //             found = true;
+        //             break;
+        //         }
+        //     }
+        //
+        //     if (found) {
+        //         var encoded_link = encodeURIComponent(href);
+        //         $(this).attr('href', encoded_link);
+        //         $(this).attr('data-id', encoded_link);
+        //     }
+        // });
 
-            const btnDownload = $('.prep-link-download-btn').hasClass('prep-link-download-btn');
-            if (btnDownload || href === undefined || href === null || !href.length) {
-                return;
-            }
-
-            for (var i = 0; i < prep_urls.length; i++) {
-                if (href.indexOf(prep_urls[i]) !== -1) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (found) {
-                var encoded_link = encodeURIComponent(href);
-                $(this).attr('href', encoded_link);
-                $(this).attr('data-id', encoded_link);
-            }
-        });
         $urls.on('click', function (e) {
             const $this = $(this);
             const btnDownload = $this.closest('.prep-link-download-btn').hasClass('prep-link-download-btn');

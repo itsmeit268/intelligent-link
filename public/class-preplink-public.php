@@ -53,7 +53,8 @@ class Preplink_Public
             wp_enqueue_script('global-preplink', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, false);
             wp_localize_script('global-preplink', 'prep_vars', array(
                 'end_point' => $this->getEndPointValue(),
-                'prep_url'  => isset($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com, play.google.com'
+                'prep_url'  => isset($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com, play.google.com',
+                'count_down' => isset($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 5,
             ));
 
         }

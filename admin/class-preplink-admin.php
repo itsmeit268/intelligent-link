@@ -120,6 +120,13 @@ class Preplink_Admin
             'preplink_general_section');
 
         add_settings_field(
+            'preplink_countdown',
+            __('Time countdown', 'preplink'),
+            array($this, 'preplink_countdown_field'),
+            'preplink_general_settings',
+            'preplink_general_section');
+
+        add_settings_field(
             'preplink_textarea',
             __('Links allowed', 'preplink'),
             array($this, 'preplink_textarea_field'),
@@ -239,6 +246,15 @@ class Preplink_Admin
         <?php
     }
 
+    function preplink_countdown_field()
+    {
+        $settings = get_option('preplink_setting', array());
+        ?>
+        <input type="text" id="preplink_countdown" name="preplink_setting[preplink_countdown]"
+               value="<?= esc_attr(!empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : false) ?>" />
+        <p class="description">Countdown time, default 5s.</p>
+        <?php
+    }
 
     public function preplink_textarea_field()
     {
