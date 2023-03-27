@@ -1,5 +1,6 @@
 (function ($) {
     'use strict';
+
     $(function () {
         var $urls = $('a');
         var end_point = $.trim(prep_vars.end_point);
@@ -54,30 +55,6 @@
 
             countdown();
         };
-
-        // $urls.each(function() {
-        //     var href = $(this).attr('href');
-        //     var prep_urls = prep_url.split(',');
-        //     var found = false;
-        //
-        //     const btnDownload = $('.prep-link-download-btn').hasClass('prep-link-download-btn');
-        //     if (btnDownload || href === undefined || href === null || !href.length) {
-        //         return;
-        //     }
-        //
-        //     for (var i = 0; i < prep_urls.length; i++) {
-        //         if (href.indexOf(prep_urls[i]) !== -1) {
-        //             found = true;
-        //             break;
-        //         }
-        //     }
-        //
-        //     if (found) {
-        //         var encoded_link = encodeURIComponent(href);
-        //         $(this).attr('href', encoded_link);
-        //         $(this).attr('data-id', encoded_link);
-        //     }
-        // });
 
         $urls.on('click', function (e) {
             const $this = $(this);
