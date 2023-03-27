@@ -12,7 +12,7 @@
         var count_down = parseInt(prep_vars.count_down);
 
 
-        const updateLink = (href) => {
+        const updateLink = ($link, href) => {
             if (current_url.indexOf('?') !== -1) {
                 current_url = current_url.split('?')[0];
             }
@@ -20,11 +20,11 @@
                 if (current_url.includes('/' + end_point)) {
                     current_url = current_url.replace('/' + end_point, '');
                 }
-                $urls.attr('href', `${current_url + '/' + end_point}`);
-                $urls.attr('data-id', `${current_url + '/' + end_point}`);
+                $link.attr('href', `${current_url + '/' + end_point}`);
+                $link.attr('data-id', `${current_url + '/' + end_point}`);
             } else {
-                $urls.attr('href', `${current_url + end_point}`);
-                $urls.attr('data-id', `${current_url + end_point}`);
+                $link.attr('href', `${current_url + end_point}`);
+                $link.attr('data-id', `${current_url + end_point}`);
             }
             document.cookie = "pre_url_go=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             document.cookie = "pre_url_go=" + encodeURIComponent(href) + "; path=/;";
@@ -44,7 +44,7 @@
                     $link.text(`${text_link} (Ready!)`);
                     isLinkReady = true;
                     isCountdownRunning = false;
-                    updateLink(href);
+                    updateLink($link, href);
                 } else {
                     setTimeout(countdown, 1000);
                 }
@@ -66,7 +66,7 @@
 
             if (count_down === 0) {
                 e.preventDefault();
-                updateLink(href);
+                updateLink($this, href);
                 window.location.href = $this.attr('href');
                 return;
             }
