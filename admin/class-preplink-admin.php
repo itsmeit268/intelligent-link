@@ -139,6 +139,7 @@ class Preplink_Admin
             array($this, 'preplink_display_general'),
             'preplink_general_settings'
         );
+
         unset($args);
 
         add_settings_field(
@@ -156,10 +157,89 @@ class Preplink_Admin
             'preplink_general_section'
         );
 
+        add_settings_field(
+            'preplink_image', // ID của field
+            __('Post Image', 'preplink'),
+            array($this, 'preplink_image_field'),
+            'preplink_general_settings', // ID của page
+            'preplink_general_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Yes',
+                0  => 'No',
+            )
+        );
+
+        add_settings_field(
+            'preplink_excerpt', // ID của field
+            __('Post Excerpt', 'preplink'),
+            array($this, 'preplink_excerpt_field'),
+            'preplink_general_settings', // ID của page
+            'preplink_general_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Yes',
+                0  => 'No',
+            )
+        );
+
+        add_settings_field(
+            'preplink_excerpt', // ID của field
+            __('Post Excerpt', 'preplink'),
+            array($this, 'preplink_excerpt_field'),
+            'preplink_general_settings', // ID của page
+            'preplink_general_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Yes',
+                0  => 'No',
+            )
+        );
+
+        add_settings_field(
+            'preplink_faq_1',
+            __('Disable/Enable FAQ 1', 'preplink'),
+            array($this, 'preplink_display_faq_1'),
+            'preplink_general_settings',
+            'preplink_general_section',
+            array('label_for' => 'preplink_faq')
+        );
+
+        add_settings_field(
+            'preplink_faq_2',
+            __('Disable/Enable FAQ 2', 'preplink'),
+            array($this, 'preplink_display_faq_2'),
+            'preplink_general_settings',
+            'preplink_general_section',
+            array('label_for' => 'preplink_faq_2')
+        );
+
+        add_settings_field(
+            'preplink_related_post', // ID của field
+            __('Post Related', 'preplink'),
+            array($this, 'preplink_related_post'),
+            'preplink_general_settings', // ID của page
+            'preplink_general_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Yes',
+                0  => 'No',
+            )
+        );
+
+        add_settings_field(
+            'preplink_comment', // ID của field
+            __('Comment', 'preplink'),
+            array($this, 'preplink_comment'),
+            'preplink_general_settings', // ID của page
+            'preplink_general_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Yes',
+                0  => 'No',
+            )
+        );
+
         register_setting(
             'preplink_general_settings',
             'preplink_setting'
         );
+
     }
 
     public function preplink_display_general()
@@ -167,10 +247,6 @@ class Preplink_Admin
         ?>
         <div class="prep-link-admin-settings">
             <h3>These settings apply to all Prepare link functionality.</h3>
-            <ul>
-                <li>Endpoint : mặc định là download</li>
-                <li>Multiple URL : Những URL sẽ được chuyển hướng đến Endpoint</li>
-            </ul>
         </div>
         <?php
     }
@@ -178,13 +254,158 @@ class Preplink_Admin
     function preplink_endpoint_field()
     {
         $options = get_option('preplink_setting');
-        echo '<input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]" value="' . esc_attr($options['preplink_endpoint']) . '" />';
+        ?>
+        <input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]" value="<?= esc_attr($options['preplink_endpoint']) ?>" />
+        <p class="description">Enter your description here.</p>
+        <?php
     }
+
 
     public function preplink_textarea_field()
     {
         $options = get_option('preplink_setting', array());
-        ?><textarea id="preplink_url" cols='44' rows='4' name='preplink_setting[preplink_url]'><?= isset($options['preplink_url']) ? $options['preplink_url'] : false; ?></textarea><?php
+        ?>
+        <textarea id="preplink_url" cols='44' rows='4' name='preplink_setting[preplink_url]'><?= isset($options['preplink_url']) ? $options['preplink_url'] : false; ?></textarea>
+        <p class="description">Enter your FAQ here.</p>
+        <?php
     }
 
+    function preplink_image_field($args)
+    {
+        $options = get_option('preplink_setting');
+        $selected = isset($options['preplink_image']) ? $options['preplink_image'] : '1';
+        $html = '<select id="preplink_image" name="preplink_setting[preplink_image]" class="preplink_image">';
+        foreach ($args as $value => $label) {
+            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
+        }
+        $html .= '</select>';
+        $html .= '<p class="description">Enable or disable post featured image.</p>';
+        echo $html;
+    }
+
+    function preplink_excerpt_field($args)
+    {
+        $options = get_option('preplink_setting');
+        $selected = isset($options['preplink_excerpt']) ? $options['preplink_excerpt'] : '1';
+        $html = '<select id="preplink_excerpt" name="preplink_setting[preplink_excerpt]" class="preplink_excerpt">';
+        foreach ($args as $value => $label) {
+            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
+        }
+        $html .= '</select>';
+        $html .= '<p class="description">Enable or disable post excerpt (post excerpt is HTML code and it will show when it is a table).</p>';
+        echo $html;
+    }
+
+    function preplink_display_faq_1() {
+        $settings = get_option('preplink_setting');
+        ?>
+        <table class="form-table">
+            <tbody>
+            <tr class="preplink_faq1_enabled">
+                <th scope="row">Enable FAQ 1:</th>
+                <td>
+                    <select name="preplink_setting[preplink_faq1_enabled]" id="preplink_faq1_enabled">
+                        <option value="1" <?php selected( isset( $settings['preplink_faq1_enabled'] ) && $settings['preplink_faq1_enabled'] == '1' ); ?>>Yes</option>
+                        <option value="0" <?php selected( isset( $settings['preplink_faq1_enabled'] ) && $settings['preplink_faq1_enabled'] == '0' ); ?>>No</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="preplink_faq1_title">
+                <th scope="row">FAQ Title:</th>
+                <td>
+                    <input type="text" name="preplink_setting[preplink_faq1_title]" value="<?= esc_attr(!empty($settings['preplink_faq1_title']) ? : ''); ?>" />
+                </td>
+            </tr>
+            <tr class="preplink_faq1_description">
+                <th scope="row">FAQ HTML:</th>
+                <td>
+                    <textarea name="preplink_setting[preplink_faq1_description]" rows="5" cols="50"><?= esc_html(!empty($settings['preplink_faq1_description'] ? : $settings['preplink_faq1_description'])); ?></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+        if ( isset( $_POST['preplink_setting'] ) ) {
+            $settings = $_POST['preplink_setting'];
+            update_option( 'preplink_setting', $settings );
+        }
+    }
+
+    function preplink_display_faq_2() {
+        $settings = get_option('preplink_setting');
+        ?>
+        <table class="form-table">
+            <tbody>
+            <tr class="preplink_faq2_enabled">
+                <th scope="row">Enable FAQ 2:</th>
+                <td>
+                    <select name="preplink_setting[preplink_faq2_enabled]" id="preplink_faq2_enabled">
+                        <option value="1" <?php selected( isset( $settings['preplink_faq2_enabled'] ) && $settings['preplink_faq2_enabled'] == '1' ); ?>>Yes</option>
+                        <option value="0" <?php selected( isset( $settings['preplink_faq2_enabled'] ) && $settings['preplink_faq2_enabled'] == '0' ); ?>>No</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="preplink_faq2_title">
+                <th scope="row">FAQ 2 Title:</th>
+                <td>
+                    <input type="text" name="preplink_setting[preplink_faq2_title]" value="<?= esc_attr(!empty($settings['preplink_faq2_title']) ? : ''); ?>" />
+                </td>
+            </tr>
+            <tr class="preplink_faq2_description">
+                <th scope="row">FAQ HTML:</th>
+                <td>
+                    <textarea name="preplink_setting[preplink_faq2_description]" rows="5" cols="50"><?= esc_html(!empty($settings['preplink_faq2_description'] ? : '' )); ?></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+        if (isset( $_POST['preplink_setting'] ) ) {
+            $settings = $_POST['preplink_setting'];
+            update_option( 'preplink_setting', $settings );
+        }
+    }
+
+    function preplink_related_post($args)
+    {
+        $settings = get_option('preplink_setting');
+        ?>
+        <table class="form-table">
+            <tbody>
+            <tr class="preplink_related_enabled">
+                <th scope="row">Enable Related post:</th>
+                <td>
+                    <select name="preplink_setting[preplink_related_post]" id="preplink_related_enabled" class="preplink_related_post">
+                        <option value="1" <?php selected( isset( $settings['preplink_related_post'] ) && $settings['preplink_related_post'] == '1' ); ?>>Yes</option>
+                        <option value="0" <?php selected( isset( $settings['preplink_related_post'] ) && $settings['preplink_related_post'] == '0' ); ?>>No</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="preplink_related_number">
+                <th scope="row">Number of related post:</th>
+                <td>
+                    <input type="text" name="preplink_setting[preplink_related_number]" placeholder="default 10" value="<?= esc_attr(!empty($settings['preplink_related_number']) ? : ''); ?>" />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+        if (isset( $_POST['preplink_setting'] ) ) {
+            $settings = $_POST['preplink_setting'];
+            update_option( 'preplink_setting', $settings );
+        }
+    }
+
+    function preplink_comment($args)
+    {
+        $options = get_option('preplink_setting');
+        $selected = isset($options['preplink_comment']) ? $options['preplink_comment'] : '1';
+        $html = '<select id="preplink_comment" name="preplink_setting[preplink_comment]">';
+        foreach ($args as $value => $label) {
+            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
+        }
+        $html .= '</select>';
+        $html .= '<p class="description">Enable or disable comments.</p>';
+        echo $html;
+    }
 }

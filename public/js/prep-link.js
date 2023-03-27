@@ -33,5 +33,11 @@
                 $(this).parent().find('.rank-math-answer ').toggle(300);
             });
         }
+
+        $('.clickable').on('click', function (e){
+            e.preventDefault();
+            var href = $(this).attr('href');
+            window.location.href = decodeURIComponent(href);
+        });
     });
 })(jQuery);

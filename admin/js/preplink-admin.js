@@ -1,32 +1,47 @@
-(function( $ ) {
-	'use strict';
+(function ($) {
+    'use strict';
 
-	/**
-	 * All of the code for your admin-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
+    // Lớp chung để lưu trữ các giá trị của các FAQ
+    class FAQ {
+        constructor(enabled, input, textarea) {
+            this.enabled = enabled;
+            this.input = input;
+            this.textarea = textarea;
+            this.related  = input;
+        }
 
-})( jQuery );
+        // Hàm xử lý hiển thị/ẩn trường text
+        toggleField() {
+            if (this.enabled.val() == 1) {
+                this.input.show();
+                this.textarea.show();
+                this.input.find('input').attr('required', 'required');
+                this.textarea.find('textarea').attr('required', 'required');
+                this.related.find('input').attr('required', 'required');
+            } else {
+                this.input.hide();
+                this.textarea.hide();
+                this.input.find('input').removeAttr('required');
+                this.textarea.find('textarea').removeAttr('required');
+                this.related.find('input').removeAttr('required');
+            }
+        }
+    }
+
+    $(function () {
+        // Khởi tạo đối tượng cho mỗi FAQ
+        const faq1    = new FAQ($('#preplink_faq1_enabled'), $('.preplink_faq1_title'), $('.preplink_faq1_description'));
+        const faq2    = new FAQ($('#preplink_faq2_enabled'), $('.preplink_faq2_title'), $('.preplink_faq2_description'));
+        const related = new FAQ($('#preplink_related_enabled'), $('.preplink_related_number'), $('.preplink_related_description'));
+
+        // Ẩn trường text khi tải trang nếu chọn No
+        faq1.toggleField();
+        faq2.toggleField();
+        related.toggleField();
+
+        // Xử lý sự kiện khi chọn Yes/No
+        faq1.enabled.on('change', () => faq1.toggleField());
+        faq2.enabled.on('change', () => faq2.toggleField());
+        related.enabled.on('change', () => related.toggleField());
+    });
+})(jQuery);

@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
     $(function () {
-
+        var $urls = $('a');
         var end_point = $.trim(prep_vars.end_point);
         var prep_url = prep_vars.prep_url;
         var current_url = window.location.href.replace(/#.*/, '');
@@ -10,7 +10,7 @@
         let isCountdownRunning = false;
 
 
-        const startCountdown = ($link, full_link, text_link) => {
+        const startCountdown = ($link, href, text_link) => {
             let downloadTimer;
             let timeleft = 5;
 
@@ -32,8 +32,10 @@
                             current_url = current_url.replace('/' + end_point, '');
                         }
                         $link.attr('href', `${current_url + '/' + end_point}`);
+                        $link.attr('data-id', `${current_url + '/' + end_point}`);
                     } else {
                         $link.attr('href', `${current_url + end_point}`);
+                        $link.attr('data-id', `${current_url + end_point}`);
                     }
 
                     $link.text(`${text_link} (Ready!)`);
@@ -42,7 +44,7 @@
 
                     document.cookie = "pre_url_go=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     // set cookie
-                    document.cookie = "pre_url_go=" + encodeURIComponent(full_link) + "; path=/;";
+                    document.cookie = "pre_url_go=" + encodeURIComponent(href) + "; path=/;";
 
                 } else {
                     setTimeout(countdown, 1000);
@@ -52,21 +54,44 @@
             countdown();
         };
 
-        $('a').on('click', function (e) {
+        $urls.each(function() {
+            var href = $(this).attr('href');
+            var prep_urls = prep_url.split(',');
+            var found = false;
+
+            const btnDownload = $('.prep-link-download-btn').hasClass('prep-link-download-btn');
+            if (btnDownload || href === undefined || href === null || !href.length) {
+                return;
+            }
+
+            for (var i = 0; i < prep_urls.length; i++) {
+                if (href.indexOf(prep_urls[i]) !== -1) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                var encoded_link = encodeURIComponent(href);
+                $(this).attr('href', encoded_link);
+                $(this).attr('data-id', encoded_link);
+            }
+        });
+        $urls.on('click', function (e) {
             const $this = $(this);
             const btnDownload = $this.closest('.prep-link-download-btn').hasClass('prep-link-download-btn');
             const text_link = $this.text();
-            const full_link = $this.attr('href');
+            const href = $this.attr('href');
             const urls = prep_url.split(",");
 
-            if (btnDownload || full_link === undefined || full_link === null || !full_link.length) {
+            if (btnDownload || href === undefined || href === null || !href.length) {
                 return;
             }
 
             let isPrevented = false;
 
             $.each(urls, function (key, text) {
-                if (full_link.includes($.trim(text))) {
+                if (href.includes($.trim(text))) {
                     if (isLinkReady || isCountdownRunning) {
                         e.preventDefault();
                         if (isCountdownRunning) {
@@ -77,7 +102,7 @@
                         isPrevented = true;
                     } else {
                         e.preventDefault();
-                        startCountdown($this, full_link, text_link);
+                        startCountdown($this, href, text_link);
                         isPrevented = true;
                     }
                     return false;
@@ -88,5 +113,6 @@
                 isLinkReady = false;
             }
         });
+
     });
 })(jQuery);

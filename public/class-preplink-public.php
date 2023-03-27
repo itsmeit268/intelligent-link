@@ -46,14 +46,7 @@ class Preplink_Public
 
     public function enqueue_styles()
     {
-        global $wp_query;
         wp_enqueue_style('global' . $this->plugin_name, plugin_dir_url(__FILE__) . 'css/global.css', array(), $this->version, 'all');
-
-        if (!isset($wp_query->query_vars[$this->getEndPointValue()]) || !is_singular('post')) {
-            return;
-        }
-
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/prep-link.css', array(), $this->version, 'all');
     }
 
     public function enqueue_scripts()
@@ -64,7 +57,7 @@ class Preplink_Public
             wp_enqueue_script('global-preplink', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, false);
             wp_localize_script('global-preplink', 'prep_vars', array(
                 'end_point' => $this->getEndPointValue(),
-                'prep_url'  => isset($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com,fshare.vn'
+                'prep_url'  => isset($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com, play.google.com'
             ));
 
         }
@@ -79,24 +72,15 @@ class Preplink_Public
     {
         add_rewrite_endpoint($this->getEndPointValue(), EP_PERMALINK | EP_PAGES );
 
-        function preplink_template() {
+        add_filter( 'template_include', function( $template ) {
             global $wp_query;
 
-            $endpoint = 'download';
-            $settings = get_option('preplink_setting');
-            if (!empty($settings['preplink_endpoint'])) {
-                $endpoint = $settings['preplink_endpoint'];
+            if (isset($wp_query->query_vars[$this->getEndPointValue()]) && is_singular('post')) {
+                return dirname( __FILE__ ) . '/templates/preplink_template.php';
             }
 
-            if (!isset( $wp_query->query_vars[$endpoint]) || !is_singular('post')) {
-                return;
-            }
-
-            include dirname( __FILE__ ) . '/templates/preplink_template.php';
-            exit;
-        }
-
-        add_action( 'template_redirect', 'preplink_template');
+            return $template;
+        });
     }
 
     /**
@@ -107,7 +91,7 @@ class Preplink_Public
         $endpoint = 'download';
         $settings = get_option('preplink_setting');
         if (!empty($settings['preplink_endpoint'])) {
-            $endpoint = $settings['preplink_endpoint'];
+            $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($settings['preplink_endpoint']));
         }
 
         return $endpoint;
