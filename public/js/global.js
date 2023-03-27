@@ -84,7 +84,7 @@
             const btnDownload = $this.closest('.prep-link-download-btn').hasClass('prep-link-download-btn');
             const text_link = $this.text();
             const href = $this.attr('href');
-            const urls = prep_url.split(",");
+            const prep_urls = prep_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
 
             if (btnDownload || href === undefined || href === null || !href.length) {
                 return;
@@ -92,8 +92,8 @@
 
             let isPrevented = false;
 
-            $.each(urls, function (key, text) {
-                if (href.includes($.trim(text))) {
+            $.each(prep_urls, function (key, text) {
+                if (href.includes($.trim(text)) || href.includes(text.trim())) {
                     if (isLinkReady || isCountdownRunning) {
                         e.preventDefault();
                         if (isCountdownRunning) {
