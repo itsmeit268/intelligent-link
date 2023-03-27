@@ -252,10 +252,6 @@ img {
     font-size: 19px;
 }
 
-.dl-p-url a:visited {
-    color: #226304 !important;
-}
-
 .dl-p-url:hover, .clickable:hover, .category-3:hover {
     color: #ff0048;
     -webkit-text-decoration-color: var(--g-color);
