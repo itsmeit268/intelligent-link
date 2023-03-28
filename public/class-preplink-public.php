@@ -38,6 +38,7 @@ class Preplink_Public
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
         add_action('init', array($this, 'preplink_rewrite_endpoint'), 10, 0);
+        add_action('wp_head', array($this, 'add_prep_custom_styles'), 10, 2);
     }
 
     public function enqueue_styles()
@@ -92,5 +93,15 @@ class Preplink_Public
         }
 
         return $endpoint;
+    }
+
+    public function add_prep_custom_styles()
+    {
+        $settings = get_option('preplink_setting');
+        if (!empty($settings['preplink_custom_style'])) {
+            ?>
+            <style><?= $settings['preplink_custom_style'] ?></style>
+            <?php
+        }
     }
 }

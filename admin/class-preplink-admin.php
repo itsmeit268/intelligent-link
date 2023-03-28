@@ -121,7 +121,7 @@ class Preplink_Admin
 
         add_settings_field(
             'preplink_countdown',
-            __('Time countdown', 'preplink'),
+            __('Time countdown for post', 'preplink'),
             array($this, 'preplink_countdown_field'),
             'preplink_general_settings',
             'preplink_general_section');
