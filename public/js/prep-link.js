@@ -36,8 +36,14 @@
 
         $('.clickable').on('click', function (e){
             e.preventDefault();
-            var href = $(this).attr('href');
-            window.location.href = decodeURIComponent(href);
+            var urlParams = new URLSearchParams(window.location.search);
+            var preUrlGo = urlParams.get('id');
+            const decodedUrl = atob(preUrlGo);
+            if (preUrlGo) {
+                // window.location.href = decodeURIComponent(decodedUrl);
+                window.location.href = decodedUrl;
+                // $('.prep-link-download-btn').find('a.clickable').attr('href',decodedUrl);
+            }
         });
     });
 })(jQuery);

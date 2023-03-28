@@ -23,7 +23,10 @@ global $post;
 $postID = get_the_ID();
 $view_link = get_permalink($postID);
 
-$downloadURL = !empty($_COOKIE['pre_url_go']) ? $_COOKIE['pre_url_go'] : '';
+$downloadURL = !empty($_GET['id']) ? trim(strip_tags(stripslashes($_GET['id']))) : '';
+$redirect_to = !empty($_GET['id']) ? trim(strip_tags(stripslashes($_GET['id']))) : '';
+//base64_decode($downloadURL);
+
 $settings = get_option('preplink_setting');
 $postTitle = !empty(get_the_title()) ? get_the_title() : $post->post_title;
 $excerpt = get_the_excerpt();
@@ -134,7 +137,7 @@ if (empty($downloadURL)) {
                                 </div>
                                 <div class="right">
                                     <div class="prep-link-download-btn">
-                                        <a href="<?= $downloadURL ?>" class="clickable">
+                                        <a href="<?= $downloadURL?>" class="clickable">
                                             <svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                                 <path d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path>

@@ -9,8 +9,7 @@
         var end_point = $.trim(prep_vars.end_point);
         var prep_url = prep_vars.prep_url;
         var current_url = window.location.href.replace(/#.*/, '');
-        var count_down = parseInt(prep_vars.count_down);
-
+        var time_cnf = parseInt(prep_vars.count_down);
 
         const updateLink = ($link, href) => {
             if (current_url.indexOf('?') !== -1) {
@@ -20,19 +19,20 @@
                 if (current_url.includes('/' + end_point)) {
                     current_url = current_url.replace('/' + end_point, '');
                 }
-                $link.attr('href', `${current_url + '/' + end_point}`);
-                $link.attr('data-id', `${current_url + '/' + end_point}`);
+                $link.attr('href', `${current_url + '/' + end_point + '?id=' + href}`);
+                $link.attr('data-id', `${current_url + '/' + end_point + '?id=' + href}`);
             } else {
-                $link.attr('href', `${current_url + end_point}`);
-                $link.attr('data-id', `${current_url + end_point}`);
+                $link.attr('href', `${current_url + end_point + '?id=' + href}`);
+                $link.attr('data-id', `${current_url + end_point + '?id=' + href }`);
             }
-            document.cookie = "pre_url_go=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            document.cookie = "pre_url_go=" + encodeURIComponent(href) + "; path=/;";
         }
 
         const startCountdown = ($link, href, text_link) => {
+            var isLinkReady = false;
+            var isCountdownRunning = false;
+
             let downloadTimer;
-            let timeleft = count_down;
+            let timeleft = time_cnf;
             isCountdownRunning = true;
 
             const countdown = () => {
@@ -52,43 +52,80 @@
             countdown();
         }
 
+        $urls.each(function() {
+            var href = $(this).attr('href');
+            var prep_urls = prep_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
+            var found = false;
+
+            const btnDownload = $(this).hasClass('prep-link-download-btn');
+            if (btnDownload || href === undefined || href === null || !href.length) {
+                return;
+            }
+
+            for (var i = 0; i < prep_urls.length; i++) {
+                if (href.indexOf(prep_urls[i]) !== -1) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                var encoded_link = btoa(href);
+                $(this).attr('href', encoded_link);
+                $(this).attr('data-id', encoded_link);
+            }
+        });
+
+
         $urls.on('click', function (e) {
             const $this = $(this);
             const btnDownload = $this.closest('.prep-link-download-btn').hasClass('prep-link-download-btn');
             const text_link = $this.text();
             const href = $this.attr('href');
-            const prep_urls = prep_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
+
             if (btnDownload || href === undefined || href === null || !href.length) {
                 return;
             }
 
             let isPrevented = false;
 
-            if (count_down === 0) {
+            if (time_cnf === 0) {
                 e.preventDefault();
                 updateLink($this, href);
                 window.location.href = $this.attr('href');
                 return;
             }
 
-            $.each(prep_urls, function (key, text) {
-                if (href.includes($.trim(text))) {
-                    if (isLinkReady || (isCountdownRunning && $(this).is($this))) {
-                        e.preventDefault();
-                        if (isCountdownRunning && !$(this).is($this)) {
-                            alert("Please wait for the countdown to finish before clicking again.");
-                        } else {
-                            window.location.href = $this.attr('href');
-                        }
-                        isPrevented = true;
-                    } else {
-                        e.preventDefault();
-                        startCountdown($this, href, text_link);
-                        isPrevented = true;
-                    }
-                    return false;
+            var isBtoaEncoded = false;
+
+            if (time_cnf > 0) {
+                try {
+                    var decodedHref = atob(href);
+                    isBtoaEncoded = decodedHref.match(/^https?:\/\/.+/) !== null;
+                } catch (e) {
+                    console.log(e.message);
                 }
-            });
+
+                if (!isBtoaEncoded) {
+                    return;
+                }
+
+                if (isLinkReady || (isCountdownRunning && $(this).is($this))) {
+                    e.preventDefault();
+                    if (isCountdownRunning && !$(this).is($this)) {
+                        alert("Please wait for the countdown to finish before clicking again.");
+                    } else {
+                        window.location.href = $this.attr('href');
+                    }
+                    isPrevented = true;
+                } else {
+                    e.preventDefault();
+                    startCountdown($this, href, text_link);
+                    isPrevented = true;
+                }
+                return false;
+            }
+
 
             if (!isPrevented && isLinkReady) {
                 isLinkReady = false;
