@@ -36,12 +36,12 @@
             isCountdownRunning = true;
 
             const countdown = () => {
-                $link.html(`<strong>[waiting ${timeleft}s...]</strong>`);
+                $link.html(`<strong>[ waiting ${timeleft}s... ]</strong>`);
                 timeleft--;
                 if (timeleft < 0) {
                     clearInterval(downloadTimer);
                     $link.removeAttr('target');
-                    $link.text(`${text_link} (Ready!)`);
+                    $link.html(`${text_link}` + '<strong style="color:red;">(Ready!)</strong>');
                     isLinkReady = true;
                     isCountdownRunning = false;
                     updateLink($link, href);
@@ -76,7 +76,6 @@
             }
         });
 
-
         $urls.on('click', function (e) {
             const $this = $(this);
             const btnDownload = $this.closest('.prep-link-download-btn').hasClass('prep-link-download-btn');
@@ -99,6 +98,7 @@
             var isBtoaEncoded = false;
 
             if (time_cnf > 0) {
+
                 try {
                     var decodedHref = atob(href);
                     isBtoaEncoded = decodedHref.match(/^https?:\/\/.+/) !== null;
@@ -110,26 +110,14 @@
                     return;
                 }
 
-                if (isLinkReady || (isCountdownRunning && $(this).is($this))) {
-                    e.preventDefault();
-                    if (isCountdownRunning && !$(this).is($this)) {
-                        alert("Please wait for the countdown to finish before clicking again.");
-                    } else {
-                        window.location.href = $this.attr('href');
-                    }
-                    isPrevented = true;
-                } else {
-                    e.preventDefault();
-                    startCountdown($this, href, text_link);
-                    isPrevented = true;
-                }
-                return false;
+                $this.off('click').attr('href', 'javascript:void(0);');
+                startCountdown($this, href, text_link);
             }
-
 
             if (!isPrevented && isLinkReady) {
                 isLinkReady = false;
             }
         });
+
     });
 })(jQuery);
