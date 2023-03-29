@@ -154,6 +154,14 @@ class Preplink_Admin
         );
 
         add_settings_field(
+            'preplink_excludes_element',
+            __('Element excluded', 'preplink'),
+            array($this, 'preplink_excludes_element'),
+            'preplink_general_settings',
+            'preplink_general_section'
+        );
+
+        add_settings_field(
             'preplink_image', // ID của field
             __('Post Image', 'preplink'),
             array($this, 'preplink_image_field'),
@@ -330,6 +338,18 @@ class Preplink_Admin
         $html .= '</textarea>';
         $html .= '<p class="description">These links/URLs will be redirected to the endpoint (Prepare Link), each separated by a comma (,).</p>';
         $html .= '<p class="description">Default: drive.google.com, play.google.com.</p>';
+        echo $html;
+    }
+
+    public function preplink_excludes_element()
+    {
+        $settings = get_option('preplink_setting', array());
+        $html = '<textarea id="preplink_excludes_element" cols="50" rows="5" name="preplink_setting[preplink_excludes_element]" placeholder=".prep-link-download-btn,.prep-link-btn">';
+        $html .= isset($settings["preplink_excludes_element"]) ? $settings["preplink_excludes_element"] : false;
+        $html .= '</textarea>';
+        $html .= '<p class="description">The elements will be excluded, each separated by a comma (,).</p>';
+        $html .= '<p class="description">For example: #prep-link-download-btn, .prep-link-download-btn.</p>';
+        $html .= '<p class="description">Default: .prep-link-download-btn,.prep-link-btn</p>';
         echo $html;
     }
 

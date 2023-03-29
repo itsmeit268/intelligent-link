@@ -10,6 +10,8 @@
         var display_mode = prep_vars.display_mode;
         var auto_direct = parseInt(prep_vars.auto_direct);
         var text_complete = $.trim(prep_vars.text_complete);
+        var pre_elm_exclude = $.trim(prep_vars.pre_elm_exclude);
+        var exclude_elm = pre_elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
 
         const updateLink = ($link, href) => {
             if (current_url.indexOf('?') !== -1) {
@@ -50,9 +52,8 @@
                 if (timeleft < 0) {
                     clearInterval(downloadTimer);
                     $link.removeAttr('target');
-                    console.log(text_complete);
                     if (display_mode === 'progress') {
-                        $link.html('<span class="progress">' + `${text_link}` + '<strong style="color:red;">'+ ' '+text_complete +'</strong>' + '</span>');
+                        $link.html('<span class="progress">' + `${text_link}` + '<strong style="color:red;">' + ' ' + text_complete + '</strong>' + '</span>');
                     } else {
                         $link.html(`${text_link}` + '<strong style="color:red;"> [Link ready!]</strong>');
                     }
@@ -68,14 +69,14 @@
             countdown();
         };
 
-
         $urls.each(function () {
+            var $this = $(this);
             var href = $(this).attr('href');
             var prep_urls = prep_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
             var found = false;
-            var text_link = $(this).text();
-            const btnDownload = $(this).hasClass('prep-link-download-btn');
-            if (btnDownload || href === undefined || href === null || !href.length) {
+            var text_link = $this.text();
+
+            if (exclude_elm.some(sel => $this.is(sel)) || $this.closest(exclude_elm.join(',')).length > 0 || href === undefined || href === null || !href.length) {
                 return;
             }
 
@@ -88,25 +89,23 @@
 
             if (found) {
                 var encoded_link = btoa(href);
-                $(this).attr('href', encoded_link);
-                $(this).attr('data-id', encoded_link);
-                $(this).removeAttr('target');
+                $this.attr('href', encoded_link);
+                $this.attr('data-id', encoded_link);
+                $this.removeAttr('target');
 
                 if (display_mode === 'progress') {
-                    $(this).wrap('<div class="progress-bar"></div>');
-                    $(this).html('<span class="progress">' + text_link + '</span>');
+                    $this.wrap('<div class="progress-bar"></div>');
+                    $this.html('<span class="progress">' + text_link + '</span>');
                 }
             }
         });
 
         $urls.on('click', function (e) {
             const $this = $(this);
-
-            const btnDownload = $this.closest('.prep-link-download-btn').hasClass('prep-link-download-btn');
             const text_link = $this.text();
             const href = $this.attr('href');
 
-            if (btnDownload || href === undefined || href === null || !href.length) {
+            if (exclude_elm.some(sel => $this.is(sel)) || $this.closest(exclude_elm.join(',')).length > 0 || href === undefined || href === null || !href.length) {
                 return;
             }
 

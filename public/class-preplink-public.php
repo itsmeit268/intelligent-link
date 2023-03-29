@@ -53,7 +53,6 @@ class Preplink_Public
     public function enqueue_scripts()
     {
         global $wp_query;
-
         $settings = get_option('preplink_setting');
         if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
             return;
@@ -67,6 +66,7 @@ class Preplink_Public
                 'display_mode' => !empty($settings['preplink_display_mode']) ? $settings['preplink_display_mode'] : 'wait_time',
                 'auto_direct'  => !empty($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : 0,
                 'text_complete' => !empty($settings['preplink_text_complete']) ? $settings['preplink_text_complete'] : '[Link ready!]',
+                'pre_elm_exclude' => !empty($settings['preplink_excludes_element']) ? $settings['preplink_excludes_element'] : '.prep-link-download-btn,.prep-link-btn',
             ));
 
         }
