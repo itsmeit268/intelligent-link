@@ -120,6 +120,13 @@ class Preplink_Admin
             'preplink_general_section');
 
         add_settings_field(
+            'preplink_text_complete',
+            __('Text Complete', 'preplink'),
+            array($this, 'preplink_text_complete'),
+            'preplink_general_settings',
+            'preplink_general_section');
+
+        add_settings_field(
             'preplink_countdown',
             __('Time countdown for post', 'preplink'),
             array($this, 'preplink_countdown_field'),
@@ -213,6 +220,30 @@ class Preplink_Admin
         );
 
         add_settings_field(
+            'preplink_display_mode', // ID của field
+            __('Display mode', 'preplink'),
+            array($this, 'preplink_display_mode'),
+            'preplink_general_settings', // ID của page
+            'preplink_general_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                'wait_time' => 'Countdown',
+                'progress'  => 'ProgressBar',
+            )
+        );
+
+        add_settings_field(
+            'preplink_auto_direct', // ID của field
+            __('Auto-redirect', 'preplink'),
+            array($this, 'preplink_post_auto_direct'),
+            'preplink_general_settings', // ID của page
+            'preplink_general_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Yes',
+                0  => 'No',
+            )
+        );
+
+        add_settings_field(
             'preplink_custom_style',
             __('Custom Style', 'preplink'),
             array($this, 'preplink_custom_style'),
@@ -240,9 +271,19 @@ class Preplink_Admin
     {
         $settings = get_option('preplink_setting', array());
         ?>
-        <input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]"
+        <input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]" placeholder="download"
                value="<?= esc_attr(!empty($settings['preplink_endpoint']) ? $settings['preplink_endpoint'] : false) ?>" />
         <p class="description">The default endpoint is set to "download", so the link format will be: domain.com/post/download.</p>
+        <?php
+    }
+
+    function preplink_text_complete()
+    {
+        $settings = get_option('preplink_setting', array());
+        ?>
+        <input type="text" id="preplink_text_complete" name="preplink_setting[preplink_text_complete]" placeholder="[Link ready!]"
+               value="<?= esc_attr(!empty($settings['preplink_text_complete']) ? $settings['preplink_text_complete'] : false) ?>" />
+        <p class="description">Text display after countdown complete. (default [Link ready!])</p>
         <?php
     }
 
@@ -250,7 +291,7 @@ class Preplink_Admin
     {
         $settings = get_option('preplink_setting', array());
         ?>
-        <input type="text" id="preplink_countdown" name="preplink_setting[preplink_countdown]"
+        <input type="text" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="5"
                value="<?= esc_attr(!empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : false) ?>" />
         <p class="description">Countdown time, default 5s.</p>
         <?php
@@ -310,7 +351,7 @@ class Preplink_Admin
             <tr class="preplink_faq1_title">
                 <th scope="row">FAQ Title:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_faq1_title]"
+                    <input type="text" name="preplink_setting[preplink_faq1_title]" placeholder="Notes before continuing"
                            value="<?= esc_attr(isset($settings['preplink_faq1_title']) ? $settings['preplink_faq1_title'] : false); ?>" />
                 </td>
             </tr>
@@ -347,7 +388,7 @@ class Preplink_Admin
             <tr class="preplink_faq2_title">
                 <th scope="row">FAQ 2 Title:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_faq2_title]"
+                    <input type="text" name="preplink_setting[preplink_faq2_title]" placeholder="Download FAQs"
                            value="<?= esc_attr(isset($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : false); ?>" />
                 </td>
             </tr>
@@ -390,7 +431,7 @@ class Preplink_Admin
                 <th scope="row">Number of related post:</th>
                 <td>
                     <input type="text" name="preplink_setting[preplink_related_number]"
-                           placeholder="default 10" value="<?= esc_attr(!empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : false); ?>" />
+                           placeholder="10" value="<?= esc_attr(!empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : false); ?>" />
                 </td>
             </tr>
             </tbody>
@@ -422,6 +463,32 @@ class Preplink_Admin
         $html .= isset($settings["preplink_custom_style"]) ? $settings["preplink_custom_style"] : false;
         $html .= '</textarea>';
         $html .= '<p class="description">Your CSS code, for example: .backgroud{background-color: transparent;}.</p>';
+        echo $html;
+    }
+
+    function preplink_display_mode($args)
+    {
+        $settings = get_option('preplink_setting', array());
+        $selected = isset($settings['preplink_display_mode']) ? $settings['preplink_display_mode'] : '1';
+        $html = '<select id="preplink_display_mode" name="preplink_setting[preplink_display_mode]" class="preplink_display_mode">';
+        foreach ($args as $value => $label) {
+            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
+        }
+        $html .= '</select>';
+        $html .= '<p class="description">Display countdown or progress bar on click and URL (Default: Countdown)</p>';
+        echo $html;
+    }
+
+    function preplink_post_auto_direct($args)
+    {
+        $settings = get_option('preplink_setting', array());
+        $selected = isset($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : '1';
+        $html = '<select id="preplink_auto_direct" name="preplink_setting[preplink_auto_direct]" class="preplink_auto_direct">';
+        foreach ($args as $value => $label) {
+            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
+        }
+        $html .= '</select>';
+        $html .= '<p class="description">Automatic direct link when countdown is complete</p>';
         echo $html;
     }
 }

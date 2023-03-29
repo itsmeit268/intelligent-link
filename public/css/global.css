@@ -5,22 +5,26 @@
 .progress-bar {
     width: fit-content;
     height: 20px;
-    background-color: #eee;
+    background-color: #a1c0e3;
     border-radius: 5px;
     cursor: pointer;
-
+    display: inline-block;
 }
 .progress {
     height: 100%;
-    background-color: #ebebeb;
+    background-color: #2557ee;
     width: 0%;
-    border-radius: 3px;
+    border-radius: 5px;
     transition: width 0.2s ease-in-out;
     text-align: center;
-    /* line-height: 20px; */
-    color: #354958;
+    line-height: 20px;
+    color: #fff;
     white-space: nowrap;
-    overflow: hidden;
-    padding: 0px 5px 0 5px;
-    font-size: 100%;
+    /*overflow: hidden;*/
+}
+@media only screen and (max-device-width: 480px) {
+    .progress {
+        white-space: normal;
+        text-align: left;
+    }
 }

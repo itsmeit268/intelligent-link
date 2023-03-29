@@ -7,6 +7,10 @@
         var prep_url = prep_vars.prep_url;
         var current_url = window.location.href.replace(/#.*/, '');
         var time_cnf = parseInt(prep_vars.count_down);
+        var display_mode = prep_vars.display_mode;
+        var screenWith = $(window).width();
+        var auto_direct = parseInt(prep_vars.auto_direct);
+        var text_complete = $.trim(prep_vars.text_complete);
 
         const updateLink = ($link, href) => {
             if (current_url.indexOf('?') !== -1) {
@@ -35,17 +39,28 @@
             }
 
             const countdown = () => {
+                if (display_mode === 'wait_time') {
+                    $link.html(`<strong>[ waiting ${timeleft}s... ]</strong>`);
+                } else {
+                    $progress.animate({width: progressWidth}, (timeleft * 1000) / 2, function () {
+                        // $link.html('<span class="progress" style="color:red;">'+`${text_link}`+ '..' +'[Ready!]'+'</span>');
+                    });
+                }
 
-                // $progress.animate({width: progressWidth}, (timeleft * 1000) / 2, function () {
-                //     // $link.html('<span class="progress" style="color:red;">'+`${text_link}`+ '..' +'[Ready!]'+'</span>');
-                // });
-                $link.html(`<strong>[ waiting ${timeleft}s... ]</strong>`);
                 timeleft--;
                 if (timeleft < 0) {
                     clearInterval(downloadTimer);
                     $link.removeAttr('target');
-                    $link.html('<span class="progress" style="color:red;">' + `${text_link}` + '[Link ready!]' + '</span>');
+                    console.log(text_complete);
+                    if (display_mode === 'progress') {
+                        $link.html('<span class="progress">' + `${text_link}` + '<strong style="color:red;">'+ ' '+text_complete +'</strong>' + '</span>');
+                    } else {
+                        $link.html(`${text_link}` + '<strong style="color:red;"> [Link ready!]</strong>');
+                    }
                     updateLink($link, href);
+
+                    if (auto_direct)
+                        window.location.replace($link.attr('href'));
                 } else {
                     setTimeout(countdown, 1000);
                 }
@@ -76,9 +91,12 @@
                 var encoded_link = btoa(href);
                 $(this).attr('href', encoded_link);
                 $(this).attr('data-id', encoded_link);
-                // $(this).addClass('progress');
-                $(this).html('<span class="progress">' + text_link + '</span>')
                 $(this).removeAttr('target');
+
+                if (display_mode === 'progress') {
+                    $(this).wrap('<div class="progress-bar"></div>');
+                    $(this).html('<span class="progress">' + text_link + '</span>');
+                }
             }
         });
 
