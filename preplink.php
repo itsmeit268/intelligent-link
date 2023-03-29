@@ -3,7 +3,7 @@
 /**
  * @link              https://github.com/itsmeit268/preplink
  * @since             1.0.3
- * @package           Settings_Page
+ * @package           Preplink
  *
  * @wordpress-plugin
  * Plugin Name:       Prepare Link

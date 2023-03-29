@@ -163,6 +163,13 @@ class Preplink_Admin
             'preplink_general_section');
 
         add_settings_field(
+            'preplink_countdown_endpoint',
+            __('Time countdown for endpoint', 'preplink'),
+            array($this, 'preplink_countdown_endpoint'),
+            'preplink_general_settings',
+            'preplink_general_section');
+
+        add_settings_field(
             'preplink_textarea',
             __('Links allowed', 'preplink'),
             array($this, 'preplink_textarea_field'),
@@ -270,8 +277,20 @@ class Preplink_Admin
 
         add_settings_field(
             'preplink_auto_direct', // ID của field
-            __('Auto-redirect', 'preplink'),
+            __('Automatically redirect post to endpoint', 'preplink'),
             array($this, 'preplink_post_auto_direct'),
+            'preplink_general_settings', // ID của page
+            'preplink_general_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Yes',
+                0  => 'No',
+            )
+        );
+
+        add_settings_field(
+            'preplink_endpoint_auto_direct', // ID của field
+            __('Automatically redirect endpoints to original link', 'preplink'),
+            array($this, 'preplink_endpoint_auto_direct'),
             'preplink_general_settings', // ID của page
             'preplink_general_section', // ID của section
             array( // Mảng các thông số truyền vào callback function
@@ -355,6 +374,16 @@ class Preplink_Admin
         <input type="text" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="0"
                value="<?= esc_attr(!empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : false) ?>" />
         <p class="description">Countdown time, default 0.</p>
+        <?php
+    }
+
+    function preplink_countdown_endpoint()
+    {
+        $settings = get_option('preplink_setting', array());
+        ?>
+        <input type="text" id="countdown_endpoint" name="preplink_setting[countdown_endpoint]" placeholder="5"
+               value="<?= esc_attr(!empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : false) ?>" />
+        <p class="description">Countdown time, default 5, If you set the countdown time < 10s, it is recommended to set Automatically redirect endpoints = No</p>
         <?php
     }
 
@@ -561,6 +590,19 @@ class Preplink_Admin
         $settings = get_option('preplink_setting', array());
         $selected = isset($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : '1';
         $html = '<select id="preplink_auto_direct" name="preplink_setting[preplink_auto_direct]" class="preplink_auto_direct">';
+        foreach ($args as $value => $label) {
+            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
+        }
+        $html .= '</select>';
+        $html .= '<p class="description">Automatic direct link when countdown is complete</p>';
+        echo $html;
+    }
+
+    function preplink_endpoint_auto_direct($args)
+    {
+        $settings = get_option('preplink_setting', array());
+        $selected = isset($settings['endpoint_auto_direct']) ? $settings['endpoint_auto_direct'] : '1';
+        $html = '<select id="endpoint_auto_direct" name="preplink_setting[endpoint_auto_direct]" class="endpoint_auto_direct">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }

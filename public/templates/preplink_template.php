@@ -24,9 +24,6 @@ $postID = get_the_ID();
 $view_link = get_permalink($postID);
 
 $downloadURL = !empty($_GET['id']) ? trim(strip_tags(stripslashes($_GET['id']))) : '';
-$redirect_to = !empty($_GET['id']) ? trim(strip_tags(stripslashes($_GET['id']))) : '';
-//base64_decode($downloadURL);
-
 $settings = get_option('preplink_setting');
 $postTitle = !empty(get_the_title()) ? get_the_title() : $post->post_title;
 $excerpt = get_the_excerpt();
@@ -40,7 +37,7 @@ add_action('wp_head', function () {
         return;
     }
 
-    wp_enqueue_style('prep-link-css', plugin_dir_url(__DIR__) . 'css/prep-link.css', array(), '1.0.3', 'all');
+     wp_enqueue_style('prep-link-css', plugin_dir_url(__DIR__) . 'css/prep-link.css', array(), '1.0.3', 'all');
 //    wp_enqueue_script('ads-check-js', get_theme_file_uri('/itsmeit/js/ads_itsmeit.js'), array('jquery'), 1.0.3, true);
     if (!current_user_can('manage_options')) {
         ?>
@@ -137,7 +134,7 @@ if (empty($downloadURL)) {
                                 </div>
                                 <div class="right">
                                     <div class="prep-link-download-btn">
-                                        <a href="<?= $downloadURL?>" class="clickable prep-link-btn">
+                                        <div class="clickable prep-link-btn">
                                             <svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                                 <path d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path>
@@ -184,6 +181,58 @@ if (empty($downloadURL)) {
                         </div>
                     </div>
 
+                    <style>
+
+                        .progress {
+                            position: relative;
+                            width: 100%;
+                            height: 30px;
+                            margin-bottom: 20px;
+                            background-color: #e2e2e2;
+                            border-radius: 40px;
+                        }
+
+                        .progress p {
+                            position: absolute;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            z-index: 1;
+                        }
+
+                        .progress .bar {
+                            position: absolute;
+                            border-radius: 40px;
+                            height: 100%;
+                            width: 0%;
+                            background-color: #0693e3;
+                        }
+                        #download-button{
+                            width: 100%;
+                            color: #fff;
+                            background-color: #0693e3;
+                            border-radius: 9999px;
+                            box-shadow: none;
+                            cursor: pointer;
+                            display: flex;
+                            gap: 10px;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 1.125em;
+                            text-align: center;
+                            text-decoration: none;
+                            overflow-wrap: break-word;
+                            box-sizing: border-box;
+                        }
+                        #download-button:hover{
+                            opacity: .75;
+                            transition: 250ms ease-in-out;
+                            color: #000;
+                        }
+                    </style>
+                    <div class="progress" style="display:none;">
+                        <p class="counter">0%</p>
+                        <div class="bar"></div>
+                    </div>
                     <?php if (!empty($settings['preplink_related_post']) && $settings['preplink_related_post'] == 1): ?>
                         <div class="related_post">
                             <h3 class="suggestions-post"><?= __('Related Posts') ?></h3>
