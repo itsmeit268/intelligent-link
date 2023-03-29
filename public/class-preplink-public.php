@@ -43,13 +43,21 @@ class Preplink_Public
 
     public function enqueue_styles()
     {
+        $settings = get_option('preplink_setting');
+        if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
+            return;
+        }
         wp_enqueue_style('global' . $this->plugin_name, plugin_dir_url(__FILE__) . 'css/global.css', array(), $this->version, 'all');
     }
 
     public function enqueue_scripts()
     {
         global $wp_query;
+
         $settings = get_option('preplink_setting');
+        if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
+            return;
+        }
         if (!empty($settings['preplink_endpoint']) && !is_front_page()) {
             wp_enqueue_script('global-preplink', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, false);
             wp_localize_script('global-preplink', 'prep_vars', array(
@@ -71,6 +79,11 @@ class Preplink_Public
 
     public function preplink_rewrite_endpoint()
     {
+        $settings = get_option('preplink_setting');
+        if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
+            return;
+        }
+
         add_rewrite_endpoint($this->getEndPointValue(), EP_PERMALINK | EP_PAGES );
 
         add_filter( 'template_include', function( $template ) {
@@ -101,10 +114,15 @@ class Preplink_Public
     public function add_prep_custom_styles()
     {
         $settings = get_option('preplink_setting');
+        if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
+            return;
+        }
+
         if (!empty($settings['preplink_custom_style'])) {
             ?>
             <style><?= $settings['preplink_custom_style'] ?></style>
             <?php
         }
     }
+
 }

@@ -113,6 +113,18 @@ class Preplink_Admin
         unset($args);
 
         add_settings_field(
+            'preplink_enable_plugin', // ID của field
+            __('Enable/Disable', 'preplink'),
+            array($this, 'preplink_enable_plugin'),
+            'preplink_general_settings', // ID của page
+            'preplink_general_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Enabled',
+                0  => 'Disabled',
+            )
+        );
+
+        add_settings_field(
             'preplink_endpoint',
             __('Endpoint', 'preplink'),
             array($this, 'preplink_endpoint_field'),
@@ -265,6 +277,19 @@ class Preplink_Admin
             <h3>These settings apply to all Prepare link functionality.</h3>
         </div>
         <?php
+    }
+
+    function preplink_enable_plugin($args)
+    {
+        $settings = get_option('preplink_setting', array());
+        $selected = isset($settings['preplink_enable_plugin']) ? $settings['preplink_enable_plugin'] : '1';
+        $html = '<select id="preplink_enable_plugin" name="preplink_setting[preplink_enable_plugin]" class="preplink_enable_plugin">';
+        foreach ($args as $value => $label) {
+            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
+        }
+        $html .= '</select>';
+        $html .= '<p class="description">Enable or disable plugin (The prepared link will be ready when enabled).</p>';
+        echo $html;
     }
 
     function preplink_endpoint_field()
