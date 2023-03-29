@@ -282,7 +282,10 @@ class Preplink_Admin
     {
         ?>
         <div class="prep-link-admin-settings">
-            <h3>These settings apply to all Prepare link functionality.</h3>
+            <h3>These settings are applicable to all Prepare link functionalities.</h3>
+            <p>Author  : itsmeit.biz@gmail.com</p>
+            <p>Website : <a href="//itsmeit.co" target="_blank" >itsmeit.co</a> | <a href="//itsmeit.biz" target="_blank" >itsmeit.biz</a></p>
+            <p>Link download: <a href="https://github.com/itsmeit268/preplink" target="_blank">WordPress Preplink Plugin</a></p>
         </div>
         <?php
     }
@@ -307,6 +310,7 @@ class Preplink_Admin
         <input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]" placeholder="download"
                value="<?= esc_attr(!empty($settings['preplink_endpoint']) ? $settings['preplink_endpoint'] : false) ?>" />
         <p class="description">The default endpoint is set to "download", so the link format will be: domain.com/post/download.</p>
+        <p class="description" style="color: red">After you change the endpoint, you need to navigate to <strong>Settings->Permalinks->Save</strong> to sync the endpoint</p>
         <?php
     }
 
@@ -407,6 +411,8 @@ class Preplink_Admin
           $html = '<textarea name="preplink_setting[preplink_faq1_description]" rows="5" cols="50">';
           $html .= esc_html(isset($settings['preplink_faq1_description']) ? $settings['preplink_faq1_description'] : false);
           $html .= '</textarea>';
+          $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
+          $html .= '<p class="description">The file <strong>faq.html</strong> in the plugin directory should be referred to for reference.</p>';
           echo $html;
           ?></td></tr></tbody></table>
             <?php
@@ -444,6 +450,8 @@ class Preplink_Admin
                 $html = '<textarea name="preplink_setting[preplink_faq2_description]" rows="5" cols="50">';
                 $html .= esc_html(isset($settings['preplink_faq2_description']) ? $settings['preplink_faq2_description'] : false);
                 $html .= '</textarea>';
+                $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
+                $html .= '<p class="description">The file <strong>faq.html</strong> in the plugin directory should be referred to for reference.</p>';
                 echo $html;
             ?>
                 </td>
