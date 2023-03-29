@@ -1,14 +1,23 @@
 <?php
 
 /**
- * The admin-specific functionality of the plugin.
+ * @link              https://github.com/itsmeit268/preplink
+ * @since             1.0.3
+ * @package           Settings_Page
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- * @link       https://github.com/itsmeit268/preplink
- * @author     itsmeit <itsmeit.biz@gmail.com>
- * Website     https://itsmeit.co | https://itsmeit.biz
+ * @wordpress-plugin
+ * Plugin Name:       Prepare Link
+ * Plugin URI:        https://itsmeit.co
+ * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Version:           1.0.3
+ * Author:            itsmeit <itsmeit.biz@gmail.com>
+ * Author URI:        https://www.wplauncher.com
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       prep-link
+ * Domain Path:       /languages
  */
+
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
