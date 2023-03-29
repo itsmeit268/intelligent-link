@@ -7,6 +7,7 @@
         var prep_url = prep_vars.prep_url;
         var current_url = window.location.href.replace(/#.*/, '');
         var time_cnf = parseInt(prep_vars.count_down);
+        var wait_text = $.trim(prep_vars.wait_text);
         var display_mode = prep_vars.display_mode;
         var auto_direct = parseInt(prep_vars.auto_direct);
         var text_complete = $.trim(prep_vars.text_complete);
@@ -41,7 +42,7 @@
 
             const countdown = () => {
                 if (display_mode === 'wait_time') {
-                    $link.html(`<strong>[ waiting ${timeleft}s... ]</strong>`);
+                    $link.html(`<strong>[${wait_text} ${timeleft}s...]</strong>`);
                 } else {
                     $progress.animate({width: progressWidth}, (timeleft * 1000) / 2, function () {
                         // $link.html('<span class="progress" style="color:red;">'+`${text_link}`+ '..' +'[Ready!]'+'</span>');

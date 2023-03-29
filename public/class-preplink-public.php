@@ -64,6 +64,7 @@ class Preplink_Public
                 'prep_url'  => !empty($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com, play.google.com',
                 'count_down' => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 0,
                 'display_mode' => !empty($settings['preplink_display_mode']) ? $settings['preplink_display_mode'] : 'wait_time',
+                'wait_text' => !empty($settings['preplink_wait_text']) ? $settings['preplink_wait_text'] : 'waiting',
                 'auto_direct'  => !empty($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : 0,
                 'text_complete' => !empty($settings['preplink_text_complete']) ? $settings['preplink_text_complete'] : '[Link ready!]',
                 'pre_elm_exclude' => !empty($settings['preplink_excludes_element']) ? $settings['preplink_excludes_element'] : '.prep-link-download-btn,.prep-link-btn',

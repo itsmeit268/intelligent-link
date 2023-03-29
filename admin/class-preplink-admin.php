@@ -264,6 +264,13 @@ class Preplink_Admin
         );
 
         add_settings_field(
+            'preplink_wait_text',
+            __('Replace waiting text', 'preplink'),
+            array($this, 'preplink_wait_text'),
+            'preplink_general_settings',
+            'preplink_general_section');
+
+        add_settings_field(
             'preplink_custom_style',
             __('Custom Style', 'preplink'),
             array($this, 'preplink_custom_style'),
@@ -283,9 +290,9 @@ class Preplink_Admin
         ?>
         <div class="prep-link-admin-settings">
             <h3>These settings are applicable to all Prepare link functionalities.</h3>
-            <p>Author  : itsmeit.biz@gmail.com</p>
-            <p>Website : <a href="//itsmeit.co" target="_blank" >itsmeit.co</a> | <a href="//itsmeit.biz" target="_blank" >itsmeit.biz</a></p>
-            <p>Link download: <a href="https://github.com/itsmeit268/preplink" target="_blank">WordPress Preplink Plugin</a></p>
+            <span>Author  : itsmeit.biz@gmail.com</span> |
+            <span>Website : <a href="//itsmeit.co" target="_blank" >itsmeit.co</a> | <a href="//itsmeit.biz" target="_blank" >itsmeit.biz</a></span> |
+            <span>Link download: <a href="https://github.com/itsmeit268/preplink" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }
@@ -544,4 +551,15 @@ class Preplink_Admin
         $html .= '<p class="description">Automatic direct link when countdown is complete</p>';
         echo $html;
     }
+
+    function preplink_wait_text()
+    {
+        $settings = get_option('preplink_setting', array());
+        ?>
+        <input type="text" id="preplink_wait_text" name="preplink_setting[preplink_wait_text]" placeholder="waiting"
+               value="<?= esc_attr(!empty($settings['preplink_wait_text']) ? $settings['preplink_wait_text'] : false) ?>" />
+        <p class="description">Text displayed while the countdown is pending.</p>
+        <?php
+    }
+
 }
