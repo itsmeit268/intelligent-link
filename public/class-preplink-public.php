@@ -55,9 +55,9 @@ class Preplink_Public
             wp_localize_script('global-preplink', 'prep_vars', array(
                 'end_point' => $this->getEndPointValue(),
                 'prep_url'  => !empty($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com, play.google.com',
-                'count_down' => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 5,
+                'count_down' => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 0,
                 'display_mode' => !empty($settings['preplink_display_mode']) ? $settings['preplink_display_mode'] : 'wait_time',
-                'auto_direct'  => !empty($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : '0',
+                'auto_direct'  => !empty($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : 0,
                 'text_complete' => !empty($settings['preplink_text_complete']) ? $settings['preplink_text_complete'] : '[Link ready!]',
             ));
 

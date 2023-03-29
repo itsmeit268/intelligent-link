@@ -291,9 +291,9 @@ class Preplink_Admin
     {
         $settings = get_option('preplink_setting', array());
         ?>
-        <input type="text" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="5"
+        <input type="text" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="0"
                value="<?= esc_attr(!empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : false) ?>" />
-        <p class="description">Countdown time, default 5s.</p>
+        <p class="description">Countdown time, default 0.</p>
         <?php
     }
 
