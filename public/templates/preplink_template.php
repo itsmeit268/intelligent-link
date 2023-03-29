@@ -40,8 +40,8 @@ add_action('wp_head', function () {
         return;
     }
 
-    wp_enqueue_style('prep-link-css', plugin_dir_url(__DIR__) . 'css/prep-link.css', array(), '1.0.2', 'all');
-//    wp_enqueue_script('ads-check-js', get_theme_file_uri('/itsmeit/js/ads_itsmeit.js'), array('jquery'), 1.0.2, true);
+    wp_enqueue_style('prep-link-css', plugin_dir_url(__DIR__) . 'css/prep-link.css', array(), '1.0.3', 'all');
+//    wp_enqueue_script('ads-check-js', get_theme_file_uri('/itsmeit/js/ads_itsmeit.js'), array('jquery'), 1.0.3, true);
     if (!current_user_can('manage_options')) {
         ?>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8326801375483582" crossorigin="anonymous"></script>

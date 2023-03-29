@@ -15,7 +15,7 @@ if (!defined('WPINC')) {
     die;
 }
 
-define('PREPLINK_VERSION', '1.0.2');
+define('PREPLINK_VERSION', '1.0.3');
 
 /**
  * The code that runs during plugin activation.

@@ -1,7 +1,18 @@
 ----26/03/2023 v1.0.0----
 - Configure allowable URLs to redirect
 - Allows configuration to change Endpoint URL
+
 ----27/03/2023 v1.0.2----
 -- Add configuration for endpoint, urls, image, excerpt, related post, comment and fix js
 -- Optimization code fomat, change logic
 -- Add countdown config
+
+----29/03/2023 v1.0.3----
+-- Add Enable/Disable plugin
+-- Add config: Text Complete
+-- Add config: Element excluded
+-- Add config: Display mode
+-- Add config: Auto-redirect
+-- Add config: Replace waiting text
+-- Add config: Custom Style
+-- Fix JS bug, update date CSS
