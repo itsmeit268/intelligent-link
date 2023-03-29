@@ -45,6 +45,7 @@ class Preplink_Admin
         $this->version = $version;
         add_action('admin_menu', array($this, 'addPluginAdminMenu'), 9);
         add_action('admin_init', array($this, 'registerAndBuildFields'));
+        add_action('plugin_action_links_' . PREPLINK_PLUGIN_BASE, array( $this, 'add_plugin_action_link' ), 20 );
     }
 
     /**
@@ -70,6 +71,7 @@ class Preplink_Admin
     public function addPluginAdminMenu()
     {
         add_menu_page($this->plugin_name, 'Prepare Link', 'administrator', $this->plugin_name, array($this, 'displayPluginAdminSettings'), 'dashicons-chart-area', 26);
+        add_submenu_page($this->plugin_name, 'Settings', 'Settings', 'administrator', $this->plugin_name.'-settings', array( $this, 'displayPluginAdminSettings' ));
     }
 
     public function displayPluginAdminSettings()
@@ -83,6 +85,21 @@ class Preplink_Admin
         require_once 'partials/' . $this->plugin_name . '-admin-settings-display.php';
     }
 
+    /**
+     * @param $links
+     * @return mixed
+     */
+    public function add_plugin_action_link( $links )
+    {
+        $setting_link = '<a href="'.esc_url(get_admin_url()).'admin.php?page=preplink-settings">'.__('Settings', 'preplink').'</a>';
+        $donate_link = '<a href="//itsmeit.biz" title="'.__('Donate Now','preplink').'" target="_blank" style="font-weight:bold">'.__('Donate', 'preplink').'</a>';
+//        $download_link = '<a href="//github.com/itsmeit268/preplink" title="'.__('Document','preplink').'" target="_blank" style="font-weight:bold">'.__('Document', 'preplink').'</a>';
+
+//        array_unshift($links, $download_link);
+        array_unshift($links, $donate_link);
+        array_unshift($links, $setting_link);
+        return $links;
+    }
     public function prepLinkSettingsMessages($error_message)
     {
         switch ($error_message) {

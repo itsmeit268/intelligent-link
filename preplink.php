@@ -7,11 +7,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Prepare Link
- * Plugin URI:        https://itsmeit.co
+ * Plugin URI:        https://github.com/itsmeit268/preplink
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.3
  * Author:            itsmeit <itsmeit.biz@gmail.com>
- * Author URI:        https://www.wplauncher.com
+ * Author URI:        https://itsmeit.biz
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       prep-link
@@ -20,11 +20,27 @@
 
 
 // If this file is called directly, abort.
-if (!defined('WPINC')) {
+if (!defined('ABSPATH')) {
     die;
 }
 
+// Plugin name
+define( 'PREPLINK_NAME',			'PrepareLink' );
+
+// Plugin version
 define('PREPLINK_VERSION', '1.0.3');
+
+// Plugin Root File
+define( 'PREPLINK_PLUGIN_FILE',	__FILE__ );
+
+// Plugin base
+define( 'PREPLINK_PLUGIN_BASE',	plugin_basename( PREPLINK_PLUGIN_FILE ) );
+
+// Plugin Folder Path
+define( 'PREPLINK_PLUGIN_DIR',	plugin_dir_path( PREPLINK_PLUGIN_FILE ) );
+
+// Plugin Folder URL
+define( 'PREPLINK_PLUGIN_URL',	plugin_dir_url( PREPLINK_PLUGIN_FILE ) );
 
 /**
  * The code that runs during plugin activation.
