@@ -6,8 +6,7 @@
 ##### Author  : itsmeit '<itsmeit.biz@gmail.com>'
 ##### Website : https://itsmeit.co | https://itsmeit.biz
 ---------------------------------------------------
-
-
+![img.png](img.png)
 ### ==== How to use Prepare Link Wordpress Plugin ===
 ##### Step1. Upload and install then activate the plugin
 ##### Step2. Navigate to Admin: Prepare Link->Settings->Save
