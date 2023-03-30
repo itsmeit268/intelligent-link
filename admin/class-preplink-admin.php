@@ -164,7 +164,7 @@ class Preplink_Admin
 
         add_settings_field(
             'preplink_countdown_endpoint',
-            __('Time countdown for endpoint', 'preplink'),
+            __('Time countdown for Page endpoint', 'preplink'),
             array($this, 'preplink_countdown_endpoint'),
             'preplink_general_settings',
             'preplink_general_section');
