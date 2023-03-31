@@ -26,6 +26,7 @@ $view_link = get_permalink($postID);
 $downloadURL = !empty($_GET['id']) ? trim(strip_tags(stripslashes($_GET['id']))) : '';
 $settings = get_option('preplink_setting');
 $advertising = get_option('preplink_advertising');
+$faqSetting = get_option('preplink_advertising');
 $postTitle = !empty(get_the_title()) ? get_the_title() : $post->post_title;
 $excerpt = get_the_excerpt();
 //var_dump($settings['preplink_image']);
@@ -161,11 +162,11 @@ if (empty($downloadURL)) {
                         <?php endif;?>
                     </div>
 
-                    <?php if (!empty($settings['preplink_faq1_enabled']) && $settings['preplink_faq1_enabled'] == 1) :?>
+                    <?php if (!empty($faqSetting['preplink_faq1_enabled']) && $faqSetting['preplink_faq1_enabled'] == 1) :?>
                         <div class="faq-download">
-                            <h3 class="faq-title"><?= !empty($settings['preplink_faq1_title']) ? $settings['preplink_faq1_title'] : 'FAQ' ?></h3>
-                            <?php if (!empty($settings['preplink_faq1_description'])) : ?>
-                                <?= $settings['preplink_faq1_description']?>
+                            <h3 class="faq-title"><?= !empty($faqSetting['preplink_faq1_title']) ? $faqSetting['preplink_faq1_title'] : 'FAQ' ?></h3>
+                            <?php if (!empty($faqSetting['preplink_faq1_description'])) : ?>
+                                <?= $faqSetting['preplink_faq1_description']?>
                             <?php endif;?>
                         </div>
                     <?php endif;?>
@@ -178,11 +179,11 @@ if (empty($downloadURL)) {
                         <?php endif;?>
                     </div>
 
-                    <?php if (!empty($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == 1) :?>
+                    <?php if (!empty($faqSetting['preplink_faq2_enabled']) && $faqSetting['preplink_faq2_enabled'] == 1) :?>
                         <div class="faq-download">
-                            <h3 class="faq-title"><?= !empty($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : 'FAQ' ?></h3>
-                            <?php if (!empty($settings['preplink_faq2_description'])) : ?>
-                                <?= $settings['preplink_faq2_description']?>
+                            <h3 class="faq-title"><?= !empty($faqSetting['preplink_faq2_title']) ? $faqSetting['preplink_faq2_title'] : 'FAQ' ?></h3>
+                            <?php if (!empty($faqSetting['preplink_faq2_description'])) : ?>
+                                <?= $faqSetting['preplink_faq2_description']?>
                             <?php endif;?>
                         </div>
                     <?php endif;?>

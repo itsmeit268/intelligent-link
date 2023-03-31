@@ -71,7 +71,6 @@ class Preplink_Admin
     {
         add_menu_page($this->plugin_name, 'Prepare Link', 'manage_options', $this->plugin_name, array($this, 'displayPluginAdminSettings'), 'dashicons-chart-area', 26);
         add_submenu_page($this->plugin_name, 'Settings', 'Settings', 'manage_options', $this->plugin_name . '-settings', array($this, 'displayPluginAdminSettings'));
-        add_submenu_page($this->plugin_name, 'Advertising Settings', 'Advertising', 'manage_options', $this->plugin_name . '-advertising', array($this, 'displayPluginAdminSettings'));
     }
 
     public function displayPluginAdminSettings()
@@ -98,7 +97,8 @@ class Preplink_Admin
                 </form>
             </div>
             <?php
-        }  else {
+        }
+        if ($active_tab == 'preplink_advertising') {
             ?>
             <div class="wrap">
                 <div id="icon-themes" class="icon32"></div>
@@ -115,13 +115,29 @@ class Preplink_Admin
             <?php
         }
 
-//        require_once 'partials/' . $this->plugin_name . '-admin-settings-display.php';
+        if ($active_tab == 'preplink_faq') {
+            ?>
+            <div class="wrap">
+                <div id="icon-themes" class="icon32"></div>
+                <h2>Advertising Settings</h2>
+                <?php settings_errors(); ?>
+                <form method="POST" action="options.php">
+                    <?php
+                    settings_fields('preplink_faq_settings');
+                    do_settings_sections('preplink_faq_settings');
+                    ?>
+                    <?php submit_button(); ?>
+                </form>
+            </div>
+            <?php
+        }
     }
 
     public function prep_link_settings_tabs( $current = 'general' ) {
         $tabs = array(
             'general'   => __( 'General Settings', 'preplink' ),
-            'preplink_advertising'  => __( 'Advertising Settings', 'preplink' )
+            'preplink_advertising'  => __( 'Advertising Settings', 'preplink' ),
+            'preplink_faq'  => __( 'FAQ Settings', 'preplink' )
         );
         $html = '<h2 class="nav-tab-wrapper">';
         foreach( $tabs as $tab => $name ){
@@ -180,6 +196,14 @@ class Preplink_Admin
             array($this, 'preplink_advertising_display'),
             'preplink_advertising_settings'
         );
+
+        add_settings_section(
+            'preplink_faq_section',
+            '',
+            array($this, 'preplink_faq_display'),
+            'preplink_faq_settings'
+        );
+
         unset($args);
 
         add_settings_field(
@@ -278,8 +302,8 @@ class Preplink_Admin
             'preplink_faq_1',
             __('Disable/Enable FAQ 1', 'preplink'),
             array($this, 'preplink_display_faq_1'),
-            'preplink_general_settings',
-            'preplink_general_section',
+            'preplink_faq_settings',
+            'preplink_faq_section',
             array('label_for' => 'preplink_faq')
         );
 
@@ -287,8 +311,8 @@ class Preplink_Admin
             'preplink_faq_2',
             __('Disable/Enable FAQ 2', 'preplink'),
             array($this, 'preplink_display_faq_2'),
-            'preplink_general_settings',
-            'preplink_general_section',
+            'preplink_faq_settings',
+            'preplink_faq_section',
             array('label_for' => 'preplink_faq_2')
         );
 
@@ -396,19 +420,6 @@ class Preplink_Admin
         );
 
         add_settings_field(
-            'preplink_advertising_3', // ID của field
-            __('Enable/Disable', 'preplink'),
-            array($this, 'preplink_filed_advertising_3'),
-            'preplink_advertising_settings', // ID của page
-            'preplink_advertising_section', // ID của section
-            array( // Mảng các thông số truyền vào callback function
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
-        );
-
-
-        add_settings_field(
             'preplink_advertising_4', // ID của field
             __('Enable/Disable', 'preplink'),
             array($this, 'preplink_filed_advertising_4'),
@@ -473,6 +484,11 @@ class Preplink_Admin
             'preplink_advertising_settings',
             'preplink_advertising'
         );
+
+        register_setting(
+            'preplink_faq_settings',
+            'preplink_faq'
+        );
     }
 
     public function preplink_display_general()
@@ -494,6 +510,20 @@ class Preplink_Admin
         ?>
         <div class="prep-link-ads-settings">
             <h3>You can add the advertising code here, it will apply to the page endpoint. You can also use the <a href="//wordpress.org/plugins/ad-inserter/" target="_blank">Ad Inserter</a> plugin to insert the ad code</h3>
+            <span>Author  : itsmeit.biz@gmail.com</span> |
+            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
+                                                                                       target="_blank">itsmeit.biz</a></span>
+            |
+            <span>Link download: <a href="https://github.com/itsmeit268/preplink" target="_blank">WordPress Preplink Plugin</a></span>
+        </div>
+        <?php
+    }
+
+    public function preplink_faq_display()
+    {
+        ?>
+        <div class="prep-link-faq-settings">
+            <h3>You can add the FAQ HTML code here, it will apply to the page endpoint.</h3>
             <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
@@ -613,14 +643,14 @@ class Preplink_Admin
 
     function preplink_display_faq_1()
     {
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('preplink_faq', array());
         ?>
         <table class="form-table">
             <tbody>
             <tr class="preplink_faq1_enabled">
                 <th scope="row">Enable FAQ 1:</th>
                 <td>
-                    <select name="preplink_setting[preplink_faq1_enabled]" id="preplink_faq1_enabled">
+                    <select name="preplink_faq[preplink_faq1_enabled]" id="preplink_faq1_enabled">
                         <option value="1" <?php selected(isset($settings['preplink_faq1_enabled']) && $settings['preplink_faq1_enabled'] == '1'); ?>>
                             Yes
                         </option>
@@ -633,7 +663,7 @@ class Preplink_Admin
             <tr class="preplink_faq1_title">
                 <th scope="row">FAQ Title:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_faq1_title]"
+                    <input type="text" name="preplink_faq[preplink_faq1_title]"
                            placeholder="Notes before continuing"
                            value="<?= esc_attr(isset($settings['preplink_faq1_title']) ? $settings['preplink_faq1_title'] : false); ?>"/>
                 </td>
@@ -642,7 +672,7 @@ class Preplink_Admin
                 <th scope="row">FAQ HTML:</th>
                 <td>
                     <?php
-                    $html = '<textarea name="preplink_setting[preplink_faq1_description]" rows="5" cols="50">';
+                    $html = '<textarea name="preplink_faq[preplink_faq1_description]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_faq1_description']) ? $settings['preplink_faq1_description'] : false);
                     $html .= '</textarea>';
                     $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
@@ -653,22 +683,22 @@ class Preplink_Admin
             </tbody>
         </table>
         <?php
-        if (isset($_POST['preplink_setting'])) {
-            $settings = $_POST['preplink_setting'];
-            update_option('preplink_setting', $settings);
+        if (isset($_POST['preplink_faq'])) {
+            $settings = $_POST['preplink_faq'];
+            update_option('preplink_faq', $settings);
         }
     }
 
     function preplink_display_faq_2()
     {
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('preplink_faq', array());
         ?>
         <table class="form-table">
             <tbody>
             <tr class="preplink_faq2_enabled">
                 <th scope="row">Enable FAQ 2:</th>
                 <td>
-                    <select name="preplink_setting[preplink_faq2_enabled]" id="preplink_faq2_enabled">
+                    <select name="preplink_faq[preplink_faq2_enabled]" id="preplink_faq2_enabled">
                         <option value="1" <?php selected(isset($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == '1'); ?>>
                             Yes
                         </option>
@@ -681,7 +711,7 @@ class Preplink_Admin
             <tr class="preplink_faq2_title">
                 <th scope="row">FAQ 2 Title:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_faq2_title]" placeholder="Download FAQs"
+                    <input type="text" name="preplink_faq[preplink_faq2_title]" placeholder="Download FAQs"
                            value="<?= esc_attr(isset($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : false); ?>"/>
                 </td>
             </tr>
@@ -689,7 +719,7 @@ class Preplink_Admin
                 <th scope="row">FAQ HTML:</th>
                 <td>
                     <?php
-                    $html = '<textarea name="preplink_setting[preplink_faq2_description]" rows="5" cols="50">';
+                    $html = '<textarea name="preplink_faq[preplink_faq2_description]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_faq2_description']) ? $settings['preplink_faq2_description'] : false);
                     $html .= '</textarea>';
                     $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
