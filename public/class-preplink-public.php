@@ -54,21 +54,23 @@ class Preplink_Public
     {
         global $wp_query;
         $settings = get_option('preplink_setting');
+        $endpointSetting = get_option('preplink_endpoint');
+
         if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
             return;
         }
 
-        if (isset($settings['preplink_endpoint']) && !is_front_page()) {
+        if (isset($endpointSetting['endpoint']) && !is_front_page()) {
             wp_enqueue_script('global-preplink', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, false);
             wp_localize_script('global-preplink', 'prep_vars', array(
                 'end_point' => $this->getEndPointValue(),
                 'prep_url'  => !empty($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com, play.google.com',
                 'count_down' => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 0,
-                'countdown_endpoint' => !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : 5,
+                'countdown_endpoint' => !empty($endpointSetting['countdown_endpoint']) ? $endpointSetting['countdown_endpoint'] : 5,
                 'display_mode' => !empty($settings['preplink_display_mode']) ? $settings['preplink_display_mode'] : 'wait_time',
                 'wait_text' => !empty($settings['preplink_wait_text']) ? $settings['preplink_wait_text'] : 'waiting',
                 'auto_direct'  => !empty($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : 0,
-                'endpoint_direct'  => !empty($settings['endpoint_auto_direct']) ? $settings['endpoint_auto_direct'] : 0,
+                'endpoint_direct'  => !empty($endpointSetting['endpoint_auto_direct']) ? $endpointSetting['endpoint_auto_direct'] : 0,
                 'text_complete' => !empty($settings['preplink_text_complete']) ? $settings['preplink_text_complete'] : '[Link ready!]',
                 'pre_elm_exclude' => !empty($settings['preplink_excludes_element']) ? $settings['preplink_excludes_element'] : '.prep-link-download-btn,.prep-link-btn',
             ));
@@ -107,9 +109,9 @@ class Preplink_Public
     public function getEndPointValue()
     {
         $endpoint = 'download';
-        $settings = get_option('preplink_setting');
-        if (!empty($settings['preplink_endpoint'])) {
-            $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($settings['preplink_endpoint']));
+        $settings = get_option('preplink_endpoint');
+        if (!empty($settings['endpoint'])) {
+            $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($settings['endpoint']));
         }
 
         return $endpoint;

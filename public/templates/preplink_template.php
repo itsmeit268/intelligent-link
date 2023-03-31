@@ -26,15 +26,17 @@ $view_link = get_permalink($postID);
 $downloadURL = !empty($_GET['id']) ? trim(strip_tags(stripslashes($_GET['id']))) : '';
 $settings = get_option('preplink_setting');
 $advertising = get_option('preplink_advertising');
-$faqSetting = get_option('preplink_advertising');
+$faqSetting = get_option('preplink_faq');
+$endpointSetting = get_option('preplink_endpoint');
+
 $postTitle = !empty(get_the_title()) ? get_the_title() : $post->post_title;
 $excerpt = get_the_excerpt();
 //var_dump($settings['preplink_image']);
 add_action('wp_head', function () {
     global $wp_query;
-    $settings = get_option('preplink_setting');
-    $endpoint = !empty($settings['preplink_endpoint']) ? preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u',
-        '', trim($settings['preplink_endpoint'])) : 'download';
+    $endpointSetting = get_option('preplink_endpoint');
+    $endpoint = !empty($endpointSetting['endpoint']) ? preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u',
+        '', trim($endpointSetting['endpoint'])) : 'download';
     if (!isset( $wp_query->query_vars[$endpoint] ) || ! is_singular('post')) {
         return;
     }
@@ -81,7 +83,7 @@ if (empty($downloadURL)) {
                             <a href="<?= $view_link ?>" title="<?= $postTitle ?>" target="_blank"><?= $postTitle ?></a>
                         </h1>
                     </header>
-                    <?php if (!empty($settings['preplink_image']) && $settings['preplink_image']) : ?>
+                    <?php if (!empty($endpointSetting['preplink_image']) && $endpointSetting['preplink_image']) : ?>
                         <div class="s-feat-outer">
                             <div class="s-feat">
                                 <div class="featured-image">
@@ -110,7 +112,7 @@ if (empty($downloadURL)) {
                     </span>
 
                     <?php
-                    if (!empty($settings['preplink_excerpt']) && $settings['preplink_excerpt'] && (strpos($excerpt, '<table>') !== false || strpos($excerpt, '<tbody>') !== false)) {
+                    if (!empty($endpointSetting['preplink_excerpt']) && $endpointSetting['preplink_excerpt'] && (strpos($excerpt, '<table>') !== false || strpos($excerpt, '<tbody>') !== false)) {
                         ?>
                         <div class="post-excerpt">
                             <h3 class="app-title">FEATURES INFORMATION</h3>
@@ -201,7 +203,7 @@ if (empty($downloadURL)) {
                         <div class="bar"></div>
                     </div>
 
-                    <?php if (!empty($settings['preplink_related_post']) && $settings['preplink_related_post'] == 1): ?>
+                    <?php if (!empty($endpointSetting['preplink_related_post']) && $endpointSetting['preplink_related_post'] == 1): ?>
                         <div class="related_post">
                             <h3 class="suggestions-post"><?= __('Related Posts') ?></h3>
                             <?php
@@ -274,7 +276,7 @@ if (empty($downloadURL)) {
                     </div>
 
                     <?php
-                    if (file_exists(get_template_directory() . '/comments.php') && $settings['preplink_comment'] == 1) {
+                    if (file_exists(get_template_directory() . '/comments.php') && (int)$endpointSetting['preplink_comment'] == 1) {
                         ?><div class="comment"><?php comments_template(); ?></div><?php
                     }
                     ?>

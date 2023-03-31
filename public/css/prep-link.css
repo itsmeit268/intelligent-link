@@ -382,7 +382,6 @@ h3.rank-math-title {
     background-color: #e2e2e2;
     border-radius: 40px;
 }
-
 .progress p {
     position: absolute;
     left: 50%;
@@ -419,6 +418,7 @@ h3.rank-math-title {
     transition: 250ms ease-in-out;
     color: #000;
 }
+
 @media only screen and (max-device-width: 480px) {
     #container, .session-expired {
         padding: 0;

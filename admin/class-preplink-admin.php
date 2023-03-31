@@ -42,8 +42,8 @@ class Preplink_Admin
     {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        add_action('admin_menu', array($this, 'addPluginAdminMenu'), 9);
-        add_action('admin_init', array($this, 'registerAndBuildFields'));
+        add_action('admin_menu', array($this, 'add_prep_link_admin_menu'), 9);
+        add_action('admin_init', array($this, 'register_and_build_fields'));
         add_action('plugin_action_links_' . PREPLINK_PLUGIN_BASE, array($this, 'add_plugin_action_link'), 20);
     }
 
@@ -67,69 +67,71 @@ class Preplink_Admin
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/preplink-admin.js', array('jquery'), $this->version, false);
     }
 
-    public function addPluginAdminMenu()
+    public function add_prep_link_admin_menu()
     {
-        add_menu_page($this->plugin_name, 'Prepare Link', 'manage_options', $this->plugin_name, array($this, 'displayPluginAdminSettings'), 'dashicons-chart-area', 26);
-        add_submenu_page($this->plugin_name, 'Settings', 'Settings', 'manage_options', $this->plugin_name . '-settings', array($this, 'displayPluginAdminSettings'));
+        add_menu_page($this->plugin_name, 'Prepare Link', 'manage_options', $this->plugin_name, array($this, 'prep_link_admin_form_settings'), 'dashicons-chart-area', 26);
+        add_submenu_page($this->plugin_name, 'Settings', 'Settings', 'manage_options', $this->plugin_name . '-settings', array($this, 'prep_link_admin_form_settings'));
     }
 
-    public function displayPluginAdminSettings()
+    public function prep_link_admin_form_settings()
     {
+        // set active tab based on query parameter or default to 'general'
         $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'general';
-        $this->prep_link_settings_tabs( $active_tab );
-        if (isset($_GET['error_message'])) {
-            add_action('admin_notices', array($this, 'prepLinkSettingsMessages'));
-            do_action('admin_notices', $_GET['error_message']);
-        }
-        if ( $active_tab == 'general' ) {
-            ?>
-            <div class="wrap">
-                <div id="icon-themes" class="icon32"></div>
-                <h2>General Settings</h2>
-                <!--NEED THE settings_errors below so that the errors/success messages are shown after submission - wasn't working once we started using add_menu_page and stopped using add_options_page so needed this-->
-                <?php settings_errors(); ?>
-                <form method="POST" action="options.php">
-                    <?php
-                    settings_fields('preplink_general_settings');
-                    do_settings_sections('preplink_general_settings');
-                    ?>
-                    <?php submit_button(); ?>
-                </form>
-            </div>
-            <?php
-        }
-        if ($active_tab == 'preplink_advertising') {
-            ?>
-            <div class="wrap">
-                <div id="icon-themes" class="icon32"></div>
-                <h2>Advertising Settings</h2>
-                <?php settings_errors(); ?>
-                <form method="POST" action="options.php">
-                    <?php
-                    settings_fields('preplink_advertising_settings');
-                    do_settings_sections('preplink_advertising_settings');
-                    ?>
-                    <?php submit_button(); ?>
-                </form>
-            </div>
-            <?php
-        }
 
-        if ($active_tab == 'preplink_faq') {
-            ?>
-            <div class="wrap">
-                <div id="icon-themes" class="icon32"></div>
-                <h2>Advertising Settings</h2>
-                <?php settings_errors(); ?>
-                <form method="POST" action="options.php">
-                    <?php
-                    settings_fields('preplink_faq_settings');
-                    do_settings_sections('preplink_faq_settings');
-                    ?>
-                    <?php submit_button(); ?>
-                </form>
-            </div>
-            <?php
+        // define tabs array
+        $tabs = array(
+            'general'   => __( 'General', 'preplink' ),
+            'advertising'  => __( 'Advertising', 'preplink' ),
+            'faq' => __( 'FAQ', 'preplink' ),
+            'endpoint' => __( 'Endpoint', 'preplink' )
+        );
+
+        // output tabs
+        echo '<h2 class="nav-tab-wrapper">';
+        foreach ($tabs as $tab => $name) {
+            $class = ($tab == $active_tab) ? ' nav-tab-active' : '';
+            echo '<a class="nav-tab' . $class . '" href="?page=preplink-settings&tab=' . $tab . '">' . $name . '</a>';
+        }
+        echo '</h2>';
+
+        // output settings page content based on active tab
+        switch ($active_tab) {
+            case 'general':
+                echo '<div class="wrap"><h1>' . __('General Settings', 'preplink') . '</h1>';
+                settings_errors();
+                echo '<form method="post" action="options.php">';
+                settings_fields('preplink_general_settings');
+                do_settings_sections('preplink_general_settings');
+                submit_button();
+                echo '</form></div>';
+                break;
+            case 'advertising':
+                echo '<div class="wrap"><h1>' . __('Advertising Settings', 'preplink') . '</h1>';
+                settings_errors();
+                echo '<form method="post" action="options.php">';
+                settings_fields('preplink_advertising_settings');
+                do_settings_sections('preplink_advertising_settings');
+                submit_button();
+                echo '</form></div>';
+                break;
+            case 'faq':
+                echo '<div class="wrap"><h1>' . __('FAQ Settings', 'preplink') . '</h1>';
+                settings_errors();
+                echo '<form method="post" action="options.php">';
+                settings_fields('preplink_faq_settings');
+                do_settings_sections('preplink_faq_settings');
+                submit_button();
+                echo '</form></div>';
+                break;
+            case 'endpoint':
+                echo '<div class="wrap"><h1>' . __('Endpoint Settings', 'preplink') . '</h1>';
+                settings_errors();
+                echo '<form method="post" action="options.php">';
+                settings_fields('preplink_endpoint_settings');
+                do_settings_sections('preplink_endpoint_settings');
+                submit_button();
+                echo '</form></div>';
+                break;
         }
     }
 
@@ -137,7 +139,8 @@ class Preplink_Admin
         $tabs = array(
             'general'   => __( 'General Settings', 'preplink' ),
             'preplink_advertising'  => __( 'Advertising Settings', 'preplink' ),
-            'preplink_faq'  => __( 'FAQ Settings', 'preplink' )
+            'preplink_faq'  => __( 'FAQ Settings', 'preplink' ),
+            'preplink_endpoint'  => __( 'Endpoint Settings', 'preplink' )
         );
         $html = '<h2 class="nav-tab-wrapper">';
         foreach( $tabs as $tab => $name ){
@@ -163,25 +166,7 @@ class Preplink_Admin
         return $links;
     }
 
-    public function prepLinkSettingsMessages($error_message)
-    {
-        switch ($error_message) {
-            case '1':
-                $message = __('There was an error adding this setting. Please try again.  If this persists, shoot us an email.', 'my-text-domain');
-                $err_code = esc_attr('preplink_setting');
-                $setting_field = 'preplink_setting';
-                break;
-        }
-        $type = 'error';
-        add_settings_error(
-            $setting_field,
-            $err_code,
-            $message,
-            $type
-        );
-    }
-
-    public function registerAndBuildFields()
+    public function register_and_build_fields()
     {
         add_settings_section(
             'preplink_general_section',
@@ -204,6 +189,13 @@ class Preplink_Admin
             'preplink_faq_settings'
         );
 
+        add_settings_section(
+            'preplink_endpoint_section',
+            '',
+            array($this, 'preplink_endpoint_display'),
+            'preplink_endpoint_settings'
+        );
+
         unset($args);
 
         add_settings_field(
@@ -222,8 +214,8 @@ class Preplink_Admin
             'preplink_endpoint',
             __('Endpoint', 'preplink'),
             array($this, 'preplink_endpoint_field'),
-            'preplink_general_settings',
-            'preplink_general_section');
+            'preplink_endpoint_settings',
+            'preplink_endpoint_section');
 
         add_settings_field(
             'preplink_text_complete',
@@ -243,9 +235,19 @@ class Preplink_Admin
             'preplink_countdown_endpoint',
             __('Time countdown for Page endpoint', 'preplink'),
             array($this, 'preplink_countdown_endpoint'),
-            'preplink_general_settings',
-            'preplink_general_section');
-
+            'preplink_endpoint_settings',
+            'preplink_endpoint_section');
+        add_settings_field(
+            'preplink_endpoint_auto_direct', // ID của field
+            __('Automatically redirect endpoints to original link', 'preplink'),
+            array($this, 'preplink_endpoint_auto_direct'),
+            'preplink_endpoint_settings', // ID của page
+            'preplink_endpoint_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Yes',
+                0 => 'No',
+            )
+        );
         add_settings_field(
             'preplink_textarea',
             __('Links allowed', 'preplink'),
@@ -266,8 +268,8 @@ class Preplink_Admin
             'preplink_image', // ID của field
             __('Post Image', 'preplink'),
             array($this, 'preplink_image_field'),
-            'preplink_general_settings', // ID của page
-            'preplink_general_section', // ID của section
+            'preplink_endpoint_settings', // ID của page
+            'preplink_endpoint_section', // ID của section
             array( // Mảng các thông số truyền vào callback function
                 1 => 'Yes',
                 0 => 'No',
@@ -278,8 +280,8 @@ class Preplink_Admin
             'preplink_excerpt', // ID của field
             __('Post Excerpt', 'preplink'),
             array($this, 'preplink_excerpt_field'),
-            'preplink_general_settings', // ID của page
-            'preplink_general_section', // ID của section
+            'preplink_endpoint_settings', // ID của page
+            'preplink_endpoint_section', // ID của section
             array( // Mảng các thông số truyền vào callback function
                 1 => 'Yes',
                 0 => 'No',
@@ -290,8 +292,8 @@ class Preplink_Admin
             'preplink_excerpt', // ID của field
             __('Post Excerpt', 'preplink'),
             array($this, 'preplink_excerpt_field'),
-            'preplink_general_settings', // ID của page
-            'preplink_general_section', // ID của section
+            'preplink_endpoint_settings', // ID của page
+            'preplink_endpoint_section', // ID của section
             array( // Mảng các thông số truyền vào callback function
                 1 => 'Yes',
                 0 => 'No',
@@ -320,8 +322,8 @@ class Preplink_Admin
             'preplink_related_post', // ID của field
             __('Post Related', 'preplink'),
             array($this, 'preplink_related_post'),
-            'preplink_general_settings', // ID của page
-            'preplink_general_section', // ID của section
+            'preplink_endpoint_settings', // ID của page
+            'preplink_endpoint_section', // ID của section
             array( // Mảng các thông số truyền vào callback function
                 1 => 'Yes',
                 0 => 'No',
@@ -332,8 +334,8 @@ class Preplink_Admin
             'preplink_comment', // ID của field
             __('Comment', 'preplink'),
             array($this, 'preplink_comment'),
-            'preplink_general_settings', // ID của page
-            'preplink_general_section', // ID của section
+            'preplink_endpoint_settings', // ID của page
+            'preplink_endpoint_section', // ID của section
             array( // Mảng các thông số truyền vào callback function
                 1 => 'Yes',
                 0 => 'No',
@@ -356,18 +358,6 @@ class Preplink_Admin
             'preplink_auto_direct', // ID của field
             __('Automatically redirect post to endpoint', 'preplink'),
             array($this, 'preplink_post_auto_direct'),
-            'preplink_general_settings', // ID của page
-            'preplink_general_section', // ID của section
-            array( // Mảng các thông số truyền vào callback function
-                1 => 'Yes',
-                0 => 'No',
-            )
-        );
-
-        add_settings_field(
-            'preplink_endpoint_auto_direct', // ID của field
-            __('Automatically redirect endpoints to original link', 'preplink'),
-            array($this, 'preplink_endpoint_auto_direct'),
             'preplink_general_settings', // ID của page
             'preplink_general_section', // ID của section
             array( // Mảng các thông số truyền vào callback function
@@ -489,6 +479,11 @@ class Preplink_Admin
             'preplink_faq_settings',
             'preplink_faq'
         );
+
+        register_setting(
+            'preplink_endpoint_settings',
+            'preplink_endpoint'
+        );
     }
 
     public function preplink_display_general()
@@ -533,6 +528,20 @@ class Preplink_Admin
         <?php
     }
 
+    public function preplink_endpoint_display()
+    {
+        ?>
+        <div class="prep-link-endpoint-settings">
+            <h3>This setting will apply only to the endpoint page.</h3>
+            <span>Author  : itsmeit.biz@gmail.com</span> |
+            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
+                                                                                       target="_blank">itsmeit.biz</a></span>
+            |
+            <span>Link download: <a href="https://github.com/itsmeit268/preplink" target="_blank">WordPress Preplink Plugin</a></span>
+        </div>
+        <?php
+    }
+
     function preplink_enable_plugin($args)
     {
         $settings = get_option('preplink_setting', array());
@@ -548,15 +557,19 @@ class Preplink_Admin
 
     function preplink_endpoint_field()
     {
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('preplink_endpoint', array());
         ?>
-        <input type="text" id="preplink_endpoint" name="preplink_setting[preplink_endpoint]" placeholder="download"
-               value="<?= esc_attr(!empty($settings['preplink_endpoint']) ? $settings['preplink_endpoint'] : false) ?>"/>
+        <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="download"
+               value="<?= esc_attr(!empty($settings['endpoint']) ? $settings['endpoint'] : false) ?>"/>
         <p class="description">The default endpoint is set to "download", so the link format will be:
             domain.com/post/download.</p>
         <p class="description" style="color: red">After you change the endpoint, you need to navigate to <strong>Settings->Permalinks->Save</strong>
             to sync the endpoint</p>
         <?php
+        if (isset($_POST['preplink_endpoint'])) {
+            $settings = $_POST['preplink_endpoint'];
+            update_option('preplink_endpoint', $settings);
+        }
     }
 
     function preplink_text_complete()
@@ -582,9 +595,9 @@ class Preplink_Admin
 
     function preplink_countdown_endpoint()
     {
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('preplink_endpoint', array());
         ?>
-        <input type="text" id="countdown_endpoint" name="preplink_setting[countdown_endpoint]" placeholder="5"
+        <input type="text" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="5"
                value="<?= esc_attr(!empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : false) ?>"/>
         <p class="description">Countdown time, default 5, If you set the countdown time < 10s, it is recommended to set
             Automatically redirect endpoints = No</p>
@@ -616,9 +629,9 @@ class Preplink_Admin
 
     function preplink_image_field($args)
     {
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('preplink_endpoint', array());
         $selected = isset($settings['preplink_image']) ? $settings['preplink_image'] : '1';
-        $html = '<select id="preplink_image" name="preplink_setting[preplink_image]" class="preplink_image">';
+        $html = '<select id="preplink_image" name="preplink_endpoint[preplink_image]" class="preplink_image">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }
@@ -629,9 +642,9 @@ class Preplink_Admin
 
     function preplink_excerpt_field($args)
     {
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('preplink_endpoint', array());
         $selected = isset($settings['preplink_excerpt']) ? $settings['preplink_excerpt'] : '1';
-        $html = '<select id="preplink_excerpt" name="preplink_setting[preplink_excerpt]" class="preplink_excerpt">';
+        $html = '<select id="preplink_excerpt" name="preplink_endpoint[preplink_excerpt]" class="preplink_excerpt">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }
@@ -735,14 +748,14 @@ class Preplink_Admin
 
     function preplink_related_post($args)
     {
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('preplink_endpoint', array());
         ?>
         <table class="form-table">
             <tbody>
             <tr class="preplink_related_enabled">
                 <th scope="row">Enable Related post:</th>
                 <td>
-                    <select name="preplink_setting[preplink_related_post]" id="preplink_related_enabled"
+                    <select name="preplink_endpoint[preplink_related_post]" id="preplink_related_enabled"
                             class="preplink_related_post">
                         <option value="1" <?php selected(isset($settings['preplink_related_post']) && $settings['preplink_related_post'] == '1'); ?>>
                             Yes
@@ -756,7 +769,7 @@ class Preplink_Admin
             <tr class="preplink_related_number">
                 <th scope="row">Number of related post:</th>
                 <td>
-                    <input type="text" name="preplink_setting[preplink_related_number]"
+                    <input type="text" name="preplink_endpoint[preplink_related_number]"
                            placeholder="10"
                            value="<?= esc_attr(!empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : false); ?>"/>
                 </td>
@@ -768,9 +781,9 @@ class Preplink_Admin
 
     function preplink_comment($args)
     {
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('preplink_endpoint', array());
         $selected = isset($settings['preplink_comment']) ? $settings['preplink_comment'] : '1';
-        $html = '<select id="preplink_comment" name="preplink_setting[preplink_comment]">';
+        $html = '<select id="preplink_comment" name="preplink_endpoint[preplink_comment]">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }
@@ -817,9 +830,9 @@ class Preplink_Admin
 
     function preplink_endpoint_auto_direct($args)
     {
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('preplink_endpoint', array());
         $selected = isset($settings['endpoint_auto_direct']) ? $settings['endpoint_auto_direct'] : '1';
-        $html = '<select id="endpoint_auto_direct" name="preplink_setting[endpoint_auto_direct]" class="endpoint_auto_direct">';
+        $html = '<select id="endpoint_auto_direct" name="preplink_endpoint[endpoint_auto_direct]" class="endpoint_auto_direct">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }
@@ -871,6 +884,11 @@ class Preplink_Admin
             </tbody>
         </table>
         <?php
+
+        if (isset($_POST['preplink_advertising'])) {
+            $settings = $_POST['preplink_advertising'];
+            update_option('preplink_advertising', $settings);
+        }
     }
 
     function preplink_filed_advertising_2()
@@ -1046,11 +1064,6 @@ class Preplink_Admin
             </tbody>
         </table>
         <?php
-
-        if (isset($_POST['preplink_advertising'])) {
-            $settings = $_POST['preplink_advertising'];
-            update_option('preplink_advertising', $settings);
-        }
     }
 
     function preplink_filed_advertising_7()
@@ -1086,5 +1099,6 @@ class Preplink_Admin
             </tbody>
         </table>
         <?php
+
     }
 }
