@@ -107,6 +107,10 @@
                             $('.bar').css('width', percent + '%');
                             $counter.html(percent + '%');
                         }
+
+                        if (isCountdownFinished) {
+                            $('.bar').css('width', '100%');
+                        }
                     }
 
                     let interval = setInterval(updateProgress, 10);
