@@ -57,8 +57,8 @@ class Preplink_Public
         if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
             return;
         }
-//        var_dump($settings['countdown_endpoint']);die;
-        if (!empty($settings['preplink_endpoint']) && !is_front_page()) {
+
+        if (isset($settings['preplink_endpoint']) && !is_front_page()) {
             wp_enqueue_script('global-preplink', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, false);
             wp_localize_script('global-preplink', 'prep_vars', array(
                 'end_point' => $this->getEndPointValue(),

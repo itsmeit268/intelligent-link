@@ -229,7 +229,7 @@ if (empty($downloadURL)) {
                             color: #000;
                         }
                     </style>
-                    <div class="progress" style="display:none;">
+                    <div class="progress" id="progress" style="display:none;">
                         <p class="counter">0%</p>
                         <div class="bar"></div>
                     </div>

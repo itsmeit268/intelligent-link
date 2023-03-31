@@ -20,23 +20,21 @@
         var pre_elm_exclude = $.trim(prep_vars.pre_elm_exclude);
         var exclude_elm = pre_elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
 
-        const updateLink = ($link, href) => {
+        function updateLink($link, href) {
             if (current_url.indexOf('?') !== -1) {
                 current_url = current_url.split('?')[0];
             }
-            if (window.location.href.indexOf(".html") > -1) {
-                if (current_url.includes('/' + end_point)) {
-                    current_url = current_url.replace('/' + end_point, '');
-                }
-                $link.attr('href', `${current_url + '/' + end_point + '?id=' + href}`);
-                $link.attr('data-id', `${current_url + '/' + end_point + '?id=' + href}`);
-            } else {
-                $link.attr('href', `${current_url + end_point + '?id=' + href}`);
-                $link.attr('data-id', `${current_url + end_point + '?id=' + href}`);
+
+            if (window.location.href.indexOf(".html") > -1 && current_url.includes('.html')) {
+                current_url = current_url.match(/.*\.html/)[0];
+            } else if(current_url.includes('/download/')) {
+                current_url = current_url.replace('/download/','');
             }
+            $link.attr('href', `${current_url + '/' + end_point + '?id=' + href}`);
+            $link.attr('data-id', `${current_url + '/' + end_point + '?id=' + href}`);
         }
 
-        const startCountdown = ($link, href, text_link) => {
+        function startCountdown($link, href, text_link){
             let downloadTimer;
             let timeleft = time_cnf;
             const $progress = $link.find('.progress');
@@ -74,7 +72,7 @@
             };
 
             countdown();
-        };
+        }
 
         $urls.each(function () {
             var $this = $(this);
@@ -95,6 +93,10 @@
             }
 
             if (found) {
+                // Kiểm tra URL được mã hóa bằng encodeURIComponent() hay không
+                if (href === encodeURIComponent(decodeURIComponent(href))) {
+                    href = decodeURIComponent(href);
+                }
                 var encoded_link = btoa(href);
                 $this.attr('href', encoded_link);
                 $this.attr('data-id', encoded_link);
