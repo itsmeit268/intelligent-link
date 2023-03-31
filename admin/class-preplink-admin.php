@@ -157,7 +157,7 @@ class Preplink_Admin
 
         add_settings_field(
             'preplink_countdown',
-            __('Time countdown for post', 'preplink'),
+            __('Countdown', 'preplink'),
             array($this, 'preplink_countdown_field'),
             'preplink_general_settings',
             'preplink_general_section');
@@ -433,6 +433,7 @@ class Preplink_Admin
         }
         $html .= '</select>';
         $html .= '<p class="description">Enable or disable post excerpt (post excerpt is HTML code and it will show when it is a table).</p>';
+        $html .= '<p class="description">The file <strong>excerpt.html</strong> in the plugin directory should be referred to for reference.</p>';
         echo $html;
     }
 
