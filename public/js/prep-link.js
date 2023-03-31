@@ -13,14 +13,14 @@
     $(function () {
         var $hiddenLink = $('.link-session-expired');
         var urlParams = new URLSearchParams(window.location.search);
-        var preUrlGo  = atob(urlParams.get('id'));
+        var preUrlGo = urlParams.get('id');
         var $progress = $('.progress');
         var time_cnf = parseInt(prep_vars.countdown_endpoint);
         var auto_direct = parseInt(prep_vars.endpoint_direct);
 
 
         //Nếu link download không tồn tại thì chuyển hướng về trang ban đầu
-        function backOriginalLink(){
+        function backOriginalLink() {
             if ($hiddenLink.length) {
                 setTimeout(function () {
                     window.location.replace($hiddenLink.attr('href'));
@@ -29,7 +29,7 @@
         }
 
         //FAQ này lấy cấu trúc từ rankmath seo
-        function faqQuestion(){
+        function faqQuestion() {
             if ($('.faq-download').length) {
                 $('.rank-math-question').click(function (event) {
                     if (!$(this).parent().find('.rank-math-answer ').is(":visible")) {
@@ -44,10 +44,10 @@
             }
         }
 
-        function scrollToProgressElm(){
+        function scrollToProgressElm() {
             $('.clickable').on('click', function () {
-                if (time_cnf === 0){
-                    window.location.href = preUrlGo;
+                if (time_cnf === 0) {
+                    window.location.href = preUrlGo.atob(preUrlGo);
                     return;
                 }
                 $progress.trigger('click');
@@ -73,18 +73,22 @@
                     isProgressRunning = true;
 
                     const $counter = $('.counter');
+                    console.log($counter);
+
                     var html = '<div id="download-button" class="download-button">';
                     html += '<i class="material-icons">';
                     html += '<svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg>';
                     html += '</i>Download</div>';
 
-                    let width = 1;
+                    const startTime = new Date().getTime();
                     const totalTime = time_cnf * 1000;
-                    const increment = 100 / (totalTime / 10);
                     let isCountdownFinished = false;
 
                     function updateProgress() {
-                        if (width >= 100) {
+                        const currentTime = new Date().getTime();
+                        const timeRemaining = totalTime - (currentTime - startTime);
+
+                        if (timeRemaining <= 0) {
                             $counter.html('');
                             $counter.html(html);
                             clearInterval(interval);
@@ -92,12 +96,12 @@
                             isProgressRunning = false;
                             $progress.off('click');
                             if (auto_direct){
-                                window.location.replace(preUrlGo);
+                                _urlDirect();
                             }
                         } else if (!isCountdownFinished) {
-                            width += increment;
-                            $('.bar').css('width', width + '%');
-                            $counter.html(Math.round(width) + '%');
+                            const percent = Math.floor((1 - timeRemaining / totalTime) * 100);
+                            $('.bar').css('width', percent + '%');
+                            $counter.html(percent + '%');
                         }
                     }
 
@@ -108,13 +112,18 @@
                         if (!isCountdownFinished) {
                             e.preventDefault();
                         } else {
-                            window.location.href = preUrlGo;
+                            _urlDirect();
                         }
                     });
                 });
             }
         }
 
+        function _urlDirect()
+        {
+            var decodedUrl = window.atob(preUrlGo);
+            return window.location.replace(decodedUrl);
+        }
         faqQuestion();
         scrollToProgressElm();
         progressRunning();
