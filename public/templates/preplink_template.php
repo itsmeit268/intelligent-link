@@ -187,64 +187,19 @@ if (empty($downloadURL)) {
                         </div>
                     <?php endif;?>
 
-                    <div class="ads-itsmeit" style="max-width: 850px;">
-                        <div class="aicp">
-                            <!--  ads 4-->
-                        </div>
+                    <div class="preplink-ads preplink-ads-5" style="max-width: 850px;">
+                        <?php if (!empty($advertising['preplink_advertising_5']) && (int)$advertising['preplink_advertising_5'] == 1 && !empty($advertising['preplink_advertising_code_5'])): ?>
+                            <div class="aicp">
+                                <?= $advertising['preplink_advertising_code_5'] ?>
+                            </div>
+                        <?php endif;?>
                     </div>
 
-                    <style>
-
-                        .progress {
-                            position: relative;
-                            width: 100%;
-                            height: 30px;
-                            margin-bottom: 20px;
-                            background-color: #e2e2e2;
-                            border-radius: 40px;
-                        }
-
-                        .progress p {
-                            position: absolute;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            z-index: 1;
-                        }
-
-                        .progress .bar {
-                            position: absolute;
-                            border-radius: 40px;
-                            height: 100%;
-                            width: 0%;
-                            background-color: #0693e3;
-                        }
-                        #download-button{
-                            width: 100%;
-                            color: #fff;
-                            background-color: #0693e3;
-                            border-radius: 9999px;
-                            box-shadow: none;
-                            cursor: pointer;
-                            display: flex;
-                            gap: 10px;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 1.125em;
-                            text-align: center;
-                            text-decoration: none;
-                            overflow-wrap: break-word;
-                            box-sizing: border-box;
-                        }
-                        #download-button:hover{
-                            opacity: .75;
-                            transition: 250ms ease-in-out;
-                            color: #000;
-                        }
-                    </style>
                     <div class="progress" id="progress" style="display:none;">
                         <p class="counter">0%</p>
                         <div class="bar"></div>
                     </div>
+
                     <?php if (!empty($settings['preplink_related_post']) && $settings['preplink_related_post'] == 1): ?>
                         <div class="related_post">
                             <h3 class="suggestions-post"><?= __('Related Posts') ?></h3>
@@ -309,10 +264,10 @@ if (empty($downloadURL)) {
                         </div>
                     <?php endif;?>
 
-                    <div class="preplink-ads preplink-ads-5" style="max-width: 850px;">
-                        <?php if (!empty($advertising['preplink_advertising_5']) && (int)$advertising['preplink_advertising_5'] == 1 && !empty($advertising['preplink_advertising_code_5'])): ?>
+                    <div class="preplink-ads preplink-ads-6" style="max-width: 850px;">
+                        <?php if (!empty($advertising['preplink_advertising_6']) && (int)$advertising['preplink_advertising_6'] == 1 && !empty($advertising['preplink_advertising_code_6'])): ?>
                             <div class="aicp">
-                                <?= $advertising['preplink_advertising_code_5'] ?>
+                                <?= $advertising['preplink_advertising_code_6'] ?>
                             </div>
                         <?php endif;?>
                     </div>
@@ -323,10 +278,10 @@ if (empty($downloadURL)) {
                     }
                     ?>
 
-                    <div class="preplink-ads preplink-ads-6" style="max-width: 850px;">
-                        <?php if (!empty($advertising['preplink_advertising_6']) && (int)$advertising['preplink_advertising_6'] == 1 && !empty($advertising['preplink_advertising_code_6'])): ?>
+                    <div class="preplink-ads preplink-ads-7" style="max-width: 850px;">
+                        <?php if (!empty($advertising['preplink_advertising_7']) && (int)$advertising['preplink_advertising_7'] == 1 && !empty($advertising['preplink_advertising_code_7'])): ?>
                             <div class="aicp">
-                                <?= $advertising['preplink_advertising_code_6'] ?>
+                                <?= $advertising['preplink_advertising_code_7'] ?>
                             </div>
                         <?php endif;?>
                     </div>

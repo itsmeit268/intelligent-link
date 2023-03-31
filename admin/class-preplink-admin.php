@@ -444,14 +444,17 @@ class Preplink_Admin
             )
         );
 
-
-//        add_settings_field(
-//            'preplink_',
-//            __('Links allowed', 'preplink'),
-//            array($this, 'preplink_textarea_field'),
-//            'preplink_general_settings',
-//            'preplink_general_section'
-//        );
+        add_settings_field(
+            'preplink_advertising_7', // ID của field
+            __('Enable/Disable', 'preplink'),
+            array($this, 'preplink_filed_advertising_7'),
+            'preplink_advertising_settings', // ID của page
+            'preplink_advertising_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Enabled',
+                0 => 'Disabled',
+            )
+        );
 
         add_settings_field(
             'preplink_custom_style',
@@ -490,7 +493,7 @@ class Preplink_Admin
     {
         ?>
         <div class="prep-link-ads-settings">
-            <h3>These settings are applicable to all Prepare link functionalities.</h3>
+            <h3>You can add the advertising code here, it will apply to the page endpoint. You can also use the <a href="//wordpress.org/plugins/ad-inserter/" target="_blank">Ad Inserter</a> plugin to insert the ad code</h3>
             <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
@@ -831,7 +834,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_1]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_1']) ? $settings['preplink_advertising_code_1'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Vị trí hiển thị.</p>';
+                    $html .= '<p class="description">Display position: After featured image.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -866,7 +869,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_2]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_2']) ? $settings['preplink_advertising_code_2'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Vị trí hiển thị.</p>';
+                    $html .= '<p class="description">Display position: After post excerpt.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -901,7 +904,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_3]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_3']) ? $settings['preplink_advertising_code_3'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Vị trí hiển thị.</p>';
+                    $html .= '<p class="description">Display position: After download button.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -936,7 +939,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_4]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_4']) ? $settings['preplink_advertising_code_4'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Vị trí hiển thị.</p>';
+                    $html .= '<p class="description">Display position: FAQ Center.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -971,7 +974,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_5]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_5']) ? $settings['preplink_advertising_code_5'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Vị trí hiển thị.</p>';
+                    $html .= '<p class="description">Display position: Before Progress button</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -983,12 +986,11 @@ class Preplink_Admin
     function preplink_filed_advertising_6()
     {
         $settings = get_option('preplink_advertising', array());
-        var_dump($settings);
         ?>
         <table class="form-table">
             <tbody>
             <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 2:</th>
+                <th scope="row">Enable Advertising 6:</th>
                 <td>
                     <select name="preplink_advertising[preplink_advertising_6]" id="preplink_advertising_6">
                         <option value="1" <?php selected(isset($settings['preplink_advertising_6']) && $settings['preplink_advertising_6'] == '1'); ?>>
@@ -1007,7 +1009,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_6]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_6']) ? $settings['preplink_advertising_code_6'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Vị trí hiển thị.</p>';
+                    $html .= '<p class="description">Display position: After related posts</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -1019,5 +1021,40 @@ class Preplink_Admin
             $settings = $_POST['preplink_advertising'];
             update_option('preplink_advertising', $settings);
         }
+    }
+
+    function preplink_filed_advertising_7()
+    {
+        $settings = get_option('preplink_advertising', array());
+        ?>
+        <table class="form-table">
+            <tbody>
+            <tr class="preplink_advertising_enable">
+                <th scope="row">Enable Advertising 7:</th>
+                <td>
+                    <select name="preplink_advertising[preplink_advertising_7]" id="preplink_advertising_7">
+                        <option value="1" <?php selected(isset($settings['preplink_advertising_7']) && $settings['preplink_advertising_7'] == '1'); ?>>
+                            Yes
+                        </option>
+                        <option value="0" <?php selected(isset($settings['preplink_advertising_7']) && $settings['preplink_advertising_7'] == '0'); ?>>
+                            No
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="preplink_advertising_code">
+                <th scope="row">Advertising HTML code:</th>
+                <td>
+                    <?php
+                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_7]" rows="5" cols="50">';
+                    $html .= esc_html(isset($settings['preplink_advertising_code_7']) ? $settings['preplink_advertising_code_7'] : false);
+                    $html .= '</textarea>';
+                    $html .= '<p class="description">Display position: After comments</p>';
+                    echo $html;
+                    ?></td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
     }
 }
