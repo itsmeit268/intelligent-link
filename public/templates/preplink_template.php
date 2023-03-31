@@ -25,6 +25,7 @@ $view_link = get_permalink($postID);
 
 $downloadURL = !empty($_GET['id']) ? trim(strip_tags(stripslashes($_GET['id']))) : '';
 $settings = get_option('preplink_setting');
+$advertising = get_option('preplink_advertising');
 $postTitle = !empty(get_the_title()) ? get_the_title() : $post->post_title;
 $excerpt = get_the_excerpt();
 //var_dump($settings['preplink_image']);
@@ -94,11 +95,14 @@ if (empty($downloadURL)) {
                         </div>
                     <?php endif;?>
 
-                    <div class="ads-itsmeit" style="max-width: 850px;">
-                        <div class="aicp">
-                            <!--  ads1-->
-                        </div>
+                    <div class="preplink-ads preplink-ads-1" style="max-width: 850px;">
+                        <?php if (!empty($advertising['preplink_advertising_1']) && (int)$advertising['preplink_advertising_1'] == 1 && !empty($advertising['preplink_advertising_code_1'])): ?>
+                            <div class="aicp">
+                                <?= $advertising['preplink_advertising_code_1'] ?>
+                            </div>
+                        <?php endif;?>
                     </div>
+
                     <span style="display: inline-block; margin-left: 10px;">
                         <img style="width: 20px;" draggable="false" role="img" class="emoji entered pmloaded lazyloaded"
                              alt="📌" src="https://s.w.org/images/core/emoji/14.0.0/svg/1f4cc.svg">If the download link is not ready after a few seconds, please disable your <strong>Adblock</strong> and try refreshing the page again.
@@ -115,11 +119,14 @@ if (empty($downloadURL)) {
                     }
                     ?>
 
-                    <div class="ads-itsmeit" style="max-width: 850px;">
-                        <div class="aicp">
-                            <!--  ads 2-->
-                        </div>
+                    <div class="preplink-ads preplink-ads-2" style="max-width: 850px;">
+                        <?php if (!empty($advertising['preplink_advertising_2']) && (int)$advertising['preplink_advertising_2'] == 1 && !empty($advertising['preplink_advertising_code_2'])): ?>
+                            <div class="aicp">
+                                <?= $advertising['preplink_advertising_code_2'] ?>
+                            </div>
+                        <?php endif;?>
                     </div>
+
                     <div class="download-list">
                         <div class="download-item-box">
                             <div class="download-item">
@@ -145,10 +152,13 @@ if (empty($downloadURL)) {
                             </div>
                         </div>
                     </div>
-                    <div class="ads-itsmeit" style="max-width: 850px;">
-                        <div class="aicp">
-                            <!--  ads 3-->
-                        </div>
+
+                    <div class="preplink-ads preplink-ads-3" style="max-width: 850px;">
+                        <?php if (!empty($advertising['preplink_advertising_3']) && (int)$advertising['preplink_advertising_3'] == 1 && !empty($advertising['preplink_advertising_code_3'])): ?>
+                            <div class="aicp">
+                                <?= $advertising['preplink_advertising_code_3'] ?>
+                            </div>
+                        <?php endif;?>
                     </div>
 
                     <?php if (!empty($settings['preplink_faq1_enabled']) && $settings['preplink_faq1_enabled'] == 1) :?>
@@ -160,10 +170,12 @@ if (empty($downloadURL)) {
                         </div>
                     <?php endif;?>
 
-                    <div class="ads-itsmeit" style="max-width: 850px;">
-                        <div class="aicp">
-                            <!--  ads 3-->
-                        </div>
+                    <div class="preplink-ads preplink-ads-4" style="max-width: 850px;">
+                        <?php if (!empty($advertising['preplink_advertising_4']) && (int)$advertising['preplink_advertising_4'] == 1 && !empty($advertising['preplink_advertising_code_4'])): ?>
+                            <div class="aicp">
+                                <?= $advertising['preplink_advertising_code_4'] ?>
+                            </div>
+                        <?php endif;?>
                     </div>
 
                     <?php if (!empty($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == 1) :?>
@@ -297,21 +309,26 @@ if (empty($downloadURL)) {
                         </div>
                     <?php endif;?>
 
-                    <div class="ads-itsmeit" style="max-width: 850px;">
-                <div class="aicp">
-                    <!--  ads 5-->
-                </div>
-            </div>
+                    <div class="preplink-ads preplink-ads-5" style="max-width: 850px;">
+                        <?php if (!empty($advertising['preplink_advertising_5']) && (int)$advertising['preplink_advertising_5'] == 1 && !empty($advertising['preplink_advertising_code_5'])): ?>
+                            <div class="aicp">
+                                <?= $advertising['preplink_advertising_code_5'] ?>
+                            </div>
+                        <?php endif;?>
+                    </div>
 
                     <?php
                     if (file_exists(get_template_directory() . '/comments.php') && $settings['preplink_comment'] == 1) {
                         ?><div class="comment"><?php comments_template(); ?></div><?php
                     }
                     ?>
-                    <div class="ads-itsmeit" style="max-width: 850px;">
-                        <div class="aicp">
-                            <!--  ads 6-->
-                        </div>
+
+                    <div class="preplink-ads preplink-ads-6" style="max-width: 850px;">
+                        <?php if (!empty($advertising['preplink_advertising_6']) && (int)$advertising['preplink_advertising_6'] == 1 && !empty($advertising['preplink_advertising_code_6'])): ?>
+                            <div class="aicp">
+                                <?= $advertising['preplink_advertising_code_6'] ?>
+                            </div>
+                        <?php endif;?>
                     </div>
                 </div>
             </div>
