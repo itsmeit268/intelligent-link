@@ -74,8 +74,6 @@ h1.s-title{
 }
 
 .related-link > picture,.related-link > img {
-    width: 140px;
-    height: 140px;
     position: relative;
     border-radius: 15px;
     aspect-ratio: 1/1;
