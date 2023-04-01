@@ -5,14 +5,17 @@
 .post-progress-bar {
     width: fit-content;
     height: 24px;
-    background-color: #a1c0e3;
+    background-color: #e2e2e2;
     border-radius: 40px;
     cursor: pointer;
     display: inline-block;
 }
+.post-progress-bar> a{
+    text-decoration: none !important;
+}
 .post-progress {
     height: 100%;
-    background-color: #2557ee;
+    background-color: #0693e3;
     width: 0%;
     border-radius: 40px;
     transition: width 0.2s ease-in-out;

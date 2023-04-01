@@ -48,7 +48,7 @@
                 if (display_mode === 'wait_time') {
                     $link.html(`<strong>[${wait_text} ${timeleft}s...]</strong>`);
                 } else {
-                    $progress.animate({width: progressWidth}, (timeleft * 1000) / 2, function () {
+                    $progress.animate({width: progressWidth}, timeleft * 1000, function () {
                         // $link.html('<span class="progress" style="color:red;">'+`${text_link}`+ '..' +'[Ready!]'+'</span>');
                     });
                 }
