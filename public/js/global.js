@@ -37,7 +37,7 @@
         function startCountdown($link, href, text_link){
             let downloadTimer;
             let timeleft = time_cnf;
-            const $progress = $link.find('.progress');
+            const $progress = $link.find('.post-progress');
             const progressWidth = $progress.outerWidth() + 10;
 
             if (text_link.length > 35) {
@@ -58,7 +58,7 @@
                     clearInterval(downloadTimer);
                     $link.removeAttr('target');
                     if (display_mode === 'progress') {
-                        $link.html('<span class="progress">' + `${text_link}` + '<strong style="color:red;">' + ' ' + text_complete + '</strong>' + '</span>');
+                        $link.html('<span class="post-progress">' + `${text_link}` + '<strong class="text-complete">' + ' ' + text_complete + '</strong>' + '</span>');
                     } else {
                         $link.html(`${text_link}` + '<strong style="color:red;"> [Link ready!]</strong>');
                     }
@@ -103,8 +103,8 @@
                 $this.removeAttr('target');
 
                 if (display_mode === 'progress') {
-                    $this.wrap('<div class="progress-bar"></div>');
-                    $this.html('<span class="progress">' + text_link + '</span>');
+                    $this.wrap('<div class="post-progress-bar"></div>');
+                    $this.html('<span class="post-progress">' + text_link + '</span>');
                 }
             }
         });
