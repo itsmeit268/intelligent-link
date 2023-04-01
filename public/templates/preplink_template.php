@@ -10,15 +10,6 @@
  * Website     https://itsmeit.co | https://itsmeit.biz
  */
 
-/**
- * Allows filtering of the robots meta data.
- *
- * @param array $robots The meta robots directives.
- */
-//add_filter('rank_math/frontend/robots', function ($robots) {
-//    $robots = array('index' => 'noindex', 'follow' => 'nofollow', 'archive' => 'noarchive', 'snippet' => 'nosnippet');
-//    return $robots;
-//});
 global $post;
 $postID = get_the_ID();
 $view_link = get_permalink($postID);
@@ -31,7 +22,7 @@ $endpointSetting = get_option('preplink_endpoint');
 
 $postTitle = !empty(get_the_title()) ? get_the_title() : $post->post_title;
 $excerpt = get_the_excerpt();
-//var_dump($settings['preplink_image']);
+
 add_action('wp_head', function () {
     global $wp_query;
     $endpointSetting = get_option('preplink_endpoint');
@@ -41,23 +32,21 @@ add_action('wp_head', function () {
         return;
     }
 
-     wp_enqueue_style('prep-link-css', plugin_dir_url(__DIR__) . 'css/prep-link.css', array(), '1.0.3', 'all');
-//    wp_enqueue_script('ads-check-js', get_theme_file_uri('/itsmeit/js/ads_itsmeit.js'), array('jquery'), 1.0.3, true);
-    if (!current_user_can('manage_options')) {
-        ?>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8326801375483582" crossorigin="anonymous"></script>
-        <?php
-    }
+    wp_enqueue_style('prep-link-css', plugin_dir_url(__DIR__) . 'css/prep-link.min.css', array(), '1.0.3', 'all');
+
 });
 
+/**
+ * Allows filtering of the robots meta data.
+ *
+ * @param array $robots The meta robots directives.
+ */
+//add_filter('rank_math/frontend/robots', function ($robots) {
+//    $robots = array('index' => 'noindex', 'follow' => 'nofollow', 'archive' => 'noarchive', 'snippet' => 'nosnippet');
+//    return $robots;
+//});
 ?>
-<?php
-add_action('wp_enqueue_scripts','remove_script_not_use', 30);
-function remove_script_not_use()
-{
-//    wp_dequeue_script('fixedtoc-js');
-}
-?>
+
 <?php if (file_exists(get_template_directory() . '/header.php')) get_header(); ?>
 <?php
 if (empty($downloadURL)) {
@@ -65,8 +54,7 @@ if (empty($downloadURL)) {
     <div class="session-expired">
         <p>Your session has expired. Please try again!</p>
         <p>You will be automatically redirected to the article in 5 seconds or click
-            <a style="color: blue" class="link-session-expired" href="<?= $view_link ?>">
-                <strong>here </strong></a>to go to the article immediately.
+            <a style="color: blue" class="link-session-expired" href="<?= $view_link ?>"><strong>here </strong></a>to go to the article immediately.
         </p>
     </div>
     <?php

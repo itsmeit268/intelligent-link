@@ -47,7 +47,7 @@ class Preplink_Public
         if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
             return;
         }
-        wp_enqueue_style('global' . $this->plugin_name, plugin_dir_url(__FILE__) . 'css/global.css', array(), $this->version, 'all');
+        wp_enqueue_style('global' . $this->plugin_name, plugin_dir_url(__FILE__) . 'css/global.min.css', array(), $this->version, 'all');
     }
 
     public function enqueue_scripts()
@@ -61,7 +61,7 @@ class Preplink_Public
         }
 
         if (isset($endpointSetting['endpoint']) && !is_front_page()) {
-            wp_enqueue_script('global-preplink', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, false);
+            wp_enqueue_script('global-preplink', plugin_dir_url(__FILE__) . 'js/global.min.js', array('jquery'), $this->version, false);
             wp_localize_script('global-preplink', 'prep_vars', array(
                 'end_point' => $this->getEndPointValue(),
                 'prep_url'  => !empty($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com, play.google.com',
@@ -80,7 +80,7 @@ class Preplink_Public
         if (!isset($wp_query->query_vars[$this->getEndPointValue()]) || !is_singular('post')) {
             return;
         }
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/prep-link.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/prep-link.min.js', array('jquery'), $this->version, false);
     }
 
     public function preplink_rewrite_endpoint()
