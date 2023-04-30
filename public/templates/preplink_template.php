@@ -42,7 +42,7 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
                         <div class="entry-content rbct">
                             <?php if (empty($downloadURL) || empty($linkText)) : ?>
                                 <p class="session-expired">
-                                    <?= __('Phiên truy cập đã kết thúc. Vui lòng xóa lịch sử duyệt web hoặc cookie và truy cập lại trang web!') ?>
+                                    <?= __('The session has ended. Please try clearing your cookies or browser history and attempt again!', 'prep-link') ?>
                                 </p>
                             <?php else: ?>
 
@@ -80,21 +80,21 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
                                 </div>
 
                                 <div class="help-preplink">
-                                    <p><?= __('Nếu liên kết tải xuống không sẵn sàng sau vài giây, vui lòng tắt Adblock hoặc xóa lịch sử trình duyệt của bạn và thử làm mới lại trang.')?></p>
+                                    <p><?= __('If the download link is not ready after a few seconds, please disable Adblock or clear your browser history and try refreshing the page.', 'prep-link')?></p>
                                 </div>
 
                                 <?php
                                 if (!empty($endpointSetting['preplink_excerpt']) && $endpointSetting['preplink_excerpt'] && (strpos($excerpt, '<table>') !== false || strpos($excerpt, '<tbody>') !== false)) {
                                     ?>
                                     <div class="post-excerpt">
-                                        <h3 class="app-title" style="text-transform: uppercase;"><?= __('Information about the Features')?></h3>
+                                        <h3 class="app-title"><?= __('Information about the Features','prep-link')?></h3>
                                         <?= $excerpt ?>
                                     </div>
                                     <?php
                                 } else {
                                     ?>
                                     <div class="post-excerpt">
-                                        <h3 class="app-title" style="text-transform: uppercase;"><?= __('DESCRIPTION')?></h3>
+                                        <h3 class="app-title"><?= __('Description', 'prep-link')?></h3>
                                         <?= $excerpt ?>
                                     </div>
                                     <?php
@@ -114,9 +114,9 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
                                                 <a href="<?= $view_link ?>" class="image"><?php the_post_thumbnail('thumbnail'); ?></a>
                                                 <div class="post-download">
                                                     <p class="tittle">
-                                                        <a href="<?= $view_link ?>"  class="p-tittle"><?= __('Tải&nbsp;') . $linkText ?></a>
+                                                        <a href="<?= $view_link ?>"  class="p-tittle"><?= __('Download:', 'prep-link') .' '. $linkText ?></a>
                                                     </p>
-                                                    <p class="post-date">Cập nhật: <?= get_the_date('d/m/Y'); ?></p>
+                                                    <p class="post-date"><?= __('Update:', 'prep-link') . ' ' . get_the_date('d/m/Y')?></p>
                                                 </div>
                                             </div>
                                             <div class="right">
@@ -178,13 +178,13 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
                                         <svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                             <path d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zm-143.6-28.9L288 302.6V120c0-13.3-10.7-24-24-24h-16c-13.3 0-24 10.7-24 24v182.6l-72.4-75.5c-9.3-9.7-24.8-9.9-34.3-.4l-10.9 11c-9.4 9.4-9.4 24.6 0 33.9L239 404.3c9.4 9.4 24.6 9.4 33.9 0l132.7-132.7c9.4-9.4 9.4-24.6 0-33.9l-10.9-11c-9.5-9.5-25-9.3-34.3.4z"></path>
                                         </svg>
-                                        <span class="text-down">Download</span>
+                                        <span class="text-down"><?= __('Download', 'prep-link');?></span>
                                     </span>
                                 </div>
 
                                 <?php if (!empty($endpointSetting['preplink_related_post']) && $endpointSetting['preplink_related_post'] == 1): ?>
                                     <div class="related_post">
-                                        <h3 class="suggestions-post"><?= __('Related Posts') ?></h3>
+                                        <h3 class="suggestions-post"><?= __('Related Posts','prep-link') ?></h3>
                                         <?php
                                         $categories = get_the_category(); // Lấy category của bài viết hiện tại
                                         $category_ids = array(); // Tạo mảng rỗng để chứa ID của category

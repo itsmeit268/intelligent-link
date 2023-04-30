@@ -8,7 +8,7 @@
  * @wordpress-plugin
  * Plugin Name:       Prepare Link
  * Plugin URI:        https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
- * Description:       A pre-linking plugin that prepares for downloads or link retrievals can benefit websites with high ad impressions and user retention rates.
+ * Description:       The plugin will encrypt the links you allow and perform a countdown time before redirecting to the specified "endpoint" page, helping to increase user engagement time and making it suitable for websites that allow file downloads.
  * Version:           1.0.3
  * Author:            itsmeit <itsmeit.biz@gmail.com>
  * Author URI:        https://itsmeit.biz
