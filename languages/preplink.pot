@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2023-04-24T00:00:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: https://github.com/itsmeit268/preplink\n"
+"X-Generator: https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html\n"
 "X-Domain: prep-link\n"
 "X-Poedit-SourceCharset: utf-8\n"
 

@@ -3,7 +3,7 @@
  * hoặc thêm mới các tính năng, fix bug, chính sửa các tính năng
  * Vui lòng chia sẻ tới cộng đồng bằng cách gửi pull requests trên branch mới.
  *
- * @link       https://github.com/itsmeit268/preplink
+ * @link       https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @author     itsmeit <itsmeit.biz@gmail.com>
  * Website     https://itsmeit.co | https://itsmeit.biz
  */
@@ -13,7 +13,7 @@
     $(function () {
         var urlParams = new URLSearchParams(window.location.search);
         var preUrlGo = urlParams.get('id');
-        var $progress = $('#progress');
+        var $progress = $('#enpoint-progress');
         var time_cnf = parseInt(prep_vars.countdown_endpoint);
         var auto_direct = parseInt(prep_vars.endpoint_direct);
 
@@ -95,7 +95,25 @@
             }
         }
 
+        function _faq_prep_link() {
+            var question = ".prep-link-question";
+            var answer = ".prep-link-answer";
+            if ($(question).length) {
+                $(question).on("click", function () {
+                    if (!$(this).parent().find(answer).is(":visible")) {
+                        $(question).removeClass("faq-active");
+                        $(this).addClass("faq-active");
+                        $(answer).hide();
+                    } else {
+                        $(this).removeClass("faq-active");
+                    }
+                    $(this).parent().find(answer).toggle(300);
+                });
+            }
+        }
+
         scrollToProgressElm();
         progressRunning();
+        _faq_prep_link();
     });
 })(jQuery);

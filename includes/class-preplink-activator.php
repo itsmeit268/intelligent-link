@@ -6,7 +6,7 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
 
- * @link       https://github.com/itsmeit268/preplink
+ * @link       https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @package    Preplink
  * @subpackage Preplink/admin
  * @author     itsmeit <itsmeit.biz@gmail.com>

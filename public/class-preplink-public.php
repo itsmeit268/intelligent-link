@@ -64,6 +64,7 @@ class Preplink_Public
                     'end_point'           => $endpoint,
                     'prep_url'            => !empty($this->settings['preplink_url']) ? $this->settings['preplink_url'] : '',
                     'count_down'          => !empty($this->settings['preplink_countdown']) ? $this->settings['preplink_countdown'] : 0,
+                    'cookie_time'         => !empty($this->preplink['cookie_time']) ? $this->preplink['cookie_time'] : 5,
                     'countdown_endpoint'  => !empty($this->preplink['countdown_endpoint']) ? $this->preplink['countdown_endpoint'] : 5,
                     'display_mode'        => !empty($this->settings['preplink_wait_text']) ? $this->settings['preplink_wait_text'] : 'wait_time',
                     'wait_text'           => !empty($this->settings['wait_text_replace']) ? $this->settings['wait_text_replace'] : 'waiting',

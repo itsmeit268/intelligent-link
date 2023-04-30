@@ -1,5 +1,5 @@
 /**
- * @link       https://github.com/itsmeit268/preplink
+ * @link       https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @author     itsmeit <itsmeit.biz@gmail.com>
  * Website     https://itsmeit.co | https://itsmeit.biz
  */
@@ -13,6 +13,7 @@
         var prep_url = prep_vars.prep_url;
         var current_url = window.location.href.replace(/#.*/, '');
         var time_cnf = parseInt(prep_vars.count_down);
+        var cookie_time = parseInt(prep_vars.cookie_time);
         var wait_text = $.trim(prep_vars.wait_text);
         var display_mode = prep_vars.display_mode;
         var auto_direct = parseInt(prep_vars.auto_direct);
@@ -21,7 +22,7 @@
         var exclude_elm = pre_elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
 
         function __setCookieTitle(text_link) {
-            const expirationTime = new Date(Date.now() + 5 * 60 * 1000); //5 phút phụt 5 phát
+            const expirationTime = new Date(Date.now() + cookie_time * 60 * 1000); //5 phút phụt 5 phát
             document.cookie = "prep_text_link=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             document.cookie = "prep_text_link=" + text_link + "; expires=" + expirationTime.toUTCString() + "; path=/";
         }

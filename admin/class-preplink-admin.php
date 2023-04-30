@@ -237,6 +237,14 @@ class Preplink_Admin
             array($this, 'preplink_countdown_endpoint'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section');
+
+        add_settings_field(
+            'preplink_cookie_time',
+            __('Set time for download/getlink page', 'preplink'),
+            array($this, 'preplink_cookie_time'),
+            'preplink_endpoint_settings',
+            'preplink_endpoint_section');
+
         add_settings_field(
             'preplink_endpoint_auto_direct', // ID của field
             __('Automatically redirect endpoints to original link', 'preplink'),
@@ -248,6 +256,7 @@ class Preplink_Admin
                 0 => 'No',
             )
         );
+
         add_settings_field(
             'preplink_textarea',
             __('Links allowed', 'preplink'),
@@ -501,7 +510,7 @@ class Preplink_Admin
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
             |
-            <span>Link download: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }
@@ -515,7 +524,7 @@ class Preplink_Admin
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
             |
-            <span>Link download: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }
@@ -529,7 +538,7 @@ class Preplink_Admin
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
             |
-            <span>Link download: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }
@@ -543,7 +552,7 @@ class Preplink_Admin
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
             |
-            <span>Link download: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }
@@ -567,10 +576,8 @@ class Preplink_Admin
         ?>
         <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="download"
                value="<?= esc_attr(!empty($settings['endpoint']) ? $settings['endpoint'] : false) ?>"/>
-        <p class="description">The default endpoint is set to "download", so the link format will be:
-            domain.com/post/download.</p>
-        <p class="description" style="color: red">After you change the endpoint, you need to navigate to <strong>Settings->Permalinks->Save</strong>
-            to sync the endpoint</p>
+        <p class="description">The default endpoint for the link format is set to "download", which means that the link will be in the following format: domain.com/post/download.</p>
+        <p class="description" style="color: red">If you make changes to the endpoint, it is necessary to navigate to Settings->Permalinks->Save in order to synchronize the endpoint.</p>
         <?php
         if (isset($_POST['preplink_endpoint'])) {
             $settings = $_POST['preplink_endpoint'];
@@ -605,8 +612,18 @@ class Preplink_Admin
         ?>
         <input type="text" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="5"
                value="<?= esc_attr(!empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : false) ?>"/>
-        <p class="description">Countdown time, default 5, If you set the countdown time < 10s, it is recommended to set
-            Automatically redirect endpoints = No</p>
+        <p class="description">If you set the countdown time to less than 10 seconds, it is recommended that you disable the automatic redirection endpoint.
+            By default, the countdown time is set to 5 seconds.</p>
+        <?php
+    }
+
+    function preplink_cookie_time()
+    {
+        $settings = get_option('preplink_endpoint', array());
+        ?>
+        <input type="text" id="cookie_time" name="preplink_endpoint[cookie_time]" placeholder="5"
+               value="<?= esc_attr(!empty($settings['cookie_time']) ? $settings['cookie_time'] : false) ?>"/>
+        <p class="description">The default expiration time for the getlink/download page is set to 5 minutes.</p>
         <?php
     }
 
@@ -655,8 +672,6 @@ class Preplink_Admin
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }
         $html .= '</select>';
-        $html .= '<p class="description">Enable or disable post excerpt (post excerpt is HTML code and it will show when it is a table).</p>';
-        $html .= '<p class="description">The file <strong>excerpt.html</strong> in the plugin directory should be referred to for reference.</p>';
         echo $html;
     }
 
@@ -695,7 +710,7 @@ class Preplink_Admin
                     $html .= esc_html(isset($settings['preplink_faq1_description']) ? $settings['preplink_faq1_description'] : false);
                     $html .= '</textarea>';
                     $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
-                    $html .= '<p class="description">The file <strong>faq.html</strong> in the plugin directory should be referred to for reference.</p>';
+                    $html .= '<p class="description"><a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">References</a></p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -737,7 +752,7 @@ class Preplink_Admin
                     $html .= esc_html(isset($settings['preplink_faq2_description']) ? $settings['preplink_faq2_description'] : false);
                     $html .= '</textarea>';
                     $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
-                    $html .= '<p class="description">The file <strong>faq.html</strong> in the plugin directory should be referred to for reference.</p>';
+                    $html .= '<p class="description"><a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">References</a></p>';
                     echo $html;
                     ?>
                 </td>

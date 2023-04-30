@@ -4,7 +4,7 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * @link       https://github.com/itsmeit268/preplink
+ * @link       https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @author     itsmeit <itsmeit.biz@gmail.com>
  * Website     https://itsmeit.co | https://itsmeit.biz
  */
@@ -32,7 +32,7 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
 
 <div class="single-page without-sidebar sticky-sidebar">
     <header class="single-header">
-        <h1 class="s-title"><a href="<?= $view_link?>"><?= __('Tải&nbsp;') . $linkText; ?></a></h1>
+        <h1 class="s-title"><a href="<?= $view_link?>"><?= !empty($linkText) ? __('Tải&nbsp;') . $linkText: $postTitle; ?></a></h1>
     </header>
     <div class="rb-small-container preplink-padding">
         <div class="grid-container">
@@ -52,15 +52,13 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
                                     </div>
                                 <?php endif; ?>
 
-                                <?php if (!empty($endpointSetting['preplink_image']) && $endpointSetting['preplink_image']) : ?>
+                                <?php if (!empty($endpointSetting['preplink_image']) && $endpointSetting['preplink_image'] && has_post_thumbnail($postID)) : ?>
                                     <div class="s-feat-outer">
                                         <div class="s-feat">
                                             <div class="featured-image">
-                                                <?php if (has_post_thumbnail($postID)): ?>
-                                                    <img src="<?= get_the_post_thumbnail_url($postID, 'full'); ?>"
-                                                         class="prep-thumbnail" alt="<?= $postTitle ?>"
-                                                         title="<?= $postTitle ?>">
-                                                <?php endif; ?>
+                                                <img src="<?= get_the_post_thumbnail_url($postID, 'full'); ?>"
+                                                     class="prep-thumbnail" alt="<?= $postTitle ?>"
+                                                     title="<?= $postTitle ?>">
                                             </div>
                                         </div>
                                         <div class="feat-caption meta-text">
@@ -81,9 +79,9 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
                                     <?php endif; ?>
                                 </div>
 
-                                <p>
-                                    <span><?= __('Nếu liên kết tải xuống không sẵn sàng sau vài giây, vui lòng tắt Adblock hoặc xóa lịch sử trình duyệt của bạn và thử làm mới lại trang.')?></span>
-                                </p>
+                                <div class="help-preplink">
+                                    <p><?= __('Nếu liên kết tải xuống không sẵn sàng sau vài giây, vui lòng tắt Adblock hoặc xóa lịch sử trình duyệt của bạn và thử làm mới lại trang.')?></p>
+                                </div>
 
                                 <?php
                                 if (!empty($endpointSetting['preplink_excerpt']) && $endpointSetting['preplink_excerpt'] && (strpos($excerpt, '<table>') !== false || strpos($excerpt, '<tbody>') !== false)) {
@@ -173,7 +171,7 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
                                     <?php endif; ?>
                                 </div>
 
-                                <div class="progress" id="progress" style="display:none;">
+                                <div class="enpoint-progress" id="enpoint-progress" style="display:none;">
                                     <p class="counter">0%</p>
                                     <div class="bar"></div>
                                     <span class="prep-btn-download" style="display: none">

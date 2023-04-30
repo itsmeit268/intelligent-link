@@ -1,3 +1,7 @@
+.single-page{
+    max-width: 890px;
+    margin: 0 auto;
+}
 .site-wrap {
     z-index: 1;
     min-height: 45vh;
@@ -47,6 +51,9 @@
     padding-right: 20px;
     padding-left: 20px;
 }
+.session-expired{
+    text-align: center;
+}
 .single .without-sidebar .s-ct {
     flex-basis: 100%;
     width: 100%;
@@ -88,7 +95,7 @@ body .without-sidebar .grid-container > * {
 }
 
 h1.s-title {
-    margin-top: 20px;
+    margin: 20px 0;
     font-size: 28px;
     text-align: center;
 }
@@ -222,7 +229,7 @@ h1.s-title {
     margin-bottom: -5px;
 }
 
-.e-ct-outer > *, h3.rank-math-title {
+.e-ct-outer > *, h3.prep-link-title {
     margin-bottom: 10px !important;
 }
 
@@ -233,7 +240,9 @@ h1.s-title {
     white-space: nowrap;
     overflow: hidden;
 }
-
+.help-preplink{
+    padding: 0 15px;
+}
 .app-title, .suggestions-post {
     font-size: 20px;
 }
@@ -338,34 +347,34 @@ ul li {
 ul li > a:hover {
     color: #e30b2c;
 }
-#rank-math-faq, .feat-caption {
+#prep-link-faq, .feat-caption {
     margin-top: 10px;
     position: relative;
 }
 
-#rank-math-faq, #rank-math-faq .rank-math-answer, #rank-math-faq .rank-math-answer p {
+#prep-link-faq, #prep-link-faq .prep-link-answer, #prep-link-faq .prep-link-answer p {
     background: #fff;
 }
 
-#rank-math-faq {
+#prep-link-faq {
     margin-bottom: 19px;
     border: 1px solid #e0e0e0;
     border-top: 4px solid #22a8e2;
     padding: 10px;
 }
 
-.rank-math-list-item {
+.prep-link-list-item {
     padding: 0 15px 0 10px;
 }
 
-h3.rank-math-title {
+h3.prep-link-title {
     font-size: 18px;
     margin-top: 5px;
     font-weight: 500;
     border-bottom: 1px solid #efe9f5;
 }
 
-#rank-math-faq .rank-math-question {
+#prep-link-faq .prep-link-question {
     font-style: normal;
     font-weight: 500;
     font-size: 18px;
@@ -377,7 +386,7 @@ h3.rank-math-title {
     cursor: pointer;
 }
 
-#rank-math-faq .rank-math-question:after {
+#prep-link-faq .prep-link-question:after {
     content: "";
     background: url(//itsmeit.biz/wp-content/uploads/2022/04/chevron-down-black.svg) right center no-repeat;
     position: absolute;
@@ -394,7 +403,7 @@ h3.rank-math-title {
     transition: .3s;
 }
 
-#rank-math-faq .rank-math-question.faq-active:after {
+#prep-link-faq .prep-link-question.faq-active:after {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
@@ -402,28 +411,28 @@ h3.rank-math-title {
     transform: rotate(180deg);
 }
 
-#rank-math-faq .rank-math-list-item:not(first-child) .rank-math-answer, .grecaptcha-badge {
+#prep-link-faq .prep-link-list-item:not(first-child) .prep-link-answer, .grecaptcha-badge {
     display: none;
 }
 
-#rank-math-faq .rank-math-list-item:not(:last-child) {
+#prep-link-faq .prep-link-list-item:not(:last-child) {
     border-bottom: 1px solid #d7cfcf
 }
 
-#rank-math-faq .rank-math-answer {
+#prep-link-faq .prep-link-answer {
     padding: 0 10px;
 }
 
-.rank-math-question > strong {
+.prep-link-question > strong {
     font-size: 18px;
     color: #06222e;
 }
 
-.rank-math-answer p {
+.prep-link-answer p {
     color: #06222e;
 }
 
-.rank-math-answer > ul {
+.prep-link-answer > ul {
     margin-bottom: 10px;
 }
 
@@ -442,7 +451,7 @@ h3.rank-math-title {
 .clickable:hover {
     background: #2488c1;
 }
-.progress {
+.enpoint-progress {
     position: relative;
     width: 100%;
     height: 35px;
@@ -458,7 +467,7 @@ h3.rank-math-title {
     z-index: 1;
 }
 
-.progress .bar {
+.enpoint-progress .bar {
     position: absolute;
     border-radius: 40px;
     height: 100%;
@@ -488,7 +497,7 @@ h3.rank-math-title {
     }
 
     h1.s-title {
-        margin-top: 15px;
+        margin: 15px 0;
         font-size: 20px;
     }
 

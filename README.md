@@ -2,7 +2,7 @@
 ## Redirect external links to the page you specify. This feature is useful for websites that display ads, such as Adsense or Ezoic...
 ##### Link example: https://drive.google.com/file/d/12Tb1KHnYZPdURKeV_YuChlkxUH8mtZOq/view?usp=sharing to https://itsmeit.co/post/download?id=abc
 ------------------------------------------------
-##### Link    : https://github.com/itsmeit268/preplink
+##### Link    : https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
 ##### Author  : itsmeit '<itsmeit.biz@gmail.com>'
 ##### Website : https://itsmeit.co | https://itsmeit.biz
 ---------------------------------------------------
