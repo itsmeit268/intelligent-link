@@ -6,7 +6,7 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @link       https://github.com/itsmeit268/preplink
+ * @link       https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @package    Preplink
  * @subpackage Preplink/admin
  * @author     itsmeit <itsmeit.biz@gmail.com>
@@ -501,7 +501,7 @@ class Preplink_Admin
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
             |
-            <span>Link download: <a href="https://github.com/itsmeit268/preplink" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }
@@ -515,7 +515,7 @@ class Preplink_Admin
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
             |
-            <span>Link download: <a href="https://github.com/itsmeit268/preplink" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }
@@ -529,7 +529,7 @@ class Preplink_Admin
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
             |
-            <span>Link download: <a href="https://github.com/itsmeit268/preplink" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }
@@ -543,7 +543,7 @@ class Preplink_Admin
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
                                                                                        target="_blank">itsmeit.biz</a></span>
             |
-            <span>Link download: <a href="https://github.com/itsmeit268/preplink" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }

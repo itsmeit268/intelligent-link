@@ -1,13 +1,13 @@
 <?php
 
 /**
- * @link              https://github.com/itsmeit268/preplink
+ * @link              https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @since             1.0.3
  * @package           Preplink
  *
  * @wordpress-plugin
  * Plugin Name:       Prepare Link
- * Plugin URI:        https://github.com/itsmeit268/preplink
+ * Plugin URI:        https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * Description:       A pre-linking plugin that prepares for downloads or link retrievals can benefit websites with high ad impressions and user retention rates.
  * Version:           1.0.3
  * Author:            itsmeit <itsmeit.biz@gmail.com>
