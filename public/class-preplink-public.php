@@ -5,7 +5,7 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * 
+ *
  * @link       https://github.com/itsmeit268/preplink
  * @author     itsmeit <itsmeit.biz@gmail.com>
  * Website     https://itsmeit.co | https://itsmeit.biz
@@ -29,6 +29,13 @@ class Preplink_Public
     private $version;
 
     /**
+     * @var false|mixed|void
+     */
+    protected $settings;
+
+    protected $preplink;
+
+    /**
      * Preplink_Public constructor.
      * @param $plugin_name
      * @param $version
@@ -37,70 +44,63 @@ class Preplink_Public
     {
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
+        $this->settings    = get_option('preplink_setting');
+        $this->preplink    = get_option('preplink_endpoint');
         add_action('init', array($this, 'preplink_rewrite_endpoint'), 10, 0);
         add_action('wp_head', array($this, 'add_prep_custom_styles'), 10, 2);
     }
 
     public function enqueue_styles()
     {
-        $settings = get_option('preplink_setting');
-        if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
-            return;
+        if (!is_front_page() && is_singular('post') && $this->is_plugin_enable()){
+            wp_enqueue_style('preplink-global', plugin_dir_url(__FILE__) . 'css/preplink-global.css', array(), $this->version, 'all');
         }
-        wp_enqueue_style('global' . $this->plugin_name, plugin_dir_url(__FILE__) . 'css/global.min.css', array(), $this->version, 'all');
     }
 
     public function enqueue_scripts()
     {
-        global $wp_query;
-        $settings = get_option('preplink_setting');
-        $endpointSetting = get_option('preplink_endpoint');
+        if (!is_front_page() && is_singular('post')) {
 
-        if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
-            return;
+            $endpoint = $this->getEndPointValue();
+
+            if ($this->is_plugin_enable() && isset($this->preplink['endpoint'])){
+                wp_enqueue_script('preplink-global', plugin_dir_url(__FILE__) . 'js/preplink-global.js', array('jquery'), $this->version, false);
+                wp_localize_script('preplink-global', 'prep_vars', array(
+                    'end_point'           => $endpoint,
+                    'prep_url'            => !empty($this->settings['preplink_url']) ? $this->settings['preplink_url'] : '',
+                    'count_down'          => !empty($this->settings['preplink_countdown']) ? $this->settings['preplink_countdown'] : 0,
+                    'countdown_endpoint'  => !empty($this->preplink['countdown_endpoint']) ? $this->preplink['countdown_endpoint'] : 5,
+                    'display_mode'        => !empty($this->settings['preplink_wait_text']) ? $this->settings['preplink_wait_text'] : 'wait_time',
+                    'wait_text'           => !empty($this->settings['wait_text_replace']) ? $this->settings['wait_text_replace'] : 'waiting',
+                    'auto_direct'         => !empty($this->settings['preplink_auto_direct']) ? $this->settings['preplink_auto_direct'] : 0,
+                    'endpoint_direct'     => !empty($this->preplink['endpoint_auto_direct']) ? $this->preplink['endpoint_auto_direct'] : 0,
+                    'text_complete'       => !empty($this->settings['preplink_text_complete']) ? $this->settings['preplink_text_complete'] : '[Link ready!]',
+                    'pre_elm_exclude'     => !empty($this->settings['preplink_excludes_element']) ? $this->settings['preplink_excludes_element'] : '.prep-link-download-btn,.prep-link-btn',
+                ));
+
+                global $wp_query;
+                if (isset($wp_query->query_vars[$endpoint])) {
+                    wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/preplink-endpoint.js', array('jquery'), $this->version, false);
+                    wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/preplink-endpoint.css', array(), $this->version, 'all');
+                }
+            }
         }
-
-        if (isset($endpointSetting['endpoint']) && !is_front_page()) {
-            wp_enqueue_script('global-preplink', plugin_dir_url(__FILE__) . 'js/global.min.js', array('jquery'), $this->version, false);
-            wp_localize_script('global-preplink', 'prep_vars', array(
-                'end_point' => $this->getEndPointValue(),
-                'prep_url'  => !empty($settings['preplink_url']) ? $settings['preplink_url'] : 'drive.google.com, play.google.com',
-                'count_down' => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 0,
-                'countdown_endpoint' => !empty($endpointSetting['countdown_endpoint']) ? $endpointSetting['countdown_endpoint'] : 5,
-                'display_mode' => !empty($settings['preplink_display_mode']) ? $settings['preplink_display_mode'] : 'wait_time',
-                'wait_text' => !empty($settings['preplink_wait_text']) ? $settings['preplink_wait_text'] : 'waiting',
-                'auto_direct'  => !empty($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : 0,
-                'endpoint_direct'  => !empty($endpointSetting['endpoint_auto_direct']) ? $endpointSetting['endpoint_auto_direct'] : 0,
-                'text_complete' => !empty($settings['preplink_text_complete']) ? $settings['preplink_text_complete'] : '[Link ready!]',
-                'pre_elm_exclude' => !empty($settings['preplink_excludes_element']) ? $settings['preplink_excludes_element'] : '.prep-link-download-btn,.prep-link-btn',
-            ));
-
-        }
-
-        if (!isset($wp_query->query_vars[$this->getEndPointValue()]) || !is_singular('post')) {
-            return;
-        }
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/prep-link.min.js', array('jquery'), $this->version, false);
     }
 
     public function preplink_rewrite_endpoint()
     {
-        $settings = get_option('preplink_setting');
-        if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
-            return;
+        if ($this->is_plugin_enable()){
+            add_rewrite_endpoint($this->getEndPointValue(), EP_PERMALINK | EP_PAGES );
+
+            add_filter('template_include', function($template) {
+                global $wp_query;
+                if (isset($wp_query->query_vars[$this->getEndPointValue()]) && is_singular('post')) {
+                    $this->set_robots_filter();
+                    return dirname( __FILE__ ) . '/templates/preplink_template.php';
+                }
+                return $template;
+            });
         }
-
-        add_rewrite_endpoint($this->getEndPointValue(), EP_PERMALINK | EP_PAGES );
-
-        add_filter( 'template_include', function( $template ) {
-            global $wp_query;
-
-            if (isset($wp_query->query_vars[$this->getEndPointValue()]) && is_singular('post')) {
-                return dirname( __FILE__ ) . '/templates/preplink_template.php';
-            }
-
-            return $template;
-        });
     }
 
     /**
@@ -109,26 +109,47 @@ class Preplink_Public
     public function getEndPointValue()
     {
         $endpoint = 'download';
-        $settings = get_option('preplink_endpoint');
-        if (!empty($settings['endpoint'])) {
-            $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($settings['endpoint']));
+        if (!empty($this->preplink['endpoint'])) {
+            $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($this->preplink['endpoint']));
         }
-
         return $endpoint;
     }
 
     public function add_prep_custom_styles()
     {
-        $settings = get_option('preplink_setting');
-        if (empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 0){
-            return;
-        }
-
-        if (!empty($settings['preplink_custom_style'])) {
+        if ($this->is_plugin_enable() && !empty($this->settings['preplink_custom_style'])) {
             ?>
-            <style><?= $settings['preplink_custom_style'] ?></style>
+            <style><?= $this->settings['preplink_custom_style'] ?></style>
             <?php
         }
     }
 
+    public function set_robots_filter() {
+        $robots = array(
+            'index' => 'noindex', 'follow' => 'nofollow',
+            'archive' => 'noarchive', 'snippet' => 'nosnippet',
+        );
+
+        if (function_exists('rank_math' )){
+            add_filter( 'rank_math/frontend/robots', function() use ($robots) {
+                return $robots;
+            });
+        }
+
+        if (function_exists('wpseo_init' )){
+            add_filter( 'wpseo_robots', function() use ($robots) {
+                return $robots;
+            });
+        }
+
+        if (function_exists('aioseo' )){
+            add_filter( 'aioseo_robots_meta', function() use ($robots) {
+                return $robots;
+            });
+        }
+    }
+
+    public function is_plugin_enable(){
+        return !empty($this->settings['preplink_enable_plugin']) && (int)$this->settings['preplink_enable_plugin'] == 1;
+    }
 }

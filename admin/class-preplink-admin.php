@@ -302,7 +302,7 @@ class Preplink_Admin
 
         add_settings_field(
             'preplink_faq_1',
-            __('Disable/Enable FAQ 1', 'preplink'),
+            __('FAQ 1', 'preplink'),
             array($this, 'preplink_display_faq_1'),
             'preplink_faq_settings',
             'preplink_faq_section',
@@ -311,7 +311,7 @@ class Preplink_Admin
 
         add_settings_field(
             'preplink_faq_2',
-            __('Disable/Enable FAQ 2', 'preplink'),
+            __('FAQ 2', 'preplink'),
             array($this, 'preplink_display_faq_2'),
             'preplink_faq_settings',
             'preplink_faq_section',
@@ -343,12 +343,12 @@ class Preplink_Admin
         );
 
         add_settings_field(
-            'preplink_display_mode', // ID của field
+            'preplink_display_mode',
             __('Display mode', 'preplink'),
             array($this, 'preplink_display_mode'),
-            'preplink_general_settings', // ID của page
-            'preplink_general_section', // ID của section
-            array( // Mảng các thông số truyền vào callback function
+            'preplink_general_settings',
+            'preplink_general_section',
+            array(
                 'wait_time' => 'Countdown',
                 'progress' => 'ProgressBar',
             )
@@ -365,13 +365,6 @@ class Preplink_Admin
                 0 => 'No',
             )
         );
-
-        add_settings_field(
-            'preplink_wait_text',
-            __('Replace waiting text', 'preplink'),
-            array($this, 'preplink_wait_text'),
-            'preplink_general_settings',
-            'preplink_general_section');
 
         add_settings_field(
             'preplink_advertising_1', // ID của field
@@ -456,6 +449,19 @@ class Preplink_Admin
                 0 => 'Disabled',
             )
         );
+
+        add_settings_field(
+            'preplink_advertising_8', // ID của field
+            __('Enable/Disable', 'preplink'),
+            array($this, 'preplink_filed_advertising_8'),
+            'preplink_advertising_settings', // ID của page
+            'preplink_advertising_section', // ID của section
+            array( // Mảng các thông số truyền vào callback function
+                1 => 'Enabled',
+                0 => 'Disabled',
+            )
+        );
+
 
         add_settings_field(
             'preplink_custom_style',
@@ -661,8 +667,8 @@ class Preplink_Admin
         <table class="form-table">
             <tbody>
             <tr class="preplink_faq1_enabled">
-                <th scope="row">Enable FAQ 1:</th>
-                <td>
+                <td style="padding: 5px 0;">
+                    <label style="width: 160px;display: inline-table;">Enable/Disable</label>
                     <select name="preplink_faq[preplink_faq1_enabled]" id="preplink_faq1_enabled">
                         <option value="1" <?php selected(isset($settings['preplink_faq1_enabled']) && $settings['preplink_faq1_enabled'] == '1'); ?>>
                             Yes
@@ -674,18 +680,18 @@ class Preplink_Admin
                 </td>
             </tr>
             <tr class="preplink_faq1_title">
-                <th scope="row">FAQ Title:</th>
-                <td>
+                <td style="padding: 5px 0;">
+                    <label style="width: 160px;display: inline-table;">FAQ Title</label>
                     <input type="text" name="preplink_faq[preplink_faq1_title]"
                            placeholder="Notes before continuing"
                            value="<?= esc_attr(isset($settings['preplink_faq1_title']) ? $settings['preplink_faq1_title'] : false); ?>"/>
                 </td>
             </tr>
             <tr class="preplink_faq1_description">
-                <th scope="row">FAQ HTML:</th>
-                <td>
+                <td style="padding: 5px 0;">
+                    <label style="width: 160px;display: inline-table;">FAQ Description (HTML)</label>
                     <?php
-                    $html = '<textarea name="preplink_faq[preplink_faq1_description]" rows="5" cols="50">';
+                    $html = '<textarea name="preplink_faq[preplink_faq1_description]" rows="10" cols="70">';
                     $html .= esc_html(isset($settings['preplink_faq1_description']) ? $settings['preplink_faq1_description'] : false);
                     $html .= '</textarea>';
                     $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
@@ -709,30 +715,25 @@ class Preplink_Admin
         <table class="form-table">
             <tbody>
             <tr class="preplink_faq2_enabled">
-                <th scope="row">Enable FAQ 2:</th>
-                <td>
+                <td style="padding: 5px 0;">
+                    <label style="width: 160px;display: inline-table;">Enable/Disable</label>
                     <select name="preplink_faq[preplink_faq2_enabled]" id="preplink_faq2_enabled">
-                        <option value="1" <?php selected(isset($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == '0'); ?>>
-                            No
-                        </option>
+                        <option value="1" <?php selected(isset($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == '1'); ?>>Yes</option>
+                        <option value="0" <?php selected(isset($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == '0'); ?>>No</option>
                     </select>
                 </td>
             </tr>
             <tr class="preplink_faq2_title">
-                <th scope="row">FAQ 2 Title:</th>
-                <td>
-                    <input type="text" name="preplink_faq[preplink_faq2_title]" placeholder="Download FAQs"
-                           value="<?= esc_attr(isset($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : false); ?>"/>
+                <td style="padding: 5px 0;">
+                    <label style="width: 160px;display: inline-table;">FAQ Title</label>
+                    <input type="text" name="preplink_faq[preplink_faq2_title]" placeholder="Download FAQs" value="<?= esc_attr(isset($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : false); ?>"/>
                 </td>
             </tr>
             <tr class="preplink_faq2_description">
-                <th scope="row">FAQ HTML:</th>
-                <td>
+                <td style="padding: 5px 0;">
+                    <label style="width: 160px;display: inline-table;">FAQ Description (HTML)</label>
                     <?php
-                    $html = '<textarea name="preplink_faq[preplink_faq2_description]" rows="5" cols="50">';
+                    $html = '<textarea name="preplink_faq[preplink_faq2_description]" rows="10" cols="70">';
                     $html .= esc_html(isset($settings['preplink_faq2_description']) ? $settings['preplink_faq2_description'] : false);
                     $html .= '</textarea>';
                     $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
@@ -746,7 +747,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_related_post($args)
+    function preplink_related_post()
     {
         $settings = get_option('preplink_endpoint', array());
         ?>
@@ -802,17 +803,34 @@ class Preplink_Admin
         echo $html;
     }
 
-    function preplink_display_mode($args)
+    function preplink_display_mode()
     {
         $settings = get_option('preplink_setting', array());
-        $selected = isset($settings['preplink_display_mode']) ? $settings['preplink_display_mode'] : '1';
-        $html = '<select id="preplink_display_mode" name="preplink_setting[preplink_display_mode]" class="preplink_display_mode">';
-        foreach ($args as $value => $label) {
-            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
-        }
-        $html .= '</select>';
-        $html .= '<p class="description">Display countdown or progress bar on click and URL (Default: Countdown)</p>';
-        echo $html;
+        ?>
+        <table class="form-table">
+            <tbody>
+            <tr class="preplink_wait_text">
+                <td style="padding: 5px 0;">
+                    <select name="preplink_setting[preplink_wait_text]" id="preplink_wait_text" class="preplink_related_post">
+                        <option value="wait_time" <?php selected(isset($settings['preplink_wait_text']) && $settings['preplink_wait_text'] == 'wait_time'); ?>>
+                            <?= __('Countdown')?>
+                        </option>
+                        <option value="progress" <?php selected(isset($settings['preplink_wait_text']) && $settings['preplink_wait_text'] == 'progress'); ?>>
+                            <?= __('Progress')?>
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="wait_text_replace">
+                <td style="padding: 5px 0;">
+                    <input type="text" id="wait_text_replace" name="preplink_setting[wait_text_replace]" placeholder="waiting"
+                           value="<?= esc_attr(!empty($settings['wait_text_replace']) ? $settings['wait_text_replace'] : false) ?>"/>
+                    <p class="description">Text displayed while the countdown is pending.</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
     }
 
     function preplink_post_auto_direct($args)
@@ -841,16 +859,6 @@ class Preplink_Admin
         echo $html;
     }
 
-    function preplink_wait_text()
-    {
-        $settings = get_option('preplink_setting', array());
-        ?>
-        <input type="text" id="preplink_wait_text" name="preplink_setting[preplink_wait_text]" placeholder="waiting"
-               value="<?= esc_attr(!empty($settings['preplink_wait_text']) ? $settings['preplink_wait_text'] : false) ?>"/>
-        <p class="description">Text displayed while the countdown is pending.</p>
-        <?php
-    }
-
     function preplink_filed_advertising_1()
     {
         $settings = get_option('preplink_advertising', array());
@@ -860,7 +868,7 @@ class Preplink_Admin
             <tr class="preplink_advertising_enable">
                 <th scope="row">Enable Advertising 1:</th>
                 <td>
-                    <select name="preplink_advertising[preplink_advertising_1]" id="preplink_advertising_1">
+                    <select name="preplink_advertising[preplink_advertising_8]" id="preplink_advertising_1">
                         <option value="1" <?php selected(isset($settings['preplink_advertising_1']) && $settings['preplink_advertising_1'] == '1'); ?>>
                             Yes
                         </option>
@@ -877,7 +885,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_1]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_1']) ? $settings['preplink_advertising_code_1'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After featured image.</p>';
+                    $html .= '<p class="description">Display position: Before featured image</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -885,10 +893,6 @@ class Preplink_Admin
         </table>
         <?php
 
-        if (isset($_POST['preplink_advertising'])) {
-            $settings = $_POST['preplink_advertising'];
-            update_option('preplink_advertising', $settings);
-        }
     }
 
     function preplink_filed_advertising_2()
@@ -900,7 +904,7 @@ class Preplink_Admin
             <tr class="preplink_advertising_enable">
                 <th scope="row">Enable Advertising 2:</th>
                 <td>
-                    <select name="preplink_advertising[preplink_advertising_2]" id="preplink_advertising_2">
+                    <select name="preplink_advertising[preplink_advertising_1]" id="preplink_advertising_2">
                         <option value="1" <?php selected(isset($settings['preplink_advertising_2']) && $settings['preplink_advertising_2'] == '1'); ?>>
                             Yes
                         </option>
@@ -917,7 +921,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_2]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_2']) ? $settings['preplink_advertising_code_2'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After post excerpt.</p>';
+                    $html .= '<p class="description">Display position: After featured image.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -935,7 +939,7 @@ class Preplink_Admin
             <tr class="preplink_advertising_enable">
                 <th scope="row">Enable Advertising 3:</th>
                 <td>
-                    <select name="preplink_advertising[preplink_advertising_3]" id="preplink_advertising_3">
+                    <select name="preplink_advertising[preplink_advertising_2]" id="preplink_advertising_3">
                         <option value="1" <?php selected(isset($settings['preplink_advertising_3']) && $settings['preplink_advertising_3'] == '1'); ?>>
                             Yes
                         </option>
@@ -952,7 +956,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_3]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_3']) ? $settings['preplink_advertising_code_3'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After download button.</p>';
+                    $html .= '<p class="description">Display position: After post excerpt.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -987,7 +991,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_4]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_4']) ? $settings['preplink_advertising_code_4'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: FAQ Center.</p>';
+                    $html .= '<p class="description">Display position: After download button.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -1003,7 +1007,7 @@ class Preplink_Admin
         <table class="form-table">
             <tbody>
             <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 5:</th>
+                <th scope="row">Enable Advertising 4:</th>
                 <td>
                     <select name="preplink_advertising[preplink_advertising_5]" id="preplink_advertising_5">
                         <option value="1" <?php selected(isset($settings['preplink_advertising_5']) && $settings['preplink_advertising_5'] == '1'); ?>>
@@ -1022,7 +1026,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_5]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_5']) ? $settings['preplink_advertising_code_5'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: Before Progress button</p>';
+                    $html .= '<p class="description">Display position: FAQ Center.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -1057,7 +1061,7 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_6]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_6']) ? $settings['preplink_advertising_code_6'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After related posts</p>';
+                    $html .= '<p class="description">Display position: Before Progress button</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -1092,6 +1096,41 @@ class Preplink_Admin
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_7]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_7']) ? $settings['preplink_advertising_code_7'] : false);
                     $html .= '</textarea>';
+                    $html .= '<p class="description">Display position: After related posts</p>';
+                    echo $html;
+                    ?></td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+    }
+
+    function preplink_filed_advertising_8()
+    {
+        $settings = get_option('preplink_advertising', array());
+        ?>
+        <table class="form-table">
+            <tbody>
+            <tr class="preplink_advertising_enable">
+                <th scope="row">Enable Advertising 8:</th>
+                <td>
+                    <select name="preplink_advertising[preplink_advertising_7]" id="preplink_advertising_8">
+                        <option value="1" <?php selected(isset($settings['preplink_advertising_8']) && $settings['preplink_advertising_8'] == '1'); ?>>
+                            Yes
+                        </option>
+                        <option value="0" <?php selected(isset($settings['preplink_advertising_8']) && $settings['preplink_advertising_8'] == '0'); ?>>
+                            No
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="preplink_advertising_code">
+                <th scope="row">Advertising HTML code:</th>
+                <td>
+                    <?php
+                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_8]" rows="5" cols="50">';
+                    $html .= esc_html(isset($settings['preplink_advertising_code_8']) ? $settings['preplink_advertising_code_8'] : false);
+                    $html .= '</textarea>';
                     $html .= '<p class="description">Display position: After comments</p>';
                     echo $html;
                     ?></td>
@@ -1099,6 +1138,9 @@ class Preplink_Admin
             </tbody>
         </table>
         <?php
-
+        if (isset($_POST['preplink_advertising'])) {
+            $settings = $_POST['preplink_advertising'];
+            update_option('preplink_advertising', $settings);
+        }
     }
 }

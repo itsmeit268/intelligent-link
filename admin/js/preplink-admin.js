@@ -1,42 +1,84 @@
 (function ($) {
     'use strict';
 
-    class FAQ {
-        constructor(enabled, input, textarea) {
-            this.enabled = enabled;
-            this.input = input;
-            this.textarea = textarea;
-            this.related  = input;
-        }
-
-        toggleField() {
-            if (this.enabled.val() == 1) {
-                this.input.show();
-                this.textarea.show();
-                this.input.find('input').attr('required', 'required');
-                this.textarea.find('textarea').attr('required', 'required');
-                this.related.find('input').attr('required', 'required');
-            } else {
-                this.input.hide();
-                this.textarea.hide();
-                this.input.find('input').removeAttr('required');
-                this.textarea.find('textarea').removeAttr('required');
-                this.related.find('input').removeAttr('required');
-            }
-        }
-    }
-
     $(function () {
-        const faq1    = new FAQ($('#preplink_faq1_enabled'), $('.preplink_faq1_title'), $('.preplink_faq1_description'));
-        const faq2    = new FAQ($('#preplink_faq2_enabled'), $('.preplink_faq2_title'), $('.preplink_faq2_description'));
-        const related = new FAQ($('#preplink_related_enabled'), $('.preplink_related_number'), $('.preplink_related_description'));
+        var $waitText = $('#preplink_wait_text');
+        var text_replace = $('.wait_text_replace');
+        var $faq1 = $('#preplink_faq1_enabled');
+        var faq1_des = $('.preplink_faq1_description,.preplink_faq1_title');
 
-        faq1.toggleField();
-        faq2.toggleField();
-        related.toggleField();
+        var $faq2 = $('#preplink_faq2_enabled');
+        var faq2_des = $('.preplink_faq2_description,.preplink_faq2_title');
 
-        faq1.enabled.on('change', () => faq1.toggleField());
-        faq2.enabled.on('change', () => faq2.toggleField());
-        related.enabled.on('change', () => related.toggleField());
+        var $related = $('#preplink_related_enabled');
+        var related_des = $('.preplink_related_description,.preplink_related_number');
+
+
+        function _display_mode(){
+            if ($waitText.val() === 'wait_time') {
+                text_replace.show();
+            } else {
+                text_replace.hide();
+            }
+
+            $waitText.on('change', function() {
+                if (this.value === 'wait_time') {
+                    text_replace.show();
+                } else {
+                    text_replace.hide();
+                }
+            });
+        }
+
+        function _faq1_enabled(){
+            if ($faq1.val() === '1') {
+                faq1_des.show();
+            } else {
+                faq1_des.hide();
+            }
+            $faq1.on('change', function() {
+                if (this.value === '1') {
+                    faq1_des.show();
+                } else {
+                    faq1_des.hide();
+                }
+            });
+        }
+
+        function _faq2_enabled(){
+            if ($faq2.val() === '1') {
+                faq2_des.show();
+            } else {
+                faq2_des.hide();
+            }
+            $faq2.on('change', function() {
+                if (this.value === '1') {
+                    faq2_des.show();
+                } else {
+                    faq2_des.hide();
+                }
+            });
+        }
+
+        function _related_enabled(){
+            if ($related.val() === '1') {
+                related_des.show();
+            } else {
+                related_des.hide();
+            }
+            $related.on('change', function() {
+                if (this.value === '1') {
+                    related_des.show();
+                } else {
+                    related_des.hide();
+                }
+            });
+        }
+
+        _display_mode();
+        _faq1_enabled();
+        _faq2_enabled();
+        _related_enabled();
     });
+
 })(jQuery);
