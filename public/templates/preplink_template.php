@@ -20,8 +20,11 @@ $postTitle = get_the_title($postID) ? get_the_title($postID) : get_post_field('p
 $excerpt = get_the_excerpt();
 $linkText = isset($_COOKIE['prep_text_link']) ? $_COOKIE['prep_text_link'] : '';
 
-if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
-    $linkText = trim(substr($linkText, strlen('Tải')));
+if (stripos($linkText, 'Tải') === 0 ||
+    stripos($linkText, 'tải') === 0 ||
+    stripos($linkText, 'download') === 0 ||
+    stripos($linkText, 'Download') === 0) {
+    $linkText = trim(str_ireplace(array('Tải', 'tải', 'download', 'Download'), '', $linkText));
 }
 
 ?>
@@ -32,7 +35,7 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
 
 <div class="single-page without-sidebar sticky-sidebar">
     <header class="single-header">
-        <h1 class="s-title"><a href="<?= $view_link?>"><?= !empty($linkText) ? __('Tải&nbsp;') . $linkText: $postTitle; ?></a></h1>
+        <h1 class="s-title"><a href="<?= $view_link?>"><?= !empty($linkText) ? __('Download','prep-link') .' '. $linkText: $postTitle; ?></a></h1>
     </header>
     <div class="rb-small-container preplink-padding">
         <div class="grid-container">
@@ -114,7 +117,7 @@ if (substr($linkText, 0, strlen('Tải')) === 'Tải') {
                                                 <a href="<?= $view_link ?>" class="image"><?php the_post_thumbnail('thumbnail'); ?></a>
                                                 <div class="post-download">
                                                     <p class="tittle">
-                                                        <a href="<?= $view_link ?>"  class="p-tittle"><?= __('Download:', 'prep-link') .' '. $linkText ?></a>
+                                                        <a href="<?= $view_link ?>"  class="p-tittle"><?= __('Download', 'prep-link') .' '. $linkText ?></a>
                                                     </p>
                                                     <p class="post-date"><?= __('Update:', 'prep-link') . ' ' . get_the_date('d/m/Y')?></p>
                                                 </div>
