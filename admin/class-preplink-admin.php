@@ -641,7 +641,7 @@ class Preplink_Admin
         $html .= isset($settings["preplink_url"]) ? $settings["preplink_url"] : false;
         $html .= '</textarea>';
         $html .= '<p class="description">These links/URLs will be redirected to the endpoint (Prepare Link), each separated by a comma (,).</p>';
-        $html .= '<p class="description">Default: drive.google.com, play.google.com.</p>';
+        $html .= '<p class="description">Example: drive.google.com, play.google.com.</p>';
         echo $html;
     }
 
