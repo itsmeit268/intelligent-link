@@ -17,3 +17,13 @@
 -- Add config: Custom Style
 -- Fix JS bug, update date CSS
 -- Add link setting plugin
+
+----01/05/2023 v1.0.4----
+-- Fix JS bug, update date CSS
+-- Design endpoint template
+-- Add cookie time, config
+-- Add Advertising Settings config
+-- Optimization CSS, JS File
+-- Fix bug template
+-- Set noindex endpoint page if use rankmath,yoast,allinone-seo-pack
+-- Add option delete option after remove plugin

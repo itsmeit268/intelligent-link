@@ -2,14 +2,14 @@
 
 /**
  * @link              https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
- * @since             1.0.3
+ * @since             1.0.4
  * @package           Preplink
  *
  * @wordpress-plugin
  * Plugin Name:       Prepare Link
  * Plugin URI:        https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * Description:       The plugin will encrypt the links you allow and perform a countdown time before redirecting to the specified "endpoint" page, helping to increase user engagement time and making it suitable for websites that allow file downloads.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            itsmeit <itsmeit.biz@gmail.com>
  * Author URI:        https://itsmeit.biz
  * License:           GPL-2.0+
@@ -23,23 +23,10 @@ if (!defined('ABSPATH')) {
     die;
 }
 
-// Plugin name
-define( 'PREPLINK_NAME', 'PrepareLink' );
-
-// Plugin version
-define('PREPLINK_VERSION', '1.0.3');
-
-// Plugin Root File
-define( 'PREPLINK_PLUGIN_FILE',	__FILE__ );
-
-// Plugin base
-define( 'PREPLINK_PLUGIN_BASE',	plugin_basename( PREPLINK_PLUGIN_FILE ) );
-
-// Plugin Folder Path
-define( 'PREPLINK_PLUGIN_DIR',	plugin_dir_path( PREPLINK_PLUGIN_FILE ) );
-
-// Plugin Folder URL
-define( 'PREPLINK_PLUGIN_URL',	plugin_dir_url( PREPLINK_PLUGIN_FILE ) );
+define('PREPLINK_NAME', 'PrepareLink');
+define('PREPLINK_VERSION', '1.0.4');
+define('PREPLINK_PLUGIN_FILE',	__FILE__);
+define('PREPLINK_PLUGIN_BASE',	plugin_basename(PREPLINK_PLUGIN_FILE ));
 
 /**
  * The code that runs during plugin activation.
@@ -47,7 +34,7 @@ define( 'PREPLINK_PLUGIN_URL',	plugin_dir_url( PREPLINK_PLUGIN_FILE ) );
  */
 function activate_preplink()
 {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-preplink-activator.php';
+    require_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-preplink-activator.php';
     Preplink_Activator::activate();
 }
 
@@ -57,18 +44,18 @@ function activate_preplink()
  */
 function deactivate_preplink()
 {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-preplink-deactivator.php';
+    require_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-preplink-deactivator.php';
     Preplink_Deactivator::deactivate();
 }
 
-register_activation_hook(__FILE__, 'activate_preplink');
-register_deactivation_hook(__FILE__, 'deactivate_preplink');
+register_activation_hook(PREPLINK_PLUGIN_FILE, 'activate_preplink');
+register_deactivation_hook(PREPLINK_PLUGIN_FILE, 'deactivate_preplink');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path(__FILE__) . 'includes/class-preplink.php';
+require plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-preplink.php';
 
 function run_preplink()
 {

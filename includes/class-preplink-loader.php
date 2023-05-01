@@ -1,11 +1,6 @@
 <?php
 
 /**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
  * @link       https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @package    Preplink
  * @subpackage Preplink/admin
@@ -18,8 +13,6 @@ class Preplink_Loader
 
     /**
      * The array of actions registered with WordPress.
-     *
-     * 
      * @access   protected
      * @var      array $actions The actions registered with WordPress to fire when the plugin loads.
      */
@@ -27,8 +20,6 @@ class Preplink_Loader
 
     /**
      * The array of filters registered with WordPress.
-     *
-     * 
      * @access   protected
      * @var      array $filters The filters registered with WordPress to fire when the plugin loads.
      */
@@ -36,15 +27,11 @@ class Preplink_Loader
 
     /**
      * Initialize the collections used to maintain the actions and filters.
-     *
-     * 
      */
     public function __construct()
     {
-
         $this->actions = array();
         $this->filters = array();
-
     }
 
     /**
@@ -105,11 +92,6 @@ class Preplink_Loader
 
     }
 
-    /**
-     * Register the filters and actions with WordPress.
-     *
-     * 
-     */
     public function run()
     {
         foreach ($this->filters as $hook) {

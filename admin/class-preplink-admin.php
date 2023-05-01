@@ -158,9 +158,7 @@ class Preplink_Admin
     public function add_plugin_action_link($links)
     {
         $setting_link = '<a href="' . esc_url(get_admin_url()) . 'admin.php?page=preplink-settings">' . __('Settings', 'preplink') . '</a>';
-        $donate_link = '<a href="//itsmeit.biz" title="' . __('Donate Now', 'preplink') . '" target="_blank" style="font-weight:bold">' . __('Donate', 'preplink') . '</a>';
-//        $download_link = '<a href="//github.com/itsmeit268/preplink" title="'.__('Document','preplink').'" target="_blank" style="font-weight:bold">'.__('Document', 'preplink').'</a>';
-//        array_unshift($links, $download_link);
+        $donate_link = '<a href="//itsmeit.co" title="' . __('Donate Now', 'preplink') . '" target="_blank" style="font-weight:bold">' . __('Donate', 'preplink') . '</a>';
         array_unshift($links, $donate_link);
         array_unshift($links, $setting_link);
         return $links;
@@ -480,6 +478,15 @@ class Preplink_Admin
             'preplink_general_section'
         );
 
+        add_settings_field(
+            'preplink_delete_option',
+            'Delete all data after remove plugin',
+            array($this, 'preplink_delete_option_on_uninstall'),
+            'preplink_general_settings',
+            'preplink_general_section'
+        );
+
+
         register_setting(
             'preplink_general_settings',
             'preplink_setting'
@@ -557,7 +564,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_enable_plugin($args)
+    public function preplink_enable_plugin($args)
     {
         $settings = get_option('preplink_setting', array());
         $selected = isset($settings['preplink_enable_plugin']) ? $settings['preplink_enable_plugin'] : '1';
@@ -570,7 +577,7 @@ class Preplink_Admin
         echo $html;
     }
 
-    function preplink_endpoint_field()
+    public function preplink_endpoint_field()
     {
         $settings = get_option('preplink_endpoint', array());
         ?>
@@ -585,7 +592,7 @@ class Preplink_Admin
         }
     }
 
-    function preplink_text_complete()
+    public function preplink_text_complete()
     {
         $settings = get_option('preplink_setting', array());
         ?>
@@ -596,7 +603,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_countdown_field()
+    public function preplink_countdown_field()
     {
         $settings = get_option('preplink_setting', array());
         ?>
@@ -606,7 +613,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_countdown_endpoint()
+    public function preplink_countdown_endpoint()
     {
         $settings = get_option('preplink_endpoint', array());
         ?>
@@ -617,7 +624,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_cookie_time()
+    public function preplink_cookie_time()
     {
         $settings = get_option('preplink_endpoint', array());
         ?>
@@ -650,7 +657,7 @@ class Preplink_Admin
         echo $html;
     }
 
-    function preplink_image_field($args)
+    public function preplink_image_field($args)
     {
         $settings = get_option('preplink_endpoint', array());
         $selected = isset($settings['preplink_image']) ? $settings['preplink_image'] : '1';
@@ -663,7 +670,7 @@ class Preplink_Admin
         echo $html;
     }
 
-    function preplink_excerpt_field($args)
+    public function preplink_excerpt_field($args)
     {
         $settings = get_option('preplink_endpoint', array());
         $selected = isset($settings['preplink_excerpt']) ? $settings['preplink_excerpt'] : '1';
@@ -675,7 +682,7 @@ class Preplink_Admin
         echo $html;
     }
 
-    function preplink_display_faq_1()
+    public function preplink_display_faq_1()
     {
         $settings = get_option('preplink_faq', array());
         ?>
@@ -723,7 +730,7 @@ class Preplink_Admin
         }
     }
 
-    function preplink_display_faq_2()
+    public function preplink_display_faq_2()
     {
         $settings = get_option('preplink_faq', array());
         ?>
@@ -762,7 +769,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_related_post()
+    public function preplink_related_post()
     {
         $settings = get_option('preplink_endpoint', array());
         ?>
@@ -795,7 +802,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_comment($args)
+    public function preplink_comment($args)
     {
         $settings = get_option('preplink_endpoint', array());
         $selected = isset($settings['preplink_comment']) ? $settings['preplink_comment'] : '1';
@@ -818,7 +825,7 @@ class Preplink_Admin
         echo $html;
     }
 
-    function preplink_display_mode()
+    public function preplink_display_mode()
     {
         $settings = get_option('preplink_setting', array());
         ?>
@@ -848,7 +855,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_post_auto_direct($args)
+    public function preplink_post_auto_direct($args)
     {
         $settings = get_option('preplink_setting', array());
         $selected = isset($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : '1';
@@ -861,7 +868,7 @@ class Preplink_Admin
         echo $html;
     }
 
-    function preplink_endpoint_auto_direct($args)
+    public function preplink_endpoint_auto_direct($args)
     {
         $settings = get_option('preplink_endpoint', array());
         $selected = isset($settings['endpoint_auto_direct']) ? $settings['endpoint_auto_direct'] : '1';
@@ -874,7 +881,7 @@ class Preplink_Admin
         echo $html;
     }
 
-    function preplink_filed_advertising_1()
+    public function preplink_filed_advertising_1()
     {
         $settings = get_option('preplink_advertising', array());
         ?>
@@ -910,7 +917,7 @@ class Preplink_Admin
 
     }
 
-    function preplink_filed_advertising_2()
+    public function preplink_filed_advertising_2()
     {
         $settings = get_option('preplink_advertising', array());
         ?>
@@ -945,7 +952,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_filed_advertising_3()
+    public function preplink_filed_advertising_3()
     {
         $settings = get_option('preplink_advertising', array());
         ?>
@@ -980,7 +987,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_filed_advertising_4()
+    public function preplink_filed_advertising_4()
     {
         $settings = get_option('preplink_advertising', array());
         ?>
@@ -1015,7 +1022,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_filed_advertising_5()
+    public function preplink_filed_advertising_5()
     {
         $settings = get_option('preplink_advertising', array());
         ?>
@@ -1050,7 +1057,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_filed_advertising_6()
+    public function preplink_filed_advertising_6()
     {
         $settings = get_option('preplink_advertising', array());
         ?>
@@ -1085,7 +1092,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_filed_advertising_7()
+    public function preplink_filed_advertising_7()
     {
         $settings = get_option('preplink_advertising', array());
         ?>
@@ -1120,7 +1127,7 @@ class Preplink_Admin
         <?php
     }
 
-    function preplink_filed_advertising_8()
+    public function preplink_filed_advertising_8()
     {
         $settings = get_option('preplink_advertising', array());
         ?>
@@ -1157,5 +1164,12 @@ class Preplink_Admin
             $settings = $_POST['preplink_advertising'];
             update_option('preplink_advertising', $settings);
         }
+    }
+
+    public function preplink_delete_option_on_uninstall()
+    {
+        $settings = get_option('preplink_setting', array());
+        $delete_option = isset( $settings['preplink_delete_option'] ) ? $settings['preplink_delete_option'] : false;
+        echo '<input type="checkbox" name="preplink_setting[preplink_delete_option]" value="1" ' . checked( $delete_option, true, false ) . '/>';
     }
 }
