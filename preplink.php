@@ -2,14 +2,14 @@
 
 /**
  * @link              https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
- * @since             1.0.4
+ * @since             1.0.5
  * @package           Preplink
  *
  * @wordpress-plugin
  * Plugin Name:       Prepare Link
  * Plugin URI:        https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * Description:       The plugin will encrypt the links you allow and perform a countdown time before redirecting to the specified "endpoint" page, helping to increase user engagement time and making it suitable for websites that allow file downloads.
- * Version:           1.0.4
+ * Version:           1.0.5
  * Author:            itsmeit <itsmeit.biz@gmail.com>
  * Author URI:        https://itsmeit.biz
  * License:           GPL-2.0+
@@ -24,7 +24,7 @@ if (!defined('ABSPATH')) {
 }
 
 define('PREPLINK_NAME', 'PrepareLink');
-define('PREPLINK_VERSION', '1.0.4');
+define('PREPLINK_VERSION', '1.0.5');
 define('PREPLINK_PLUGIN_FILE',	__FILE__);
 define('PREPLINK_PLUGIN_BASE',	plugin_basename(PREPLINK_PLUGIN_FILE ));
 

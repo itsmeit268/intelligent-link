@@ -54,7 +54,7 @@ class Preplink
         if (defined('PREPLINK_VERSION')) {
             $this->version = PREPLINK_VERSION;
         } else {
-            $this->version = '1.0.4';
+            $this->version = '1.0.5';
         }
         $this->plugin_name = 'preplink';
 
