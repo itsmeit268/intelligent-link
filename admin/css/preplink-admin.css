@@ -12,6 +12,9 @@
 .prep-link-admin-settings h3 {
     font-size: 18px;
 }
+.prep-notice {
+    color: red;
+}
 @media only screen and (max-device-width: 480px) {
     #preplink_endpoint_field{
         width: inherit;

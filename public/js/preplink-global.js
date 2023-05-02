@@ -8,40 +8,48 @@
     'use strict';
 
     $(function () {
-        var $urls = $('a');
-        var end_point = $.trim(prep_vars.end_point);
-        var prep_url = prep_vars.prep_url;
-        var current_url = window.location.href.replace(/#.*/, '');
-        var time_cnf = parseInt(prep_vars.count_down);
-        var cookie_time = parseInt(prep_vars.cookie_time);
-        var wait_text = $.trim(prep_vars.wait_text);
-        var display_mode = prep_vars.display_mode;
-        var auto_direct = parseInt(prep_vars.auto_direct);
-        var text_complete = $.trim(prep_vars.text_complete);
-        var pre_elm_exclude = $.trim(prep_vars.pre_elm_exclude);
-        var exclude_elm = pre_elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
+        var $urls = $('a'),
+            end_point = $.trim(prep_vars.end_point),
+            prep_url = prep_vars.prep_url,
+            current_url = window.location.href.replace(/#.*/, ''),
+            time_cnf = parseInt(prep_vars.count_down),
+            cookie_time = parseInt(prep_vars.cookie_time),
+            wait_text = $.trim(prep_vars.wait_text),
+            display_mode = prep_vars.display_mode,
+            auto_direct = parseInt(prep_vars.auto_direct),
+            text_complete = $.trim(prep_vars.text_complete),
+            pre_elm_exclude = $.trim(prep_vars.pre_elm_exclude),
+            exclude_elm = pre_elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
 
-        function __setCookieTitle(text_link) {
-            const expirationTime = new Date(Date.now() + cookie_time * 60 * 1000); //5 phút phụt 5 phát
-            document.cookie = "prep_text_link=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            document.cookie = "prep_text_link=" + text_link + "; expires=" + expirationTime.toUTCString() + "; path=/";
+        const expirationTime = new Date(Date.now() + cookie_time * 60 * 1000); //5 phút phụt 5 phát
+
+        function _setCookie(name, value) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            document.cookie = `${name}=${value}; expires=${expirationTime.toUTCString()}; path=/`;
         }
 
-        function __updateLink($link, href) {
+        function __setCookieTitle(text_link) {
+            _setCookie("prep_text_link", text_link);
+        }
+
+        function __setCookieURL(href) {
+            _setCookie("prep_link_href", href);
+        }
+
+        function __endpointURL() {
             if (current_url.indexOf('?') !== -1) {
                 current_url = current_url.split('?')[0];
             }
 
             if (window.location.href.indexOf(".html") > -1 && current_url.includes('.html')) {
-                current_url = current_url.match(/.*\.html/)[0];
-            } else if(current_url.includes('/'+end_point+'/')) {
-                current_url = current_url.replace('/'+end_point+'/','');
+                current_url = current_url.match(/.*\.html/)[0] + '/';
+            } else if (current_url.includes('/' + end_point + '/')) {
+                current_url = current_url.replace('/' + end_point + '/', '');
             }
-            $link.attr('href', `${current_url + '/' + end_point + '?id=' + href}`);
-            $link.attr('data-id', `${current_url + '/' + end_point + '?id=' + href}`);
+            return current_url + end_point + '/';
         }
 
-        function __startCountdown($link, href, text_link){
+        function __startCountdown($link, href, text_link) {
             let downloadTimer;
             let timeleft = time_cnf;
             const $progress = $link.find('.post-progress');
@@ -63,22 +71,20 @@
                     $link.removeAttr('target');
                     if (display_mode === 'progress') {
                         var progress_html = '<i class="fa fa-angle-double-right fa-shake" style="color: #fff;cursor: pointer;font-size: 13px;"></i>';
-                        progress_html += '<span class="text-hide-complete" style="display:none">' + `${text_link}` + '</span>';
-                        progress_html += '<span style="vertical-align: unset;">'+ '&nbsp;'+text_complete+'</span>';
+                        progress_html += `<span class="text-hide-complete" data-url="${href}" style="display:none">${text_link}</span>`;
+                        progress_html += '<span style="vertical-align: unset;">' + '&nbsp;' + text_complete + '</span>';
                         $link.html('<span class="post-progress">' + progress_html + '</span>');
                     } else {
                         if (text_link.length > 35) {
                             text_link_cut = text_link.substring(0, text_link.length - 15) + '...';
                         }
-                        var wait_time_html = '<span class="text-hide-complete" style="display:none">' + `${text_link}` + '</span>';
-                        wait_time_html += `${text_link_cut}` + '<strong style="color:red;">'+ '&nbsp;' +text_complete+'</strong>';
+                        var wait_time_html = `<span class="text-hide-complete" data-url="${href}" style="display:none">${text_link}</span>`;
+                        wait_time_html += `${text_link_cut}` + '<strong style="color:red;">' + '&nbsp;' + text_complete + '</strong>';
                         $link.html(wait_time_html);
                     }
 
-                    __updateLink($link, href);
-
                     if (auto_direct) {
-                        window.location.replace($link.attr('href'));
+                        window.location.href = __endpointURL();
                     }
                 } else {
                     setTimeout(countdown, 1000);
@@ -98,7 +104,7 @@
             }
         }
 
-        function _createUrlEncode(){
+        function _createUrlEncode() {
             $urls.each(function () {
                 var $this = $(this);
                 var href = $(this).attr('href');
@@ -125,7 +131,7 @@
                     var encoded_link = btoa(href);
                     $this.attr('href', encoded_link);
                     // $this.attr('data-id', encoded_link);
-                    // $this.removeAttr('target');
+                    $this.removeAttr('target');
                     $this.removeAttr('data-id data-type');
 
                     if (display_mode === 'progress') {
@@ -133,13 +139,13 @@
                         $this.html('<span class="post-progress">' + text_link + '</span>');
                     } else {
                         $this.wrap('<span class="wrap-countdown"></span>');
-                        $this.html('<strong class="link-countdown"">' + text_link + '</span>');
+                        $this.html('<strong class="link-countdown">' + text_link + '</span>');
                     }
                 }
             });
         }
 
-        function _linkClickProcess(){
+        function _linkClickProcess() {
             $urls.on('click', function (e) {
                 const $this = $(this);
                 const text_link = $this.text();
@@ -153,8 +159,8 @@
                     }
                     e.preventDefault();
                     __setCookieTitle(text_link);
-                    __updateLink($this, href);
-                    window.location.href = $this.attr('href');
+                    __setCookieURL(href);
+                    window.location.href = __endpointURL();
                     return;
                 }
 
@@ -169,20 +175,21 @@
                 }
             });
 
-            window.addEventListener('click', function (e){
+            window.addEventListener('click', function (e) {
                 var clickedElement = e.target,
                     anchor = $(clickedElement).closest('a'),
-                    progress_text = $(clickedElement).parents('.post-progress').find('.text-hide-complete').text(),
-                    countdown_text = $(clickedElement).parents('.wrap-countdown').find('.text-hide-complete').text();
-
-                if (display_mode === 'progress' && progress_text.length && anchor.length) {
+                    progress = $(clickedElement).parents('.post-progress').find('.text-hide-complete'),
+                    countdown = $(clickedElement).parents('.wrap-countdown').find('.text-hide-complete');
+                if (display_mode === 'progress' && progress.length && anchor.length) {
                     e.preventDefault();
-                    __setCookieTitle(progress_text);
-                    window.location.replace(anchor.attr('href'));
-                } else if (countdown_text.length && anchor.length){
+                    __setCookieTitle(progress.text());
+                    __setCookieURL(progress.attr('data-url'));
+                    window.location.href = __endpointURL();
+                } else if (countdown.length && anchor.length) {
                     e.preventDefault();
-                    __setCookieTitle(countdown_text);
-                    window.location.replace(anchor.attr('href'));
+                    __setCookieTitle(countdown.text());
+                    __setCookieURL(countdown.attr('data-url'));
+                    window.location.href = __endpointURL();
                 }
             });
         }

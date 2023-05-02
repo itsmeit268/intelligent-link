@@ -10,17 +10,12 @@
 
 (function ($) {
     'use strict';
-    $(function () {
-        var urlParams = new URLSearchParams(window.location.search);
-        var preUrlGo = urlParams.get('id');
-        var $progress = $('#enpoint-progress');
-        var time_cnf = parseInt(prep_vars.countdown_endpoint);
-        var auto_direct = parseInt(prep_vars.endpoint_direct);
 
-        function _update_link_direct() {
-            var decodedUrl = window.atob(preUrlGo);
-            return window.location.replace(decodedUrl);
-        }
+    $(function () {
+        var $progress   = $('#enpoint-progress');
+        var time_cnf    = parseInt(prep_vars.countdown_endpoint);
+        var auto_direct = parseInt(prep_vars.endpoint_direct);
+        var preUrlGo    = $('#prep-link-single-page').attr('data-url');
 
         function scrollToProgressElm() {
             $('.clickable').on('click', function () {
@@ -68,7 +63,7 @@
                             isProgressRunning = false;
                             $progress.off('click');
                             if (auto_direct){
-                                _update_link_direct();
+                                window.location.href = window.atob(preUrlGo);
                             }
                         } else if (!isCountdownFinished) {
                             const percent = Math.floor((1 - timeRemaining / totalTime) * 100);
@@ -88,14 +83,14 @@
                         if (!isCountdownFinished) {
                             e.preventDefault();
                         } else {
-                            _update_link_direct();
+                            window.location.href = window.atob(preUrlGo);
                         }
                     });
                 });
             }
         }
 
-        function _faq_prep_link() {
+        function faqPrepLink() {
             var question = ".prep-link-question";
             var answer = ".prep-link-answer";
             if ($(question).length) {
@@ -114,6 +109,6 @@
 
         scrollToProgressElm();
         progressRunning();
-        _faq_prep_link();
+        faqPrepLink();
     });
 })(jQuery);
