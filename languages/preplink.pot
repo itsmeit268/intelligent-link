@@ -78,7 +78,7 @@ msgid "here"
 msgstr ""
 
 msgid "and do it again."
-msgstr ""
+msgstr " and do it again."
 
 msgid "Your session has ended, please click"
 msgstr ""
@@ -91,3 +91,6 @@ msgstr ""
 
 msgid "The extract password has been attached, please check it in the zip file."
 msgstr ""
+
+msgid "(illustration)"
+msgstr " (illustration)"

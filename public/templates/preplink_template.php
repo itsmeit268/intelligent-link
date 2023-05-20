@@ -29,31 +29,6 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
     $prepLinkText = trim(str_ireplace(array('Tải', 'tải', 'download', 'Download'), '', $prepLinkText));
 }
 
-add_action('wp_head', function () {
-    ?>
-    <!-- Ads adsterra itsmeit.co-->
-    <script async="async" data-cfasync="false" src="//pl18124507.highrevenuegate.com/22704e0d8a7af0e52d2b68f097fc3419/invoke.js"></script>
-    <script async="async" data-cfasync="false" src="//pl18104634.highrevenuegate.com/3c814d791e7eab81bce23860cf13946a/invoke.js"></script>
-    <?php
-});
-
-add_action('wp_print_scripts', function () {
-    wp_dequeue_script('fixedtoc-js');
-    wp_dequeue_script('fixedtoc-js-js-extra');
-    wp_dequeue_script('rbswiper-js');
-    wp_dequeue_script( 'enlighterjs' );
-    wp_dequeue_style('enlighterjs');
-});
-
-function remove_enlighterjs_script() {
-    wp_dequeue_script('fixedtoc-js');
-    wp_dequeue_script('fixedtoc-js-js-extra');
-    wp_dequeue_script('rbswiper-js');
-    wp_dequeue_script( 'enlighterjs' );
-    wp_dequeue_style('enlighterjs');
-}
-add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
-
 ?>
 <?php if (!empty($settings['preplink_custom_style'])) {
     echo "<style>{$settings['preplink_custom_style']}</style>";
@@ -66,9 +41,6 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
         <h1 class="s-title">
             <a class="adsterra" href="javascript:void(0)"><?= !empty($prepLinkText) ? __('Download','prep-link') .' '. $prepLinkText: $postTitle; ?></a>
         </h1>
-        <div class="related_post" style="margin: 0 25px;">
-            <div id="container-3c814d791e7eab81bce23860cf13946a"></div>
-        </div>
     </header>
     <div class="rb-small-container preplink-padding">
         <div class="grid-container">
@@ -78,11 +50,11 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                         <div class="entry-content rbct">
                             <?php if (empty($prepLinkURL) || empty($prepLinkText)) : ?>
                                 <div class="session-expired">
-                                    <p><?= __('Your session has ended, please click ', 'prep-link')?><a href="<?= $view_link ?>"><span><?= __('here', 'prep-link')?></span></a><?= __(' and do it again.', 'prep-link')?></p>
+                                    <p><?= __('Your session has ended, please click ', 'prep-link')?><a href="<?= $view_link ?>"><span><?= __('here', 'prep-link')?></span></a><?= __('and do it again.', 'prep-link')?></p>
                                     <p><?= __('If the issue persists, try clearing your cookies or browser history and attempt again.', 'prep-link') ?></p>
                                 </div>
                             <?php else: ?>
-                                <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_1']) && (int)$advertising['preplink_advertising_1'] == 1 && !empty($advertising['preplink_advertising_code_1'])): ?>
+                                <?php if (!empty($advertising['preplink_advertising_1']) && (int)$advertising['preplink_advertising_1'] == 1 && !empty($advertising['preplink_advertising_code_1'])): ?>
                                     <div class="preplink-ads preplink-ads-1">
                                         <?= $advertising['preplink_advertising_code_1'] ?>
                                     </div>
@@ -100,7 +72,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                                             <span class="caption-text meta-bold">
                                                 <a class="caption-textlnk adsterra"
                                                    style="color: #282828; font-weight: normal; margin-left: -10px; font-size: 14px;" href="javascript:void(0)">
-                                                    <?= substr($caption, -14) === ' (illustration)' ? $caption : $caption . ' (illustration)'; ?>
+                                                    <?= substr($caption, -14) === ' (illustration)' ? $caption : $caption . __('(illustration)', 'prep-link'); ?>
                                                 </a>
                                             </span>
                                         </div>
@@ -108,7 +80,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                                 <?php endif; ?>
 
                                 <div class="preplink-ads preplink-ads-2">
-                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_2']) && (int)$advertising['preplink_advertising_2'] == 1 && !empty($advertising['preplink_advertising_code_2'])): ?>
+                                    <?php if (!empty($advertising['preplink_advertising_2']) && (int)$advertising['preplink_advertising_2'] == 1 && !empty($advertising['preplink_advertising_code_2'])): ?>
                                         <?= $advertising['preplink_advertising_code_2'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -132,7 +104,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                                 ?>
 
                                 <div class="preplink-ads preplink-ads-3">
-                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_3']) && (int)$advertising['preplink_advertising_3'] == 1 && !empty($advertising['preplink_advertising_code_3'])): ?>
+                                    <?php if (!empty($advertising['preplink_advertising_3']) && (int)$advertising['preplink_advertising_3'] == 1 && !empty($advertising['preplink_advertising_code_3'])): ?>
                                         <?= $advertising['preplink_advertising_code_3'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -141,10 +113,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                                     <ul style="padding: 5px;">
                                         <li>
                                             <?= __('If the file name does not match the article content, please click', 'prep-link')?>
-                                            <a href="<?= $view_link ?>"><span><?= __('here', 'prep-link')?></span></a><?= __(' and do it again.', 'prep-link')?>
-                                        </li>
-                                        <li>
-                                            <?= __('The extract password has been attached, please check it in the zip file.', 'prep-link')?>
+                                            <a href="<?= $view_link ?>"><span><?= __('here', 'prep-link')?></span></a><?= __('and do it again.', 'prep-link')?>
                                         </li>
                                         <li>
                                             <?= __('To search for a specific resource or content on the internet, you can visit', 'prep-link')?>
@@ -185,7 +154,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                                 </div>
 
                                 <div class="preplink-ads preplink-ads-4">
-                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_4']) && (int)$advertising['preplink_advertising_4'] == 1 && !empty($advertising['preplink_advertising_code_4'])): ?>
+                                    <?php if (!empty($advertising['preplink_advertising_4']) && (int)$advertising['preplink_advertising_4'] == 1 && !empty($advertising['preplink_advertising_code_4'])): ?>
                                         <?= $advertising['preplink_advertising_code_4'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -198,7 +167,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                                 <?php endif; ?>
 
                                 <div class="preplink-ads preplink-ads-5">
-                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_5']) && (int)$advertising['preplink_advertising_5'] == 1 && !empty($advertising['preplink_advertising_code_5'])): ?>
+                                    <?php if (!empty($advertising['preplink_advertising_5']) && (int)$advertising['preplink_advertising_5'] == 1 && !empty($advertising['preplink_advertising_code_5'])): ?>
                                         <?= $advertising['preplink_advertising_code_5'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -211,7 +180,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                                 <?php endif; ?>
 
                                 <div class="preplink-ads preplink-ads-6">
-                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_6']) && (int)$advertising['preplink_advertising_6'] == 1 && !empty($advertising['preplink_advertising_code_6'])): ?>
+                                    <?php if (!empty($advertising['preplink_advertising_6']) && (int)$advertising['preplink_advertising_6'] == 1 && !empty($advertising['preplink_advertising_code_6'])): ?>
                                         <?= $advertising['preplink_advertising_code_6'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -294,7 +263,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                                 <?php endif; ?>
 
                                 <div class="preplink-ads preplink-ads-7">
-                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_7']) && (int)$advertising['preplink_advertising_7'] == 1 && !empty($advertising['preplink_advertising_code_7'])): ?>
+                                    <?php if (!empty($advertising['preplink_advertising_7']) && (int)$advertising['preplink_advertising_7'] == 1 && !empty($advertising['preplink_advertising_code_7'])): ?>
                                         <?= $advertising['preplink_advertising_code_7'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -306,7 +275,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                                 }
                                 ?>
                                 <div class="preplink-ads preplink-ads-8">
-                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_8']) && (int)$advertising['preplink_advertising_8'] == 1 && !empty($advertising['preplink_advertising_code_8'])): ?>
+                                    <?php if (!empty($advertising['preplink_advertising_8']) && (int)$advertising['preplink_advertising_8'] == 1 && !empty($advertising['preplink_advertising_code_8'])): ?>
                                         <?= $advertising['preplink_advertising_code_8'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -318,19 +287,4 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
         </div>
     </div>
 </div>
-<script>
-    jQuery(document).ready(function ($) {
-        var $adsterra = $('.adsterra');
-        if ($(window).width() > 700) {
-            $adsterra.attr({
-                href: 'https://www.highrevenuegate.com/nt9jff03h?key=f5215f21822ff7e20dcf20cdb60f73be',
-                target: '_blank'
-            });
-            (function(s,u,z,p){s.src=u,s.setAttribute('data-zone',z),p.appendChild(s);})(document.createElement('script'),'https://inklinkor.com/tag.min.js',5602403,document.body||document.documentElement);
-        }
-        $adsterra.on('click', function () {
-            $('#enpoint-progress').trigger('click');
-        });
-    });
-</script>
 <?php if (file_exists(get_template_directory() . '/footer.php')) get_footer(); ?>
