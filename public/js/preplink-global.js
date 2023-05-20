@@ -8,20 +8,21 @@
     'use strict';
 
     $(function () {
-        var $urls = $('a'),
+        var href = $('a'),
             end_point = $.trim(prep_vars.end_point),
-            prep_url = prep_vars.prep_url,
-            current_url = window.location.href.replace(/#.*/, ''),
+            allow_url = prep_vars.prep_url,
+            post_url = window.location.href.replace(/#.*/, ''),
             time_cnf = parseInt(prep_vars.count_down),
             cookie_time = parseInt(prep_vars.cookie_time),
             wait_text = $.trim(prep_vars.wait_text),
             display_mode = prep_vars.display_mode,
             auto_direct = parseInt(prep_vars.auto_direct),
             text_complete = $.trim(prep_vars.text_complete),
-            pre_elm_exclude = $.trim(prep_vars.pre_elm_exclude),
-            exclude_elm = pre_elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
+            elm_exclude = $.trim(prep_vars.pre_elm_exclude),
+            exclude_elm = elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
 
-        const expirationTime = new Date(Date.now() + cookie_time * 60 * 1000); //5 phút phụt 5 phát
+        var windowWidth = $(window).width();
+        var expirationTime = new Date(Date.now() + cookie_time * 60 * 1000);
 
         function _setCookie(name, value) {
             document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
@@ -36,17 +37,19 @@
             _setCookie("prep_link_href", href);
         }
 
-        function __endpointURL() {
-            if (current_url.indexOf('?') !== -1) {
-                current_url = current_url.split('?')[0];
+        function _endpoint() {
+            if (post_url.indexOf('?') !== -1) {
+                post_url = post_url.split('?')[0];
             }
 
-            if (window.location.href.indexOf(".html") > -1 && current_url.includes('.html')) {
-                current_url = current_url.match(/.*\.html/)[0] + '/';
-            } else if (current_url.includes('/' + end_point + '/')) {
-                current_url = current_url.replace('/' + end_point + '/', '');
+            if (post_url.indexOf(".html") > -1 && post_url.includes('.html')) {
+                post_url = post_url.match(/.*\.html/)[0] + '/';
+            } else if (post_url.includes('/' + end_point + '/')) {
+                post_url = post_url.replace('/' + end_point + '/', '');
+            } else if (post_url.indexOf('.html') === -1 && !post_url.endsWith('/')) {
+                post_url = post_url + '/';
             }
-            return current_url + end_point + '/';
+            return post_url + end_point;
         }
 
         function __startCountdown($link, href, text_link) {
@@ -84,7 +87,7 @@
                     }
 
                     if (auto_direct) {
-                        window.location.href = __endpointURL();
+                        window.location.href = _endpoint();
                     }
                 } else {
                     setTimeout(countdown, 1000);
@@ -105,10 +108,10 @@
         }
 
         function _createUrlEncode() {
-            $urls.each(function () {
+            href.each(function () {
                 var $this = $(this);
                 var href = $(this).attr('href');
-                var prep_urls = prep_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
+                var allow_urls = allow_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
                 var found = false;
                 var text_link = $this.text();
 
@@ -116,8 +119,8 @@
                     return;
                 }
 
-                for (var i = 0; i < prep_urls.length; i++) {
-                    if (href.indexOf(prep_urls[i]) !== -1) {
+                for (var i = 0; i < allow_urls.length; i++) {
+                    if (href.indexOf(allow_urls[i]) !== -1) {
                         found = true;
                         break;
                     }
@@ -146,7 +149,7 @@
         }
 
         function _linkClickProcess() {
-            $urls.on('click', function (e) {
+            href.on('click', function (e) {
                 const $this = $(this);
                 const text_link = $this.text();
                 const href = $this.attr('href');
@@ -160,7 +163,11 @@
                     e.preventDefault();
                     __setCookieTitle(text_link);
                     __setCookieURL(href);
-                    window.location.href = __endpointURL();
+                    if (windowWidth > 700) {
+                        window.open(_endpoint(), '_blank');
+                    } else {
+                        window.location.href = _endpoint();
+                    }
                     return;
                 }
 
@@ -184,12 +191,20 @@
                     e.preventDefault();
                     __setCookieTitle(progress.text());
                     __setCookieURL(progress.attr('data-url'));
-                    window.location.href = __endpointURL();
+                    if (windowWidth > 700) {
+                        window.open(_endpoint(), '_blank');
+                    } else {
+                        window.location.href = _endpoint();
+                    }
                 } else if (countdown.length && anchor.length) {
                     e.preventDefault();
                     __setCookieTitle(countdown.text());
                     __setCookieURL(countdown.attr('data-url'));
-                    window.location.href = __endpointURL();
+                    if (windowWidth > 700) {
+                        window.open(_endpoint(), '_blank');
+                    } else {
+                        window.location.href = _endpoint();
+                    }
                 }
             });
         }

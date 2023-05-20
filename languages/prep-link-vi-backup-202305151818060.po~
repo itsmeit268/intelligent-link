@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Prepare Link\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-30 16:37+0000\n"
-"PO-Revision-Date: 2023-05-15 18:25+0000\n"
+"PO-Revision-Date: 2023-05-15 18:17+0000\n"
 "Last-Translator: \n"
 "Language-Team: Vietnamese\n"
 "Language: vi\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Domain: prep-link"
 
 msgid "and do it again."
-msgstr " và thực hiện lại."
+msgstr ""
 
 msgid "and enter your search query as:"
 msgstr "và nhập truy vấn tìm kiếm của bạn dưới dạng:"
@@ -61,9 +61,6 @@ msgstr ""
 
 msgid "keyword +"
 msgstr "từ khóa +"
-
-msgid "Note"
-msgstr ""
 
 #. Name of the plugin
 msgid "Prepare Link"

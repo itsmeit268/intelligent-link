@@ -121,7 +121,8 @@ class Preplink_Public
         }
     }
 
-    public function set_robots_filter() {
+    public function set_robots_filter()
+    {
         $robots = array(
             'index' => 'noindex', 'follow' => 'nofollow',
             'archive' => 'noarchive', 'snippet' => 'nosnippet',
@@ -146,7 +147,11 @@ class Preplink_Public
         }
     }
 
-    public function is_plugin_enable(){
+    /**
+     * @return bool
+     */
+    public function is_plugin_enable()
+    {
         return !empty($this->settings['preplink_enable_plugin']) && (int)$this->settings['preplink_enable_plugin'] == 1;
     }
 
@@ -170,16 +175,23 @@ class Preplink_Public
     public function getPrepLinkUrls()
     {
         $prepList = $this->settings['preplink_url'];
-
         if (!empty($prepList)) {
+
             $prepArr = explode(',', $prepList);
             $prepArr = array_map('trim', $prepArr);
-            $prepArr = array_merge($prepArr, ['drive.google.com', 'play.google.com']);
+
+            $lastIndex = count($prepArr) - 1;
+            if (empty($prepArr[$lastIndex])) {
+                unset($prepArr[$lastIndex]);
+            }
+
+            $prepArr = array_merge($prepArr, ['fshare.vn', 'drive.google.com']);
             $prepArr = array_unique($prepArr);
             $prepList = implode(',', $prepArr);
         } else {
-            $prepList = 'play.google.com,drive.google.com';
+            $prepList = 'fshare.vn, drive.google.com';
         }
+
         return $prepList;
     }
 }

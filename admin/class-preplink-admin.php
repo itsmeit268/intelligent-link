@@ -607,7 +607,7 @@ class Preplink_Admin
         $html .= isset($settings["preplink_url"]) ? $settings["preplink_url"] : false;
         $html .= '</textarea>';
         $html .= '<p class="description">These links/URLs will be redirected to the endpoint (Prepare Link), each separated by a comma (,).</p>';
-        $html .= '<p class="description">Default: drive.google.com, play.google.com</p>';
+        $html .= '<p class="description">Default: fshare.vn,drive.google.com</p>';
         echo $html;
     }
 
@@ -1020,7 +1020,7 @@ class Preplink_Admin
         <table class="form-table">
             <tbody>
             <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 4:</th>
+                <th scope="row">Enable Advertising 5:</th>
                 <td>
                     <select name="preplink_advertising[preplink_advertising_5]" id="preplink_advertising_5">
                         <option value="1" <?php selected(isset($settings['preplink_advertising_5']) && $settings['preplink_advertising_5'] == '1'); ?>>

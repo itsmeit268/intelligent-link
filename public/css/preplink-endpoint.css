@@ -1,4 +1,4 @@
-.single-page{
+.single-page,.single-header,.rb-small-container{
     max-width: 890px;
     margin: 0 auto;
 }
@@ -12,23 +12,22 @@
     margin: 0;
     padding: 0;
 }
-.single-header {
-    position: relative;
-    z-index: 109;
-    display: block;
-}
+
 .edge-padding {
     padding-right: 20px;
     padding-left: 20px;
 }
-.rb-small-container {
-    max-width: var(--rb-small-width, 860px);
+
+.single-header {
+    position: static;
+    width: 100%;
+    margin: 0 auto;
 }
+
 .rb-small-container {
     position: static;
     display: block;
     width: 100%;
-    max-width: var(--rb-width, 1280px);
     margin-right: auto;
     margin-left: auto;
 }
@@ -53,14 +52,18 @@
 }
 .session-expired{
     text-align: center;
+    color: #051d24;
+    font-size: 16px;
+    margin: 0 15px;
 }
 .single .without-sidebar .s-ct {
     flex-basis: 100%;
     width: 100%;
-    max-width: 100%;
+    max-width: 890px !important;
     margin-right: auto;
     margin-left: auto;
 }
+
 body .without-sidebar .grid-container > * {
     flex: 0 0 100%;
     width: 100%;
@@ -202,10 +205,6 @@ h1.s-title {
     color: #334862 !important;
 }
 
-.session-expired a {
-    color: var(--g-color) !important;
-}
-
 .link-session-expired:hover {
     color: #ff0059 !important;
 }
@@ -240,8 +239,8 @@ h1.s-title {
     white-space: nowrap;
     overflow: hidden;
 }
-.help-preplink{
-    padding: 0 15px;
+.preplink-gg-s > p{
+    margin-left:10px;
 }
 .app-title, .suggestions-post {
     font-size: 20px;
@@ -271,6 +270,10 @@ td:nth-of-type(2) {
     text-align: right;
 }
 
+.wp-block-table > table > tbody > tr > td, table > tbody > tr > td {
+    padding: 5px;
+}
+
 tr:hover {
     background-color: #d5d5d5;
     color: #ff0048;
@@ -283,11 +286,12 @@ tr:hover {
 }
 
 img {
-    border-style: none;
     -webkit-object-fit: cover;
     object-fit: cover;
 }
-
+.featured-image > picture > img {
+    border: 1px solid #dfdfdf !important;
+}
 .caption-text {
     position: relative;
     display: block;
@@ -364,10 +368,6 @@ ul li > a:hover {
     padding: 10px;
 }
 
-.prep-link-list-item {
-    padding: 0 15px 0 10px;
-}
-
 h3.prep-link-title {
     font-size: 18px;
     margin-top: 5px;
@@ -420,9 +420,6 @@ h3.prep-link-title {
     border-bottom: 1px solid #d7cfcf
 }
 
-#prep-link-faq .prep-link-answer {
-    padding: 0 10px;
-}
 
 .prep-link-question > strong {
     font-size: 18px;
@@ -477,19 +474,24 @@ h3.prep-link-title {
 }
 .prep-btn-download {
     position: relative;
+    height: 100%;
+    width: 100%;
+    display: block;
 }
 .prep-btn-download > .icon {
     width: 18px;
     color: #fff;
     position: absolute;
     top: 2px;
-    right: 20px;
+    right: 25px;
 }
 .text-down {
     color: #fff;
     cursor: pointer;
     position: absolute;
-    margin-left: -15px;
+    left: -20px;
+    top: -2px;
+    font-weight: 700;
 }
 
 @media only screen and (max-device-width: 480px) {
@@ -517,10 +519,12 @@ h3.prep-link-title {
 
     .download-item .left {
         flex: 0 0 calc(80% - 10px);
+        margin-left: 10px;
     }
 
     .download-item .right {
         flex: 0 0 calc(20% - 10px);
+        margin-right: 5px;
     }
 
     .prep-link-download-btn {
@@ -563,7 +567,7 @@ h3.prep-link-title {
         margin: 0;
     }
 
-    .comment, .e-shared-sec, .faq-download, .post-excerpt, .related_post, .s-feat-outer, .single-header {
-        padding: 0 15px;
+    .comment, .e-shared-sec, .faq-download, .post-excerpt, .related_post, .s-feat-outer, .single-header,.preplink-gg-s {
+        padding: 10px 15px;
     }
 }

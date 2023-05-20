@@ -19,6 +19,8 @@ $postTitle          = get_the_title($postID) ? get_the_title($postID) : get_post
 $excerpt            = get_the_excerpt();
 $prepLinkText       = isset($_COOKIE['prep_text_link']) ? $_COOKIE['prep_text_link'] : '';
 $prepLinkURL        = isset($_COOKIE['prep_link_href']) ? $_COOKIE['prep_link_href'] : '';
+$baseUrl            = str_replace('https://', '', !empty(home_url()) ? home_url() : get_bloginfo('url'));
+$caption            = get_the_post_thumbnail_caption() ?: get_the_title();
 
 if (stripos($prepLinkText, 'Tải') === 0 ||
     stripos($prepLinkText, 'tải') === 0 ||
@@ -27,15 +29,46 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
     $prepLinkText = trim(str_ireplace(array('Tải', 'tải', 'download', 'Download'), '', $prepLinkText));
 }
 
+add_action('wp_head', function () {
+    ?>
+    <!-- Ads adsterra itsmeit.co-->
+    <script async="async" data-cfasync="false" src="//pl18124507.highrevenuegate.com/22704e0d8a7af0e52d2b68f097fc3419/invoke.js"></script>
+    <script async="async" data-cfasync="false" src="//pl18104634.highrevenuegate.com/3c814d791e7eab81bce23860cf13946a/invoke.js"></script>
+    <?php
+});
+
+add_action('wp_print_scripts', function () {
+    wp_dequeue_script('fixedtoc-js');
+    wp_dequeue_script('fixedtoc-js-js-extra');
+    wp_dequeue_script('rbswiper-js');
+    wp_dequeue_script( 'enlighterjs' );
+    wp_dequeue_style('enlighterjs');
+});
+
+function remove_enlighterjs_script() {
+    wp_dequeue_script('fixedtoc-js');
+    wp_dequeue_script('fixedtoc-js-js-extra');
+    wp_dequeue_script('rbswiper-js');
+    wp_dequeue_script( 'enlighterjs' );
+    wp_dequeue_style('enlighterjs');
+}
+add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
+
 ?>
 <?php if (!empty($settings['preplink_custom_style'])) {
     echo "<style>{$settings['preplink_custom_style']}</style>";
 } ?>
+
 <?php if (file_exists(get_template_directory() . '/header.php')) get_header(); ?>
 
 <div class="single-page without-sidebar sticky-sidebar" id="prep-link-single-page" data-url="<?= $prepLinkURL ?>">
     <header class="single-header">
-        <h1 class="s-title"><a href="<?= $view_link?>"><?= !empty($prepLinkText) ? __('Download','prep-link') .' '. $prepLinkText: $postTitle; ?></a></h1>
+        <h1 class="s-title">
+            <a class="adsterra" href="javascript:void(0)"><?= !empty($prepLinkText) ? __('Download','prep-link') .' '. $prepLinkText: $postTitle; ?></a>
+        </h1>
+        <div class="related_post" style="margin: 0 25px;">
+            <div id="container-3c814d791e7eab81bce23860cf13946a"></div>
+        </div>
     </header>
     <div class="rb-small-container preplink-padding">
         <div class="grid-container">
@@ -44,11 +77,12 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                     <div class="e-ct-outer" id="container">
                         <div class="entry-content rbct">
                             <?php if (empty($prepLinkURL) || empty($prepLinkText)) : ?>
-                                <p class="session-expired">
-                                    <?= __('The session has ended. Please try clearing your cookies or browser history and attempt again!', 'prep-link') ?>
-                                </p>
+                                <div class="session-expired">
+                                    <p><?= __('Your session has ended, please click ', 'prep-link')?><a href="<?= $view_link ?>"><span><?= __('here', 'prep-link')?></span></a><?= __(' and do it again.', 'prep-link')?></p>
+                                    <p><?= __('If the issue persists, try clearing your cookies or browser history and attempt again.', 'prep-link') ?></p>
+                                </div>
                             <?php else: ?>
-                                <?php if (!empty($advertising['preplink_advertising_1']) && (int)$advertising['preplink_advertising_1'] == 1 && !empty($advertising['preplink_advertising_code_1'])): ?>
+                                <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_1']) && (int)$advertising['preplink_advertising_1'] == 1 && !empty($advertising['preplink_advertising_code_1'])): ?>
                                     <div class="preplink-ads preplink-ads-1">
                                         <?= $advertising['preplink_advertising_code_1'] ?>
                                     </div>
@@ -64,9 +98,9 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                         </div>
                                         <div class="feat-caption meta-text">
                                             <span class="caption-text meta-bold">
-                                                <a class="caption-textlnk"
-                                                   style="color: #282828; font-weight: normal; margin-left: -10px; font-size: 14px;" href="<?= $view_link?>">
-                                                    <?= !empty(get_the_post_thumbnail_caption()) ? get_the_post_thumbnail_caption() : $postTitle; ?>
+                                                <a class="caption-textlnk adsterra"
+                                                   style="color: #282828; font-weight: normal; margin-left: -10px; font-size: 14px;" href="javascript:void(0)">
+                                                    <?= substr($caption, -14) === ' (illustration)' ? $caption : $caption . ' (illustration)'; ?>
                                                 </a>
                                             </span>
                                         </div>
@@ -74,13 +108,9 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                 <?php endif; ?>
 
                                 <div class="preplink-ads preplink-ads-2">
-                                    <?php if (!empty($advertising['preplink_advertising_2']) && (int)$advertising['preplink_advertising_2'] == 1 && !empty($advertising['preplink_advertising_code_2'])): ?>
+                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_2']) && (int)$advertising['preplink_advertising_2'] == 1 && !empty($advertising['preplink_advertising_code_2'])): ?>
                                         <?= $advertising['preplink_advertising_code_2'] ?>
                                     <?php endif; ?>
-                                </div>
-
-                                <div class="help-preplink">
-                                    <p><?= __('If the download link is not ready after a few seconds, please disable Adblock or clear your browser history and try refreshing the page.', 'prep-link')?></p>
                                 </div>
 
                                 <?php
@@ -102,19 +132,38 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                 ?>
 
                                 <div class="preplink-ads preplink-ads-3">
-                                    <?php if (!empty($advertising['preplink_advertising_3']) && (int)$advertising['preplink_advertising_3'] == 1 && !empty($advertising['preplink_advertising_code_3'])): ?>
+                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_3']) && (int)$advertising['preplink_advertising_3'] == 1 && !empty($advertising['preplink_advertising_code_3'])): ?>
                                         <?= $advertising['preplink_advertising_code_3'] ?>
                                     <?php endif; ?>
+                                </div>
+
+                                <div class="preplink-gg-s">
+                                    <ul style="padding: 5px;">
+                                        <li>
+                                            <?= __('If the file name does not match the article content, please click', 'prep-link')?>
+                                            <a href="<?= $view_link ?>"><span><?= __('here', 'prep-link')?></span></a><?= __(' and do it again.', 'prep-link')?>
+                                        </li>
+                                        <li>
+                                            <?= __('The extract password has been attached, please check it in the zip file.', 'prep-link')?>
+                                        </li>
+                                        <li>
+                                            <?= __('To search for a specific resource or content on the internet, you can visit', 'prep-link')?>
+                                            <a href="https://www.google.com/search?q=<?=$prepLinkText.' '.$baseUrl?>"><?= __('https://google.com', 'prep-link')?></a>
+                                            <?= __('and enter your search query as:', 'prep-link')?>
+                                            <a href="https://www.google.com/search?q=<?=$prepLinkText.' '.$baseUrl?>"><?= __('keyword +', 'prep-link') . ' '. $baseUrl?></a>
+                                        </li>
+
+                                    </ul>
                                 </div>
 
                                 <div class="download-list">
                                     <div class="download-item-box">
                                         <div class="download-item">
                                             <div class="left">
-                                                <a href="<?= $view_link ?>" class="image"><?php the_post_thumbnail('thumbnail'); ?></a>
+                                                <a class="adsterra image" href="javascript:void(0)"><?php the_post_thumbnail('thumbnail'); ?></a>
                                                 <div class="post-download">
                                                     <p class="tittle">
-                                                        <a href="<?= $view_link ?>"  class="p-tittle"><?= __('Download', 'prep-link') .' '. $prepLinkText ?></a>
+                                                        <a class="adsterra p-tittle" href="javascript:void(0)"><?= __('Download', 'prep-link') .' '. $prepLinkText ?></a>
                                                     </p>
                                                     <p class="post-date"><?= __('Update:', 'prep-link') . ' ' . get_the_date('d/m/Y')?></p>
                                                 </div>
@@ -136,7 +185,7 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                 </div>
 
                                 <div class="preplink-ads preplink-ads-4">
-                                    <?php if (!empty($advertising['preplink_advertising_4']) && (int)$advertising['preplink_advertising_4'] == 1 && !empty($advertising['preplink_advertising_code_4'])): ?>
+                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_4']) && (int)$advertising['preplink_advertising_4'] == 1 && !empty($advertising['preplink_advertising_code_4'])): ?>
                                         <?= $advertising['preplink_advertising_code_4'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -149,7 +198,7 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                 <?php endif; ?>
 
                                 <div class="preplink-ads preplink-ads-5">
-                                    <?php if (!empty($advertising['preplink_advertising_5']) && (int)$advertising['preplink_advertising_5'] == 1 && !empty($advertising['preplink_advertising_code_5'])): ?>
+                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_5']) && (int)$advertising['preplink_advertising_5'] == 1 && !empty($advertising['preplink_advertising_code_5'])): ?>
                                         <?= $advertising['preplink_advertising_code_5'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -162,7 +211,7 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                 <?php endif; ?>
 
                                 <div class="preplink-ads preplink-ads-6">
-                                    <?php if (!empty($advertising['preplink_advertising_6']) && (int)$advertising['preplink_advertising_6'] == 1 && !empty($advertising['preplink_advertising_code_6'])): ?>
+                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_6']) && (int)$advertising['preplink_advertising_6'] == 1 && !empty($advertising['preplink_advertising_code_6'])): ?>
                                         <?= $advertising['preplink_advertising_code_6'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -178,12 +227,17 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                     </span>
                                 </div>
 
+                                <div class="related_post">
+                                    <!-- Ads adsterra itsmeit.co-->
+                                    <div id="container-22704e0d8a7af0e52d2b68f097fc3419"></div>
+                                </div>
+
                                 <?php if (!empty($endpointSetting['preplink_related_post']) && $endpointSetting['preplink_related_post'] == 1): ?>
                                     <div class="related_post">
                                         <h3 class="suggestions-post"><?= __('Related Posts','prep-link') ?></h3>
                                         <?php
-                                        $categories = get_the_category(); // Lấy category của bài viết hiện tại
-                                        $category_ids = array(); // Tạo mảng rỗng để chứa ID của category
+                                        $categories = get_the_category();
+                                        $category_ids = array();
                                         foreach ($categories as $category) {
                                             $category_ids[] = $category->term_id; // Lấy ID của các category
                                         }
@@ -192,8 +246,8 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                             'category__in' => $category_ids, // Lấy các bài viết trong category có ID tương ứng
                                             'post__not_in' => array(get_the_ID()), // Loại bỏ bài viết hiện tại
                                             'posts_per_page' => !empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : 4, // Lấy 10 bài viết
-                                            'orderby' => 'rand', // Sắp xếp theo ngày đăng
-                                            'order' => 'DESC' // Sắp xếp giảm dần
+                                            'orderby' => 'rand',
+                                            'order' => 'DESC'
                                         );
 
                                         $related_posts = get_posts($args); // Lấy các bài viết liên quan
@@ -240,7 +294,7 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                 <?php endif; ?>
 
                                 <div class="preplink-ads preplink-ads-7">
-                                    <?php if (!empty($advertising['preplink_advertising_7']) && (int)$advertising['preplink_advertising_7'] == 1 && !empty($advertising['preplink_advertising_code_7'])): ?>
+                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_7']) && (int)$advertising['preplink_advertising_7'] == 1 && !empty($advertising['preplink_advertising_code_7'])): ?>
                                         <?= $advertising['preplink_advertising_code_7'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -252,7 +306,7 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                 }
                                 ?>
                                 <div class="preplink-ads preplink-ads-8">
-                                    <?php if (!empty($advertising['preplink_advertising_8']) && (int)$advertising['preplink_advertising_8'] == 1 && !empty($advertising['preplink_advertising_code_8'])): ?>
+                                    <?php if (aicp_can_see_ads() && !empty($advertising['preplink_advertising_8']) && (int)$advertising['preplink_advertising_8'] == 1 && !empty($advertising['preplink_advertising_code_8'])): ?>
                                         <?= $advertising['preplink_advertising_code_8'] ?>
                                     <?php endif; ?>
                                 </div>
@@ -265,8 +319,18 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
     </div>
 </div>
 <script>
-    window.addEventListener("DOMContentLoaded", () => {
-        window.scrollBy({top: 100, left: 0, behavior: "smooth"})
+    jQuery(document).ready(function ($) {
+        var $adsterra = $('.adsterra');
+        if ($(window).width() > 700) {
+            $adsterra.attr({
+                href: 'https://www.highrevenuegate.com/nt9jff03h?key=f5215f21822ff7e20dcf20cdb60f73be',
+                target: '_blank'
+            });
+            (function(s,u,z,p){s.src=u,s.setAttribute('data-zone',z),p.appendChild(s);})(document.createElement('script'),'https://inklinkor.com/tag.min.js',5602403,document.body||document.documentElement);
+        }
+        $adsterra.on('click', function () {
+            $('#enpoint-progress').trigger('click');
+        });
     });
 </script>
 <?php if (file_exists(get_template_directory() . '/footer.php')) get_footer(); ?>
