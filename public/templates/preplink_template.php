@@ -196,11 +196,6 @@ if (stripos($prepLinkText, 'Tải') === 0 ||
                                     </span>
                                 </div>
 
-                                <div class="related_post">
-                                    <!-- Ads adsterra itsmeit.co-->
-                                    <div id="container-22704e0d8a7af0e52d2b68f097fc3419"></div>
-                                </div>
-
                                 <?php if (!empty($endpointSetting['preplink_related_post']) && $endpointSetting['preplink_related_post'] == 1): ?>
                                     <div class="related_post">
                                         <h3 class="suggestions-post"><?= __('Related Posts','prep-link') ?></h3>
