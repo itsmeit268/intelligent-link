@@ -5,7 +5,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-30 16:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Bui Van Loi <buivanloi.2010@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Domain: prep-link"
 
 #. Author URI of the plugin
-msgid "https://itsmeit.biz"
+msgid "https://itsmeit.co"
 msgstr ""
 
 #. URI of the plugin
@@ -40,11 +40,21 @@ msgid ""
 "downloads."
 msgstr ""
 
-msgid "The session has ended. Please try clearing your cookies or browser history and attempt again!"
+msgid "Your session has ended. Please retry your previous action. If the issue persists, try clearing your cookies or browser history and attempt again."
 msgstr ""
 
-msgid "If the download link is not ready after a few seconds, please disable Adblock or clear your browser history and try refreshing the page."
+msgid "To search for a specific resource or content on the internet, you can visit"
 msgstr ""
+
+msgid "and enter your search query as:"
+msgstr ""
+
+msgid "keyword +"
+msgstr ""
+
+msgid "https://google.com"
+msgstr ""
+
 
 msgid "Information about the Features"
 msgstr ""
@@ -60,3 +70,44 @@ msgstr ""
 
 msgid "Related Posts"
 msgstr ""
+
+msgid "If the file name does not match the article content, please click"
+msgstr ""
+
+msgid "here"
+msgstr ""
+
+msgid "and do it again."
+msgstr ""
+
+msgid "Your session has ended, please click"
+msgstr ""
+
+msgid "If the issue persists, try clearing your cookies or browser history and attempt again."
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid "Related Posts"
+msgstr ""
+
+msgid "Related Posts"
+msgstr ""
+
+msgid "Alternative Link"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+
+
+
+

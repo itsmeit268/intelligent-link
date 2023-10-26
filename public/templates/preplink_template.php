@@ -65,7 +65,7 @@ add_action( 'wp_enqueue_scripts', 'remove_enlighterjs_script', 10 );
                         <div class="entry-content rbct">
                             <?php if (empty($prepLinkURL) || empty($prepLinkText)) : ?>
                                 <div class="session-expired">
-                                    <p><?= __('Your session has ended, please click', 'prep-link')?><a href="<?= $view_link ?>"><span><?= __(' here ', 'prep-link')?></span></a><?= __('and do it again.', 'prep-link')?></p>
+                                    <p><?= __('Your session has ended, please click', 'prep-link')?>&nbsp;<a href="<?= $view_link ?>"><span style="color: #0a4ad0;"><?= __('here', 'prep-link')?></span></a>&nbsp;<?= __('and do it again.', 'prep-link')?></p>
                                     <p><?= __('If the issue persists, try clearing your cookies or browser history and attempt again.', 'prep-link') ?></p>
                                 </div>
                                 <?php if (isset($advertising['preplink_advertising_4']) && (int)$advertising['preplink_advertising_4'] == 1 && !empty($advertising['preplink_advertising_code_4'])): ?>
