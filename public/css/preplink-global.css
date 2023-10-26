@@ -1,13 +1,14 @@
 .post-progress-bar {
-    width: fit-content;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
     line-height: 22px;
     background-color: #e2e2e2;
     border-radius: 40px;
-    cursor: pointer;
-    display: inline-block;
+    width: fit-content;
+    white-space: nowrap;
 }
-
-.post-progress-bar a {
+.post-progress-bar a,.wrap-countdown a {
     text-decoration: none !important;
     box-shadow: none;
 }
@@ -17,6 +18,18 @@
 }
 
 .post-progress {
+    background-color: #1479B3;
+    display: inline-block;
+    color: #fff;
+    border-radius: 40px;
+    text-align: center;
+    padding: 4px 10px;
+    font-size: 16px;
+    max-height: 30px;
+    overflow: hidden;
+}
+
+.wrap-countdown {
     height: 100%;
     background-color: #1479B3;
     width: 0%;
@@ -31,7 +44,7 @@
     font-size: 16px
 }
 
-.text-complete {
+.text-complete,.link-countdown,.wrap-countdown strong {
     color: #fff
 }
 
@@ -42,10 +55,16 @@
 i.material-icons {
     margin-top: 4px;
 }
+.wrap-countdown > a:hover {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+.wrap-countdown {
+    max-width: 100%;
+}
 
 @media only screen and (max-device-width: 480px) {
-    .post-progress {
-        /*white-space: normal;*/
+    .post-progress,.wrap-countdown {
         text-align: left
     }
 
@@ -53,12 +72,9 @@ i.material-icons {
         display: block;
     }
 
-    .post-progress-bar a {
-        height: 24px;
-    }
-
-    .post-progress-bar {
+    .post-progress-bar,.wrap-countdown {
         margin: 5px 0;
         display: block;
+        width: fit-content;
     }
 }

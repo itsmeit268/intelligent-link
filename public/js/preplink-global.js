@@ -60,6 +60,49 @@
             return false;
         }
 
+        function prepHrefLink() {
+            href.each(function () {
+                var $this = $(this),
+                    href = $(this).attr('href'),
+                    allow_urls = allow_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
+                    text_link = $this.text(),
+                    links_noindex_nofollow = links_noindex_fl.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
+
+                if (links_noindex_fl !== "" && contains_value(href, links_noindex_nofollow)) {
+                    $this.attr('rel', 'nofollow noopener noreferrer');
+                }
+
+                if (exclude_elm.some(sel => $this.is(sel)) || $this.closest(exclude_elm.join(',')).length > 0 || href === undefined || href === null || !href.length) {
+                    return;
+                }
+
+                if (allow_url !== "" && contains_value(href, allow_urls)) {
+                    if (href === encodeURIComponent(decodeURIComponent(href))) {
+                        href = decodeURIComponent(href);
+                    }
+                    var encoded_link = btoa(href);
+                    $this.attr('href', encoded_link);
+
+                    $this.removeAttr('target');
+                    $this.removeAttr('data-id data-type');
+
+                    if (display_mode === 'progress') {
+                        $this.wrap('<div class="post-progress-bar"></div>');
+                        $this.html('<span class="post-progress">' + text_link + '</span>');
+                    } else {
+                        $this.wrap('<span class="wrap-countdown"></span>');
+                        $this.html('<strong class="link-countdown">' + text_link + '</span>');
+                    }
+
+                    var strongElement = $(".post-progress-bar,.wrap-countdown").next("strong:contains('|')");
+                    if ($(window).width() < 700 && strongElement.length) {
+                        strongElement.remove();
+                    }
+                }
+
+            });
+        }
+
         function _start_countdown($link, href, text_link) {
             let downloadTimer;
             let timeleft = time_cnf;
@@ -189,49 +232,6 @@
                         window.location.href = _endpoint();
                     }
                 }
-            });
-        }
-
-        function prepHrefLink() {
-            href.each(function () {
-                var $this = $(this),
-                    href = $(this).attr('href'),
-                    allow_urls = allow_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
-                    text_link = $this.text(),
-                    links_noindex_nofollow = links_noindex_fl.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
-
-                if (links_noindex_fl !== "" && contains_value(href, links_noindex_nofollow)) {
-                    $this.attr('rel', 'nofollow noopener noreferrer');
-                }
-
-                if (exclude_elm.some(sel => $this.is(sel)) || $this.closest(exclude_elm.join(',')).length > 0 || href === undefined || href === null || !href.length) {
-                    return;
-                }
-
-                if (allow_url !== "" && contains_value(href, allow_urls)) {
-                    if (href === encodeURIComponent(decodeURIComponent(href))) {
-                        href = decodeURIComponent(href);
-                    }
-                    var encoded_link = btoa(href);
-                    $this.attr('href', encoded_link);
-
-                    $this.removeAttr('target');
-                    $this.removeAttr('data-id data-type');
-
-                    if (display_mode === 'progress') {
-                        $this.wrap('<div class="post-progress-bar"></div>');
-                        $this.html('<span class="post-progress">' + text_link + '</span>');
-                    } else {
-                        $this.wrap('<span class="wrap-countdown"></span>');
-                        $this.html('<strong class="link-countdown">' + text_link + '</span>');
-                    }
-
-                    var strongElement = $(".post-progress-bar,.wrap-countdown").next("strong:contains('|')");
-                    if ($(window).width() < 700 && strongElement.length) {
-                        strongElement.remove();
-                    }
-                }
-
             });
         }
 
