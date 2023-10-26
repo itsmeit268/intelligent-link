@@ -54,7 +54,7 @@
                             $counter.html('');
                             $('.prep-btn-download').appendTo($counter).show();
 
-                            var list_download = $('.tr-thd');
+                            var list_download = $('.tr-tbd');
                             if (list_download.length) {
                                 $('.list-server-download').show();
                             }
