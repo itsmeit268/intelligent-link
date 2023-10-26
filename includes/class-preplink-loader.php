@@ -5,7 +5,7 @@
  * @package    Preplink
  * @subpackage Preplink/admin
  * @author     itsmeit <itsmeit.biz@gmail.com>
- * Website     https://itsmeit.co | https://itsmeit.biz
+ * Website     https://itsmeit.co
  */
 
 class Preplink_Loader

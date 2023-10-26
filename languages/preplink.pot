@@ -5,7 +5,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-30 16:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Bui Van Loi <buivanloi.2010@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
@@ -78,7 +78,7 @@ msgid "here"
 msgstr ""
 
 msgid "and do it again."
-msgstr " and do it again."
+msgstr ""
 
 msgid "Your session has ended, please click"
 msgstr ""
@@ -92,5 +92,43 @@ msgstr ""
 msgid "The extract password has been attached, please check it in the zip file."
 msgstr ""
 
-msgid "(illustration)"
-msgstr " (illustration)"
+msgid "Related Posts"
+msgstr ""
+
+msgid "Please wait a moment, my friend:"
+msgstr ""
+
+msgid "Related Posts"
+msgstr ""
+
+msgid "+ If you log in to your account, you\'ll skip the waiting time, access all features, and enjoy a better experience."
+msgstr ""
+
+msgid "+ You can also enter your registered email to receive notifications about new content or the latest available download version 👇"
+msgstr ""
+
+msgid "+ Downloading the file will display advertisements, and I understand that you might find it annoying, but these advertisements support our website. Please accept them."
+msgstr ""
+
+msgid "+ Additionally, if you don\'t mind, please leave a comment about your feelings or any issues related to using our website. For example, broken download links, software errors, etc."
+msgstr ""
+
+msgid "+ If you need to get in touch or request assistance, you can send us an email through the contact section."
+msgstr ""
+
+msgid "Alternative Link"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+
+
+
+

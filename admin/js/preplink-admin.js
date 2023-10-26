@@ -10,8 +10,6 @@
         var faq2_des = $('.preplink_faq2_description,.preplink_faq2_title');
         var $related = $('#preplink_related_enabled');
         var related_des = $('.preplink_related_number');
-        var $postAutoDirect = $('#preplink_auto_direct');
-        var $postAutoDirectNum = $('.preplink_post_number');
         var $endpointAutoDirect = $('#endpoint_auto_direct');
         var endpoint_auto_direct_num = $('.preplink_endpoint_number');
         var $post_countdown = $('#preplink_countdown');
@@ -90,20 +88,6 @@
         }
 
         function _checkPostAutoDirect() {
-            if ($postAutoDirect.val() === '0') {
-                $postAutoDirectNum.show();
-            } else {
-                $postAutoDirectNum.hide();
-            }
-            $postAutoDirect.on('change', function () {
-                if (this.value === '0') {
-                    $postAutoDirectNum.show();
-                } else {
-                    $postAutoDirectNum.hide();
-                }
-            });
-
-
             $post_countdown.on('change', function () {
                 if (parseInt($post_countdown.val()) <= 0) {
                     $('.prep-notice').remove();

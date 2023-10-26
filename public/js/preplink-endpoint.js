@@ -1,11 +1,6 @@
 /**
- * Script cho riêng trang /download (endpoint) nếu bạn có thể cập nhật code,
- * hoặc thêm mới các tính năng, fix bug, chính sửa các tính năng
- * Vui lòng chia sẻ tới cộng đồng bằng cách gửi pull requests trên branch mới.
- *
- * @link       https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @author     itsmeit <itsmeit.biz@gmail.com>
- * Website     https://itsmeit.co | https://itsmeit.biz
+ * Website     https://itsmeit.co
  */
 
 (function ($) {
@@ -13,9 +8,10 @@
 
     $(function () {
         var $progress   = $('#enpoint-progress');
-        var time_cnf    = parseInt(prep_vars.countdown_endpoint);
-        var auto_direct = parseInt(prep_vars.endpoint_direct);
+        var time_cnf    = parseInt(href_proccess.countdown_endpoint);
+        var auto_direct = parseInt(href_proccess.endpoint_direct);
         var preUrlGo    = $('#prep-link-single-page').attr('data-url');
+        var gogo_link   = $('.gogo-link');
 
         function scrollToProgressElm() {
             $('.clickable').on('click', function () {
@@ -58,6 +54,11 @@
                             $counter.html('');
                             $('.prep-btn-download').appendTo($counter).show();
 
+                            var list_download = $('.tr-thd');
+                            if (list_download.length) {
+                                $('.list-server-download').show();
+                            }
+
                             clearInterval(interval);
                             isCountdownFinished = true;
                             isProgressRunning = false;
@@ -90,6 +91,18 @@
             }
         }
 
+        function redirect_link() {
+            if (gogo_link.length) {
+                gogo_link.on('click', function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr('data-url');
+                    if (url) {
+                        window.location.href = window.atob(url);
+                    }
+                });
+            }
+        }
+
         function faqPrepLink() {
             var question = ".prep-link-question";
             var answer = ".prep-link-answer";
@@ -110,5 +123,6 @@
         scrollToProgressElm();
         progressRunning();
         faqPrepLink();
+        redirect_link();
     });
 })(jQuery);

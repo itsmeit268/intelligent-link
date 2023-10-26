@@ -2,9 +2,9 @@
 ## Redirect external links to the page you specify. This feature is useful for websites that display ads, such as Adsense or Ezoic...
 ##### Example: https://drive.google.com/file/xxxx to https://itsmeit.co/post/download?id=abc
 ------------------------------------------------
-##### Link hướng dẫn: https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
+##### Document: https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
 ##### Author  : itsmeit '<itsmeit.biz@gmail.com>'
-##### Website : https://itsmeit.co | https://itsmeit.biz
+##### Website : https://itsmeit.co
 ---------------------------------------------------
 ![img.png](img.png)
 ### ==== How to use Prepare Link Wordpress Plugin ===

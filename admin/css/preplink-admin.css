@@ -20,3 +20,23 @@
         width: inherit;
     }
 }
+#link-embed-metabox, .link-embed-input input {
+    width:100%;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.link-embed-input input {
+    margin: 10px 10px 0 0;
+    line-height: 30px;
+    border: 1px solid #dcdddd;
+    border-radius: 3px;
+    display: block;
+}
+
+.link {
+    border: 1px solid #bfbfbf;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}

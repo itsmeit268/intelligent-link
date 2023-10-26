@@ -32,3 +32,8 @@
 ----02/05/2023 v1.0.5----
 -- Change Endpoint URL, remove ID URL
 -- Update config
+
+----26/10/2023 v1.0.6----
+-- Update config list download
+-- Fix bug progress not working mobile
+-- Change logic countdown
