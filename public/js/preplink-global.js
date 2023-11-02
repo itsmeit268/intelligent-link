@@ -145,7 +145,7 @@
 
                 if (currentWidth >= progressWidth) {
                     clearInterval(intervalId);
-                    let progress_html = '<i class="fa fa-angle-double-right fa-shake" style="color: #fff;cursor: pointer;font-size: 13px;"></i>';
+                    let progress_html = '<svg xmlns="http://www.w3.org/2000/svg" height="0.75em" viewBox="0 0 512 512"><style>svg{fill:#ffffff}</style><path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg>';
                     progress_html += `<span class="text-hide-complete" data-url="${href}" data-title="${text_link}"></span>`;
                     progress_html += '<span class="text-complete">' + '&nbsp;' + text_complete + '</span>';
                     $link.html('<span class="post-progress" style="background-color:#0c7c3f">' + progress_html + '</span>');

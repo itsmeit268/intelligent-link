@@ -63,7 +63,7 @@ class Preplink_Public {
             if ($this->is_plugin_enable() && isset($this->preplink['endpoint'])){
                 $settings = get_option('email_marketing_settings', array());
                 wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
-                wp_enqueue_script('preplink-global', plugin_dir_url(__FILE__) . 'js/preplink-global.js', array('jquery'), $this->version, true);
+                wp_enqueue_script('preplink-global', plugin_dir_url(__FILE__) . 'js/preplink-global.js', array('jquery'), $this->version, false);
                 wp_localize_script('preplink-global', 'href_proccess', array(
                     'end_point'              => $endpoint,
                     'prep_url'               => $this->getPrepLinkUrls(),
@@ -75,7 +75,7 @@ class Preplink_Public {
                     'wait_text'              => !empty($this->settings['wait_text_replace']) ? $this->settings['wait_text_replace'] : 'waiting',
                     'auto_direct'            => !empty($this->settings['preplink_auto_direct']) ? $this->settings['preplink_auto_direct'] : 0,
                     'endpoint_direct'        => !empty($this->preplink['endpoint_auto_direct']) ? $this->preplink['endpoint_auto_direct'] : 0,
-                    'text_complete'          => !empty($this->settings['preplink_text_complete']) ? $this->settings['preplink_text_complete'] : '[Link ready!]',
+                    'text_complete'          => !empty($this->settings['preplink_text_complete']) ? $this->settings['preplink_text_complete'] : 'Link ready!',
                     'links_noindex_nofollow' => $this->get_links_nofolow_noindex(),
                 ));
 
