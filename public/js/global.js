@@ -20,16 +20,10 @@
             allow_url = href_proccess.prep_url,
             links_noindex_fl = href_proccess.links_noindex_nofollow,
             windowWidth = $(window).width(),
-            is_user_logged_in = href_proccess.is_user_logged_in,
             is_popup = parseInt(href_proccess.is_popup),
             remix_url = href_proccess.remix_url;
 
         let countdownStatus = {};
-
-        if (is_user_logged_in) {
-            time_cnf = 5;
-            display_mode = 'progress';
-        }
 
         function mix_url(url) {
             url = remix_url.prefix + url;
@@ -169,10 +163,6 @@
                 }
 
                 if (time_cnf > 0) {
-                    if (!is_popup && !is_user_logged_in) {
-                        _check_login();
-                    }
-
                     $this.off('click');
                     countdownStatus[modified_url] = { active: true };
                     if (display_mode === 'wait_time') {
@@ -194,9 +184,9 @@
                     clearInterval(downloadTimer);
 
                     let wait_time_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
-                    wait_time_html += '<span style="background-color:#0c7c3f;vertical-align: unset;">' + '&nbsp;' + text_complete + '</span>';
+                    wait_time_html += '<span style="vertical-align: unset;">' + text_complete + '</span>';
                     $elm.html(wait_time_html);
-                    $elm.parents('.wrap-countdown').css('background-color', '#0c7c3f')
+                    $elm.parents('.wrap-countdown').css('color', '#ff0000')
                     if (auto_direct) {
                         set_cookie_title(title);
                         set_cookie_url(url);
@@ -221,22 +211,21 @@
 
             parent.css('width', parent.width());
             $progress.width("0%");
-            $progress.css("background-color", "#1479B3");
+            $progress.css({
+                'background-color': '#1479B3',
+                'color': '#fff',
+                'padding': '0px 10px'
+            });
 
             const intervalId = setInterval(function () {
-                if (is_user_logged_in) {
-                    currentWidth += progressWidth / 100;
-                } else{
-                    currentWidth += progressWidth / (timeleft * 1000 / timeleft);
-                }
-
+                currentWidth += progressWidth / (timeleft * 1000 / timeleft);
                 $progress.width(currentWidth);
                 if (currentWidth >= progressWidth) {
                     clearInterval(intervalId);
                     let progress_html = '<i class="fa fa-angle-double-right fa-shake" style="color: #fff;cursor: pointer;font-size: 13px;"></i>';
                     progress_html += `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
-                    progress_html += '<span class="text-complete">' + '&nbsp;' + text_complete + '</span>';
-                    $elm.html('<strong class="post-progress" style="background-color:#0c7c3f">' + progress_html + '</strong>');
+                    progress_html += '<span class="text-complete">' + text_complete + '</span>';
+                    $elm.html('<strong class="post-progress" style="color:#0c7c3f">' + progress_html + '</strong>');
                     parent.removeAttr('style');
                     if (auto_direct) {
                         set_cookie_title(title);
@@ -255,18 +244,6 @@
                 console.log(e.message);
                 return false;
             }
-        }
-
-        function _check_login(){
-            $('.login-toggle').trigger('click');
-            $('.mes-login').remove();
-            var mes = $('.logo-popup-description');
-            //Bạn có muốn đăng nhập để bỏ qua thời gian chờ đợi?
-            //Would you like to log in to skip the waiting time?
-            mes.after('<div class="mes-login" style="color: red;font-size: 15px;">Would you like to log in to skip the waiting time?</div>');
-            $('#user_login,#user_pass').on('focus', function() {
-                $('.mes-login').remove();
-            });
         }
 
         prep_request_link();
