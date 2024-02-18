@@ -44,63 +44,74 @@ class Preplink_Public {
         $this->preplink    = get_option('preplink_endpoint');
         add_action('init', array($this, 'preplink_rewrite_endpoint'), 10, 0);
         add_action('wp_head', array($this, 'add_prep_custom_styles'), 10, 2);
+        add_filter('the_content', array($this, 'render_link_info'), 10);
     }
 
     public function enqueue_styles(){
         if (!is_front_page() && is_singular('post') && $this->is_plugin_enable()){
-            wp_enqueue_style('preplink-posts', plugin_dir_url(__FILE__) . 'css/preplink-global.min.css', array(), $this->version, 'all');
+            wp_enqueue_style('prep-global', plugin_dir_url(__FILE__) . 'css/global.css', array(), $this->version, 'all');
         }
     }
 
     public function enqueue_scripts() {
         $endpoint = $this->getEndPointValue();
-        wp_enqueue_script('clear-cookie', plugin_dir_url(__FILE__) . 'js/clear-cookie.js', array('jquery'), $this->version, false);
-        wp_localize_script('clear-cookie', 'cookie_vars', array(
-            'end_point'           => $endpoint
-        ));
+        wp_enqueue_script('prep-cookie', plugin_dir_url(__FILE__) . 'js/cookie.js', array('jquery'), $this->version, false);
+        wp_localize_script('prep-cookie', 'cookie_vars', ['end_point' => $endpoint]);
 
-        if (!is_front_page() && is_singular('post')) {
-            if ($this->is_plugin_enable() && isset($this->preplink['endpoint'])){
-                $settings = get_option('email_marketing_settings', array());
-                wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
-                wp_enqueue_script('preplink-global', plugin_dir_url(__FILE__) . 'js/preplink-global.js', array('jquery'), $this->version, false);
-                wp_localize_script('preplink-global', 'href_proccess', array(
-                    'end_point'              => $endpoint,
-                    'prep_url'               => $this->getPrepLinkUrls(),
-                    'pre_elm_exclude'        => $this->getExcludedElements(),
-                    'count_down'             => !empty($this->settings['preplink_countdown']) ? $this->settings['preplink_countdown'] : 0,
-                    'cookie_time'            => !empty($this->preplink['cookie_time']) ? $this->preplink['cookie_time'] : 5,
-                    'countdown_endpoint'     => !empty($this->preplink['countdown_endpoint']) ? $this->preplink['countdown_endpoint'] : 5,
-                    'display_mode'           => !empty($this->settings['preplink_wait_text']) ? $this->settings['preplink_wait_text'] : 'wait_time',
-                    'wait_text'              => !empty($this->settings['wait_text_replace']) ? $this->settings['wait_text_replace'] : 'waiting',
-                    'auto_direct'            => !empty($this->settings['preplink_auto_direct']) ? $this->settings['preplink_auto_direct'] : 0,
-                    'endpoint_direct'        => !empty($this->preplink['endpoint_auto_direct']) ? $this->preplink['endpoint_auto_direct'] : 0,
-                    'text_complete'          => !empty($this->settings['preplink_text_complete']) ? $this->settings['preplink_text_complete'] : 'Link ready!',
-                    'links_noindex_nofollow' => $this->get_links_nofolow_noindex(),
-                ));
+        if ($this->is_plugin_enable() && isset($this->preplink['endpoint'])){
 
-                global $wp_query;
-                if (isset($wp_query->query_vars[$endpoint])) {
-                    wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/preplink-endpoint.js', array('jquery'), $this->version, false);
-//                    wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/preplink-endpoint.css', array(), $this->version, 'all');
-                }
-            }
+            $settings = get_option('email_marketing_settings', []);
+            wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
+            wp_enqueue_script('preplink-global', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, true);
+            wp_localize_script('preplink-global', 'href_proccess', [
+                'end_point'              => $endpoint,
+                'prep_url'               => $this->getPrepLinkUrls(),
+                'pre_elm_exclude'        => $this->getExcludedElements(),
+                'count_down'             => !empty($this->settings['preplink_countdown']) ? $this->settings['preplink_countdown'] : 0,
+                'cookie_time'            => !empty($this->preplink['cookie_time']) ? $this->preplink['cookie_time'] : 5,
+                'display_mode'           => !empty($this->settings['preplink_wait_text']) ? $this->settings['preplink_wait_text'] : 'wait_time',
+                'wait_text'              => !empty($this->settings['wait_text_replace']) ? $this->settings['wait_text_replace'] : 'waiting',
+                'auto_direct'            => !empty($this->settings['preplink_auto_direct']) ? $this->settings['preplink_auto_direct'] : 0,
+                'text_complete'          => !empty($this->settings['preplink_text_complete']) ? $this->settings['preplink_text_complete'] : 'Link ready!',
+                'links_noindex_nofollow' => $this->get_links_nofolow_noindex(),
+                'is_user_logged_in'      => is_user_logged_in(),
+                'is_popup'               => isset($settings['disable_click_popup']) ? $settings['disable_click_popup'] : '0',
+                'remix_url'              => ['prefix'  => 'df5c1kjdhsf81', 'mix_str' => 'gVmk2mf9823c2', 'suffix'  => 'cgy73mfuvkjs3']
+            ]);
         }
     }
 
     public function preplink_rewrite_endpoint(){
         if ($this->is_plugin_enable()){
-            add_rewrite_endpoint($this->getEndPointValue(), EP_PERMALINK | EP_PAGES );
-
-            add_filter('template_include', function($template) {
-                global $wp_query;
-                if (isset($wp_query->query_vars[$this->getEndPointValue()]) && is_singular('post')) {
-                    $this->set_robots_filter();
-                    return dirname( __FILE__ ) . '/templates/preplink_template.php';
-                }
-                return $template;
-            });
+            add_rewrite_endpoint($this->getEndPointValue(), EP_ALL );
+            add_filter('template_include', [$this, 'preplink_template_include']);
+            flush_rewrite_rules();
         }
+    }
+
+    public function preplink_template_include($template) {
+        global $wp_query;
+        if (isset($wp_query->query_vars[$this->getEndPointValue()])) {
+            $this->set_robots_filter();
+            $template_conf = get_option('preplink_endpoint');
+
+            wp_enqueue_style('prep-template', plugin_dir_url(__FILE__) . 'css/template.css', [], PREPLINK_VERSION, 'all');
+            wp_enqueue_script('prep-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), PREPLINK_VERSION, false);
+            wp_localize_script('prep-template', 'prep_template', [
+                'countdown_endpoint'     => !empty($this->preplink['countdown_endpoint']) ? $this->preplink['countdown_endpoint'] : 5,
+                'endpoint_direct'        => !empty($this->preplink['endpoint_auto_direct']) ? $this->preplink['endpoint_auto_direct'] : 0,
+                'remix_url'              => ['prefix'  => 'df5c1kjdhsf81', 'mix_str' => 'gVmk2mf9823c2', 'suffix'  => 'cgy73mfuvkjs3'],
+                'is_user_logged_in'      => is_user_logged_in(),
+            ]);
+
+            if (isset($template_conf['preplink_template']) && $template_conf['preplink_template'] == 'cool_tm') {
+                return dirname( __FILE__ ) . '/templates/coundown.php';
+            } else {
+                return dirname( __FILE__ ) . '/templates/default.php';
+            }
+
+        }
+        return $template;
     }
 
     /**
@@ -156,9 +167,6 @@ class Preplink_Public {
         }
     }
 
-    /**
-     * @return bool
-     */
     public function is_plugin_enable(){
         return !empty($this->settings['preplink_enable_plugin']) && (int)$this->settings['preplink_enable_plugin'] == 1;
     }
@@ -214,5 +222,44 @@ class Preplink_Public {
         }
 
         return $prepList;
+    }
+
+    public function render_link_info($content) {
+        $post_id = get_the_ID();
+        $file_name = get_post_meta($post_id, 'file_name', true);
+        $link_no_login = get_post_meta($post_id, 'link_no_login', true);
+        $link_is_login = get_post_meta($post_id, 'link_is_login', true);
+
+        if (is_singular('post') && $file_name && $link_is_login && $link_no_login) {
+            $html = $this->prep_link_html($file_name);
+
+            $last_p = strrpos($content, '</p>');
+            if ($last_p !== false) {
+                $content = substr_replace($content, $html, $last_p + 4, 0);
+            }
+        }
+        return $content;
+    }
+
+    public function prep_link_html($file_name) {
+        $blog_url = base64_encode(get_bloginfo('url'));
+        $display_mode = !empty($this->settings['preplink_wait_text']) ? $this->settings['preplink_wait_text'] : 'wait_time';
+
+        $html = '<h3 class="wp-block-heading" id="download-now"><b>Link download: </b>';
+
+        if (is_user_logged_in()) {
+            $display_mode = 'progress';
+        }
+
+        if ($display_mode === 'progress') {
+            $html .= '<div class="post-progress-bar">';
+            $html .= '<span id="prep-request" data-id="' . $blog_url . '"><strong class="post-progress">' . $file_name . '</strong></span></div>';
+        } else {
+            $html .= '<span class="wrap-countdown">';
+            $html .= '<span id="prep-request" data-id="' . $blog_url . '"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
+        }
+
+        $html .= '</h3>';
+        return $html;
     }
 }

@@ -83,7 +83,7 @@ msgstr ""
 msgid "Your session has ended, please click"
 msgstr ""
 
-msgid "If the issue persists, try clearing your cookies or browser history and attempt again."
+msgid "If the issue persists, please try clearing cookies or attempting with a different browser."
 msgstr ""
 
 msgid "Note"

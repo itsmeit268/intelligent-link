@@ -4,10 +4,8 @@
     $(function () {
         var $waitText = $('#preplink_wait_text');
         var text_replace = $('.wait_text_replace');
-        var $faq1 = $('#preplink_faq1_enabled');
-        var faq1_des = $('.preplink_faq1_description,.preplink_faq1_title');
-        var $faq2 = $('#preplink_faq2_enabled');
-        var faq2_des = $('.preplink_faq2_description,.preplink_faq2_title');
+        var $faq1 = $('#faq_enabled');
+        var faq1_des = $('.faq_description,.faq_title');
         var $related = $('#preplink_related_enabled');
         var related_des = $('.preplink_related_number');
         var $endpointAutoDirect = $('#endpoint_auto_direct');
@@ -47,22 +45,6 @@
                 }
             });
         }
-
-        function _faq2_enabled() {
-            if ($faq2.val() === '1') {
-                faq2_des.show();
-            } else {
-                faq2_des.hide();
-            }
-            $faq2.on('change', function () {
-                if (this.value === '1') {
-                    faq2_des.show();
-                } else {
-                    faq2_des.hide();
-                }
-            });
-        }
-
         function _related_enabled() {
             if ($related.val() === '1') {
                 related_des.show();
@@ -144,7 +126,6 @@
 
         _display_mode();
         _faq1_enabled();
-        _faq2_enabled();
         _related_enabled();
         _checkCookieValue();
         _checkEndpointAutoDirect();

@@ -1,11 +1,6 @@
 <?php
 
 /**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
  * @link       https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @package    Preplink
  * @subpackage Preplink/admin
@@ -30,7 +25,7 @@ class Preplink_Admin {
      * @var      string $version The current version of this plugin.
      */
     private $version;
-
+    
     /**
      * Initialize the class and set its properties.
      *
@@ -44,8 +39,8 @@ class Preplink_Admin {
         add_action('admin_init', array($this, 'register_and_build_fields'));
         add_action('plugin_action_links_' . PREPLINK_PLUGIN_BASE, array($this, 'add_plugin_action_link'), 20);
 
-        add_action('add_meta_boxes', array($this, 'add_html_filed_content'), 20);
-        add_action('save_post', array($this, 'save_html_filed_content'), 20);
+        add_action('add_meta_boxes', array($this, 'add_html_field_content'), 22);
+        add_action('save_post', array($this, 'save_html_field_content'), 20);
         add_action('before_delete_post', array($this, 'delete_links_filed'), 20, 1);
     }
 
@@ -58,14 +53,8 @@ class Preplink_Admin {
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/preplink-admin.css', array(), $this->version, 'all');
     }
 
-    /**
-     * Register the JavaScript for the admin area.
-     *
-
-     */
     public function enqueue_scripts(){
         wp_enqueue_script('preplink-admin', plugin_dir_url(__FILE__) . 'js/preplink-admin.js', array('wp-i18n'), $this->version, false);
-//        wp_set_script_translations('preplink-admin', 'prep-link', plugin_dir_path( __FILE__ ) . 'languages' );
     }
 
     public function add_prep_link_admin_menu(){
@@ -200,12 +189,12 @@ class Preplink_Admin {
         unset($args);
 
         add_settings_field(
-            'preplink_enable_plugin', 
+            'preplink_enable_plugin',
             __('Enable/Disable', 'prep-link'),
             array($this, 'preplink_enable_plugin'),
-            'preplink_general_settings', 
-            'preplink_general_section', 
-            array( 
+            'preplink_general_settings',
+            'preplink_general_section',
+            array(
                 1 => 'Enabled',
                 0 => 'Disabled',
             )
@@ -233,12 +222,25 @@ class Preplink_Admin {
             'preplink_endpoint_section');
 
         add_settings_field(
-            'preplink_endpoint_auto_direct', 
+            'preplink_template',
+            __('Page Template', 'prep-link'),
+            array($this, 'preplink_template'),
+            'preplink_endpoint_settings',
+            'preplink_endpoint_section',
+            array(
+                'default'    => __('Default', 'prep-link'),
+                'cool_tm'    => __('Template 1 (Beta)', 'prep-link'),
+            )
+        );
+
+
+        add_settings_field(
+            'preplink_endpoint_auto_direct',
             __('Auto redirect', 'prep-link'),
             array($this, 'preplink_endpoint_auto_direct'),
-            'preplink_endpoint_settings', 
-            'preplink_endpoint_section', 
-            array( 
+            'preplink_endpoint_settings',
+            'preplink_endpoint_section',
+            array(
                 1 => 'Yes',
                 0 => 'No',
             )
@@ -269,78 +271,46 @@ class Preplink_Admin {
         );
 
         add_settings_field(
-            'preplink_image', 
+            'preplink_image',
             __('Post Image', 'prep-link'),
             array($this, 'preplink_image_field'),
-            'preplink_endpoint_settings', 
-            'preplink_endpoint_section', 
-            array( 
+            'preplink_endpoint_settings',
+            'preplink_endpoint_section',
+            array(
                 1 => 'Yes',
                 0 => 'No',
             )
         );
 
-        add_settings_field(
-            'preplink_excerpt', 
-            __('Post Excerpt', 'prep-link'),
-            array($this, 'preplink_excerpt_field'),
-            'preplink_endpoint_settings', 
-            'preplink_endpoint_section', 
-            array( 
-                1 => 'Yes',
-                0 => 'No',
-            )
-        );
 
         add_settings_field(
-            'preplink_excerpt', 
-            __('Post Excerpt', 'prep-link'),
-            array($this, 'preplink_excerpt_field'),
-            'preplink_endpoint_settings', 
-            'preplink_endpoint_section', 
-            array( 
-                1 => 'Yes',
-                0 => 'No',
-            )
-        );
-
-        add_settings_field(
-            'preplink_faq_1',
-            __('FAQ 1', 'prep-link'),
-            array($this, 'preplink_display_faq_1'),
+            'pr_faq',
+            __('FAQ', 'prep-link'),
+            array($this, 'pr_faq'),
             'preplink_faq_settings',
             'preplink_faq_section',
             array('label_for' => 'preplink_faq')
         );
 
         add_settings_field(
-            'preplink_faq_2',
-            __('FAQ 2', 'prep-link'),
-            array($this, 'preplink_display_faq_2'),
-            'preplink_faq_settings',
-            'preplink_faq_section',
-            array('label_for' => 'preplink_faq_2')
-        );
-
-        add_settings_field(
-            'preplink_related_post', 
+            'preplink_related_post',
             __('Post Related', 'prep-link'),
             array($this, 'preplink_related_post'),
-            'preplink_endpoint_settings', 
-            'preplink_endpoint_section', 
-            array( 
+            'preplink_endpoint_settings',
+            'preplink_endpoint_section',
+            array(
                 1 => 'Yes',
                 0 => 'No',
             )
         );
 
         add_settings_field(
-            'preplink_comment', 
+            'preplink_comment',
             __('Comment', 'prep-link'),
             array($this, 'preplink_comment'),
-            'preplink_endpoint_settings', 
-            'preplink_endpoint_section', 
-            array( 
+            'preplink_endpoint_settings',
+            'preplink_endpoint_section',
+            array(
                 1 => 'Yes',
                 0 => 'No',
             )
@@ -359,93 +329,21 @@ class Preplink_Admin {
         );
 
         add_settings_field(
-            'preplink_auto_direct', 
+            'preplink_auto_direct',
             __('Automatically redirect post to endpoint', 'prep-link'),
             array($this, 'preplink_post_auto_direct'),
-            'preplink_general_settings', 
-            'preplink_general_section', 
-            array( 
+            'preplink_general_settings',
+            'preplink_general_section',
+            array(
                 1 => 'Yes',
                 0 => 'No',
             )
         );
 
         add_settings_field(
-            'preplink_advertising_1', 
+            'pr_ad_1',
             __('Enable/Disable', 'prep-link'),
-            array($this, 'preplink_filed_advertising_1'),
-            'preplink_advertising_settings', 
-            'preplink_advertising_section', 
-            array( 
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
-        );
-
-        add_settings_field(
-            'preplink_advertising_2', 
-            __('Enable/Disable', 'prep-link'),
-            array($this, 'preplink_filed_advertising_2'),
-            'preplink_advertising_settings', 
-            'preplink_advertising_section', 
-            array( 
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
-        );
-
-        add_settings_field(
-            'preplink_advertising_3', 
-            __('Enable/Disable', 'prep-link'),
-            array($this, 'preplink_filed_advertising_3'),
-            'preplink_advertising_settings', 
-            'preplink_advertising_section', 
-            array( 
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
-        );
-
-        add_settings_field(
-            'preplink_advertising_4', 
-            __('Enable/Disable', 'prep-link'),
-            array($this, 'preplink_filed_advertising_4'),
-            'preplink_advertising_settings', 
-            'preplink_advertising_section', 
-            array( 
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
-        );
-
-        add_settings_field(
-            'preplink_advertising_5', 
-            __('Enable/Disable', 'prep-link'),
-            array($this, 'preplink_filed_advertising_5'),
-            'preplink_advertising_settings', 
-            'preplink_advertising_section', 
-            array( 
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
-        );
-
-        add_settings_field(
-            'preplink_advertising_6', 
-            __('Enable/Disable', 'prep-link'),
-            array($this, 'preplink_filed_advertising_6'),
-            'preplink_advertising_settings', 
-            'preplink_advertising_section', 
-            array( 
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
-        );
-
-        add_settings_field(
-            'preplink_advertising_7',
-            __('Enable/Disable', 'prep-link'),
-            array($this, 'preplink_filed_advertising_7'),
+            array($this, 'pr_ad_1'),
             'preplink_advertising_settings',
             'preplink_advertising_section',
             array(
@@ -455,9 +353,69 @@ class Preplink_Admin {
         );
 
         add_settings_field(
-            'preplink_advertising_8',
+            'pr_ad_2',
             __('Enable/Disable', 'prep-link'),
-            array($this, 'preplink_filed_advertising_8'),
+            array($this, 'pr_ad_2'),
+            'preplink_advertising_settings',
+            'preplink_advertising_section',
+            array(
+                1 => 'Enabled',
+                0 => 'Disabled',
+            )
+        );
+
+        add_settings_field(
+            'pr_ad_3',
+            __('Enable/Disable', 'prep-link'),
+            array($this, 'pr_ad_3'),
+            'preplink_advertising_settings',
+            'preplink_advertising_section',
+            array(
+                1 => 'Enabled',
+                0 => 'Disabled',
+            )
+        );
+
+        add_settings_field(
+            'pr_ad_4',
+            __('Enable/Disable', 'prep-link'),
+            array($this, 'pr_ad_4'),
+            'preplink_advertising_settings',
+            'preplink_advertising_section',
+            array(
+                1 => 'Enabled',
+                0 => 'Disabled',
+            )
+        );
+
+        add_settings_field(
+            'pr_ad_5',
+            __('Enable/Disable', 'prep-link'),
+            array($this, 'pr_ad_5'),
+            'preplink_advertising_settings',
+            'preplink_advertising_section',
+            array(
+                1 => 'Enabled',
+                0 => 'Disabled',
+            )
+        );
+
+        add_settings_field(
+            'pr_ad_6',
+            __('Enable/Disable', 'prep-link'),
+            array($this, 'pr_ad_6'),
+            'preplink_advertising_settings',
+            'preplink_advertising_section',
+            array(
+                1 => 'Enabled',
+                0 => 'Disabled',
+            )
+        );
+
+        add_settings_field(
+            'pr_ad_7',
+            __('Enable/Disable', 'prep-link'),
+            array($this, 'pr_ad_7'),
             'preplink_advertising_settings',
             'preplink_advertising_section',
             array(
@@ -473,6 +431,13 @@ class Preplink_Admin {
             'preplink_general_settings',
             'preplink_general_section'
         );
+
+        add_settings_field(
+            'preplink_link_field_lists',
+            __('Number link list', 'prep-link'),
+            array($this, 'preplink_link_field_lists'),
+            'preplink_general_settings',
+            'preplink_general_section');
 
         add_settings_field(
             'preplink_delete_option',
@@ -534,8 +499,7 @@ class Preplink_Admin {
         <div class="prep-link-faq-settings">
             <h3>You can add the FAQ HTML code here, it will apply to the page endpoint.</h3>
             <span>Author  : itsmeit.biz@gmail.com</span> |
-            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
-                                                                                       target="_blank">itsmeit.biz</a></span>
+            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
             |
             <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
@@ -547,8 +511,7 @@ class Preplink_Admin {
         <div class="prep-link-endpoint-settings">
             <h3>This setting will apply only to the endpoint page.</h3>
             <span>Author  : itsmeit.biz@gmail.com</span> |
-            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
-                                                                                       target="_blank">itsmeit.biz</a></span>
+            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
             |
             <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
@@ -585,9 +548,18 @@ class Preplink_Admin {
         $settings = get_option('preplink_setting', array());
         ?>
         <input type="text" id="preplink_text_complete" name="preplink_setting[preplink_text_complete]"
-               placeholder="[Link ready!]"
+               placeholder="Link ready!"
                value="<?= esc_attr(!empty($settings['preplink_text_complete']) ? $settings['preplink_text_complete'] : false) ?>"/>
-        <p class="description">Text display after countdown complete. (default [Link ready!])</p>
+        <p class="description">Text display after countdown complete. (default Link ready!)</p>
+        <?php
+    }
+
+    public function preplink_link_field_lists(){
+        $settings = get_option('preplink_setting', array());
+        ?>
+        <input type="number" id="preplink_number_field_lists" name="preplink_setting[preplink_number_field_lists]" placeholder="5"
+               value="<?= esc_attr(!empty($settings['preplink_number_field_lists']) ? $settings['preplink_number_field_lists'] : false) ?>"/>
+        <p class="description">The number of alternative link fields displayed in a post.</p>
         <?php
     }
 
@@ -598,6 +570,17 @@ class Preplink_Admin {
                value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '' ?>"/>
         <p class="description">Default link expiration time is 5 minutes</p>
         <?php
+    }
+
+    public function preplink_template($args){
+        $settings = get_option('preplink_endpoint', array());
+        $selected = isset($settings['preplink_template']) ? $settings['preplink_template'] : 'default';
+        $html = '<select id="preplink_template" name="preplink_endpoint[preplink_template]" class="preplink_template">';
+        foreach ($args as $value => $label) {
+            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
+        }
+        $html .= '</select>';
+        echo $html;
     }
 
     public function preplink_textarea_field(){
@@ -642,49 +625,36 @@ class Preplink_Admin {
         echo $html;
     }
 
-    public function preplink_excerpt_field($args){
-        $settings = get_option('preplink_endpoint', array());
-        $selected = isset($settings['preplink_excerpt']) ? $settings['preplink_excerpt'] : '1';
-        $html = '<select id="preplink_excerpt" name="preplink_endpoint[preplink_excerpt]" class="preplink_excerpt">';
-        foreach ($args as $value => $label) {
-            $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
-        }
-        $html .= '</select>';
-        echo $html;
-    }
-
-    public function preplink_display_faq_1(){
+    public function pr_faq(){
         $settings = get_option('preplink_faq', array());
         ?>
         <table class="form-table">
             <tbody>
-            <tr class="preplink_faq1_enabled">
+            <tr class="faq_enabled">
                 <td style="padding: 5px 0;">
                     <label style="width: 160px;display: inline-table;">Enable/Disable</label>
-                    <select name="preplink_faq[preplink_faq1_enabled]" id="preplink_faq1_enabled">
-                        <option value="1" <?php selected(isset($settings['preplink_faq1_enabled']) && $settings['preplink_faq1_enabled'] == '1'); ?>>
+                    <select name="preplink_faq[faq_enabled]" id="faq_enabled">
+                        <option value="1" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '1'); ?>>
                             Yes
                         </option>
-                        <option value="0" <?php selected(isset($settings['preplink_faq1_enabled']) && $settings['preplink_faq1_enabled'] == '0'); ?>>
+                        <option value="0" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '0'); ?>>
                             No
                         </option>
                     </select>
                 </td>
             </tr>
-            <tr class="preplink_faq1_title">
+            <tr class="faq_title">
                 <td style="padding: 5px 0;">
                     <label style="width: 160px;display: inline-table;">FAQ Title</label>
-                    <input type="text" name="preplink_faq[preplink_faq1_title]"
-                           placeholder="Notes before continuing"
-                           value="<?= esc_attr(isset($settings['preplink_faq1_title']) ? $settings['preplink_faq1_title'] : false); ?>"/>
+                    <input type="text" name="preplink_faq[faq_title]" placeholder="Notes before continuing" value="<?= esc_attr(isset($settings['faq_title']) ? $settings['faq_title'] : false); ?>"/>
                 </td>
             </tr>
-            <tr class="preplink_faq1_description">
+            <tr class="faq_description">
                 <td style="padding: 5px 0;">
                     <label style="width: 160px;display: inline-table;">FAQ Description (HTML)</label>
                     <?php
-                    $html = '<textarea name="preplink_faq[preplink_faq1_description]" rows="10" cols="70">';
-                    $html .= esc_html(isset($settings['preplink_faq1_description']) ? $settings['preplink_faq1_description'] : false);
+                    $html = '<textarea name="preplink_faq[faq_description]" rows="10" cols="70">';
+                    $html .= esc_html(isset($settings['faq_description']) ? $settings['faq_description'] : false);
                     $html .= '</textarea>';
                     $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
                     $html .= '<p class="description"><a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">References</a></p>';
@@ -700,47 +670,7 @@ class Preplink_Admin {
         }
     }
 
-    public function preplink_display_faq_2()
-    {
-        $settings = get_option('preplink_faq', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_faq2_enabled">
-                <td style="padding: 5px 0;">
-                    <label style="width: 160px;display: inline-table;">Enable/Disable</label>
-                    <select name="preplink_faq[preplink_faq2_enabled]" id="preplink_faq2_enabled">
-                        <option value="1" <?php selected(isset($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == '1'); ?>>Yes</option>
-                        <option value="0" <?php selected(isset($settings['preplink_faq2_enabled']) && $settings['preplink_faq2_enabled'] == '0'); ?>>No</option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_faq2_title">
-                <td style="padding: 5px 0;">
-                    <label style="width: 160px;display: inline-table;">FAQ Title</label>
-                    <input type="text" name="preplink_faq[preplink_faq2_title]" placeholder="Download FAQs" value="<?= esc_attr(isset($settings['preplink_faq2_title']) ? $settings['preplink_faq2_title'] : false); ?>"/>
-                </td>
-            </tr>
-            <tr class="preplink_faq2_description">
-                <td style="padding: 5px 0;">
-                    <label style="width: 160px;display: inline-table;">FAQ Description (HTML)</label>
-                    <?php
-                    $html = '<textarea name="preplink_faq[preplink_faq2_description]" rows="10" cols="70">';
-                    $html .= esc_html(isset($settings['preplink_faq2_description']) ? $settings['preplink_faq2_description'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
-                    $html .= '<p class="description"><a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">References</a></p>';
-                    echo $html;
-                    ?>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-    }
-
-    public function preplink_related_post()
-    {
+    public function preplink_related_post() {
         $settings = get_option('preplink_endpoint', array());
         ?>
         <table class="form-table">
@@ -770,8 +700,7 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_comment($args)
-    {
+    public function preplink_comment($args) {
         $settings = get_option('preplink_endpoint', array());
         $selected = isset($settings['preplink_comment']) ? $settings['preplink_comment'] : '1';
         $html = '<select id="preplink_comment" name="preplink_endpoint[preplink_comment]">';
@@ -783,8 +712,7 @@ class Preplink_Admin {
         echo $html;
     }
 
-    public function preplink_custom_style()
-    {
+    public function preplink_custom_style() {
         $settings = get_option('preplink_setting', array());
         $html = '<textarea id="preplink_custom_style" cols="50" rows="5" name="preplink_setting[preplink_custom_style]">';
         $html .= isset($settings["preplink_custom_style"]) ? $settings["preplink_custom_style"] : false;
@@ -793,8 +721,7 @@ class Preplink_Admin {
         echo $html;
     }
 
-    public function preplink_display_mode()
-    {
+    public function preplink_display_mode() {
         $settings = get_option('preplink_setting', array());
         ?>
         <table class="form-table">
@@ -823,8 +750,7 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_post_auto_direct()
-    {
+    public function preplink_post_auto_direct() {
         $settings = get_option('preplink_setting', array());
         ?>
         <table class="form-table">
@@ -848,10 +774,8 @@ class Preplink_Admin {
         </table>
         <?php
     }
-
-
-    public function preplink_endpoint_auto_direct()
-    {
+    
+    public function preplink_endpoint_auto_direct() {
         $settings = get_option('preplink_endpoint', array());
         ?>
         <table class="form-table">
@@ -876,8 +800,7 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_filed_advertising_1()
-    {
+    public function pr_ad_1() {
         $settings = get_option('preplink_advertising', array());
         ?>
         <table class="form-table">
@@ -912,8 +835,7 @@ class Preplink_Admin {
 
     }
 
-    public function preplink_filed_advertising_2()
-    {
+    public function pr_ad_2() {
         $settings = get_option('preplink_advertising', array());
         ?>
         <table class="form-table">
@@ -947,8 +869,7 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_filed_advertising_3()
-    {
+    public function pr_ad_3() {
         $settings = get_option('preplink_advertising', array());
         ?>
         <table class="form-table">
@@ -973,7 +894,7 @@ class Preplink_Admin {
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_3]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_3']) ? $settings['preplink_advertising_code_3'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After post excerpt.</p>';
+                    $html .= '<p class="description">Display position: After Download Button.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -982,8 +903,7 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_filed_advertising_4()
-    {
+    public function pr_ad_4() {
         $settings = get_option('preplink_advertising', array());
         ?>
         <table class="form-table">
@@ -1008,7 +928,7 @@ class Preplink_Admin {
                     $html = '<textarea name="preplink_advertising[preplink_advertising_code_4]" rows="5" cols="50">';
                     $html .= esc_html(isset($settings['preplink_advertising_code_4']) ? $settings['preplink_advertising_code_4'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After FAQ 1.</p>';
+                    $html .= '<p class="description">Display position: After FAQ</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -1017,8 +937,7 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_filed_advertising_5()
-    {
+    public function pr_ad_5() {
         $settings = get_option('preplink_advertising', array());
         ?>
         <table class="form-table">
@@ -1026,11 +945,11 @@ class Preplink_Admin {
             <tr class="preplink_advertising_enable">
                 <th scope="row">Enable Advertising 5:</th>
                 <td>
-                    <select name="preplink_advertising[preplink_advertising_5]" id="preplink_advertising_5">
-                        <option value="1" <?php selected(isset($settings['preplink_advertising_5']) && $settings['preplink_advertising_5'] == '1'); ?>>
+                    <select name="preplink_advertising[pr_ad_5]" id="pr_ad_5">
+                        <option value="1" <?php selected(isset($settings['pr_ad_5']) && $settings['pr_ad_5'] == '1'); ?>>
                             Yes
                         </option>
-                        <option value="0" <?php selected(isset($settings['preplink_advertising_5']) && $settings['preplink_advertising_5'] == '0'); ?>>
+                        <option value="0" <?php selected(isset($settings['pr_ad_5']) && $settings['pr_ad_5'] == '0'); ?>>
                             No
                         </option>
                     </select>
@@ -1040,10 +959,10 @@ class Preplink_Admin {
                 <th scope="row">Advertising HTML code:</th>
                 <td>
                     <?php
-                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_5]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['preplink_advertising_code_5']) ? $settings['preplink_advertising_code_5'] : false);
+                    $html = '<textarea name="preplink_advertising[pr_ad_code_5]" rows="5" cols="50">';
+                    $html .= esc_html(isset($settings['pr_ad_code_5']) ? $settings['pr_ad_code_5'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: Before Button download.</p>';
+                    $html .= '<p class="description">Display position: After Related Post.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -1052,8 +971,7 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_filed_advertising_6()
-    {
+    public function pr_ad_6() {
         $settings = get_option('preplink_advertising', array());
         ?>
         <table class="form-table">
@@ -1061,11 +979,11 @@ class Preplink_Admin {
             <tr class="preplink_advertising_enable">
                 <th scope="row">Enable Advertising 6:</th>
                 <td>
-                    <select name="preplink_advertising[preplink_advertising_6]" id="preplink_advertising_6">
-                        <option value="1" <?php selected(isset($settings['preplink_advertising_6']) && $settings['preplink_advertising_6'] == '1'); ?>>
+                    <select name="preplink_advertising[pr_ad_6]" id="pr_ad_6">
+                        <option value="1" <?php selected(isset($settings['pr_ad_6']) && $settings['pr_ad_6'] == '1'); ?>>
                             Yes
                         </option>
-                        <option value="0" <?php selected(isset($settings['preplink_advertising_6']) && $settings['preplink_advertising_6'] == '0'); ?>>
+                        <option value="0" <?php selected(isset($settings['pr_ad_6']) && $settings['pr_ad_6'] == '0'); ?>>
                             No
                         </option>
                     </select>
@@ -1075,10 +993,10 @@ class Preplink_Admin {
                 <th scope="row">Advertising HTML code:</th>
                 <td>
                     <?php
-                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_6]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['preplink_advertising_code_6']) ? $settings['preplink_advertising_code_6'] : false);
+                    $html = '<textarea name="preplink_advertising[pr_ad_code_6]" rows="5" cols="50">';
+                    $html .= esc_html(isset($settings['pr_ad_code_6']) ? $settings['pr_ad_code_6'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After Button download</p>';
+                    $html .= '<p class="description">Display position: Before Text Session Expired Page.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -1087,20 +1005,19 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_filed_advertising_7()
-    {
+    public function pr_ad_7() {
         $settings = get_option('preplink_advertising', array());
         ?>
         <table class="form-table">
             <tbody>
             <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 7:</th>
+                <th scope="row">Enable Advertising 7: </th>
                 <td>
-                    <select name="preplink_advertising[preplink_advertising_7]" id="preplink_advertising_7">
-                        <option value="1" <?php selected(isset($settings['preplink_advertising_7']) && $settings['preplink_advertising_7'] == '1'); ?>>
+                    <select name="preplink_advertising[pr_ad_7]" id="pr_ad_7">
+                        <option value="1" <?php selected(isset($settings['pr_ad_7']) && $settings['pr_ad_7'] == '1'); ?>>
                             Yes
                         </option>
-                        <option value="0" <?php selected(isset($settings['preplink_advertising_7']) && $settings['preplink_advertising_7'] == '0'); ?>>
+                        <option value="0" <?php selected(isset($settings['pr_ad_7']) && $settings['pr_ad_7'] == '0'); ?>>
                             No
                         </option>
                     </select>
@@ -1110,10 +1027,10 @@ class Preplink_Admin {
                 <th scope="row">Advertising HTML code:</th>
                 <td>
                     <?php
-                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_7]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['preplink_advertising_code_7']) ? $settings['preplink_advertising_code_7'] : false);
+                    $html = '<textarea name="preplink_advertising[pr_ad_code_7]" rows="5" cols="50">';
+                    $html .= esc_html(isset($settings['pr_ad_code_7']) ? $settings['pr_ad_code_7'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After related posts</p>';
+                    $html .= '<p class="description">Display position: After Text Session Expired Page.</p>';
                     echo $html;
                     ?></td>
             </tr>
@@ -1122,94 +1039,134 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_filed_advertising_8(){
-        $settings = get_option('preplink_advertising', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 8:</th>
-                <td>
-                    <select name="preplink_advertising[preplink_advertising_8]" id="preplink_advertising_8">
-                        <option value="1" <?php selected(isset($settings['preplink_advertising_8']) && $settings['preplink_advertising_8'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['preplink_advertising_8']) && $settings['preplink_advertising_8'] == '0'); ?>>
-                            No
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_advertising_code">
-                <th scope="row">Advertising HTML code:</th>
-                <td>
-                    <?php
-                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_8]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['preplink_advertising_code_8']) ? $settings['preplink_advertising_code_8'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After comments</p>';
-                    echo $html;
-                    ?></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-        if (isset($_POST['preplink_advertising'])) {
-            $settings = $_POST['preplink_advertising'];
-            update_option('preplink_advertising', $settings);
-        }
-    }
-
-    public function preplink_delete_option_on_uninstall(){
+    public function preplink_delete_option_on_uninstall() {
         $settings = get_option('preplink_setting', array());
         $delete_option = isset( $settings['preplink_delete_option'] ) ? $settings['preplink_delete_option'] : false;
         echo '<input type="checkbox" name="preplink_setting[preplink_delete_option]" value="1" ' . checked( $delete_option, true, false ) . '/>';
     }
 
-    public function add_html_filed_content() {
-        add_meta_box( 'link-download-metabox', __( 'List Link Download' ), array($this,'link_download_meta_box'), 'post', 'side', 'high' );
+    public function add_html_field_content() {
+        add_meta_box( 'link_meta_box', __( 'Link Options (preplink)' ), array($this,'link_meta_box_callback'), 'post', 'side', 'default' );
     }
 
-    public function link_download_meta_box($post) {
-        wp_nonce_field('link_embed_nonce', 'link_embed_nonce');
-        $field_names = [
-            'title-1', 'link-1', 'size-1', 'file-1', 'date-1',
-            'title-2', 'link-2', 'size-2', 'file-2', 'date-2',
-            'title-3', 'link-3', 'size-3', 'file-3', 'date-3',
-            'title-4', 'link-4', 'size-4', 'file-4', 'date-4',
-            'title-5', 'link-5', 'size-5', 'file-5', 'date-5',
-        ];
+    public function link_meta_box_callback($post) {
+        wp_nonce_field('link_field', 'link_field');
         ?>
-        <div class="link-embed-input">
-            <?php for ($i = 0; $i < count($field_names); $i += 5) : ?>
-                <?php
-                $link_download_data = get_post_meta($post->ID, 'link-download-metabox', true);
-                $title_value = isset($link_download_data[$field_names[$i]]) ? $link_download_data[$field_names[$i]] : '';
-                $link_value = isset($link_download_data[$field_names[$i + 1]]) ? $link_download_data[$field_names[$i + 1]] : '';
-                $size_value = isset($link_download_data[$field_names[$i + 2]]) ? $link_download_data[$field_names[$i + 2]] : '';
-                $fomat_file = isset($link_download_data[$field_names[$i + 3]]) ? $link_download_data[$field_names[$i + 3]] : '';
-                $date_value = isset($link_download_data[$field_names[$i + 4]]) ? $link_download_data[$field_names[$i + 4]] : '';
+
+        <h2 class="list-h3-title" style="font-size: 14px; padding: 7px 0px 0 0; margin: 0; font-weight: 600; text-transform: none; border-bottom: 4px solid #4350a7; margin-bottom: 10px;max-width: 91%;">
+            Member Level</h2>
+        <div class="member_level">
+            <?php
+            $member_options = get_post_meta($post->ID, 'member_level', true);
+            $member_level = json_decode($member_options, true);
+            ?>
+
+            <label for="member_level">Member Level:</label>
+            <select name="member_level" id="member_level">
+                <option value="free" <?php selected(($member_level['free'] ?? 'off'), 'on'); ?>>FREE Member</option>
+                <option value="vip" <?php selected(($member_level['vip'] ?? 'off'), 'on'); ?>>VIP Member</option>
+                <option value="premium" <?php selected(($member_level['premium'] ?? 'off'), 'on'); ?>>PREMIUM Member</option>
+            </select>
+        </div>
+
+
+        <h2 class="list-h3-title" style="font-size: 14px; padding: 7px 0px 0 0; margin-top: 15px; font-weight: 600; text-transform: none; border-bottom: 4px solid #4350a7; margin-bottom: 10px;max-width: 91%;">
+            Link Details</h2>
+        <div class="app-fields">
+            <?php
+            $fields = array(
+                'file_format' => 'Format (eg: APK/IPA/ZIP...)',
+                'require' => 'OS/FW (eg: Wordpress/IOS...)',
+                'os_version' => 'OS/FW Version (eg: 8.0+)',
+                'file_version' => 'File Version',
+                'mod_feature' => 'MOD Feature',
+                'link_no_login' => 'Link No Login',
+                'link_is_login' => 'Link Is Login',
+                'file_name' => 'File Name',
+                'file_size' => 'File Size (eg: 10.0MB)',
+                'rate_star' => 'Rate Star (eg: 8.0)',
+                'vote_num' => 'Vote Num (eg: 10M)'
+            );
+
+            $field_count = count($fields);
+            $fields_per_row = 3;
+            $field_index = 0;
+            foreach ($fields as $field_name => $field_label) {
+                if ($field_index % $fields_per_row === 0) {
+                    echo '<div class="app-row">';
+                }
+
+                $field_value = get_post_meta($post->ID, $field_name, true);
+                $placeholder = 'ex: ' . $field_label;
+
+                if ($field_name == 'rate_star') {
+                    $input_type = 'number';
+                } else {
+                    $input_type = 'text';
+                }
+
                 ?>
-                <div class="link">
-                    <label>Title <?php echo ($i / 5 + 1); ?>:</label>
-                    <input type="text" id="<?php echo esc_attr($field_names[$i]); ?>" name="<?php echo esc_attr($field_names[$i]); ?>" value="<?php echo $title_value ? esc_attr($title_value) : ''; ?>" placeholder="Title (ex: Server <?= ($i / 5 + 1)?>)"/>
-                    <label>Link <?php echo ($i / 5 + 1); ?>:</label>
-                    <input type="text" id="<?php echo esc_attr($field_names[$i + 1]); ?>" name="<?php echo esc_attr($field_names[$i + 1]); ?>" value="<?php echo $link_value ? esc_attr($link_value) : ''; ?>" placeholder="Link"/>
-                    <label>Size <?php echo ($i / 5 + 1); ?>:</label>
-                    <input type="text" id="<?php echo esc_attr($field_names[$i + 2]); ?>" name="<?php echo esc_attr($field_names[$i + 2]); ?>" value="<?php echo $size_value ? esc_attr($size_value) : ''; ?>" placeholder="Size"/>
-                    <label>File <?php echo ($i / 5 + 1); ?>:</label>
-                    <input type="text" id="<?php echo esc_attr($field_names[$i + 3]); ?>" name="<?php echo esc_attr($field_names[$i + 3]); ?>" value="<?php echo $fomat_file ? esc_attr($fomat_file) : ''; ?>" placeholder="File"/>
-                    <label>Date <?php echo ($i / 5 + 1); ?>:</label>
-                    <input type="date" id="<?php echo esc_attr($field_names[$i + 4]); ?>" name="<?php echo esc_attr($field_names[$i + 4]); ?>" value="<?php echo $date_value ? esc_attr($date_value) : ''; ?>" placeholder="Date"/>
+                <div class="app-field">
+                    <label for="<?= $field_name; ?>"><?= $field_label; ?>:</label>
+                    <input type="<?= $input_type; ?>" name="<?= $field_name; ?>" value="<?= esc_attr($field_value); ?>" placeholder="<?= $placeholder; ?>"/>
+                </div>
+                <?php
+
+                $field_index++;
+
+                if ($field_index % $fields_per_row === 0 || $field_index === $field_count) {
+                    echo '</div>';
+                }
+            }
+            ?>
+        </div>
+
+        <h2 class="list-h3-title" style="font-size: 14px; padding: 7px 0px 0 0; margin-top: 15px; font-weight: 600; text-transform: none; border-bottom: 4px solid #4350a7; margin-bottom: 10px;max-width: 91%;">
+            Additional Link Information</h2>
+        <div class="list-link-fields">
+            <?php
+            $list_field = [
+                'file_name', 'link_no_login', 'link_is_login', 'size'
+            ];
+            $link_download_data = get_post_meta($post->ID, 'link-download-metabox', true);
+            $settings = get_option('preplink_setting', array());
+            $total = !empty($settings['preplink_number_field_lists'])? (int) $settings['preplink_number_field_lists'] : 5;
+
+            for ($i = 1; $i <= $total; $i++) : ?>
+                <?php
+                $file_name = isset($link_download_data[$list_field[0] . '-' . $i]) ? $link_download_data[$list_field[0] . '-' . $i] : '';
+                $link_no_login = isset($link_download_data[$list_field[1] . '-' . $i]) ? $link_download_data[$list_field[1] . '-' . $i] : '';
+                $link_is_login = isset($link_download_data[$list_field[2] . '-' . $i]) ? $link_download_data[$list_field[2] . '-' . $i] : '';
+                $size_value = isset($link_download_data[$list_field[3] . '-' . $i]) ? $link_download_data[$list_field[3] . '-' . $i] : '';
+                ?>
+                <div class="list-link-row-wrap">
+                    <h3 class="list-h3-title"><?= 'Link ' . $i ?></h3>
+                    <div class="list-link-row">
+                        <div class="link-field">
+                            <label for="<?php echo esc_attr($list_field[0] . '-' . $i); ?>">File Name:</label>
+                            <input type="text" id="<?php echo esc_attr($list_field[0] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[0] . '-' . $i); ?>" value="<?php echo $file_name ? esc_attr($file_name) : ''; ?>" />
+                        </div>
+                        <div class="link-field">
+                            <label for="<?php echo esc_attr($list_field[1] . '-' . $i); ?>">Link no login:</label>
+                            <input type="text" id="<?php echo esc_attr($list_field[1] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[1] . '-' . $i); ?>" value="<?php echo $link_no_login ? esc_attr($link_no_login) : ''; ?>" />
+                        </div>
+                        <div class="link-field">
+                            <label for="<?php echo esc_attr($list_field[2] . '-' . $i); ?>">Link is login:</label>
+                            <input type="text" id="<?php echo esc_attr($list_field[2] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[2] . '-' . $i); ?>" value="<?php echo $link_is_login ? esc_attr($link_is_login) : ''; ?>" />
+                        </div>
+                        <div class="link-field">
+                            <label for="<?php echo esc_attr($list_field[3] . '-' . $i); ?>">Size:</label>
+                            <input type="text" id="<?php echo esc_attr($list_field[3] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[3] . '-' . $i); ?>" value="<?php echo $size_value ? esc_attr($size_value) : ''; ?>" />
+                        </div>
+                    </div>
                 </div>
             <?php endfor; ?>
         </div>
         <?php
     }
 
-
-    public function save_html_filed_content($post_id) {
-        if (!isset($_POST['link_embed_nonce']) || !wp_verify_nonce($_POST['link_embed_nonce'], 'link_embed_nonce')) {
+    public function save_html_field_content($post_id) {
+        if (!isset($_POST['link_field']) || !wp_verify_nonce($_POST['link_field'], 'link_field')) {
             return;
         }
 
@@ -1221,30 +1178,84 @@ class Preplink_Admin {
             return;
         }
 
-        $link_download_data = [];
+        $fields = array(
+            'file_format',
+            'require',
+            'os_version',
+            'file_version',
+            'mod_feature',
+            'link_no_login',
+            'link_is_login',
+            'file_name',
+            'file_size',
+            'rate_star',
+            'vote_num'
+        );
 
-        $fields_to_save = [
-            'title-1', 'link-1', 'size-1', 'file-1', 'date-1',
-            'title-2', 'link-2', 'size-2', 'file-2', 'date-2',
-            'title-3', 'link-3', 'size-3', 'file-3', 'date-3',
-            'title-4', 'link-4', 'size-4', 'file-4', 'date-4',
-        ];
-        foreach ($fields_to_save as $field_name) {
-            if (isset($_POST[$field_name])) {
-                $html_content = sanitize_text_field($_POST[$field_name]);
-                $link_download_data[$field_name] = $html_content;
+        foreach ($fields as $field) {
+            if (isset($_POST[$field])) {
+                update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));
             }
         }
 
-        update_post_meta($post_id, 'link-download-metabox', $link_download_data);
-    }
+        $list_link = [];
 
+        $field_list = ['file_name', 'link_no_login', 'link_is_login', 'size'];
+        $settings = get_option('preplink_setting', array());
+        $total = (int) $settings['preplink_number_field_lists']? : 5;
+
+        for ($i = 1; $i <= $total; $i++) {
+            foreach ($field_list as $field_name) {
+                $meta_key = $field_name . '-' . $i;
+
+                if (isset($_POST[$meta_key])) {
+                    $field_content = sanitize_text_field($_POST[$meta_key]);
+                    $list_link[$meta_key] = $field_content;
+                }
+            }
+        }
+
+        update_post_meta($post_id, 'link-download-metabox', $list_link);
+
+        if (isset($_POST['member_level'])) {
+            $selected_member_level = sanitize_text_field($_POST['member_level']);
+
+            if (in_array($selected_member_level, ['vip', 'premium', 'free'])) {
+                $member_level = array(
+                    'vip'      => $selected_member_level === 'vip' ? 'on' : 'off',
+                    'premium' => $selected_member_level === 'premium' ? 'on' : 'off',
+                    'free'     => $selected_member_level === 'free' ? 'on' : 'off'
+                );
+                update_post_meta($post_id, 'member_level', json_encode($member_level));
+            }
+        }
+
+    }
 
     public function delete_links_filed($post_id) {
         if (wp_is_post_revision($post_id)) {
             return;
         }
+        
+        $link_fields = array(
+            'file_format',
+            'require',
+            'os_version',
+            'file_version',
+            'mod_feature',
+            'link_no_login',
+            'link_is_login',
+            'file_name',
+            'file_size',
+            'rate_star',
+            'vote_num'
+        );
 
+        foreach ($link_fields as $field) {
+            delete_post_meta($post_id, $field);
+        }
+        
         delete_post_meta($post_id, 'link-download-metabox');
+        delete_post_meta($post_id, 'member_level');
     }
 }
