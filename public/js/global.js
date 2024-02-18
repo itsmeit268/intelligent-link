@@ -7,23 +7,22 @@
     'use strict';
 
     $(function () {
-        var end_point = href_proccess.end_point.trim(),
+        var end_point = href_process.end_point.trim(),
             post_url = window.location.href.replace(/#.*/, ''),
-            time_cnf = parseInt(href_proccess.count_down),
-            cookie_time = parseInt(href_proccess.cookie_time),
-            wait_text = href_proccess.wait_text.trim(),
-            display_mode = href_proccess.display_mode,
-            auto_direct = parseInt(href_proccess.auto_direct),
-            text_complete = href_proccess.text_complete.trim(),
-            elm_exclude = href_proccess.pre_elm_exclude.trim(),
+            time_cnf = parseInt(href_process.count_down),
+            cookie_time = parseInt(href_process.cookie_time),
+            wait_text = href_process.wait_text.trim(),
+            display_mode = href_process.display_mode,
+            auto_direct = parseInt(href_process.auto_direct),
+            text_complete = href_process.text_complete.trim(),
+            elm_exclude = href_process.pre_elm_exclude.trim(),
             exclude_elm = elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
-            allow_url = href_proccess.prep_url,
-            links_noindex_fl = href_proccess.links_noindex_nofollow,
+            allow_url = href_process.prep_url,
+            links_noindex_fl = href_process.links_noindex_nofollow,
             windowWidth = $(window).width(),
-            is_popup = parseInt(href_proccess.is_popup),
-            remix_url = href_proccess.remix_url;
+            remix_url = href_process.remix_url;
 
-        let countdownStatus = {};
+        var countdownStatus = {};
 
         function mix_url(url) {
             url = remix_url.prefix + url;
@@ -173,6 +172,7 @@
                 }
             });
         }
+
         function _start_countdown($elm, url, title) {
             let downloadTimer;
             let timeleft = time_cnf;
@@ -211,11 +211,14 @@
 
             parent.css('width', parent.width());
             $progress.width("0%");
-            $progress.css({
-                'background-color': '#1479B3',
-                'color': '#fff',
-                'padding': '0px 10px'
-            });
+
+            if (!parent.parent('#download-now').length) {
+                $progress.css({
+                    'background-color': '#1479B3',
+                    'color': '#fff',
+                    'padding': '0 10px'
+                });
+            }
 
             const intervalId = setInterval(function () {
                 currentWidth += progressWidth / (timeleft * 1000 / timeleft);
@@ -232,6 +235,7 @@
                         set_cookie_url(url);
                         window.location.href = endpoint_url();
                     }
+                    countdownStatus[url] = { active: false };
                 }
             }, timeleft);
         }

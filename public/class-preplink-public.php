@@ -63,7 +63,7 @@ class Preplink_Public {
             $settings = get_option('email_marketing_settings', []);
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
             wp_enqueue_script('preplink-global', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, true);
-            wp_localize_script('preplink-global', 'href_proccess', [
+            wp_localize_script('preplink-global', 'href_process', [
                 'end_point'              => $endpoint,
                 'prep_url'               => $this->getPrepLinkUrls(),
                 'pre_elm_exclude'        => $this->getExcludedElements(),
@@ -242,9 +242,9 @@ class Preplink_Public {
 
         $html = '<h3 class="wp-block-heading" id="download-now"><b>Link download: </b>';
 
-        if (is_user_logged_in()) {
-            $display_mode = 'progress';
-        }
+//        if (is_user_logged_in()) {
+//            $display_mode = 'progress';
+//        }
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';
