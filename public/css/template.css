@@ -1032,7 +1032,13 @@ ul li {
     font-weight: 600;
     font-size: 16px;
 }
-
+.p-file-title{
+    text-align: center;
+}
+.seo-keyword {
+    text-align: left;
+    margin: 30px 0 10px 0;
+}
 @media only screen and (max-device-width: 480px) {
     .sv-small-container>.grid-container{
         margin-right: -10px;
@@ -1055,6 +1061,7 @@ ul li {
 
     .p-file-title{
         padding: 0 5px;
+        text-align: center;
     }
 
     .related-posts-grid {

@@ -6,7 +6,6 @@
 ?>
 
 <?php
-
 $isMeta             = false;
 $post_id            = get_the_ID();
 $view_link          = get_permalink($post_id);
@@ -38,13 +37,13 @@ if (!empty($settings['preplink_custom_style'])) {
 
 <div class="single-page without-sidebar sticky-sidebar" id="prep-link-single-page" data-request="<?= $prepLinkURL ?>"  style="max-width: 890px; margin: 0 auto;">
     <div class="p-file">
-        <div class="section">
+        <div class="sv-small-container">
             <div class="p-file-back">
                 <a href="<?= esc_attr($view_link)?>"><svg width="48" height="20"><use xlink:href="#i__back"></use></svg></a>
             </div>
-            <h1 class="p-file-title title"><?= esc_html($post_title);?></h1>
+            <h1 class="p-file-title"><?= esc_html($post_title);?></h1>
 
-            <div class="p-file-cont section">
+            <div class="p-file-cont">
                 <?php if (empty($prepLinkURL) || empty($prepLinkText)) : ?>
                     <?php if (isset($advertising['pr_ad_6']) && (int)$advertising['pr_ad_6'] == 1 && !empty($advertising['pr_ad_code_6'])): ?>
                         <div class="preplink-ads preplink-ads-6" style="margin: 0 25px;">
@@ -105,9 +104,9 @@ if (!empty($settings['preplink_custom_style'])) {
                                 <circle fill="url(#timer-gradient-3)" cx="32" cy="40" r="32"></circle>
                             </svg>
                         </div>
+
                         <div class="p-file-timer-btn" style="opacity:0;pointer-events:none;visibility:hidden;">
                             <?php
-
                             if (is_user_logged_in()): ?>
                                 <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(base64_encode($link_is_login)) : esc_html($prepLinkURL); ?>" class="btn blue-style preplink-btn-link" >
                                     <?php echo $isMeta ? ($file_name.' '.$file_size) : $prepLinkText; ?>
@@ -121,6 +120,15 @@ if (!empty($settings['preplink_custom_style'])) {
                             <?php endif;
                             ?>
                         </div>
+                    </div>
+
+                    <div class="seo-keyword">
+                        <p>
+                            <?= __('To search for a specific resource or content on the internet, you can visit', 'prep-link')?>
+                            <a target="_blank" href="https://www.google.com/search?q=<?=$prepLinkText.' '.$baseUrl?>"><?= __('https://google.com', 'prep-link')?></a>
+                            <?= __('and enter your search query as:', 'prep-link')?>
+                            <a target="_blank" href="https://www.google.com/search?q=<?=$prepLinkText.' '.$baseUrl?>"><?= __('keyword +', 'prep-link') . ' '. $baseUrl?></a>
+                        </p>
                     </div>
 
                     <?php if ( isset($advertising['preplink_advertising_3']) && (int)$advertising['preplink_advertising_3'] == 1 && !empty($advertising['preplink_advertising_code_3'])): ?>
@@ -145,61 +153,82 @@ if (!empty($settings['preplink_custom_style'])) {
             <?php endif; ?>
         </div>
 
-        <?php if (!empty($prepLinkURL) || !empty($prepLinkText)) : ?>
-            <div class="section section-newgames">
-                <h3 class="section-title"><?= __('Recommended for you', 'prep-link')?></h3>
-                <div class="list-app one-row">
-                    <?php
-                    $categories = get_the_category();
-                    $category_ids = array();
-                    foreach ($categories as $category) {
-                        $category_ids[] = $category->term_id;
-                    }
+        <?php if (!empty($endpointSetting['preplink_related_post']) && $endpointSetting['preplink_related_post'] == 1): ?>
+            <div class="related_post">
+                <h3 class="suggestions-post"><?= __('Related Posts','prep-link') ?></h3>
+                <?php
+                $categories = get_the_category();
+                $category_ids = array();
+                foreach ($categories as $category) {
+                    $category_ids[] = $category->term_id;
+                }
 
-                    $args = array(
-                        'category__in' => $category_ids,
-                        'post__not_in' => array(get_the_ID()),
-                        'posts_per_page' => !empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : 4, // Lấy 10 bài viết
-                        'orderby' => 'rand',
-                        'order' => 'DESC'
-                    );
+                $args = array(
+                    'category__in' => $category_ids,
+                    'post__not_in' => array(get_the_ID()),
+                    'posts_per_page' => !empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : 4, // Lấy 10 bài viết
+                    'orderby' => 'rand',
+                    'order' => 'DESC'
+                );
 
-                    $related_posts = get_posts($args);
-                    if ($related_posts) {
-                        foreach ($related_posts as $post) {
-                            setup_postdata($post); ?>
-                            <div class="app">
-                                <a class="app-cont" href="<?= get_permalink($post); ?>">
-                                    <figure class="app-img">
-                                        <?php
-                                        if (function_exists('savvymobi_get_app_image')) {
-                                            savvymobi_get_app_image($post_id, 116, 116);
-                                        } else {
-                                            if (has_post_thumbnail()){
-                                                echo get_the_post_thumbnail($post, 'thumbnail');
-                                            }
+                $related_posts = get_posts($args);
+
+                // Hiển thị các bài viết liên quan
+                if ($related_posts) {
+                    echo '<div class="related-posts-grid">';
+                    foreach ($related_posts as $post) {
+                        setup_postdata($post);
+                        $post_categories = get_the_category($post->ID);
+                        ?>
+                        <div class="related-post">
+                            <a class="related-link" href="<?= get_permalink($post); ?>">
+                                <div class="page_file-img">
+                                    <?php
+                                    $app_image = get_post_meta($post->ID, 'app-image-metabox', true);
+
+                                    if ($app_image && function_exists('savvymobi_get_app_image')) {
+                                        echo savvymobi_get_app_image($post->ID, 116, 116);
+                                    } else {
+                                        if (has_post_thumbnail()) {
+                                            echo get_the_post_thumbnail($post, 'thumbnail');
                                         }
-                                        ?>
-                                    </figure>
-                                    <span class="app-title"><?= $post->post_title?></span>
-                                </a>
-                            </div>
-                            <?php } ?>
+                                    }
+                                    ?>
+                                </div>
+                                <div class="related-content">
+                                    <h5 class="entry-title">
+                                        <a class="dl-p-url"
+                                           href="<?= get_permalink($post); ?>"><?= get_the_title($post); ?></a>
+                                    </h5>
+                                    <div class="prep-meta">
+                                                    <span class="prep-category">
+                                                        <?php foreach ($post_categories as $i => $category) {
+                                                            echo '<a class="category-link" href="' . esc_url(get_category_link($category->term_id)) . '">' . esc_html($category->name) . '</a>';
+                                                            if ($i < count($post_categories) - 1) {
+                                                                echo ' | ';
+                                                            }
+                                                        } ?>
+                                                    </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                         <?php
-                        wp_reset_postdata();
-                    } ?>
-                </div>
+                    }
+                    echo '</div>';
+                    ?>
+                    <?php
+                    wp_reset_postdata();
+                }
+                ?>
             </div>
-            <?php if ( isset($advertising['pr_ad_5']) && (int)$advertising['pr_ad_5'] == 1 && !empty($advertising['pr_ad_code_5'])): ?>
+            <?php if (isset($advertising['pr_ad_5']) && (int)$advertising['pr_ad_5'] == 1 && !empty($advertising['pr_ad_code_5'])) : ?>
                 <div class="preplink-ads preplink-ads-5">
                     <?= $advertising['pr_ad_code_5'] ?>
                 </div>
             <?php endif; ?>
-        <?php
-        if (file_exists(get_template_directory() . '/comments.php') && (int)$endpointSetting['preplink_comment'] == 1) { ?>
-            <div class="comment"><?php comments_template(); ?></div>
-        <?php } ?>
-        <?php endif;?>
+        <?php endif; ?>
+
     </div>
     <svg aria-hidden="true" style="display:none;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs>
