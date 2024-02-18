@@ -223,13 +223,13 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_template',
-            __('Page Template', 'prep-link'),
-            array($this, 'preplink_template'),
+            __('Display mode', 'prep-link'),
+            array($this, 'enpoint_display_mode'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
             array(
                 'default'    => __('Default', 'prep-link'),
-                'cool_tm'    => __('Template 1 (Beta)', 'prep-link'),
+                'countdown'  => __('Countdown', 'prep-link'),
             )
         );
 
@@ -572,10 +572,10 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_template($args){
+    public function enpoint_display_mode($args){
         $settings = get_option('preplink_endpoint', array());
-        $selected = isset($settings['preplink_template']) ? $settings['preplink_template'] : 'default';
-        $html = '<select id="preplink_template" name="preplink_endpoint[preplink_template]" class="preplink_template">';
+        $selected = isset($settings['ep_mode']) ? $settings['ep_mode'] : 'default';
+        $html = '<select id="ep_mode" name="preplink_endpoint[ep_mode]" class="ep_mode">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }

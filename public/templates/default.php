@@ -11,7 +11,7 @@ $view_link          = get_permalink($post_id);
 $settings           = get_option('preplink_setting');
 $advertising        = get_option('preplink_advertising');
 $faqSetting         = get_option('preplink_faq');
-$endpointSetting    = get_option('preplink_endpoint');
+$endpoint_conf    = get_option('preplink_endpoint');
 $post_title         = get_the_title($post_id) ? get_the_title($post_id) : get_post_field('post_title', $post_id);
 $prepLinkText       = isset($_COOKIE['prep_title']) ? $_COOKIE['prep_title'] : '';
 $prepLinkURL        = isset($_COOKIE['prep_request']) ? $_COOKIE['prep_request'] : '';
@@ -22,8 +22,8 @@ $os_version         = get_post_meta($post_id, 'os_version', true);
 $file_version       = get_post_meta($post_id, 'file_version', true);
 $file_name          = get_post_meta($post_id, 'file_name', true);
 $download_meta      = base64_encode(get_bloginfo('url'));
-$time_conf          = !empty($endpointSetting['countdown_endpoint']) ? (int) $endpointSetting['countdown_endpoint'] : 15;
-$post_image         = !empty($endpointSetting['preplink_image'] ? true: false);
+$time_conf          = !empty($endpoint_conf['countdown_endpoint']) ? (int) $endpoint_conf['countdown_endpoint'] : 15;
+$post_image         = !empty($endpoint_conf['preplink_image'] ? true: false);
 $link_no_login  = get_post_meta($post_id, 'link_no_login', true);
 $link_is_login  = get_post_meta($post_id, 'link_is_login', true);
 $file_size      = get_post_meta($post_id, 'file_size', true);
@@ -71,7 +71,7 @@ if ($download_meta === $prepLinkURL) {
                     <?php endif; ?>
                 <?php else: ?>
 
-                    <?php if (isset($endpointSetting['preplink_image']) && $endpointSetting['preplink_image']) : ?>
+                    <?php if (isset($endpoint_conf['preplink_image']) && $endpoint_conf['preplink_image']) : ?>
 
                         <?php if (isset($advertising['preplink_advertising_1']) && (int)$advertising['preplink_advertising_1'] == 1 && !empty($advertising['preplink_advertising_code_1'])): ?>
                             <div class="preplink-ads preplink-ads-1">
@@ -112,77 +112,76 @@ if ($download_meta === $prepLinkURL) {
                                 <?= $advertising['preplink_advertising_code_2'] ?>
                             </div>
                         <?php endif; ?>
-
                     <?php endif; ?>
 
-                    <div class="download-list">
-                        <div class="download-item-box">
-                            <div class="download-item">
-                                <div class="left">
-                                    <a class="adsterra image" href="javascript:void(0)">
-                                        <?php
-                                        $app_image = get_post_meta($post_id, 'app-image-metabox', true);
-                                        if ($app_image) {
-                                            $src = $app_image ? : get_theme_file_uri('/assets/image/savvymobi.jpg');
-                                            echo '<img src="'.esc_url($src).'" class="attachment-thumbnail size-thumbnail wp-post-image prep-app-image" alt="'.esc_html($post_title).'">';
-                                        } else {
-                                            if (has_post_thumbnail()) {
-                                                the_post_thumbnail('thumbnail');
+                    <?php if ($endpoint_conf['ep_mode'] == 'default'): ?>
+                        <div class="download-list">
+                            <div class="download-item-box">
+                                <div class="download-item">
+                                    <div class="left">
+                                        <a class="adsterra image" href="javascript:void(0)">
+                                            <?php
+                                            $app_image = get_post_meta($post_id, 'app-image-metabox', true);
+                                            if ($app_image) {
+                                                $src = $app_image ? : get_theme_file_uri('/assets/image/savvymobi.jpg');
+                                                echo '<img src="'.esc_url($src).'" class="attachment-thumbnail size-thumbnail wp-post-image prep-app-image" alt="'.esc_html($post_title).'">';
+                                            } else {
+                                                if (has_post_thumbnail()) {
+                                                    the_post_thumbnail('thumbnail');
+                                                }
                                             }
-                                        }
-                                        ?>
+                                            ?>
 
-                                    </a>
-                                    <div class="post-download">
-                                        <p class="tittle"><?= $isMeta ? ($file_name) : $prepLinkText; ?></p>
-                                        <p class="post-date"><?= __('Update:', 'prep-link') . ' ' . get_the_modified_date('d/m/Y') ?: get_the_date('d/m/Y')?></p>
+                                        </a>
+                                        <div class="post-download">
+                                            <p class="tittle"><?= $isMeta ? ($file_name) : $prepLinkText; ?></p>
+                                            <p class="post-date"><?= __('Update:', 'prep-link') . ' ' . get_the_modified_date('d/m/Y') ?: get_the_date('d/m/Y')?></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="right">
-                                    <div class="prep-link-download-btn">
-                                        <div class="clickable prep-link-btn">
-                                            <svg class="icon" fill="currentColor"
-                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                 viewBox="0 0 24 24">
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path>
-                                            </svg>
+                                    <div class="right">
+                                        <div class="prep-link-download-btn">
+                                            <div class="clickable prep-link-btn">
+                                                <svg class="icon" fill="currentColor"
+                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                     viewBox="0 0 24 24">
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path>
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="enpoint-progress" id="enpoint-progress" style="display:none;">
-                        <p class="counter">0%</p>
-                        <div class="bar"></div>
-                        <span class="prep-btn-download" style="display: none">
+                        <div class="enpoint-progress" id="enpoint-progress" style="display:none;">
+                            <p class="counter">0%</p>
+                            <div class="bar"></div>
+                            <span class="prep-btn-download" style="display: none">
                             <svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zm-143.6-28.9L288 302.6V120c0-13.3-10.7-24-24-24h-16c-13.3 0-24 10.7-24 24v182.6l-72.4-75.5c-9.3-9.7-24.8-9.9-34.3-.4l-10.9 11c-9.4 9.4-9.4 24.6 0 33.9L239 404.3c9.4 9.4 24.6 9.4 33.9 0l132.7-132.7c9.4-9.4 9.4-24.6 0-33.9l-10.9-11c-9.5-9.5-25-9.3-34.3.4z"></path>
                             </svg>
                             <span class="text-down"><?= __('Download');?></span>
                         </span>
-                    </div>
-
-                    <div class="p-file-hide list-server-download" style="display: none">
-                        <div class="p-file-timer-btn">
-                            <?php
-
-                            if (is_user_logged_in()): ?>
-                                <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(base64_encode($link_is_login)) : esc_html($prepLinkURL); ?>" class="btn blue-style preplink-btn-link" >
-                                    <?php echo $isMeta ? ($file_name.' '.$file_size) : $prepLinkText; ?>
-                                </a>
-                                <?php if ($isMeta) get_list_link_download($post_id, $settings); ?>
-                            <?php else: ?>
-                                <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(base64_encode($link_no_login)) : esc_html($prepLinkURL); ?>" class="btn blue-style preplink-btn-link" >
-                                    <?php echo $isMeta ? ($file_name.' '.$file_size) : $prepLinkText; ?>
-                                </a>
-                                <?php if ($isMeta) get_list_link_download($post_id, $settings); ?>
-                            <?php endif;
-                            ?>
                         </div>
-                    </div>
+
+                        <div class="p-file-hide list-server-download" style="display: none">
+                            <div class="p-file-timer-btn">
+                                <?php link_render($isMeta, $link_is_login, $link_no_login, $prepLinkURL, $file_name, $file_size, $prepLinkText, $post_id, $settings); ?>
+                            </div>
+                        </div>
+
+                    <?php else: ?>
+                        <div class="p-file-hide" id="buttondw">
+                            <div class="p-file-timer" style="display:none;">
+                                <span class="p-file-timer-sec fw-b" id="preplink-timer-link" data-time="<?= $time_conf ?>"><?= $time_conf ?></span>
+                                <?= svg_render() ?>
+                            </div>
+                            <div class="p-file-timer-btn" style="opacity:0;pointer-events:none;visibility:hidden;">
+                                <?php link_render($isMeta, $link_is_login, $link_no_login, $prepLinkURL, $file_name, $file_size, $prepLinkText, $post_id, $settings); ?>
+                            </div>
+                        </div>
+                    <?php endif;?>
 
                     <?php if (isset($advertising['preplink_advertising_3']) && (int)$advertising['preplink_advertising_3'] == 1 && !empty($advertising['preplink_advertising_code_3'])): ?>
                         <div class="preplink-ads preplink-ads-3">
@@ -209,81 +208,14 @@ if ($download_meta === $prepLinkURL) {
                     <div class="preplink-gg-s">
                         <p>
                             <?= __('To search for a specific resource or content on the internet, you can visit', 'prep-link')?>
-                            <a target="_blank" href="https://www.google.com/search?q=<?=$prepLinkText.' '.$baseUrl?>"><?= __('https://google.com', 'prep-link')?></a>
+                            <a target="_blank" href="//www.google.com/search?q=<?=$prepLinkText.' '.$baseUrl?>"><?= __('https://google.com', 'prep-link')?></a>
                             <?= __('and enter your search query as:', 'prep-link')?>
-                            <a target="_blank" href="https://www.google.com/search?q=<?=$prepLinkText.' '.$baseUrl?>"><?= __('keyword +', 'prep-link') . ' '. $baseUrl?></a>
+                            <a target="_blank" href="//www.google.com/search?q=<?=$prepLinkText.' '.$baseUrl?>"><?= __('keyword +', 'prep-link') . ' '. $baseUrl?></a>
                         </p>
                     </div>
 
-                    <?php if (!empty($endpointSetting['preplink_related_post']) && $endpointSetting['preplink_related_post'] == 1): ?>
-                        <div class="related_post">
-                            <h3 class="suggestions-post"><?= __('Related Posts','prep-link') ?></h3>
-                            <?php
-                            $categories = get_the_category();
-                            $category_ids = array();
-                            foreach ($categories as $category) {
-                                $category_ids[] = $category->term_id;
-                            }
-
-                            $args = array(
-                                'category__in' => $category_ids,
-                                'post__not_in' => array(get_the_ID()),
-                                'posts_per_page' => !empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : 4, // Lấy 10 bài viết
-                                'orderby' => 'rand',
-                                'order' => 'DESC'
-                            );
-
-                            $related_posts = get_posts($args);
-
-                            // Hiển thị các bài viết liên quan
-                            if ($related_posts) {
-                                echo '<div class="related-posts-grid">';
-                                foreach ($related_posts as $post) {
-                                    setup_postdata($post);
-                                    $post_categories = get_the_category($post->ID);
-                                    ?>
-                                    <div class="related-post">
-                                        <a class="related-link" href="<?= get_permalink($post); ?>">
-                                            <div class="page_file-img">
-                                                <?php
-                                                $app_image = get_post_meta($post->ID, 'app-image-metabox', true);
-
-                                                if ($app_image && function_exists('savvymobi_get_app_image')) {
-                                                    echo savvymobi_get_app_image($post->ID, 116, 116);
-                                                } else {
-                                                    if (has_post_thumbnail()) {
-                                                        echo get_the_post_thumbnail($post, 'thumbnail');
-                                                    }
-                                                }
-                                                ?>
-                                            </div>
-                                            <div class="related-content">
-                                                <h5 class="entry-title">
-                                                    <a class="dl-p-url"
-                                                       href="<?= get_permalink($post); ?>"><?= get_the_title($post); ?></a>
-                                                </h5>
-                                                <div class="prep-meta">
-                                                    <span class="prep-category">
-                                                        <?php foreach ($post_categories as $i => $category) {
-                                                            echo '<a class="category-link" href="' . esc_url(get_category_link($category->term_id)) . '">' . esc_html($category->name) . '</a>';
-                                                            if ($i < count($post_categories) - 1) {
-                                                                echo ' | ';
-                                                            }
-                                                        } ?>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <?php
-                                }
-                                echo '</div>';
-                                ?>
-                                <?php
-                                wp_reset_postdata();
-                            }
-                            ?>
-                        </div>
+                    <?php if (!empty($endpoint_conf['preplink_related_post']) && $endpoint_conf['preplink_related_post'] == 1): ?>
+                        <?php ep_related_post($settings, $post_id) ?>
                         <?php if (isset($advertising['pr_ad_5']) && (int)$advertising['pr_ad_5'] == 1 && !empty($advertising['pr_ad_code_5'])) : ?>
                             <div class="preplink-ads preplink-ads-5">
                                 <?= $advertising['pr_ad_code_5'] ?>
@@ -291,7 +223,7 @@ if ($download_meta === $prepLinkURL) {
                         <?php endif; ?>
                     <?php endif; ?>
 
-                    <?php if (file_exists(get_template_directory() . '/comments.php') && (int)$endpointSetting['preplink_comment'] == 1) { ?>
+                    <?php if (file_exists(get_template_directory() . '/comments.php') && (int)$endpoint_conf['preplink_comment'] == 1) { ?>
                         <div class="comment"><?php comments_template(); ?></div>
                     <?php } ?>
 

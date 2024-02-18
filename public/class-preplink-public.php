@@ -93,7 +93,6 @@ class Preplink_Public {
         global $wp_query;
         if (isset($wp_query->query_vars[$this->getEndPointValue()])) {
             $this->set_robots_filter();
-            $template_conf = get_option('preplink_endpoint');
 
             wp_enqueue_style('prep-template', plugin_dir_url(__FILE__) . 'css/template.css', [], PREPLINK_VERSION, 'all');
             wp_enqueue_script('prep-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), PREPLINK_VERSION, false);
@@ -104,12 +103,7 @@ class Preplink_Public {
                 'is_user_logged_in'      => is_user_logged_in(),
             ]);
 
-            if (isset($template_conf['preplink_template']) && $template_conf['preplink_template'] == 'cool_tm') {
-                return dirname( __FILE__ ) . '/templates/coundown.php';
-            } else {
-                return dirname( __FILE__ ) . '/templates/default.php';
-            }
-
+            return dirname( __FILE__ ) . '/templates/default.php';
         }
         return $template;
     }

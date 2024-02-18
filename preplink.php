@@ -61,4 +61,4 @@ function run_preplink()
 
 run_preplink();
 
-include_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-member-preplink.php';
+include_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-enpoint-template.php';
