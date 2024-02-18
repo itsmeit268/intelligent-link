@@ -656,8 +656,7 @@ class Preplink_Admin {
                     $html = '<textarea name="preplink_faq[faq_description]" rows="10" cols="70">';
                     $html .= esc_html(isset($settings['faq_description']) ? $settings['faq_description'] : false);
                     $html .= '</textarea>';
-                    $html .= '<p class="description">You can modify the text/content or add new elements in your own way, but you should maintain the structure of the <strong>"div"</strong> element.</p>';
-                    $html .= '<p class="description"><a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">References</a></p>';
+                    $html .= '<p class="description">Click on this <a href="' . plugin_dir_url(__DIR__) . 'faq.txt" target="_blank">link</a> to view the FAQ structure.</p>';
                     echo $html;
                     ?></td>
             </tr>
