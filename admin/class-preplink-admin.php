@@ -1052,23 +1052,6 @@ class Preplink_Admin {
         wp_nonce_field('link_field', 'link_field');
         ?>
 
-        <h2 class="list-h3-title" style="font-size: 14px; padding: 7px 0px 0 0; margin: 0; font-weight: 600; text-transform: none; border-bottom: 4px solid #4350a7; margin-bottom: 10px;max-width: 91%;">
-            Member Level</h2>
-        <div class="member_level">
-            <?php
-            $member_options = get_post_meta($post->ID, 'member_level', true);
-            $member_level = json_decode($member_options, true);
-            ?>
-
-            <label for="member_level">Member Level:</label>
-            <select name="member_level" id="member_level">
-                <option value="free" <?php selected(($member_level['free'] ?? 'off'), 'on'); ?>>FREE Member</option>
-                <option value="vip" <?php selected(($member_level['vip'] ?? 'off'), 'on'); ?>>VIP Member</option>
-                <option value="premium" <?php selected(($member_level['premium'] ?? 'off'), 'on'); ?>>PREMIUM Member</option>
-            </select>
-        </div>
-
-
         <h2 class="list-h3-title" style="font-size: 14px; padding: 7px 0px 0 0; margin-top: 15px; font-weight: 600; text-transform: none; border-bottom: 4px solid #4350a7; margin-bottom: 10px;max-width: 91%;">
             Link Details</h2>
         <div class="app-fields">
@@ -1082,9 +1065,7 @@ class Preplink_Admin {
                 'link_no_login' => 'Link No Login',
                 'link_is_login' => 'Link Is Login',
                 'file_name' => 'File Name',
-                'file_size' => 'File Size (eg: 10.0MB)',
-                'rate_star' => 'Rate Star (eg: 8.0)',
-                'vote_num' => 'Vote Num (eg: 10M)'
+                'file_size' => 'File Size (eg: 10.0MB)'
             );
 
             $field_count = count($fields);
@@ -1186,9 +1167,7 @@ class Preplink_Admin {
             'link_no_login',
             'link_is_login',
             'file_name',
-            'file_size',
-            'rate_star',
-            'vote_num'
+            'file_size'
         );
 
         foreach ($fields as $field) {
@@ -1213,22 +1192,7 @@ class Preplink_Admin {
                 }
             }
         }
-
         update_post_meta($post_id, 'link-download-metabox', $list_link);
-
-        if (isset($_POST['member_level'])) {
-            $selected_member_level = sanitize_text_field($_POST['member_level']);
-
-            if (in_array($selected_member_level, ['vip', 'premium', 'free'])) {
-                $member_level = array(
-                    'vip'      => $selected_member_level === 'vip' ? 'on' : 'off',
-                    'premium' => $selected_member_level === 'premium' ? 'on' : 'off',
-                    'free'     => $selected_member_level === 'free' ? 'on' : 'off'
-                );
-                update_post_meta($post_id, 'member_level', json_encode($member_level));
-            }
-        }
-
     }
 
     public function delete_links_filed($post_id) {
@@ -1246,8 +1210,6 @@ class Preplink_Admin {
             'link_is_login',
             'file_name',
             'file_size',
-            'rate_star',
-            'vote_num'
         );
 
         foreach ($link_fields as $field) {
@@ -1255,6 +1217,5 @@ class Preplink_Admin {
         }
         
         delete_post_meta($post_id, 'link-download-metabox');
-        delete_post_meta($post_id, 'member_level');
     }
 }

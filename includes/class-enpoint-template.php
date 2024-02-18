@@ -1,5 +1,19 @@
 <?php
 
+function render_back_icon($view_link){ ?>
+    <div class="p-file-back">
+        <a href="<?= esc_url($view_link)?>">
+            <i class="c-svg"><svg width="48" height="20"><use xlink:href="#i__back"></use></svg></i>
+            <svg aria-hidden="true" style="display:none;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                    <symbol id="i__back" viewBox="0 0 48 20">
+                        <path fill="currentColor" d="M46.27,9.24a1,1,0,0,0-1.41.1A10.71,10.71,0,0,1,36.78,13h-.16a10.78,10.78,0,0,1-8.1-3.66A12.83,12.83,0,0,0,18.85,5C14.94,5,10.73,7.42,6,12.4V5A1,1,0,0,0,4,5V15a1,1,0,0,0,1,1H15a1,1,0,0,0,0-2H7.24c4.42-4.71,8.22-7,11.62-7A10.71,10.71,0,0,1,27,10.66,12.81,12.81,0,0,0,36.61,15h.18a12.7,12.7,0,0,0,9.58-4.35A1,1,0,0,0,46.27,9.24Z"></path>
+                    </symbol>
+                </defs>
+            </svg>
+        </a>
+    </div>
+<?php }
 function get_list_link($post_id, $settings) {
     $list_link = get_post_meta($post_id, 'link-download-metabox', true);
 

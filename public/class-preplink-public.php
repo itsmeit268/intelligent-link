@@ -103,6 +103,7 @@ class Preplink_Public {
                 'is_user_logged_in'      => is_user_logged_in(),
             ]);
 
+            include_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-enpoint-template.php';
             return dirname( __FILE__ ) . '/templates/default.php';
         }
         return $template;
@@ -257,3 +258,4 @@ class Preplink_Public {
         return $html;
     }
 }
+
