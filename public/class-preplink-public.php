@@ -59,7 +59,6 @@ class Preplink_Public {
         wp_localize_script('prep-cookie', 'cookie_vars', ['end_point' => $endpoint]);
 
         if ($this->is_plugin_enable()){
-
             $settings = get_option('email_marketing_settings', []);
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
             wp_enqueue_script('preplink-global', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, true);
@@ -78,7 +77,7 @@ class Preplink_Public {
                 ],
                 'is_user_logged_in'      => is_user_logged_in(),
                 'is_popup'               => isset($settings['disable_click_popup']) ? $settings['disable_click_popup'] : '0',
-                'remix_url'              => ['prefix'  => 'df5c1kjdhsf81', 'mix_str' => 'gVmk2mf9823c2', 'suffix'  => 'cgy73mfuvkjs3']
+                'remix_url'              => $this->mix_url(),
             ]);
         }
     }
@@ -101,7 +100,7 @@ class Preplink_Public {
             wp_localize_script('prep-template', 'prep_template', [
                 'countdown_endpoint'     => !empty($this->preplink['countdown_endpoint']) ? $this->preplink['countdown_endpoint'] : 5,
                 'endpoint_direct'        => !empty($this->preplink['endpoint_auto_direct']) ? $this->preplink['endpoint_auto_direct'] : 0,
-                'remix_url'              => ['prefix'  => 'df5c1kjdhsf81', 'mix_str' => 'gVmk2mf9823c2', 'suffix'  => 'cgy73mfuvkjs3'],
+                'remix_url'              => $this->mix_url(),
                 'is_user_logged_in'      => is_user_logged_in(),
             ]);
 
@@ -111,9 +110,11 @@ class Preplink_Public {
         return $template;
     }
 
-    /**
-     * @return mixed|string
-     */
+    public function mix_url() {
+        $arr = ['prefix'  => 'df5c1kjdhsf81', 'mix_str' => 'gVmk2mf9823c2', 'suffix'  => 'cgy73mfuvkjs3'];
+        return $arr;
+    }
+
     public function getEndPointValue(){
         $endpoint = 'download';
         if (!empty($this->preplink['endpoint'])) {
@@ -131,7 +132,6 @@ class Preplink_Public {
     }
 
     public function set_robots_filter(){
-
         if (!function_exists('aioseo' ) && !function_exists('wpseo_init' ) && !function_exists('rank_math' )) {
             $robots['noindex'] = true;
             $robots['nofollow'] = true;
