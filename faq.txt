@@ -1,3 +1,4 @@
+<!-- FAQ EXAMPLE-->
 <!-- Title: Frequently Asked Questions-->
 <!-- Content: Copy content to FAQ Description (HTML) -->
 <!-- Please edit the questions and answers for the FAQ, ensuring that you maintain the original HTML structure. -->

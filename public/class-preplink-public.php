@@ -183,26 +183,10 @@ class Preplink_Public {
         return $excludeList;
     }
 
-    public function get_links_nofolow_noindex(){
-        $noindex_domain = $this->settings['links_noindex_nofollow'];
-
-        if (!empty($noindex_domain)) {
-            $excludesArr = explode(',', $noindex_domain);
-            $excludesArr = array_map('trim', $excludesArr);
-            $excludesArr = array_unique($excludesArr);
-            $noindex_domain = implode(',', $excludesArr);
-            $noindex_domain = rtrim(ltrim($noindex_domain, ','), ',');
-        } else {
-            $noindex_domain = '';
-        }
-
-        return $noindex_domain;
-    }
-
     public function getPrepLinkUrls(){
+        $allow_domain = '';
         $prepList = $this->settings['preplink_url'];
         if (!empty($prepList)) {
-
             $prepArr = explode(',', $prepList);
             $prepArr = array_map('trim', $prepArr);
 
@@ -210,15 +194,10 @@ class Preplink_Public {
             if (empty($prepArr[$lastIndex])) {
                 unset($prepArr[$lastIndex]);
             }
-
-            $prepArr = array_merge($prepArr, ['fshare.vn', 'drive.google.com']);
-            $prepArr = array_unique($prepArr);
-            $prepList = implode(',', $prepArr);
-        } else {
-            $prepList = 'fshare.vn, drive.google.com';
+            $allow_domain = implode(',', $prepArr);
+            $allow_domain = rtrim($allow_domain, ',');
         }
-
-        return $prepList;
+        return $allow_domain;
     }
 
     public function render_link_info($content) {

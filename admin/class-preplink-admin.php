@@ -103,8 +103,8 @@ class Preplink_Admin {
                 echo '<div class="wrap"><h1>' . __('Advertising Settings', 'preplink') . '</h1>';
                 settings_errors();
                 echo '<form method="post" action="options.php">';
-                settings_fields('preplink_advertising_settings');
-                do_settings_sections('preplink_advertising_settings');
+                settings_fields('ads_code_settings');
+                do_settings_sections('ads_code_settings');
                 submit_button();
                 echo '</form></div>';
                 break;
@@ -132,7 +132,7 @@ class Preplink_Admin {
     public function prep_link_settings_tabs( $current = 'general' ) {
         $tabs = array(
             'general'   => __( 'General Settings', 'prep-link' ),
-            'preplink_advertising'  => __( 'Advertising Settings', 'prep-link' ),
+            'ads_code'  => __( 'Advertising Settings', 'prep-link' ),
             'preplink_faq'  => __( 'FAQ Settings', 'preplink' ),
             'preplink_endpoint'  => __( 'Endpoint Settings', 'prep-link' )
         );
@@ -166,10 +166,10 @@ class Preplink_Admin {
         );
 
         add_settings_section(
-            'preplink_advertising_section',
+            'ads_code_section',
             '',
-            array($this, 'preplink_advertising_display'),
-            'preplink_advertising_settings'
+            array($this, 'ads_code_display'),
+            'ads_code_settings'
         );
 
         add_settings_section(
@@ -337,86 +337,58 @@ class Preplink_Admin {
 
         add_settings_field(
             'pr_ad_1',
-            __('Enable/Disable', 'prep-link'),
+            __('Ads code 1', 'prep-link'),
             array($this, 'pr_ad_1'),
-            'preplink_advertising_settings',
-            'preplink_advertising_section',
-            array(
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
+            'ads_code_settings',
+            'ads_code_section'
         );
 
         add_settings_field(
             'pr_ad_2',
-            __('Enable/Disable', 'prep-link'),
+            __('Ads code 2', 'prep-link'),
             array($this, 'pr_ad_2'),
-            'preplink_advertising_settings',
-            'preplink_advertising_section',
-            array(
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
+            'ads_code_settings',
+            'ads_code_section'
         );
 
         add_settings_field(
             'pr_ad_3',
-            __('Enable/Disable', 'prep-link'),
+            __('Ads code 3', 'prep-link'),
             array($this, 'pr_ad_3'),
-            'preplink_advertising_settings',
-            'preplink_advertising_section',
-            array(
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
+            'ads_code_settings',
+            'ads_code_section'
         );
 
         add_settings_field(
             'pr_ad_4',
-            __('Enable/Disable', 'prep-link'),
+            __('Ads code 4', 'prep-link'),
             array($this, 'pr_ad_4'),
-            'preplink_advertising_settings',
-            'preplink_advertising_section',
-            array(
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
+            'ads_code_settings',
+            'ads_code_section'
         );
 
         add_settings_field(
             'pr_ad_5',
-            __('Enable/Disable', 'prep-link'),
+            __('Ads code 5', 'prep-link'),
             array($this, 'pr_ad_5'),
-            'preplink_advertising_settings',
-            'preplink_advertising_section',
-            array(
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
+            'ads_code_settings',
+            'ads_code_section'
         );
 
         add_settings_field(
             'pr_ad_6',
-            __('Enable/Disable', 'prep-link'),
+            __('Ads code 6', 'prep-link'),
             array($this, 'pr_ad_6'),
-            'preplink_advertising_settings',
-            'preplink_advertising_section',
-            array(
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
+            'ads_code_settings',
+            'ads_code_section'
         );
 
         add_settings_field(
             'pr_ad_7',
-            __('Enable/Disable', 'prep-link'),
+            __('Ads code 7', 'prep-link'),
             array($this, 'pr_ad_7'),
-            'preplink_advertising_settings',
-            'preplink_advertising_section',
-            array(
-                1 => 'Enabled',
-                0 => 'Disabled',
-            )
+            'ads_code_settings',
+            'ads_code_section'
         );
 
         add_settings_field(
@@ -448,8 +420,8 @@ class Preplink_Admin {
         );
 
         register_setting(
-            'preplink_advertising_settings',
-            'preplink_advertising'
+            'ads_code_settings',
+            'ads_code'
         );
 
         register_setting(
@@ -467,24 +439,20 @@ class Preplink_Admin {
         ?>
         <div class="prep-link-admin-settings">
             <h3>These settings are applicable to all Prepare link functionalities.</h3>
-            <span>Author  : itsmeit.biz@gmail.com</span> |
-            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
-                                                                                       target="_blank">itsmeit.biz</a></span>
-            |
+            <span>Author  : buivanloi.2010@gmail.com</span> |
+            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
             <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
         </div>
         <?php
     }
 
-    public function preplink_advertising_display(){
+    public function ads_code_display(){
         ?>
         <div class="prep-link-ads-settings">
-            <h3>You can add the advertising code here, it will apply to the page endpoint. You can also use the <a href="//wordpress.org/plugins/ad-inserter/" target="_blank">Ad Inserter</a> plugin to insert the ad code</h3>
             <span>Author  : itsmeit.biz@gmail.com</span> |
-            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a> | <a href="//itsmeit.biz"
-                                                                                       target="_blank">itsmeit.biz</a></span>
-            |
+            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span> |
             <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
+            <h3>Please enter your advertisement code, allowing HTML, JS, CSS.</h3>
         </div>
         <?php
     }
@@ -530,8 +498,8 @@ class Preplink_Admin {
         ?>
         <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="download"
                value="<?= esc_attr(!empty($settings['endpoint']) ? $settings['endpoint'] : false) ?>"/>
-        <p class="description">The default endpoint for the link format is set to "download", which means that the link will be in the following format: domain.com/post/download.</p>
-        <p class="description" style="color: red">If you make changes to the endpoint, it is necessary to navigate to Settings->Permalinks->Save in order to synchronize the endpoint.</p>
+        <p class="description">The default endpoint for link format is set to "download", meaning the link format will be as follows: domain.com/post/download. You should use a string without accents and spaces.</p>
+        <p class="description"><strong style="color: red">IMPORTANT</strong>: If you make any changes to the endpoint, you need to navigate to <strong style="color: red">Settings -> Permalinks -> Save</strong> to synchronize the endpoint.</p>
         <?php
         if (isset($_POST['preplink_endpoint'])) {
             $settings = $_POST['preplink_endpoint'];
@@ -599,11 +567,13 @@ class Preplink_Admin {
 
     public function preplink_textarea_field(){
         $settings = get_option('preplink_setting', array());
-        $html = '<textarea id="preplink_url" cols="50" rows="5" name="preplink_setting[preplink_url]" placeholder="fshare.vn, drive.google.com,">';
+        $html = '<textarea id="preplink_url" cols="50" rows="5" name="preplink_setting[preplink_url]" placeholder="Example: fshare.vn,drive.google.com,">';
         $html .= isset($settings["preplink_url"]) ? $settings["preplink_url"] : false;
         $html .= '</textarea>';
-        $html .= '<p class="description">These links/URLs will be redirected to the endpoint (Prepare Link), each separated by a comma (,).</p>';
-        $html .= '<p class="description">Default: fshare.vn,drive.google.com</p>';
+        $html .= '<p class="description">Any links containing these specific strings will be redirected to the countdown page. 
+                    Each link should be separated by a comma. <br>
+                    Please be aware that these strings might match any text in your post, so you should provide the domain of the link to ensure accurate redirection.
+                   </p>';
         echo $html;
     }
 
@@ -614,7 +584,6 @@ class Preplink_Admin {
         $html .= '</textarea>';
         $html .= '<p class="description">The elements will be excluded, each separated by a comma (,).</p>';
         $html .= '<p class="description">For example: #prep-link-download-btn, .prep-link-download-btn.</p>';
-        $html .= '<p class="description">Default: .prep-link-download-btn,.prep-link-btn</p>';
         echo $html;
     }
 
@@ -626,7 +595,7 @@ class Preplink_Admin {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }
         $html .= '</select>';
-        $html .= '<p class="description">Enable or disable post featured image.</p>';
+        $html .= '<p class="description">Allow displaying featured image.</p>';
         echo $html;
     }
 
@@ -804,243 +773,66 @@ class Preplink_Admin {
         <?php
     }
 
-    public function pr_ad_1() {
-        $settings = get_option('preplink_advertising', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 1:</th>
-                <td>
-                    <select name="preplink_advertising[preplink_advertising_1]" id="preplink_advertising_1">
-                        <option value="1" <?php selected(isset($settings['preplink_advertising_1']) && $settings['preplink_advertising_1'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['preplink_advertising_1']) && $settings['preplink_advertising_1'] == '0'); ?>>
-                            No
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_advertising_code">
-                <th scope="row">Advertising HTML code:</th>
-                <td>
-                    <?php
-                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_1]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['preplink_advertising_code_1']) ? $settings['preplink_advertising_code_1'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: Before featured image</p>';
-                    echo $html;
-                    ?></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-
+    public function pr_ad_1(){
+        $settings = get_option('ads_code', array());
+        $html = '<textarea name="ads_code[ads_1]" rows="5" cols="50">';
+        $html .= esc_html(isset($settings['ads_1']) ? $settings['ads_1'] : false);
+        $html .= '</textarea>';
+        $html .= '<p class="description">Display position: At the top of the page.</p>';
+        echo $html;
     }
-
-    public function pr_ad_2() {
-        $settings = get_option('preplink_advertising', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 2:</th>
-                <td>
-                    <select name="preplink_advertising[preplink_advertising_2]" id="preplink_advertising_2">
-                        <option value="1" <?php selected(isset($settings['preplink_advertising_2']) && $settings['preplink_advertising_2'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['preplink_advertising_2']) && $settings['preplink_advertising_2'] == '0'); ?>>
-                            No
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_advertising_code">
-                <th scope="row">Advertising HTML code:</th>
-                <td>
-                    <?php
-                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_2]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['preplink_advertising_code_2']) ? $settings['preplink_advertising_code_2'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After featured image.</p>';
-                    echo $html;
-                    ?></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
+    public function pr_ad_2(){
+        $settings = get_option('ads_code', array());
+        $html = '<textarea name="ads_code[ads_2]" rows="5" cols="50">';
+        $html .= esc_html(isset($settings['ads_2']) ? $settings['ads_2'] : false);
+        $html .= '</textarea>';
+        $html .= '<p class="description">Display position: Below the featured image.</p>';
+        echo $html;
     }
 
     public function pr_ad_3() {
-        $settings = get_option('preplink_advertising', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 3:</th>
-                <td>
-                    <select name="preplink_advertising[preplink_advertising_3]" id="preplink_advertising_3">
-                        <option value="1" <?php selected(isset($settings['preplink_advertising_3']) && $settings['preplink_advertising_3'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['preplink_advertising_3']) && $settings['preplink_advertising_3'] == '0'); ?>>
-                            No
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_advertising_code">
-                <th scope="row">Advertising HTML code:</th>
-                <td>
-                    <?php
-                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_3]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['preplink_advertising_code_3']) ? $settings['preplink_advertising_code_3'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After Download Button.</p>';
-                    echo $html;
-                    ?></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
+        $settings = get_option('ads_code', array());
+        $html = '<textarea name="ads_code[ads_2]" rows="5" cols="50">';
+        $html .= esc_html(isset($settings['ads_3']) ? $settings['ads_3'] : false);
+        $html .= '</textarea>';
+        $html .= '<p class="description">Display position: Below the download/countdown button.</p>';
+        echo $html;
     }
 
     public function pr_ad_4() {
-        $settings = get_option('preplink_advertising', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 4:</th>
-                <td>
-                    <select name="preplink_advertising[preplink_advertising_4]" id="preplink_advertising_4">
-                        <option value="1" <?php selected(isset($settings['preplink_advertising_4']) && $settings['preplink_advertising_4'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['preplink_advertising_4']) && $settings['preplink_advertising_4'] == '0'); ?>>
-                            No
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_advertising_code">
-                <th scope="row">Advertising HTML code:</th>
-                <td>
-                    <?php
-                    $html = '<textarea name="preplink_advertising[preplink_advertising_code_4]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['preplink_advertising_code_4']) ? $settings['preplink_advertising_code_4'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After FAQ</p>';
-                    echo $html;
-                    ?></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
+        $settings = get_option('ads_code', array());
+        $html = '<textarea name="ads_code[ads_4]" rows="5" cols="50">';
+        $html .= esc_html(isset($settings['ads_4']) ? $settings['ads_4'] : false);
+        $html .= '</textarea>';
+        $html .= '<p class="description">Display position: Below the FAQ, if the FAQ is enabled.</p>';
+        echo $html;
     }
 
     public function pr_ad_5() {
-        $settings = get_option('preplink_advertising', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 5:</th>
-                <td>
-                    <select name="preplink_advertising[pr_ad_5]" id="pr_ad_5">
-                        <option value="1" <?php selected(isset($settings['pr_ad_5']) && $settings['pr_ad_5'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['pr_ad_5']) && $settings['pr_ad_5'] == '0'); ?>>
-                            No
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_advertising_code">
-                <th scope="row">Advertising HTML code:</th>
-                <td>
-                    <?php
-                    $html = '<textarea name="preplink_advertising[pr_ad_code_5]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['pr_ad_code_5']) ? $settings['pr_ad_code_5'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After Related Post.</p>';
-                    echo $html;
-                    ?></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
+        $settings = get_option('ads_code', array());
+        $html = '<textarea name="ads_code[ads_5]" rows="5" cols="50">';
+        $html .= esc_html(isset($settings['ads_5']) ? $settings['ads_5'] : false);
+        $html .= '</textarea>';
+        $html .= '<p class="description">Display position: Below custom text 2.</p>';
+        echo $html;
     }
 
     public function pr_ad_6() {
-        $settings = get_option('preplink_advertising', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 6:</th>
-                <td>
-                    <select name="preplink_advertising[pr_ad_6]" id="pr_ad_6">
-                        <option value="1" <?php selected(isset($settings['pr_ad_6']) && $settings['pr_ad_6'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['pr_ad_6']) && $settings['pr_ad_6'] == '0'); ?>>
-                            No
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_advertising_code">
-                <th scope="row">Advertising HTML code:</th>
-                <td>
-                    <?php
-                    $html = '<textarea name="preplink_advertising[pr_ad_code_6]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['pr_ad_code_6']) ? $settings['pr_ad_code_6'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: Before Text Session Expired Page.</p>';
-                    echo $html;
-                    ?></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
+        $settings = get_option('ads_code', array());
+        $html = '<textarea name="ads_code[ads_6]" rows="5" cols="50">';
+        $html .= esc_html(isset($settings['ads_6']) ? $settings['ads_6'] : false);
+        $html .= '</textarea>';
+        $html .= '<p class="description">Display position: Below related posts, if related posts are enabled.</p>';
+        echo $html;
     }
 
     public function pr_ad_7() {
-        $settings = get_option('preplink_advertising', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_advertising_enable">
-                <th scope="row">Enable Advertising 7: </th>
-                <td>
-                    <select name="preplink_advertising[pr_ad_7]" id="pr_ad_7">
-                        <option value="1" <?php selected(isset($settings['pr_ad_7']) && $settings['pr_ad_7'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['pr_ad_7']) && $settings['pr_ad_7'] == '0'); ?>>
-                            No
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_advertising_code">
-                <th scope="row">Advertising HTML code:</th>
-                <td>
-                    <?php
-                    $html = '<textarea name="preplink_advertising[pr_ad_code_7]" rows="5" cols="50">';
-                    $html .= esc_html(isset($settings['pr_ad_code_7']) ? $settings['pr_ad_code_7'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">Display position: After Text Session Expired Page.</p>';
-                    echo $html;
-                    ?></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
+        $settings = get_option('ads_code', array());
+        $html = '<textarea name="ads_code[ads_7]" rows="5" cols="50">';
+        $html .= esc_html(isset($settings['ads_7']) ? $settings['ads_7'] : false);
+        $html .= '</textarea>';
+        $html .= '<p class="description">Display position: At the bottom of the page when the link expires.</p>';
+        echo $html;
     }
 
     public function preplink_delete_option_on_uninstall() {

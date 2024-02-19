@@ -5,7 +5,7 @@
  */
 
 $settings           = get_option('preplink_setting');
-$ads                = get_option('preplink_advertising');
+$ads                = get_option('ads_code');
 $faq_conf           = get_option('preplink_faq');
 $endpoint_conf      = get_option('preplink_endpoint');
 $isMeta             = false;
@@ -39,6 +39,7 @@ if ($download_meta === $prep_request) {
 <?php if (file_exists(get_template_directory() . '/header.php')) get_header(); ?>
 
 <div class="single-page without-sidebar" id="prep-link-single-page" data-request="<?= esc_attr($prep_request) ?>" style="max-width: 890px; margin: 0 auto;">
+    <?= !empty($ads['ads_1']) ? '<div class="preplink-ads preplink-ads-1" style="margin: 0 25px;">' . $ads['ads_1'] . '</div>' : '' ?>
     <?php render_back_icon($view_link); ?>
     <header class="single-header">
         <h1 class="s-title">
@@ -49,64 +50,20 @@ if ($download_meta === $prep_request) {
         <div class="grid-container">
             <div class="entry-content prep-content">
                 <?php if (empty($prep_request) || empty($prep_title)) : ?>
-                    <?php if (isset($ads['pr_ad_6']) && (int)$ads['pr_ad_6'] == 1 && !empty($ads['pr_ad_code_6'])): ?>
-                        <div class="preplink-ads preplink-ads-6" style="margin: 0 25px;">
-                            <?= $ads['pr_ad_code_6'] ?>
-                        </div>
-                    <?php endif; ?>
                     <div class="session-expired">
                         <p><?= __('Your session has ended, please click', 'prep-link')?>&nbsp;<a href="<?= $view_link ?>"><span style="color: #0a4ad0;"><?= __('here', 'prep-link')?></span></a>&nbsp;<?= __('and do it again.', 'prep-link')?></p>
                         <p><?= __('If the issue persists, please try clearing cookies or attempting with a different browser.', 'prep-link') ?></p>
                     </div>
-                    <?php if (isset($ads['pr_ad_7']) && (int)$ads['pr_ad_7'] == 1 && !empty($ads['pr_ad_code_7'])): ?>
-                        <div class="preplink-ads preplink-ads-7">
-                            <?= $ads['pr_ad_code_7'] ?>
-                        </div>
-                    <?php endif; ?>
+                    <?= !empty($ads['ads_7']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_7'] . '</div>' : '' ?>
                 <?php else: ?>
-
-                    <?php if (isset($endpoint_conf['preplink_image']) && $endpoint_conf['preplink_image']) : ?>
-
-                        <?php if (isset($ads['preplink_advertising_1']) && (int)$ads['preplink_advertising_1'] == 1 && !empty($ads['preplink_advertising_code_1'])): ?>
-                            <div class="preplink-ads preplink-ads-1">
-                                <?= $ads['preplink_advertising_code_1'] ?>
+                    <?php if ($post_image) : ?>
+                        <div class="s-feat-outer">
+                            <div class="featured-image">
+                                <img src="<?= get_the_post_thumbnail_url($post_id, 'full'); ?>" class="prep-thumbnail" alt="<?= $post_title ?>" title="<?= $post_title ?>">
                             </div>
-                        <?php endif; ?>
-
-                        <?php if ($os_version && $require && function_exists('savvymobi_get_app_image')) : ?>
-                            <div class="p-file-data section">
-                                <div class="p-file-data-l">
-                                    <i class="c-svg"><svg width="24" height="24"><use xlink:href="#i__android"></use></svg></i>
-                                    <span class="c-blue fw-b"><?= esc_html__($require); ?></span>
-                                    <span> <?= esc_html($os_version)?></span>
-                                </div>
-                                <div class="page_file-img">
-                                    <?= savvymobi_get_app_image($post_id, 116, 116); ?>
-                                </div>
-                                <div class="p-file-data-r">
-                                    <i class="c-svg">
-                                        <svg class="bi bi-phone-flip" fill="currentColor" width="20" height="20" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11 1H5a1 1 0 0 0-1 1v6a.5.5 0 0 1-1 0V2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v6a.5.5 0 0 1-1 0V2a1 1 0 0 0-1-1Zm1 13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a.5.5 0 0 0-1 0v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2a.5.5 0 0 0-1 0v2ZM1.713 7.954a.5.5 0 1 0-.419-.908c-.347.16-.654.348-.882.57C.184 7.842 0 8.139 0 8.5c0 .546.408.94.823 1.201.44.278 1.043.51 1.745.696C3.978 10.773 5.898 11 8 11c.099 0 .197 0 .294-.002l-1.148 1.148a.5.5 0 0 0 .708.708l2-2a.5.5 0 0 0 0-.708l-2-2a.5.5 0 1 0-.708.708l1.145 1.144L8 10c-2.04 0-3.87-.221-5.174-.569-.656-.175-1.151-.374-1.47-.575C1.012 8.639 1 8.506 1 8.5c0-.003 0-.059.112-.17.115-.112.31-.242.6-.376Zm12.993-.908a.5.5 0 0 0-.419.908c.292.134.486.264.6.377.113.11.113.166.113.169 0 .003 0 .065-.13.187-.132.122-.352.26-.677.4-.645.28-1.596.523-2.763.687a.5.5 0 0 0 .14.99c1.212-.17 2.26-.43 3.02-.758.38-.164.713-.357.96-.587.246-.229.45-.537.45-.919 0-.362-.184-.66-.412-.883-.228-.223-.535-.411-.882-.571ZM7.5 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1Z" fill-rule="evenodd"/>
-                                        </svg>
-                                    </i>
-                                    <span class="c-blue fw-b">Version</span>
-                                    <span><?= esc_html($file_version)?></span>
-                                </div>
-                            </div>
-                        <?php else: ?>
-                            <div class="s-feat-outer">
-                                <div class="featured-image">
-                                    <img src="<?= get_the_post_thumbnail_url($post_id, 'full'); ?>" class="prep-thumbnail" alt="<?= $post_title ?>" title="<?= $post_title ?>">
-                                </div>
-                            </div>
-                        <?php endif;?>
-
-                        <?php if (isset($ads['preplink_advertising_2']) && (int)$ads['preplink_advertising_2'] == 1 && !empty($ads['preplink_advertising_code_2'])): ?>
-                            <div class="preplink-ads preplink-ads-2">
-                                <?= $ads['preplink_advertising_code_2'] ?>
-                            </div>
-                        <?php endif; ?>
-                    <?php endif; ?>
+                        </div>
+                    <?php endif;?>
+                    <?= !empty($ads['ads_2']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_2'] . '</div>' : '' ?>
 
                     <?php if ($endpoint_conf['ep_mode'] == 'default'): ?>
                         <div class="download-list">
@@ -177,27 +134,15 @@ if ($download_meta === $prep_request) {
                         </div>
                     <?php endif;?>
 
-                    <?php if (isset($ads['preplink_advertising_3']) && (int)$ads['preplink_advertising_3'] == 1 && !empty($ads['preplink_advertising_code_3'])): ?>
-                        <div class="preplink-ads preplink-ads-3">
-                            <?= $ads['preplink_advertising_code_3'] ?>
-                        </div>
-                    <?php endif; ?>
+                    <?= !empty($ads['ads_3']) ? '<div class="preplink-ads preplink-ads-3" style="margin: 0 25px;">' . $ads['ads_3'] . '</div>' : '' ?>
 
-                    <?php if (!empty($prep_request) || !empty($prep_title)) :
-                        ?>
-                        <?php if (!empty($faq_conf['faq_enabled']) && $faq_conf['faq_enabled'] == 1 && !empty($faq_conf['faq_description'])) : ?>
+                    <?php if (!empty($faq_conf['faq_enabled']) && $faq_conf['faq_enabled'] == 1 && !empty($faq_conf['faq_description'])) : ?>
                         <div class="faq-download">
                             <h3 class="faq-title"><?= !empty($faq_conf['faq_title']) ? $faq_conf['faq_title'] : 'FAQ' ?></h3>
                             <?= $faq_conf['faq_description']; ?>
                         </div>
-                        <?php endif; ?>
-                        <?php if (isset($ads['preplink_advertising_4']) && (int)$ads['preplink_advertising_4'] == 1 && !empty($ads['preplink_advertising_code_4'])): ?>
-                            <div class="preplink-ads preplink-ads-4">
-                                <h3 style="text-align: left;margin-bottom: 15px;text-transform: uppercase; font-size: 18px;">Advertising</h3>
-                                <?= $ads['preplink_advertising_code_4'] ?>
-                            </div>
-                        <?php endif; ?>
-                    <?php endif;?>
+                        <?= !empty($ads['ads_4']) ? '<div class="preplink-ads preplink-ads-4" style="margin: 0 25px;">' . $ads['ads_4'] . '</div>' : '' ?>
+                    <?php endif; ?>
 
                     <div class="preplink-gg-s">
                         <p>
@@ -207,14 +152,11 @@ if ($download_meta === $prep_request) {
                             <a target="_blank" href="//www.google.com/search?q=<?=$prep_title.' '.$baseUrl?>"><?= __('keyword +', 'prep-link') . ' '. $baseUrl?></a>
                         </p>
                     </div>
+                    <?= !empty($ads['ads_5']) ? '<div class="preplink-ads preplink-ads-5" style="margin: 0 25px;">' . $ads['ads_5'] . '</div>' : '' ?>
 
                     <?php if (!empty($endpoint_conf['preplink_related_post']) && $endpoint_conf['preplink_related_post'] == 1): ?>
                         <?php ep_related_post($settings, $post_id) ?>
-                        <?php if (isset($ads['pr_ad_5']) && (int)$ads['pr_ad_5'] == 1 && !empty($ads['pr_ad_code_5'])) : ?>
-                            <div class="preplink-ads preplink-ads-5">
-                                <?= $ads['pr_ad_code_5'] ?>
-                            </div>
-                        <?php endif; ?>
+                        <?= !empty($ads['ads_6']) ? '<div class="preplink-ads preplink-ads-6" style="margin: 0 25px;">' . $ads['ads_6'] . '</div>' : '' ?>
                     <?php endif; ?>
 
                     <?php if (file_exists(get_template_directory() . '/comments.php') && (int)$endpoint_conf['preplink_comment'] == 1) { ?>
