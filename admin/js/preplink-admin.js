@@ -2,28 +2,46 @@
     'use strict';
 
     $(function () {
-        var $waitText = $('#preplink_wait_text');
-        var text_replace = $('.wait_text_replace');
+        var $waitText = $('#countdown-select');
+        var countdown_mode = $('.countdown-select');
         var $faq1 = $('#faq_enabled');
         var faq1_des = $('.faq_description,.faq_title');
         var $related = $('#preplink_related_enabled');
         var related_des = $('.preplink_related_number');
         var $post_countdown = $('#preplink_countdown');
         var $relatedNum = $('#related_number');
+        var $replace_text = $('#replace_text');
+        var replace_mode = $('.replace_text');
         var __ = wp.i18n.__;
 
-        function _display_mode() {
+        function _countdown_mode() {
             if ($waitText.val() === 'wait_time') {
-                text_replace.show();
+                countdown_mode.show();
             } else {
-                text_replace.hide();
+                countdown_mode.hide();
             }
 
             $waitText.on('change', function () {
                 if (this.value === 'wait_time') {
-                    text_replace.show();
+                    countdown_mode.show();
                 } else {
-                    text_replace.hide();
+                    countdown_mode.hide();
+                }
+            });
+        }
+
+        function _replace_text_mode() {
+            if ($replace_text.val() === 'yes') {
+                replace_mode.show();
+            } else {
+                replace_mode.hide();
+            }
+
+            $replace_text.on('change', function () {
+                if (this.value === 'yes') {
+                    replace_mode.show();
+                } else {
+                    replace_mode.hide();
                 }
             });
         }
@@ -97,7 +115,8 @@
             }
         });
 
-        _display_mode();
+        _countdown_mode();
+        _replace_text_mode();
         _faq1_enabled();
         _related_enabled();
         _checkCookieValue();

@@ -14,11 +14,10 @@
             wait_text = href_process.wait_text.trim(),
             display_mode = href_process.display_mode,
             auto_direct = parseInt(href_process.auto_direct),
-            text_complete = href_process.text_complete.trim(),
+            text_complete = href_process.replace_text,
             elm_exclude = href_process.pre_elm_exclude.trim(),
             exclude_elm = elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
             allow_url = href_process.prep_url,
-            links_noindex_fl = href_process.links_noindex_nofollow,
             windowWidth = $(window).width(),
             remix_url = href_process.remix_url;
 
@@ -82,18 +81,15 @@
                 var $this = $(this),
                     href = $(this).attr('href'),
                     allow_urls = allow_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
-                    text_link = $this.text(),
-                    links_noindex_nofollow = links_noindex_fl.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(",");
-
-                if (links_noindex_fl !== "" && contains_value(href, links_noindex_nofollow)) {
-                    $this.attr('rel', 'nofollow noopener noreferrer');
-                }
+                    text_link = $this.text();
 
                 if (exclude_elm.some(sel => $this.is(sel)) || $this.closest(exclude_elm.join(',')).length > 0 || href === undefined || href === null || !href.length) {
                     return;
                 }
 
                 if (allow_url !== "" && contains_value(href, allow_urls)) {
+
+                    $this.attr('rel', 'nofollow noopener noreferrer');
 
                     if (href === encodeURIComponent(decodeURIComponent(href))) {
                         href = decodeURIComponent(href);
@@ -182,9 +178,11 @@
                 timeleft--;
                 if (timeleft < 0) {
                     clearInterval(downloadTimer);
-
+                    if (text_complete.enable) {
+                        title = text_complete.text;
+                    }
                     let wait_time_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
-                    wait_time_html += '<span style="vertical-align: unset;">' + text_complete + '</span>';
+                    wait_time_html += '<span style="vertical-align: unset;">' + title + '</span>';
                     $elm.html(wait_time_html);
                     $elm.parents('.wrap-countdown').css('color', '#ff0000')
                     if (auto_direct) {
@@ -225,10 +223,17 @@
                 $progress.width(currentWidth);
                 if (currentWidth >= progressWidth) {
                     clearInterval(intervalId);
+                    if (text_complete.enable) {
+                        title = text_complete.text;
+                    }
                     let progress_html = '<i class="fa fa-angle-double-right fa-shake" style="color: #fff;cursor: pointer;font-size: 13px;"></i>';
                     progress_html += `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
-                    progress_html += '<span class="text-complete">' + text_complete + '</span>';
-                    $elm.html('<strong class="post-progress" style="color:#0c7c3f">' + progress_html + '</strong>');
+                    progress_html += '<span class="text-complete">' + title + '</span>';
+                    $elm.html('<strong class="post-progress" style="color:#0c7c3f;">' + progress_html + '</strong>');
+                    if (parent.parent('#download-now').length) {
+                        $elm.html('<strong class="post-progress" style="background-color:#018f06">' + progress_html + '</strong>');
+                    }
+
                     parent.removeAttr('style');
                     if (auto_direct) {
                         set_cookie_title(title);

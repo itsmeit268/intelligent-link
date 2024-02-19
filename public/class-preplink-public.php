@@ -72,8 +72,10 @@ class Preplink_Public {
                 'display_mode'           => !empty($this->settings['preplink_wait_text']) ? $this->settings['preplink_wait_text'] : 'wait_time',
                 'wait_text'              => !empty($this->settings['wait_text_replace']) ? $this->settings['wait_text_replace'] : 'please wait',
                 'auto_direct'            => !empty($this->settings['preplink_auto_direct']) ? $this->settings['preplink_auto_direct'] : 0,
-                'text_complete'          => !empty($this->settings['preplink_text_complete']) ? $this->settings['preplink_text_complete'] : 'your link is ready',
-                'links_noindex_nofollow' => $this->get_links_nofolow_noindex(),
+                'replace_text'           => [
+                    'enable' => !empty($this->settings['replace_text_enable']) ? $this->settings['replace_text_enable'] : 0,
+                    'text'   => !empty($this->settings['replace_text']) ? $this->settings['replace_text'] : '',
+                ],
                 'is_user_logged_in'      => is_user_logged_in(),
                 'is_popup'               => isset($settings['disable_click_popup']) ? $settings['disable_click_popup'] : '0',
                 'remix_url'              => ['prefix'  => 'df5c1kjdhsf81', 'mix_str' => 'gVmk2mf9823c2', 'suffix'  => 'cgy73mfuvkjs3']
@@ -241,10 +243,6 @@ class Preplink_Public {
         $display_mode = !empty($this->settings['preplink_wait_text']) ? $this->settings['preplink_wait_text'] : 'wait_time';
 
         $html = '<h3 class="wp-block-heading" id="download-now"><b>Link download: </b>';
-
-//        if (is_user_logged_in()) {
-//            $display_mode = 'progress';
-//        }
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';

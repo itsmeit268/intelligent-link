@@ -208,13 +208,6 @@ class Preplink_Admin {
             'preplink_endpoint_section');
 
         add_settings_field(
-            'preplink_text_complete',
-            __('Text Complete', 'prep-link'),
-            array($this, 'preplink_text_complete'),
-            'preplink_general_settings',
-            'preplink_general_section');
-
-        add_settings_field(
             'preplink_cookie_time',
             __('Link expiration time', 'prep-link'),
             array($this, 'preplink_cookie_time'),
@@ -232,7 +225,6 @@ class Preplink_Admin {
                 'countdown'  => __('Countdown', 'prep-link'),
             )
         );
-
 
         add_settings_field(
             'preplink_endpoint_auto_direct',
@@ -263,14 +255,6 @@ class Preplink_Admin {
         );
 
         add_settings_field(
-            'links_noindex_nofollow',
-            __('Links Noindex, Nofollow', 'prep-link'),
-            array($this, 'links_noindex_nofollow'),
-            'preplink_general_settings',
-            'preplink_general_section'
-        );
-
-        add_settings_field(
             'preplink_image',
             __('Post Image', 'prep-link'),
             array($this, 'preplink_image_field'),
@@ -281,7 +265,6 @@ class Preplink_Admin {
                 0 => 'No',
             )
         );
-
 
         add_settings_field(
             'pr_faq',
@@ -325,6 +308,18 @@ class Preplink_Admin {
             array(
                 'wait_time' => 'Countdown',
                 'progress' => 'ProgressBar',
+            )
+        );
+
+        add_settings_field(
+            'replace_text_complete',
+            __('Replace text after complete', 'prep-link'),
+            array($this, 'replace_text_complete'),
+            'preplink_general_settings',
+            'preplink_general_section',
+            array(
+                'yes' => 'Replace',
+                'no' => 'No replace',
             )
         );
 
@@ -425,19 +420,19 @@ class Preplink_Admin {
         );
 
         add_settings_field(
+            'preplink_link_field_lists',
+            __('Number link list', 'prep-link'),
+            array($this, 'preplink_link_field_lists'),
+            'preplink_general_settings',
+            'preplink_general_section');
+
+        add_settings_field(
             'preplink_custom_style',
             __('Custom Style', 'prep-link'),
             array($this, 'preplink_custom_style'),
             'preplink_general_settings',
             'preplink_general_section'
         );
-
-        add_settings_field(
-            'preplink_link_field_lists',
-            __('Number link list', 'prep-link'),
-            array($this, 'preplink_link_field_lists'),
-            'preplink_general_settings',
-            'preplink_general_section');
 
         add_settings_field(
             'preplink_delete_option',
@@ -544,13 +539,32 @@ class Preplink_Admin {
         }
     }
 
-    public function preplink_text_complete(){
+    public function replace_text_complete() {
         $settings = get_option('preplink_setting', array());
         ?>
-        <input type="text" id="preplink_text_complete" name="preplink_setting[preplink_text_complete]"
-               placeholder="Link ready!"
-               value="<?= esc_attr(!empty($settings['preplink_text_complete']) ? $settings['preplink_text_complete'] : false) ?>"/>
-        <p class="description">Text display after countdown complete. (default Link ready!)</p>
+        <table class="form-table">
+            <tbody>
+            <tr class="preplink_text_enable">
+                <td style="padding: 5px 0;">
+                    <select name="preplink_setting[replace_text_enable]" id="replace_text" class="replace_text_enable">
+                        <option value="yes" <?php selected(isset($settings['replace_text_enable']) && $settings['replace_text_enable'] == 'yes'); ?>>
+                            <?= __('Yes')?>
+                        </option>
+                        <option value="no" <?php selected(isset($settings['replace_text_enable']) && $settings['replace_text_enable'] == 'no'); ?>>
+                            <?= __('No')?>
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="replace_text">
+                <td style="padding: 5px 0;">
+                    <input type="text" id="replace_text" name="preplink_setting[replace_text]" placeholder="link is ready"
+                           value="<?= esc_attr(!empty($settings['replace_text']) ? $settings['replace_text'] : false) ?>"/>
+                    <p class="description">The replacement text when the countdown is complete.</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
         <?php
     }
 
@@ -601,15 +615,6 @@ class Preplink_Admin {
         $html .= '<p class="description">The elements will be excluded, each separated by a comma (,).</p>';
         $html .= '<p class="description">For example: #prep-link-download-btn, .prep-link-download-btn.</p>';
         $html .= '<p class="description">Default: .prep-link-download-btn,.prep-link-btn</p>';
-        echo $html;
-    }
-
-    public function links_noindex_nofollow(){
-        $settings = get_option('preplink_setting', array());
-        $html = '<p class="description">Domains throughout the article will be set to noindex and nofollow, one per line or separated by commas (,).</p>';
-        $html .= '<textarea id="links_noindex_nofollow" cols="50" rows="5" name="preplink_setting[links_noindex_nofollow]" placeholder="example.com">';
-        $html .= isset($settings["links_noindex_nofollow"]) ? $settings["links_noindex_nofollow"] : false;
-        $html .= '</textarea>';
         echo $html;
     }
 
@@ -727,7 +732,7 @@ class Preplink_Admin {
             <tbody>
             <tr class="preplink_wait_text">
                 <td style="padding: 5px 0;">
-                    <select name="preplink_setting[preplink_wait_text]" id="preplink_wait_text" class="preplink_related_post">
+                    <select name="preplink_setting[preplink_wait_text]" id="countdown-select" class="preplink_related_post">
                         <option value="wait_time" <?php selected(isset($settings['preplink_wait_text']) && $settings['preplink_wait_text'] == 'wait_time'); ?>>
                             <?= __('Countdown')?>
                         </option>
@@ -737,7 +742,7 @@ class Preplink_Admin {
                     </select>
                 </td>
             </tr>
-            <tr class="wait_text_replace">
+            <tr class="countdown-select">
                 <td style="padding: 5px 0;">
                     <input type="text" id="wait_text_replace" name="preplink_setting[wait_text_replace]" placeholder="waiting"
                            value="<?= esc_attr(!empty($settings['wait_text_replace']) ? $settings['wait_text_replace'] : false) ?>"/>
