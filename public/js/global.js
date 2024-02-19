@@ -178,7 +178,7 @@
                 timeleft--;
                 if (timeleft < 0) {
                     clearInterval(downloadTimer);
-                    if (text_complete.enable) {
+                    if (text_complete.enable === 'yes') {
                         title = text_complete.text;
                     }
                     let wait_time_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
@@ -223,9 +223,10 @@
                 $progress.width(currentWidth);
                 if (currentWidth >= progressWidth) {
                     clearInterval(intervalId);
-                    if (text_complete.enable) {
+                    if (text_complete.enable === 'yes') {
                         title = text_complete.text;
                     }
+
                     let progress_html = '<i class="fa fa-angle-double-right fa-shake" style="color: #fff;cursor: pointer;font-size: 13px;"></i>';
                     progress_html += `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
                     progress_html += '<span class="text-complete">' + title + '</span>';

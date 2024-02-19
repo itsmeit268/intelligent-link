@@ -48,7 +48,7 @@ class Preplink_Public {
     }
 
     public function enqueue_styles(){
-        if (!is_front_page() && is_singular('post') && $this->is_plugin_enable()){
+        if ($this->is_plugin_enable()){
             wp_enqueue_style('prep-global', plugin_dir_url(__FILE__) . 'css/global.css', array(), $this->version, 'all');
         }
     }
@@ -58,7 +58,7 @@ class Preplink_Public {
         wp_enqueue_script('prep-cookie', plugin_dir_url(__FILE__) . 'js/cookie.js', array('jquery'), $this->version, false);
         wp_localize_script('prep-cookie', 'cookie_vars', ['end_point' => $endpoint]);
 
-        if ($this->is_plugin_enable() && isset($this->preplink['endpoint'])){
+        if ($this->is_plugin_enable()){
 
             $settings = get_option('email_marketing_settings', []);
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
