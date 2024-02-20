@@ -567,7 +567,7 @@ class Preplink_Admin {
 
     public function preplink_textarea_field(){
         $settings = get_option('preplink_setting', array());
-        $html = '<textarea id="preplink_url" cols="50" rows="5" name="preplink_setting[preplink_url]" placeholder="Example: fshare.vn,drive.google.com,">';
+        $html = '<textarea id="preplink_url" cols="50" rows="5" name="preplink_setting[preplink_url]" placeholder="domain1.com, domain2.com,">';
         $html .= isset($settings["preplink_url"]) ? $settings["preplink_url"] : false;
         $html .= '</textarea>';
         $html .= '<p class="description">Any links containing these specific strings will be redirected to the countdown page. 
