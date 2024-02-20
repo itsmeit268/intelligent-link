@@ -59,7 +59,6 @@ class Preplink_Public {
         wp_localize_script('prep-cookie', 'cookie_vars', ['end_point' => $endpoint]);
 
         if ($this->is_plugin_enable()){
-            $settings = get_option('email_marketing_settings', []);
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
             wp_enqueue_script('preplink-global', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), $this->version, true);
             wp_localize_script('preplink-global', 'href_process', [
@@ -249,10 +248,10 @@ class Preplink_Public {
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';
-            $html .= '<span id="prep-request" data-id="' . $blog_url . '"><strong class="post-progress">' . $file_name . '</strong></span></div>';
+            $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="post-progress">' . $file_name . '</strong></span></div>';
         } else {
             $html .= '<span class="wrap-countdown">';
-            $html .= '<span id="prep-request" data-id="' . $blog_url . '"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
+            $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
         }
 
         $html .= '</h3>';

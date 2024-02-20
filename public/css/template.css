@@ -868,6 +868,7 @@ ul li {
     cursor: pointer;
     outline: none;
     text-decoration: none!important;
+    margin: 5px 0;
 }
 
 .preplink-btn-link:hover {

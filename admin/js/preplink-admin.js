@@ -8,7 +8,6 @@
         var faq1_des = $('.faq_description,.faq_title');
         var $related = $('#preplink_related_enabled');
         var related_des = $('.preplink_related_number');
-        var $post_countdown = $('#preplink_countdown');
         var $relatedNum = $('#related_number');
         var $replace_text = $('#replace_text');
         var replace_mode = $('.replace_text');
@@ -84,17 +83,6 @@
             });
         }
 
-        function _checkPostAutoDirect() {
-            $post_countdown.on('change', function () {
-                if (parseInt($post_countdown.val()) <= 0) {
-                    $('.prep-notice').remove();
-                    $post_countdown.parents('.preplink_post_number_notice').append('<p class="prep-notice">'+ __('The value must be greater than 0 when you run the countdown. Or you can choose (Yes) for Auto direct','prep-link') +'</p>')
-                } else {
-                    $('.prep-notice').remove();
-                }
-            });
-        }
-
         function _checkCookieValue() {
             var cookie = $('#cookie_time');
             cookie.on('change', function () {
@@ -120,7 +108,6 @@
         _faq1_enabled();
         _related_enabled();
         _checkCookieValue();
-        _checkPostAutoDirect();
     });
 
 })(jQuery);

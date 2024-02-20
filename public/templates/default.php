@@ -4,6 +4,9 @@
  * Website     https://itsmeit.co
  */
 
+$prep_title         = isset($_COOKIE['prep_title']) ? $_COOKIE['prep_title'] : '';
+$prep_request       = isset($_COOKIE['prep_request']) ? $_COOKIE['prep_request'] : '';
+
 $settings           = get_option('preplink_setting');
 $ads                = get_option('ads_code');
 $faq_conf           = get_option('preplink_faq');
@@ -11,9 +14,8 @@ $endpoint_conf      = get_option('preplink_endpoint');
 $isMeta             = false;
 $post_id            = get_the_ID();
 $view_link          = get_permalink($post_id);
-$post_title         = get_the_title($post_id) ? get_the_title($post_id) : get_post_field('post_title', $post_id);
-$prep_title         = isset($_COOKIE['prep_title']) ? $_COOKIE['prep_title'] : '';
-$prep_request       = isset($_COOKIE['prep_request']) ? $_COOKIE['prep_request'] : '';
+$post_title         = get_the_title($post_id) ? get_the_title($post_id) : $prep_title;
+
 $baseUrl            = str_replace('https://', '', !empty(home_url()) ? home_url() : get_bloginfo('url'));
 $file_format        = get_post_meta($post_id, 'file_format', true);
 $require            = get_post_meta($post_id, 'require', true);
@@ -43,7 +45,9 @@ if ($download_meta === $prep_request) {
     <?php render_back_icon($view_link); ?>
     <header class="single-header">
         <h1 class="s-title">
-            <a class="adsterra" href="javascript:void(0)"><?= $post_title; ?></a>
+            <a class="a-title" href="<?php if (!$isMeta) echo 'javascript:void(0)'; else echo $view_link; ?>">
+                <?php if (!$isMeta) echo ''; else echo $post_title; ?>
+            </a>
         </h1>
     </header>
     <div class="sv-small-container">
@@ -56,21 +60,20 @@ if ($download_meta === $prep_request) {
                     </div>
                     <?= !empty($ads['ads_7']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_7'] . '</div>' : '' ?>
                 <?php else: ?>
-                    <?php if ($post_image) : ?>
+                    <?php if ($post_image && $isMeta) : ?>
                         <div class="s-feat-outer">
                             <div class="featured-image">
                                 <img src="<?= get_the_post_thumbnail_url($post_id, 'full'); ?>" class="prep-thumbnail" alt="<?= $post_title ?>" title="<?= $post_title ?>">
                             </div>
                         </div>
+                        <?= !empty($ads['ads_2']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_2'] . '</div>' : '' ?>
                     <?php endif;?>
-                    <?= !empty($ads['ads_2']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_2'] . '</div>' : '' ?>
-
                     <?php if ($endpoint_conf['ep_mode'] == 'default'): ?>
                         <div class="download-list">
                             <div class="download-item-box">
                                 <div class="download-item">
                                     <div class="left">
-                                        <a class="adsterra image" href="javascript:void(0)">
+                                        <a class="a-title image" href="javascript:void(0)">
                                             <?= has_post_thumbnail() ? get_the_post_thumbnail($post_id, 'thumbnail') : ''; ?>
                                         </a>
                                         <div class="post-download">

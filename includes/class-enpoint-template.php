@@ -31,9 +31,9 @@ function get_list_link($post_id, $settings) {
                     $file_name = $list_link[$file_name_key];
                     $size = $list_link[$size_key]; ?>
                     <?php if (is_user_logged_in()) :?>
-                        <a href="javascript:void(0)" data-request="<?= esc_html(base64_encode($list_link[$link_is_login_key]))?>" class="list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
+                        <a href="javascript:void(0)" data-request="<?= esc_html(base64_encode($list_link[$link_is_login_key]))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
                     <?php else: ?>
-                        <a href="javascript:void(0)" data-request="<?= esc_html(base64_encode($list_link[$link_no_login_key]))?>" class="list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
+                        <a href="javascript:void(0)" data-request="<?= esc_html(base64_encode($list_link[$link_no_login_key]))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
                     <?php endif;?>
                 <?php }
             } ?>

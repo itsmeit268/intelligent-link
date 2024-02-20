@@ -541,7 +541,7 @@ class Preplink_Admin {
         ?>
         <input type="number" id="preplink_number_field_lists" name="preplink_setting[preplink_number_field_lists]" placeholder="5"
                value="<?= esc_attr(!empty($settings['preplink_number_field_lists']) ? $settings['preplink_number_field_lists'] : false) ?>"/>
-        <p class="description">The number of alternative link fields displayed in a post.</p>
+        <p class="description">The number of related fields, you'll find it within the post or product. Here you can add different links.</p>
         <?php
     }
 
@@ -854,27 +854,27 @@ class Preplink_Admin {
         <div class="app-fields">
             <?php
             $fields = array(
-                'file_format' => 'Format (eg: APK/IPA/ZIP...)',
-                'require' => 'OS/FW (eg: Wordpress/IOS...)',
-                'os_version' => 'OS/FW Version (eg: 8.0+)',
-                'file_version' => 'File Version',
-                'mod_feature' => 'MOD Feature',
-                'link_no_login' => 'Link No Login',
-                'link_is_login' => 'Link Is Login',
-                'file_name' => 'File Name',
-                'file_size' => 'File Size (eg: 10.0MB)'
+                'file_format' => 'Format: APK/IPA/ZIP/RAR...',
+                'require' => 'OS/FW: Windows/Wordpress/IOS...',
+                'os_version' => 'OS/FW Version (Ex: 11, 11+)',
+                'file_version' => 'File Version (Ex: 1.0.0)',
+                'mod_feature' => 'MOD Feature (Ex: Unlocked Premium)',
+                'link_no_login' => 'Link No Login (required)',
+                'link_is_login' => 'Link Is Login (required)',
+                'file_name' => 'File Name (required)',
+                'file_size' => 'File Size (100MB)'
             );
 
             $field_count = count($fields);
             $fields_per_row = 3;
             $field_index = 0;
+
             foreach ($fields as $field_name => $field_label) {
                 if ($field_index % $fields_per_row === 0) {
                     echo '<div class="app-row">';
                 }
 
                 $field_value = get_post_meta($post->ID, $field_name, true);
-                $placeholder = 'ex: ' . $field_label;
 
                 if ($field_name == 'rate_star') {
                     $input_type = 'number';
@@ -884,8 +884,8 @@ class Preplink_Admin {
 
                 ?>
                 <div class="app-field">
-                    <label for="<?= $field_name; ?>"><?= $field_label; ?>:</label>
-                    <input type="<?= $input_type; ?>" name="<?= $field_name; ?>" value="<?= esc_attr($field_value); ?>" placeholder="<?= $placeholder; ?>"/>
+                    <label for="<?= $field_name; ?>"><?= $field_label; ?></label>
+                    <input type="<?= $input_type; ?>" name="<?= $field_name; ?>" value="<?= esc_attr($field_value); ?>"/>
                 </div>
                 <?php
 
@@ -920,19 +920,19 @@ class Preplink_Admin {
                     <h3 class="list-h3-title"><?= 'Link ' . $i ?></h3>
                     <div class="list-link-row">
                         <div class="link-field">
-                            <label for="<?php echo esc_attr($list_field[0] . '-' . $i); ?>">File Name:</label>
+                            <label for="<?php echo esc_attr($list_field[0] . '-' . $i); ?>">File Name (require):</label>
                             <input type="text" id="<?php echo esc_attr($list_field[0] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[0] . '-' . $i); ?>" value="<?php echo $file_name ? esc_attr($file_name) : ''; ?>" />
                         </div>
                         <div class="link-field">
-                            <label for="<?php echo esc_attr($list_field[1] . '-' . $i); ?>">Link no login:</label>
+                            <label for="<?php echo esc_attr($list_field[1] . '-' . $i); ?>">Link no login (require):</label>
                             <input type="text" id="<?php echo esc_attr($list_field[1] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[1] . '-' . $i); ?>" value="<?php echo $link_no_login ? esc_attr($link_no_login) : ''; ?>" />
                         </div>
                         <div class="link-field">
-                            <label for="<?php echo esc_attr($list_field[2] . '-' . $i); ?>">Link is login:</label>
+                            <label for="<?php echo esc_attr($list_field[2] . '-' . $i); ?>">Link is login (require):</label>
                             <input type="text" id="<?php echo esc_attr($list_field[2] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[2] . '-' . $i); ?>" value="<?php echo $link_is_login ? esc_attr($link_is_login) : ''; ?>" />
                         </div>
                         <div class="link-field">
-                            <label for="<?php echo esc_attr($list_field[3] . '-' . $i); ?>">Size:</label>
+                            <label for="<?php echo esc_attr($list_field[3] . '-' . $i); ?>">Size (ex: 100 GB):</label>
                             <input type="text" id="<?php echo esc_attr($list_field[3] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[3] . '-' . $i); ?>" value="<?php echo $size_value ? esc_attr($size_value) : ''; ?>" />
                         </div>
                     </div>

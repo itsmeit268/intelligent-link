@@ -79,9 +79,9 @@
         function prep_request_link() {
             $('a').each(function () {
                 var $this = $(this),
-                    href = $(this).attr('href'),
+                    href = $this.attr('href'),
                     allow_urls = allow_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
-                    text_link = $this.text();
+                    text_link = $this.text().trim() || '>> link <<';
 
                 if (exclude_elm.some(sel => $this.is(sel)) || $this.closest(exclude_elm.join(',')).length > 0 || href === undefined || href === null || !href.length) {
                     return;
@@ -89,43 +89,48 @@
 
                 if (allow_url !== "" && contains_value(href, allow_urls)) {
 
-                    $this.attr('rel', 'nofollow noopener noreferrer');
-
                     if (href === encodeURIComponent(decodeURIComponent(href))) {
                         href = decodeURIComponent(href);
                     }
 
+                    $this.attr('rel', 'nofollow noopener noreferrer');
+
                     var modified_url = mix_url(btoa(href));
+                    var imgExists = $this.find("img").length > 0;
+                    var svgExists = $this.find("svg").length > 0;
+                    var icon_Exists = $this.find("i").length > 0;
 
-                    if (display_mode === 'progress') {
-                        $this.replaceWith('<div class="post-progress-bar"><span id="prep-request" data-id="' + modified_url + '"><strong class="post-progress">' + text_link + '</strong></span></div>');
+                    if (imgExists || svgExists || icon_Exists) {
+                        $this.attr({'href': 'javascript:void(0)', 'data-id': modified_url, 'data-text': text_link, 'data-image': '1'}).addClass('prep-request');
                     } else {
-                        $this.replaceWith('<span class="wrap-countdown"><span id="prep-request" data-id="' + modified_url +'"><strong class="link-countdown">' + text_link + '</strong></span></span>');
-                    }
-
-                    var strongElement = $(".post-progress-bar,.wrap-countdown").find("strong:contains('|')");
-                    if ($(window).width() < 700 && strongElement.length) {
-                        strongElement.remove();
+                        var replacement;
+                        if (display_mode === 'progress') {
+                            replacement = '<div class="post-progress-bar"><span class="prep-request" data-id="' + modified_url + '"><strong class="post-progress">' + text_link + '</strong></span></div>';
+                        } else {
+                            replacement = '<span class="wrap-countdown"><span class="prep-request" data-id="' + modified_url +'"><strong class="link-countdown">' + text_link + '</strong></span></span>';
+                        }
+                        $this.replaceWith(replacement);
                     }
                 }
             });
         }
         
         function processClick() {
-            $(document).on('click', '#prep-request', function (e) {
+            $(document).on('click', '.prep-request', function (e) {
                 e.preventDefault();
 
                 const $this = $(this);
-                const title = $this.text();
+                const title = $this.text().trim() || '>> link <<';
                 const modified_url = $this.attr('data-id');
                 const url = restore_original_url(modified_url);
                 const complete = $this.find('.text-hide-complete').data('complete');
+                const is_image = $this.attr('data-image');
 
                 if (!_isBtoaEncoded(url)) {
                     return;
                 }
 
-                if (time_cnf === 0) {
+                if (time_cnf === 0 || is_image === '1') {
                     set_cookie_title(title);
                     set_cookie_url(modified_url);
 
@@ -137,8 +142,9 @@
                     return;
                 }
 
-                if (complete === 1) {
-                    set_cookie_title($this.find('.text-hide-complete').data('text'));
+                if (complete === 1) { //fix sau
+                    text_complete = $this.find('.text-hide-complete').data('text');
+                    set_cookie_title(text_complete);
                     set_cookie_url(modified_url);
 
                     if (windowWidth > 700) {
