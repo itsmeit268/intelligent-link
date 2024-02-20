@@ -90,8 +90,24 @@ class Preplink_Public {
 
     public function preplink_template_include($template) {
         global $wp_query;
+        $this->set_robots_filter();
+        $rewrite_template = dirname( __FILE__ ) . '/templates/default.php';
+
+        $product_category = isset($wp_query->query_vars['product_cat']) ? $wp_query->query_vars['product_cat']: '';
+
+        if ($product_category == $this->getEndPointValue()) {
+            remove_all_actions('woocommerce_before_main_content');
+            remove_all_actions('woocommerce_archive_description');
+            remove_all_actions('woocommerce_before_shop_loop');
+            remove_all_actions('woocommerce_shop_loop');
+            remove_all_actions('woocommerce_after_shop_loop');
+            remove_all_actions('woocommerce_sidebar');
+
+            include_once $rewrite_template;
+            exit;
+        }
+
         if (isset($wp_query->query_vars[$this->getEndPointValue()])) {
-            $this->set_robots_filter();
 
             wp_enqueue_style('prep-template', plugin_dir_url(__FILE__) . 'css/template.css', [], PREPLINK_VERSION, 'all');
             wp_enqueue_script('prep-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), PREPLINK_VERSION, false);
@@ -102,7 +118,14 @@ class Preplink_Public {
             ]);
 
             include_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-enpoint-template.php';
-            return dirname( __FILE__ ) . '/templates/default.php';
+
+            if (is_singular('product')) {
+                remove_all_actions( 'woocommerce_single_product_summary' );
+                include_once $rewrite_template;
+                exit;
+            }
+
+            return $rewrite_template;
         }
         return $template;
     }

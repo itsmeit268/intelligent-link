@@ -209,12 +209,6 @@
     display: block;
 }
 
-.blue-style, .btn.attachment-link {
-    color: #fff!important;
-    background-color: #1479b3;
-    box-shadow: 0 0.75rem 2rem 0 #29b1d833;
-}
-
 @media (max-width: 42.4375rem) {
     .p-file-data {
         margin-left: -1.5rem;
@@ -857,6 +851,8 @@ ul li {
     font-weight: 700
 }
 .preplink-btn-link {
+    background: #167ec1 !important;
+    color: #fff;
     height: 2.5rem;
     line-height: 1.5rem;
     padding: 0.5rem 1.25rem;
@@ -874,28 +870,9 @@ ul li {
     text-decoration: none!important;
 }
 
-.blue-style:hover, .btn.attachment-link:hover {
-    background-color: #1aa1c7;
+.preplink-btn-link:hover {
+    color: #d7d9db;
 }
-
-.blue-style{
-    height: 2.5rem;
-    line-height: 1.5rem;
-    padding: 0.5rem 1.25rem;
-    border-radius: 1.5rem;
-    white-space: nowrap;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: .875rem;
-    display: inline-block;
-    vertical-align: top;
-    border: 0 none;
-    font-weight: bold;
-    cursor: pointer;
-    outline: none;
-    text-decoration: none !important;
-}
-
 .require-level {
     border: 1px solid #11b94c;
     border-radius: 5px;
@@ -922,113 +899,11 @@ ul li {
     border-radius: inherit;
 }
 
-.accordion .accordion-item {
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.accordion .accordion-item button[aria-expanded='true'] {
-    border-bottom: 1px solid #03b5d2;
-}
-
-.accordion button {
-    position: relative;
-    display: block;
-    text-align: left;
-    width: 100%;
-    padding: 8px 0 !important;
-    color: #0c1521 !important;
-    font-size: 16px;
-    font-weight: 400;
-    border: none !important;
-    background: none !important;
-    outline: none;
-    box-shadow: none !important;
-    line-height: 20px !important;
-}
-
-.accordion button:hover,
-.accordion button:focus {
-    cursor: pointer;
-    color: #03b5d2;
-}
-
-.accordion button:hover::after,
-.accordion button:focus::after {
-    cursor: pointer;
-    color: #03b5d2;
-    border: 1px solid #03b5d2;
-}
-
-.accordion button .accordion-title {
-    padding: 7px 0;
-}
-
-.accordion button .icon {
-    display: inline-block;
-    position: absolute;
-    top: 8px;
-    right: 0;
-    width: 20px;
-    height: 20px;
-    border: 1px solid;
-    border-radius: 20px;
-}
-
-.accordion button .icon::before,.accordion button .icon::after {
-    display: block;
-    position: absolute;
-    content: '';
-    background: currentColor;
-}
-
-.accordion button .icon::before {
-    top: 8px;
-    left: 4px;
-    width: 10px;
-    height: 2px;
-
-}
-
-.accordion button .icon::after {
-    top: 5px;
-    left: 8px;
-    width: 2px;
-    height: 8px;
-}
-
-.accordion button[aria-expanded='true'] {
-    color: #03b5d2;
-}
-
-.accordion button[aria-expanded='true'] .icon::after {
-    width: 0;
-}
-.accordion button[aria-expanded='true'] + .accordion-content {
-    opacity: 1;
-    max-height: 100%;
-    transition: all 200ms linear;
-    will-change: opacity, max-height;
-}
-.accordion .accordion-content {
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: opacity 200ms linear, max-height 200ms linear;
-    will-change: opacity, max-height;
-}
-.accordion .accordion-content p {
-    font-size: 1rem;
-    font-weight: 300;
-    margin: 10px 0;
-    color: #096b63;
-}
-
 .related-link > .page_file-img{
     width: 100px;
     height: 100px;
 }
 .faq-active>.accordion-title {
-    color: #ce0627;
     font-weight: 600;
     font-size: 16px;
 }
@@ -1039,6 +914,20 @@ ul li {
     text-align: left;
     margin: 30px 0 10px 0;
 }
+
+.featured-image {
+    max-width: 100%;
+    height: 450px;
+    overflow: hidden;
+}
+
+.featured-image img {
+    width: 100%;
+    height: auto;
+}
+.related_post {
+    margin-bottom: 20px;
+}
 @media only screen and (max-device-width: 480px) {
     .sv-small-container>.grid-container{
         margin-right: -10px;
@@ -1048,6 +937,10 @@ ul li {
     .p-file {
         padding: 0 10px;
         margin: 0 auto;
+    }
+
+    .featured-image {
+        height: 200px;
     }
 
     #container, .session-expired {
@@ -1151,11 +1044,8 @@ ul li {
         text-transform: uppercase;
         margin-left: 4px;
     }
-
-
     .app-cont {
         padding: 0;
         margin: 0;
     }
-
 }
