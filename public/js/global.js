@@ -172,6 +172,7 @@
         function _start_countdown($elm, url, title) {
             let downloadTimer;
             let timeleft = time_cnf;
+            let replace_title;
 
             const countdown = () => {
                 $elm.html(`<strong> ${wait_text} ${timeleft}s...</strong>`);
@@ -179,10 +180,10 @@
                 if (timeleft < 0) {
                     clearInterval(downloadTimer);
                     if (text_complete.enable === 'yes') {
-                        title = text_complete.text;
+                        replace_title = text_complete.text;
                     }
                     let wait_time_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
-                    wait_time_html += '<span style="vertical-align: unset;">' + title + '</span>';
+                    wait_time_html += '<span style="vertical-align: unset;">' + replace_title + '</span>';
                     $elm.html(wait_time_html);
                     $elm.parents('.wrap-countdown').css('color', '#ff0000')
                     if (auto_direct) {
@@ -219,17 +220,19 @@
             }
 
             const intervalId = setInterval(function () {
+                let replace_title;
+
                 currentWidth += progressWidth / (timeleft * 1000 / timeleft);
                 $progress.width(currentWidth);
                 if (currentWidth >= progressWidth) {
                     clearInterval(intervalId);
                     if (text_complete.enable === 'yes') {
-                        title = text_complete.text;
+                        replace_title = text_complete.text;
                     }
 
                     let progress_html = '<i class="fa fa-angle-double-right fa-shake" style="color: #fff;cursor: pointer;font-size: 13px;"></i>';
                     progress_html += `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
-                    progress_html += '<span class="text-complete">' + title + '</span>';
+                    progress_html += '<span class="text-complete">' + replace_title + '</span>';
                     $elm.html('<strong class="post-progress" style="color:#0c7c3f;">' + progress_html + '</strong>');
                     if (parent.parent('#download-now').length) {
                         $elm.html('<strong class="post-progress" style="background-color:#018f06">' + progress_html + '</strong>');

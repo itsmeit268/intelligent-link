@@ -75,8 +75,6 @@ class Preplink_Public {
                     'enable' => !empty($this->settings['replace_text_enable']) ? $this->settings['replace_text_enable'] : 0,
                     'text'   => !empty($this->settings['replace_text']) ? $this->settings['replace_text'] : '',
                 ],
-                'is_user_logged_in'      => is_user_logged_in(),
-                'is_popup'               => isset($settings['disable_click_popup']) ? $settings['disable_click_popup'] : '0',
                 'remix_url'              => $this->mix_url(),
             ]);
         }
@@ -100,8 +98,7 @@ class Preplink_Public {
             wp_localize_script('prep-template', 'prep_template', [
                 'countdown_endpoint'     => !empty($this->preplink['countdown_endpoint']) ? $this->preplink['countdown_endpoint'] : 5,
                 'endpoint_direct'        => !empty($this->preplink['endpoint_auto_direct']) ? $this->preplink['endpoint_auto_direct'] : 0,
-                'remix_url'              => $this->mix_url(),
-                'is_user_logged_in'      => is_user_logged_in(),
+                'remix_url'              => $this->mix_url()
             ]);
 
             include_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-enpoint-template.php';
@@ -111,7 +108,11 @@ class Preplink_Public {
     }
 
     public function mix_url() {
-        $arr = ['prefix'  => 'df5c1kjdhsf81', 'mix_str' => 'gVmk2mf9823c2', 'suffix'  => 'cgy73mfuvkjs3'];
+        $arr = array(
+            'prefix'  => 'df5c1kjdhsf81',
+            'mix_str' => 'gVmk2mf9823c2',
+            'suffix'  => 'cgy73mfuvkjs3'
+        );
         return $arr;
     }
 

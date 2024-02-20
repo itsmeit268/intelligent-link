@@ -14,12 +14,7 @@
             preUrlGo          = page_elm.data('request'),
             t2_timer          = $('#preplink-timer-link'),
             require_vip       = $('.not-vip-download'),
-            is_user_logged_in = prep_template.is_user_logged_in,
             remix_url         = prep_template.remix_url;
-
-        if (is_user_logged_in) {
-            time_cnf = 1;
-        }
 
         function restore_original_url(url) {
             return url.replace(remix_url.prefix, '').replace(remix_url.mix_str, '').replace(remix_url.suffix, '');
