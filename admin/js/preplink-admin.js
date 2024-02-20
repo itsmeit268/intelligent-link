@@ -103,6 +103,11 @@
             }
         });
 
+        var label = $('label[for="preplink_faq"]');
+        if (label.length > 0) {
+            label.closest('th').remove();
+        }
+
         _countdown_mode();
         _replace_text_mode();
         _faq1_enabled();

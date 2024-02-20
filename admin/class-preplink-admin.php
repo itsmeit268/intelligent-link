@@ -268,7 +268,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'pr_faq',
-            __('FAQ', 'prep-link'),
+            __('FAQ Settings', 'prep-link'),
             array($this, 'pr_faq'),
             'preplink_faq_settings',
             'preplink_faq_section',
@@ -441,7 +441,7 @@ class Preplink_Admin {
             <h3>These settings are applicable to all Intelligent Link functionalities.</h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
-            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Intelligent Link Plugin</a></span>
         </div>
         <?php
     }
@@ -451,7 +451,7 @@ class Preplink_Admin {
         <div class="prep-link-ads-settings">
             <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span> |
-            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Intelligent Link Plugin</a></span>
             <h3>Please enter your advertisement code, allowing HTML, JS, CSS.</h3>
         </div>
         <?php
@@ -464,7 +464,7 @@ class Preplink_Admin {
             <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
             |
-            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Intelligent Link Plugin</a></span>
         </div>
         <?php
     }
@@ -476,7 +476,7 @@ class Preplink_Admin {
             <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
             |
-            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>
+            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Intelligent Link Plugin</a></span>
         </div>
         <?php
     }
