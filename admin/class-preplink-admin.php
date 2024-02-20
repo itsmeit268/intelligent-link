@@ -60,8 +60,8 @@ class Preplink_Admin {
     public function add_prep_link_admin_menu(){
         add_submenu_page(
             'tools.php',
-            __('Prepare Link', 'prep-link'),
-            __('Prepare Link', 'prep-link'),
+            __('Intelligent Link', 'prep-link'),
+            __('Intelligent Link', 'prep-link'),
             'manage_options',
             $this->plugin_name . '-settings',
             [$this,'prep_link_admin_form_settings'],
@@ -438,7 +438,7 @@ class Preplink_Admin {
     public function preplink_display_general(){
         ?>
         <div class="prep-link-admin-settings">
-            <h3>These settings are applicable to all Prepare link functionalities.</h3>
+            <h3>These settings are applicable to all Intelligent Link functionalities.</h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
             <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Preplink Plugin</a></span>

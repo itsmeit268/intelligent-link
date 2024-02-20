@@ -2,7 +2,7 @@
 
 /**
  * @wordpress-plugin
- * Plugin Name:       Prepare Link
+ * Plugin Name:       Intelligent Link
  * Plugin URI:        https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * Description:       The plugin will encrypt the links you allow and perform a countdown time before redirecting to the specified "endpoint" page, helping to increase user engagement time and making it suitable for websites that allow file downloads.
  * Version:           1.0.6
