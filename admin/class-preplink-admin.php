@@ -35,7 +35,7 @@ class Preplink_Admin {
     public function __construct($plugin_name, $version){
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        add_action('admin_menu', array($this, 'add_prep_link_admin_menu'), 9);
+        add_action('admin_menu', array($this, 'add_prep_link_admin_menu'), 10);
         add_action('admin_init', array($this, 'register_and_build_fields'));
         add_action('plugin_action_links_' . PREPLINK_PLUGIN_BASE, array($this, 'add_plugin_action_link'), 20);
 
@@ -58,13 +58,15 @@ class Preplink_Admin {
     }
 
     public function add_prep_link_admin_menu(){
-        add_submenu_page(
-            'tools.php',
-            __('Intelligent Link', 'prep-link'),
+
+        add_menu_page(
+            __('Intelligent Link Settings', 'prep-link'),
             __('Intelligent Link', 'prep-link'),
             'manage_options',
             $this->plugin_name . '-settings',
-            [$this,'prep_link_admin_form_settings'],
+            [$this, 'prep_link_admin_form_settings'],
+            'dashicons-admin-links',
+            90
         );
     }
 
@@ -151,8 +153,6 @@ class Preplink_Admin {
      */
     public function add_plugin_action_link($links){
         $setting_link = '<a href="' . esc_url(get_admin_url()) . 'admin.php?page=preplink-settings">' . __('Settings', 'preplink') . '</a>';
-        $donate_link = '<a href="//itsmeit.co" title="' . __('Donate Now', 'preplink') . '" target="_blank" style="font-weight:bold">' . __('Donate', 'preplink') . '</a>';
-        array_unshift($links, $donate_link);
         array_unshift($links, $setting_link);
         return $links;
     }
