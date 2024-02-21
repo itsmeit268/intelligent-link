@@ -32,7 +32,7 @@ $file_size          = get_post_meta($post_id, 'file_size', true);
 if ($download_meta === $prep_request) {
     $isMeta = true;
 }
-set_robots_no_index();
+set_no_index_page();
 ?>
 <?php if (!empty($settings['preplink_custom_style'])) {
     echo "<style>{$settings['preplink_custom_style']}</style>";

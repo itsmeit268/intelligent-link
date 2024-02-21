@@ -113,7 +113,7 @@ class Preplink_Public {
     }
 
     public function endpoint_conf(){
-        $endpoint = 'download';
+        $endpoint = '1';
         if (!empty($this->ep_settings()['endpoint'])) {
             $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($this->ep_settings()['endpoint']));
         }

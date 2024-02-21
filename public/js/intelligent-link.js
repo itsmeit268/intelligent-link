@@ -19,7 +19,6 @@
             exclude_elm = elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
             allow_url = href_process.prep_url,
             windowWidth = $(window).width(),
-            page_elm    = $('#prep-request-page'),
             href_modify = href_process.modify_href;
 
         var countdownStatus = {};

@@ -156,14 +156,9 @@ function faq_render($faq_title, $faq_description) { ?>
     </div>
 <?php }
 
-function set_robots_no_index() {
+function set_no_index_page() {
     if (!function_exists('aioseo' ) && !function_exists('wpseo_init' ) && !function_exists('rank_math' )) {
-        $robots = array(
-            'noindex' => true,
-            'nofollow' => true,
-            'noarchive' => true,
-            'nosnippet' => true,
-        );
+        $robots = array('noindex' => true, 'nofollow' => true, 'noarchive' => true, 'nosnippet' => true,);
         add_filter('wp_robots', function() use ($robots) {
             return $robots;
         });

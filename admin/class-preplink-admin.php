@@ -502,10 +502,11 @@ class Preplink_Admin {
 
     public function preplink_endpoint_field(){
         $settings = get_option('preplink_endpoint', array());
+        $endpoint = !empty($settings['endpoint'])? $settings['endpoint']: '';
+        $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($endpoint));
         ?>
-        <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="download"
-               value="<?= esc_attr(!empty($settings['endpoint']) ? $settings['endpoint'] : false) ?>"/>
-        <p class="description">The default endpoint for link format is set to "download", meaning the link format will be as follows: domain.com/post/download. You should use a string without accents and spaces.</p>
+        <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="1" value="<?= esc_attr($endpoint ? : false) ?>"/>
+        <p class="description">The default endpoint is '1', and it looks like this: <?= get_bloginfo('url')?>/hello-world/<?= $endpoint ? : '1'?>/.</p>
         <p class="description"><strong style="color: red">IMPORTANT</strong>: If you make any changes to the endpoint, you need to navigate to <strong style="color: red">Settings -> Permalinks -> Save</strong> to synchronize the endpoint.</p>
         <?php
         if (isset($_POST['preplink_endpoint'])) {
