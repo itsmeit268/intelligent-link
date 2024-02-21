@@ -810,7 +810,9 @@ ul li {
 .clickable:hover {
     background: #2488c1
 }
-
+.prep-title {
+    cursor: pointer;
+}
 .enpoint-progress {
     position: relative;
     max-width: 100%;

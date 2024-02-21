@@ -76,10 +76,10 @@ class Preplink_Admin {
 
         // define tabs array
         $tabs = array(
-            'general'   => __( 'General', 'preplink' ),
-            'advertising'  => __( 'Advertising', 'preplink' ),
-            'faq' => __( 'FAQ', 'preplink' ),
-            'endpoint' => __( 'Endpoint', 'preplink' )
+            'general'   => __( 'General', 'prep-link' ),
+            'advertising'  => __( 'Advertising', 'prep-link' ),
+            'faq' => __( 'FAQ', 'prep-link' ),
+            'endpoint' => __( 'Endpoint', 'prep-link' )
         );
 
         // output tabs
@@ -152,7 +152,7 @@ class Preplink_Admin {
      * @return mixed
      */
     public function add_plugin_action_link($links){
-        $setting_link = '<a href="' . esc_url(get_admin_url()) . 'admin.php?page=preplink-settings">' . __('Settings', 'preplink') . '</a>';
+        $setting_link = '<a href="' . esc_url(get_admin_url()) . 'admin.php?page=preplink-settings">' . __('Settings', 'prep-link') . '</a>';
         array_unshift($links, $setting_link);
         return $links;
     }
@@ -398,6 +398,13 @@ class Preplink_Admin {
             'preplink_general_settings',
             'preplink_general_section');
 
+//        add_settings_field(
+//            'preplink_link_url_rewriting',
+//            __('URL Rewriting', 'prep-link'),
+//            array($this, 'preplink_link_url_rewriting'),
+//            'preplink_general_settings',
+//            'preplink_general_section');
+
         add_settings_field(
             'preplink_custom_style',
             __('Custom Style', 'prep-link'),
@@ -543,6 +550,21 @@ class Preplink_Admin {
                value="<?= esc_attr(!empty($settings['preplink_number_field_lists']) ? $settings['preplink_number_field_lists'] : false) ?>"/>
         <p class="description">The number of related fields, you'll find it within the post or product. Here you can add different links.</p>
         <?php
+    }
+
+    public function preplink_link_url_rewriting(){
+        $settings = get_option('preplink_setting', array());
+        ?>
+        <p><input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(12)) ?>"/></p>
+        <p><input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(11)) ?>"/></p>
+        <p><input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(14)) ?>"/></p>
+        <p class="description">Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL. This practice serves a security purpose and renders it non-decodable.</p>
+        <?php
+    }
+
+    function generateRandomString($length = 20) {
+        $regex = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return preg_replace('/[^' . $regex . ']/', '', substr(str_shuffle(str_repeat($regex, ceil($length / strlen($regex)))), 0, $length));
     }
 
     public function preplink_cookie_time(){

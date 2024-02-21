@@ -8,7 +8,7 @@
 
     $(function () {
         var end_point = href_process.end_point.trim(),
-            post_url = window.location.href.replace(/#.*/, ''),
+            current_url = window.location.href.replace(/#.*/, ''),
             time_cnf = parseInt(href_process.count_down),
             cookie_time = parseInt(href_process.cookie_time),
             wait_text = href_process.wait_text.trim(),
@@ -19,26 +19,27 @@
             exclude_elm = elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
             allow_url = href_process.prep_url,
             windowWidth = $(window).width(),
-            remix_url = href_process.remix_url;
+            href_modify = href_process.modify_href;
 
         var countdownStatus = {};
+console.log(href_modify);
 
-        function mix_url(url) {
-            url = remix_url.prefix + url;
+        function modify_href(url) {
+            url = href_modify.pfix + url;
             var position = Math.floor(url.length / 2);
-            url = url.substring(0, position) + remix_url.mix_str + url.substring(position);
-            url = url + remix_url.suffix;
+            url = url.substring(0, position) + href_modify.mstr + url.substring(position);
+            url = url + href_modify.sfix;
             return url;
         }
 
-        function restore_original_url(url) {
-            return url.replace(remix_url.prefix, '').replace(remix_url.mix_str, '').replace(remix_url.suffix, '');
+        function href_restore(url) {
+            return url.replace(href_modify.pfix, '').replace(href_modify.mstr, '').replace(href_modify.sfix, '');
         }
 
-        function _setCookie(name, value) {
+        function _setCookie(n, v) {
             var expirationTime = new Date(Date.now() + cookie_time * 60 * 1000);
-            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-            document.cookie = `${name}=${value}; expires=${expirationTime.toUTCString()}; path=/`;
+            document.cookie = `${n}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            document.cookie = `${n}=${v}; expires=${expirationTime.toUTCString()}; path=/`;
         }
 
         function set_cookie_title(title) {
@@ -50,18 +51,18 @@
         }
 
         function endpoint_url() {
-            if (post_url.indexOf('?') !== -1) {
-                post_url = post_url.split('?')[0];
+            if (current_url.indexOf('?') !== -1) {
+                current_url = current_url.split('?')[0];
             }
 
-            if (post_url.indexOf(".html") > -1 && post_url.includes('.html')) {
-                post_url = post_url.match(/.*\.html/)[0] + '/';
-            } else if (post_url.includes('/' + end_point + '/')) {
-                post_url = post_url.replace('/' + end_point + '/', '');
-            } else if (post_url.indexOf('.html') === -1 && !post_url.endsWith('/')) {
-                post_url = post_url + '/';
+            if (current_url.indexOf(".html") > -1 && current_url.includes('.html')) {
+                current_url = current_url.match(/.*\.html/)[0] + '/';
+            } else if (current_url.includes('/' + end_point + '/')) {
+                current_url = current_url.replace('/' + end_point + '/', '');
+            } else if (current_url.indexOf('.html') === -1 && !current_url.endsWith('/')) {
+                current_url = current_url + '/';
             }
-            return post_url + end_point;
+            return current_url + end_point;
         }
 
         function contains_value(value, array) {
@@ -95,7 +96,7 @@
 
                     $this.attr('rel', 'nofollow noopener noreferrer');
 
-                    var modified_url = mix_url(btoa(href));
+                    var modified_url = modify_href(btoa(href));
                     var imgExists = $this.find("img").length > 0;
                     var svgExists = $this.find("svg").length > 0;
                     var icon_Exists = $this.find("i").length > 0;
@@ -122,7 +123,7 @@
                 const $this = $(this);
                 const title = $this.text().trim() || '>> link <<';
                 const modified_url = $this.attr('data-id');
-                const url = restore_original_url(modified_url);
+                const url = href_restore(modified_url);
                 const complete = $this.find('.text-hide-complete').data('complete');
                 const is_image = $this.attr('data-image');
 
@@ -265,6 +266,21 @@
             }
         }
 
+        function clear_cookie(cookie_name) {
+            document.cookie = cookie_name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+        
+        function reset_request(){
+            var regex = new RegExp('(/' + end_point + '/)|(/' + end_point + ')|(.html/' + end_point + ')');
+            if (regex.test(current_url)) {
+                return true;
+            } else {
+                clear_cookie("prep_request");
+                clear_cookie("prep_title");
+            }
+        }
+
+        reset_request();
         prep_request_link();
         processClick();
     });

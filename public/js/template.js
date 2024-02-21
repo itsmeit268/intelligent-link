@@ -7,19 +7,13 @@
     'use strict';
 
     $(function () {
-        var $progress         = $('#enpoint-progress'),
-            time_cnf          = parseInt(prep_template.countdown_endpoint),
-            auto_direct       = parseInt(prep_template.endpoint_direct),
-            page_elm          = $('#prep-link-single-page'),
-            preUrlGo          = page_elm.data('request'),
-            t2_timer          = $('#preplink-timer-link'),
-            require_vip       = $('.not-vip-download'),
-            remix_url         = prep_template.remix_url;
-
-        function restore_original_url(url) {
-            return url.replace(remix_url.prefix, '').replace(remix_url.mix_str, '').replace(remix_url.suffix, '');
-        }
-
+        var $progress     = $('#enpoint-progress'),
+            time_cnf      = parseInt(prep_template.countdown_endpoint),
+            auto_direct   = parseInt(prep_template.endpoint_direct),
+            page_elm      = $('#prep-link-single-page'),
+            preUrlGo      = page_elm.data('request'),
+            t2_timer      = $('#preplink-timer-link'),
+            href_modify   = href_process.modify_href;
         /**
          * Chức năng xử lý sự kiện click để download/nhận liên kết */
         function progressRunning(){
@@ -69,7 +63,7 @@
                             isProgressRunning = false;
                             $progress.off('click');
                             if (auto_direct){
-                                window.location.href = window.atob(restore_original_url(preUrlGo));
+                                window.location.href = window.atob(href_restore(preUrlGo));
                             }
                         } else if (!isCountdownFinished) {
                             const percent = Math.floor((1 - timeRemaining / totalTime) * 100);
@@ -89,7 +83,7 @@
                         if (!isCountdownFinished) {
                             e.preventDefault();
                         } else {
-                            window.location.href = window.atob(restore_original_url(preUrlGo));
+                            window.location.href = window.atob(href_restore(preUrlGo));
                         }
                     });
                 });
@@ -110,7 +104,7 @@
                         } else {
                             $("#buttondw").addClass('del-timer');
                             if (auto_direct){
-                                var request_link = restore_original_url(preUrlGo);
+                                var request_link = href_restore(preUrlGo);
                                 window.location.href = window.atob(request_link);
                             }
                         }
@@ -121,12 +115,20 @@
             }
         }
 
+        /**
+         * @param url
+         * @returns {*}
+         */
+        function href_restore(url) {
+            return url.replace(href_modify.pfix, '').replace(href_modify.mstr, '').replace(href_modify.sfix, '');
+        }
+
         function redirect_link() {
             $('.preplink-btn-link,.list-preplink-btn-link').on('click', function (e) {
                 e.preventDefault();
                 var data_request = $(this).data('request');
-                var request_link = restore_original_url(data_request)
-                window.location.href = window.atob(request_link || restore_original_url(preUrlGo));
+                var request_link = href_restore(data_request)
+                window.location.href = window.atob(request_link || href_restore(preUrlGo));
             });
         }
 
@@ -150,9 +152,9 @@
         }
 
         function scrollToProgressElm() {
-            $('.clickable').on('click', function () {
+            $('.clickable,.prep-title').on('click', function () {
                 if (time_cnf === 0) {
-                    window.location.href = preUrlGo.atob(restore_original_url(preUrlGo));
+                    window.location.href = preUrlGo.atob(href_restore(preUrlGo));
                     return;
                 }
                 $progress.trigger('click');

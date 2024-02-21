@@ -75,8 +75,8 @@ if ($download_meta === $prep_request) {
                                             <?= has_post_thumbnail() ? get_the_post_thumbnail($post_id, 'thumbnail') : ''; ?>
                                         </a>
                                         <div class="post-download">
-                                            <p class="tittle"><?= $isMeta ? ($file_name) : $prep_title; ?></p>
-                                            <p class="post-date"><?= __('Update:', 'prep-link') . ' ' . get_the_modified_date('d/m/Y') ?: get_the_date('d/m/Y')?></p>
+                                            <p class="title prep-title"><?= $isMeta ? ($file_name) : $prep_title; ?></p>
+                                            <p class="post-date"><?= $isMeta ? __('Update:', 'prep-link') . ' ' . get_the_modified_date('d/m/Y') ?: get_the_date('d/m/Y'): ''; ?></p>
                                         </div>
                                     </div>
                                     <div class="right">
