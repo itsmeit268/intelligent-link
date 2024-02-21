@@ -19,10 +19,10 @@
             exclude_elm = elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
             allow_url = href_process.prep_url,
             windowWidth = $(window).width(),
+            page_elm    = $('#prep-request-page'),
             href_modify = href_process.modify_href;
 
         var countdownStatus = {};
-console.log(href_modify);
 
         function modify_href(url) {
             url = href_modify.pfix + url;
@@ -58,10 +58,11 @@ console.log(href_modify);
             if (current_url.indexOf(".html") > -1 && current_url.includes('.html')) {
                 current_url = current_url.match(/.*\.html/)[0] + '/';
             } else if (current_url.includes('/' + end_point + '/')) {
-                current_url = current_url.replace('/' + end_point + '/', '');
+                return current_url;
             } else if (current_url.indexOf('.html') === -1 && !current_url.endsWith('/')) {
                 current_url = current_url + '/';
             }
+
             return current_url + end_point;
         }
 

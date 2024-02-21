@@ -62,7 +62,6 @@ class Preplink_Public {
 
     public function intelligent_link_template_include($template) {
         global $wp_query;
-        $this->set_robots_filter();
         $rewrite_template = dirname( __FILE__ ) . '/templates/default.php';
 
         $product_category = isset($wp_query->query_vars['product_cat']) ? $wp_query->query_vars['product_cat']: '';
@@ -74,7 +73,6 @@ class Preplink_Public {
             remove_all_actions('woocommerce_shop_loop');
             remove_all_actions('woocommerce_after_shop_loop');
             remove_all_actions('woocommerce_sidebar');
-
             include_once $rewrite_template;
             exit;
         }
@@ -127,39 +125,6 @@ class Preplink_Public {
             ?>
             <style><?= $this->il_settings()['preplink_custom_style'] ?></style>
             <?php
-        }
-    }
-
-    public function set_robots_filter(){
-        if (!function_exists('aioseo' ) && !function_exists('wpseo_init' ) && !function_exists('rank_math' )) {
-            $robots['noindex'] = true;
-            $robots['nofollow'] = true;
-            add_filter('wp_robots', function() use ($robots) {
-                return $robots;
-            });
-        }
-
-        $robots = array(
-            'index' => 'noindex', 'follow' => 'nofollow',
-            'archive' => 'noarchive', 'snippet' => 'nosnippet',
-        );
-
-        if (function_exists('rank_math' )){
-            add_filter( 'rank_math/frontend/robots', function() use ($robots) {
-                return $robots;
-            });
-        }
-
-        if (function_exists('wpseo_init' )){
-            add_filter( 'wpseo_robots', function() use ($robots) {
-                return $robots;
-            });
-        }
-
-        if (function_exists('aioseo' )){
-            add_filter( 'aioseo_robots_meta', function() use ($robots) {
-                return $robots;
-            });
         }
     }
 

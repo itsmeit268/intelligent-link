@@ -32,7 +32,7 @@ $file_size          = get_post_meta($post_id, 'file_size', true);
 if ($download_meta === $prep_request) {
     $isMeta = true;
 }
-
+set_robots_no_index();
 ?>
 <?php if (!empty($settings['preplink_custom_style'])) {
     echo "<style>{$settings['preplink_custom_style']}</style>";
@@ -40,7 +40,7 @@ if ($download_meta === $prep_request) {
 
 <?php if (file_exists(get_template_directory() . '/header.php')) get_header(); ?>
 
-<div class="single-page without-sidebar" id="prep-link-single-page" data-request="<?= esc_attr($prep_request) ?>" style="max-width: 890px; margin: 0 auto;">
+<div class="single-page without-sidebar" id="prep-request-page" data-request="<?= esc_attr($prep_request) ?>" style="max-width: 890px; margin: 0 auto;">
     <?= !empty($ads['ads_1']) ? '<div class="preplink-ads preplink-ads-1" style="margin: 0 25px;">' . $ads['ads_1'] . '</div>' : '' ?>
     <?php render_back_icon($view_link); ?>
     <header class="single-header">

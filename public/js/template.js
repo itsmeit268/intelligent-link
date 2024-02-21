@@ -10,7 +10,7 @@
         var $progress     = $('#enpoint-progress'),
             time_cnf      = parseInt(prep_template.countdown_endpoint),
             auto_direct   = parseInt(prep_template.endpoint_direct),
-            page_elm      = $('#prep-link-single-page'),
+            page_elm      = $('#prep-request-page'),
             preUrlGo      = page_elm.data('request'),
             t2_timer      = $('#preplink-timer-link'),
             href_modify   = href_process.modify_href;
@@ -54,7 +54,7 @@
 
                                 if (require_vip.length) {
                                     require_vip.fadeIn(1000);
-                                    $('#prep-link-single-page').removeAttr('data-request');
+                                    $('#prep-request-page').removeAttr('data-request');
                                 }
                             }
 
