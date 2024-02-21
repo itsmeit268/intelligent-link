@@ -398,12 +398,12 @@ class Preplink_Admin {
             'preplink_general_settings',
             'preplink_general_section');
 
-//        add_settings_field(
-//            'preplink_link_url_rewriting',
-//            __('URL Rewriting', 'prep-link'),
-//            array($this, 'preplink_link_url_rewriting'),
-//            'preplink_general_settings',
-//            'preplink_general_section');
+        add_settings_field(
+            'preplink_link_url_rewriting',
+            __('URL Rewriting', 'prep-link'),
+            array($this, 'preplink_link_url_rewriting'),
+            'preplink_general_settings',
+            'preplink_general_section');
 
         add_settings_field(
             'preplink_custom_style',
