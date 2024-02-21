@@ -45,9 +45,7 @@ if ($download_meta === $prep_request) {
     <?php render_back_icon($view_link); ?>
     <header class="single-header">
         <h1 class="s-title">
-            <a class="a-title" href="<?php if (!$isMeta) echo 'javascript:void(0)'; else echo $view_link; ?>">
-                <?php if (!$isMeta) echo ''; else echo $post_title; ?>
-            </a>
+            <?php if ($isMeta) echo '<a class="a-title" href="'.esc_url($view_link).'">'.esc_html($post_title).'</a>' ?>
         </h1>
     </header>
     <div class="sv-small-container">
@@ -104,7 +102,7 @@ if ($download_meta === $prep_request) {
                             <svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zm-143.6-28.9L288 302.6V120c0-13.3-10.7-24-24-24h-16c-13.3 0-24 10.7-24 24v182.6l-72.4-75.5c-9.3-9.7-24.8-9.9-34.3-.4l-10.9 11c-9.4 9.4-9.4 24.6 0 33.9L239 404.3c9.4 9.4 24.6 9.4 33.9 0l132.7-132.7c9.4-9.4 9.4-24.6 0-33.9l-10.9-11c-9.5-9.5-25-9.3-34.3.4z"></path>
                             </svg>
-                            <span class="text-down"><?= __('Download');?></span>
+                            <span class="text-down"><?= __('Download', 'prep-link');?></span>
                         </span>
                         </div>
 
@@ -129,35 +127,22 @@ if ($download_meta === $prep_request) {
                     <?= !empty($ads['ads_3']) ? '<div class="preplink-ads preplink-ads-3" style="margin: 0 25px;">' . $ads['ads_3'] . '</div>' : '' ?>
 
                     <?php if (!empty($faq_conf['faq_enabled']) && $faq_conf['faq_enabled'] == 1 && !empty($faq_conf['faq_description'])) : ?>
-                        <style>
-                            .accordion .accordion-item{border-bottom:1px solid #e5e5e5}.accordion .accordion-item button[aria-expanded=true]{border-bottom:1px solid #03b5d2}
-                            .accordion button{position:relative;display:block;text-align:left;width:100%;padding:8px 0!important;color:#0c1521!important;font-size:16px;font-weight:400;border:none!important;background:0 0!important;outline:0;box-shadow:none!important;line-height:20px!important}
-                            .accordion button:focus,.accordion button:hover{cursor:pointer;color:#03b5d2}.accordion button:focus::after,.accordion button:hover::after{cursor:pointer;color:#03b5d2;border:1px solid #03b5d2}
-                            .accordion button .accordion-title{padding:7px 0}.accordion button .icon{display:inline-block;position:absolute;top:8px;right:0;width:20px;height:20px;border:1px solid;border-radius:20px}
-                            .accordion button .icon::after,.accordion button .icon::before{display:block;position:absolute;content:'';background:currentColor}.accordion button .icon::before{top:8px;left:4px;width:10px;height:2px}
-                            .accordion button .icon::after{top:5px;left:8px;width:2px;height:8px}.accordion button[aria-expanded=true]{color:#03b5d2}.accordion button[aria-expanded=true] .icon::after{width:0}
-                            .accordion button[aria-expanded=true]+.accordion-content{opacity:1;max-height:100%;transition:.2s linear;will-change:opacity,max-height}
-                            .accordion .accordion-content{opacity:0;max-height:0;overflow:hidden;transition:opacity .2s linear,max-height .2s linear;will-change:opacity,max-height}
-                            .accordion .accordion-content p{font-size:1rem;font-weight:300;margin:10px 0;color:#010807}
-                        </style>
-                        <div class="faq-download">
-                            <h3 class="faq-title"><?= !empty($faq_conf['faq_title']) ? $faq_conf['faq_title'] : 'FAQ' ?></h3>
-                            <?= $faq_conf['faq_description']; ?>
-                        </div>
+                        <?php faq_render($faq_conf['faq_enabled'], $faq_conf['faq_description'] ); ?>
                         <?= !empty($ads['ads_4']) ? '<div class="preplink-ads preplink-ads-4" style="margin: 0 25px;">' . $ads['ads_4'] . '</div>' : '' ?>
                     <?php endif; ?>
 
-                    <div class="preplink-gg-s">
+                    <div class="keyword-search">
                         <p>
                             <?= __('To search for a specific resource or content on the internet, you can visit', 'prep-link')?>
-                            <a target="_blank" href="//www.google.com/search?q=<?=$prep_title.' '.$baseUrl?>"><?= __('https://google.com', 'prep-link')?></a>
+                            <a target="_blank" href="//www.google.com/search?q=<?=$prep_title.' '.$baseUrl?>"><?= __('google.com', 'prep-link')?></a>
                             <?= __('and enter your search query as:', 'prep-link')?>
                             <a target="_blank" href="//www.google.com/search?q=<?=$prep_title.' '.$baseUrl?>"><?= __('keyword +', 'prep-link') . ' '. $baseUrl?></a>
                         </p>
                     </div>
+
                     <?= !empty($ads['ads_5']) ? '<div class="preplink-ads preplink-ads-5" style="margin: 0 25px;">' . $ads['ads_5'] . '</div>' : '' ?>
 
-                    <?php if (!empty($endpoint_conf['preplink_related_post']) && $endpoint_conf['preplink_related_post'] == 1): ?>
+                    <?php if ($isMeta && !empty($endpoint_conf['preplink_related_post']) && $endpoint_conf['preplink_related_post'] == 1): ?>
                         <?php ep_related_post($settings, $post_id) ?>
                         <?= !empty($ads['ads_6']) ? '<div class="preplink-ads preplink-ads-6" style="margin: 0 25px;">' . $ads['ads_6'] . '</div>' : '' ?>
                     <?php endif; ?>

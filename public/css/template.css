@@ -609,6 +609,12 @@ h1.s-title {
     display: inline-block
 }
 
+#buttondw {
+    margin-bottom: 30px;
+}
+textarea#comment {
+    background: #fff;
+}
 .download-item-box {
     line-height: 30px;
     background: #f8f8f8;
@@ -625,14 +631,16 @@ h1.s-title {
 }
 
 .download-item .left {
-    flex: 0 0 calc(60% - 10px)
+    flex: 0 0 calc(60% - 10px);
+    margin-left: 5px;
 }
 
 .download-item .right {
     flex: 0 0 calc(40% - 10px);
     display: flex;
     align-items: center;
-    justify-content: flex-end
+    justify-content: flex-end;
+    margin-right: 5px;
 }
 
 .download-item .left .image {
@@ -837,15 +845,11 @@ ul li {
 .prep-btn-download > .icon {
     width: 18px;
     color: #fff;
-    position: absolute;
-    top: 2px;
-    right: 25px
 }
 
 .text-down {
     color: #fff;
     cursor: pointer;
-    position: absolute;
     left: -20px;
     top: -2px;
     font-weight: 700
@@ -1021,7 +1025,7 @@ ul li {
         padding: 5px;
     }
 
-    .preplink-gg-s p {
+    .keyword-search p {
         margin: 0 5px;
         text-align: justify
     }

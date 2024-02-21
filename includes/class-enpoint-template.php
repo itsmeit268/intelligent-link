@@ -137,3 +137,21 @@ function ep_related_post($settings, $post_id){ ?>
         ?>
     </div>
 <?php }
+
+function faq_render($faq_title, $faq_description) { ?>
+    <style>
+        .accordion .accordion-item{border-bottom:1px solid #e5e5e5}.accordion .accordion-item button[aria-expanded=true]{border-bottom:1px solid #03b5d2}
+        .accordion button{position:relative;display:block;text-align:left;width:100%;padding:8px 0!important;color:#0c1521!important;font-size:16px;font-weight:400;border:none!important;background:0 0!important;outline:0;box-shadow:none!important;line-height:20px!important}
+        .accordion button:focus,.accordion button:hover{cursor:pointer;color:#03b5d2}.accordion button:focus::after,.accordion button:hover::after{cursor:pointer;color:#03b5d2;border:1px solid #03b5d2}
+        .accordion button .accordion-title{padding:7px 0}.accordion button .icon{display:inline-block;position:absolute;top:8px;right:0;width:20px;height:20px;border:1px solid;border-radius:20px}
+        .accordion button .icon::after,.accordion button .icon::before{display:block;position:absolute;content:'';background:currentColor}.accordion button .icon::before{top:8px;left:4px;width:10px;height:2px}
+        .accordion button .icon::after{top:5px;left:8px;width:2px;height:8px}.accordion button[aria-expanded=true]{color:#03b5d2}.accordion button[aria-expanded=true] .icon::after{width:0}
+        .accordion button[aria-expanded=true]+.accordion-content{opacity:1;max-height:100%;transition:.2s linear;will-change:opacity,max-height}
+        .accordion .accordion-content{opacity:0;max-height:0;overflow:hidden;transition:opacity .2s linear,max-height .2s linear;will-change:opacity,max-height}
+        .accordion .accordion-content p{font-size:1rem;font-weight:300;margin:10px 0;color:#010807}
+    </style>
+    <div class="faq-download">
+        <h3 class="faq-title"><?= !empty($faq_title) ? $faq_title : '' ?></h3>
+        <?= esc_html($faq_description); ?>
+    </div>
+<?php }

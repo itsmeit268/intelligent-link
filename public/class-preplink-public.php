@@ -197,11 +197,11 @@ class Preplink_Public {
         if (!empty($excludeList)) {
             $excludesArr = explode(',', $excludeList);
             $excludesArr = array_map('trim', $excludesArr);
-            $excludesArr = array_merge($excludesArr, ['.prep-link-download-btn', '.prep-link-btn']);
+            $excludesArr = array_merge($excludesArr, ['.prep-link-download-btn', '.prep-link-btn', '.keyword-search', '.comment', '.session-expired']);
             $excludesArr = array_unique($excludesArr);
             $excludeList = implode(',', $excludesArr);
         } else {
-            $excludeList = '.prep-link-download-btn,.prep-link-btn';
+            $excludeList = '.prep-link-download-btn,.prep-link-btn,.keyword-search,.session-expired,.comment';
         }
         return $excludeList;
     }
