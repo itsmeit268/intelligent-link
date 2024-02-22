@@ -323,7 +323,7 @@ h1.s-title {
 }
 
 textarea#comment {
-    background: #fff;
+    border: 1px solid #c1bcbc;
 }
 
 .download-item-box {
@@ -583,7 +583,7 @@ img {
 
 .featured-image {
     max-width: 100%;
-    height: 450px;
+    max-height: 450px;
     overflow: hidden;
 }
 
