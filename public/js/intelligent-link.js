@@ -164,6 +164,7 @@
                     return;
                 }
 
+
                 if (time_cnf > 0) {
                     $this.off('click');
                     countdownStatus[modified_url] = { active: true };

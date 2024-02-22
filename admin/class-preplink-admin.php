@@ -688,7 +688,7 @@ class Preplink_Admin {
                 <td class="related_number" style="padding: 2px 0;">
                     <label><p>Number of posts displayed, default 10</p></label>
                     <input type="number" id="related_number" name="preplink_endpoint[preplink_related_number]" placeholder="10"
-                           value="<?= isset($settings['preplink_related_number']) ? ($settings['preplink_related_number'] == '0' ? 0 : $settings['preplink_related_number']) : '' ?>"/>
+                           value="<?= !empty($settings['preplink_related_number']) ? ($settings['preplink_related_number'] == '0' ? 0 : $settings['preplink_related_number']) : '' ?>"/>
                 </td>
             </tr>
             </tbody>
@@ -698,7 +698,7 @@ class Preplink_Admin {
 
     public function preplink_comment($args) {
         $settings = get_option('preplink_endpoint', array());
-        $selected = isset($settings['preplink_comment']) ? $settings['preplink_comment'] : '1';
+        $selected = !empty($settings['preplink_comment']) ? $settings['preplink_comment'] : '1';
         $html = '<select id="preplink_comment" name="preplink_endpoint[preplink_comment]">';
         foreach ($args as $value => $label) {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
@@ -711,7 +711,7 @@ class Preplink_Admin {
     public function preplink_custom_style() {
         $settings = get_option('preplink_setting', array());
         $html = '<textarea id="preplink_custom_style" cols="50" rows="5" name="preplink_setting[preplink_custom_style]">';
-        $html .= isset($settings["preplink_custom_style"]) ? $settings["preplink_custom_style"] : false;
+        $html .= !empty($settings["preplink_custom_style"]) ? $settings["preplink_custom_style"] : false;
         $html .= '</textarea>';
         $html .= '<p class="description">Your CSS code, for example: .backgroud{background-color: transparent;}.</p>';
         echo $html;
@@ -725,10 +725,10 @@ class Preplink_Admin {
             <tr class="preplink_wait_text">
                 <td style="padding: 5px 0;">
                     <select name="preplink_setting[preplink_wait_text]" id="countdown-select" class="preplink_related_post">
-                        <option value="wait_time" <?php selected(isset($settings['preplink_wait_text']) && $settings['preplink_wait_text'] == 'wait_time'); ?>>
+                        <option value="wait_time" <?php selected(!empty($settings['preplink_wait_text']) && $settings['preplink_wait_text'] == 'wait_time'); ?>>
                             <?= __('Countdown')?>
                         </option>
-                        <option value="progress" <?php selected(isset($settings['preplink_wait_text']) && $settings['preplink_wait_text'] == 'progress'); ?>>
+                        <option value="progress" <?php selected(!empty($settings['preplink_wait_text']) && $settings['preplink_wait_text'] == 'progress'); ?>>
                             <?= __('Progress')?>
                         </option>
                     </select>
@@ -754,8 +754,8 @@ class Preplink_Admin {
             <tr class="preplink_post_enabled">
                 <td style="padding: 2px 0">
                     <select name="preplink_setting[preplink_auto_direct]" id="preplink_auto_direct" class="preplink_auto_direct">
-                        <option value="1" <?php selected(isset($settings['preplink_auto_direct']) && $settings['preplink_auto_direct'] == '1'); ?>>Yes</option>
-                        <option value="0" <?php selected(isset($settings['preplink_auto_direct']) && $settings['preplink_auto_direct'] == '0'); ?>>No</option>
+                        <option value="1" <?php selected(!empty($settings['preplink_auto_direct']) && $settings['preplink_auto_direct'] == '1'); ?>>Yes</option>
+                        <option value="0" <?php selected(!empty($settings['preplink_auto_direct']) && $settings['preplink_auto_direct'] == '0'); ?>>No</option>
                     </select>
                 </td>
             </tr>
@@ -763,7 +763,7 @@ class Preplink_Admin {
                 <td class="preplink_post_number_notice" style="padding: 2px 0">
                     <label><p>The default countdown time is set to 5 seconds.</p></label>
                     <input type="number" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="5"
-                           value="<?= isset($settings['preplink_countdown']) ? ($settings['preplink_countdown'] == '0' ? 0 : $settings['preplink_countdown']) : '' ?>"/>
+                           value="<?= !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : '5' ?>"/>
                 </td>
             </tr>
             </tbody>
@@ -779,8 +779,8 @@ class Preplink_Admin {
             <tr class="preplink_endpoint_enabled">
                 <td style="padding: 2px 0">
                     <select name="preplink_endpoint[endpoint_auto_direct]" id="endpoint_auto_direct" class="endpoint_auto_direct">
-                        <option value="1" <?php selected(isset($settings['endpoint_auto_direct']) && $settings['endpoint_auto_direct'] == '1'); ?>>Yes</option>
-                        <option value="0" <?php selected(isset($settings['endpoint_auto_direct']) && $settings['endpoint_auto_direct'] == '0'); ?>>No</option>
+                        <option value="1" <?php selected(!empty($settings['endpoint_auto_direct']) && $settings['endpoint_auto_direct'] == '1'); ?>>Yes</option>
+                        <option value="0" <?php selected(!empty($settings['endpoint_auto_direct']) && $settings['endpoint_auto_direct'] == '0'); ?>>No</option>
                     </select>
                 </td>
             </tr>
@@ -788,7 +788,7 @@ class Preplink_Admin {
                 <td class="preplink_endpoint_number_notice" style="padding: 2px 0">
                     <label><p>The default countdown time is set to 5 seconds.</p></label>
                     <input type="number" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="5"
-                           value="<?= isset($settings['countdown_endpoint']) ? ($settings['countdown_endpoint'] == '0' ? 0 : $settings['countdown_endpoint']) : '' ?>"/>
+                           value="<?= !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : '5' ?>"/>
                 </td>
             </tr>
             </tbody>
@@ -799,7 +799,7 @@ class Preplink_Admin {
     public function pr_ad_1(){
         $settings = get_option('ads_code', array());
         $html = '<textarea name="ads_code[ads_1]" rows="5" cols="50">';
-        $html .= esc_html(isset($settings['ads_1']) ? $settings['ads_1'] : false);
+        $html .= esc_html(!empty($settings['ads_1']) ? $settings['ads_1'] : false);
         $html .= '</textarea>';
         $html .= '<p class="description">Display position: At the top of the page.</p>';
         echo $html;

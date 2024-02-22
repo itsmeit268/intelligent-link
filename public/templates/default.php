@@ -38,12 +38,22 @@ set_no_index_page();
     echo "<style>{$settings['preplink_custom_style']}</style>";
 } ?>
 
-<?php if (file_exists(get_template_directory() . '/header.php')) get_header(); ?>
+<?php
+if (file_exists(get_template_directory() . '/header.php')){
+    get_header();
+} else {
+    echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+    echo '<link rel="stylesheet" href="'.plugin_dir_url(__DIR__) . 'css/template.css'.'">';
+    echo '<meta name="robots" content="nofollow, noindex">';
+}
+?>
 
-<div class="single-page without-sidebar" id="prep-request-page" data-request="<?= esc_attr($prep_request) ?>" style="max-width: 890px; margin: 0 auto;">
+
+
+<div class="igl-single-page" id="prep-request-page" data-request="<?= esc_attr($prep_request) ?>">
     <?= !empty($ads['ads_1']) ? '<div class="preplink-ads preplink-ads-1" style="margin: 0 25px;">' . $ads['ads_1'] . '</div>' : '' ?>
     <?php render_back_icon($view_link); ?>
-    <header class="single-header">
+    <header class="igl-header">
         <h1 class="s-title">
             <?php if ($isMeta) echo '<a class="a-title" href="'.esc_url($view_link).'">'.esc_html($post_title).'</a>' ?>
         </h1>
@@ -58,7 +68,7 @@ set_no_index_page();
                     </div>
                     <?= !empty($ads['ads_7']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_7'] . '</div>' : '' ?>
                 <?php else: ?>
-                    <?php if ($post_image && $isMeta) : ?>
+                    <?php if ($post_image && $isMeta && has_post_thumbnail()) : ?>
                         <div class="s-feat-outer">
                             <div class="featured-image">
                                 <img src="<?= get_the_post_thumbnail_url($post_id, 'full'); ?>" class="prep-thumbnail" alt="<?= $post_title ?>" title="<?= $post_title ?>">
@@ -72,11 +82,14 @@ set_no_index_page();
                                 <div class="download-item">
                                     <div class="left">
                                         <a class="a-title image" href="javascript:void(0)">
-                                            <?= has_post_thumbnail() ? get_the_post_thumbnail($post_id, 'thumbnail') : ''; ?>
+                                            <?php
+                                            $image_src = plugin_dir_url(__DIR__) . 'images/11820285.png';
+                                            $img = '<img src="'. esc_url($image_src).'"/>';
+                                            echo has_post_thumbnail() ? get_the_post_thumbnail($post_id, 'thumbnail') : $img; ?>
                                         </a>
                                         <div class="post-download">
                                             <p class="title prep-title"><?= $isMeta ? ($file_name) : $prep_title; ?></p>
-                                            <p class="post-date"><?= $isMeta ? __('Update:', 'prep-link') . ' ' . get_the_modified_date('d/m/Y') ?: get_the_date('d/m/Y'): ''; ?></p>
+                                            <p class="post-date"><?= __('Update:', 'prep-link') . ' ' . get_the_modified_date('d/m/Y') ?: get_the_date('d/m/Y'); ?></p>
                                         </div>
                                     </div>
                                     <div class="right">
