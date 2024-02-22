@@ -87,7 +87,7 @@
 }
 
 .p-file-hide {
-    margin-top: 2rem;
+    margin: 5px 0 5px 0;
     position: relative;
 }
 
@@ -193,7 +193,7 @@
     margin: 0;
 }
 
-.grid-container > * {
+.prep-link-container > * {
     padding-right: 20px;
     padding-left: 20px
 }
@@ -212,10 +212,14 @@
     margin-left: auto
 }
 
-.grid-container {
+.prep-link-container {
     position: relative;
     margin-right: -30px;
-    margin-left: -30px
+    margin-left: -30px;
+    padding: 0 20px;
+}
+.igl-header,.igl-back {
+    padding: 0 10px;
 }
 
 .session-expired {
@@ -257,7 +261,8 @@ h1.s-title {
 }
 
 .related-content {
-    width: 100%
+    width: 100%;
+    padding-right: 5px;
 }
 
 .prep-meta {
@@ -266,9 +271,11 @@ h1.s-title {
 
 .related-post {
     border: 1px solid #ccc;
-    padding: 10px;
+    padding-left: 5px;
     display: flex;
-    width: 100%
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .prep-category {
@@ -462,7 +469,7 @@ img {
 }
 .post-download {
     height: 100%;
-    margin-top: 10px;
+    line-height: 24px;
 }
 
 .enpoint-progress {
@@ -511,9 +518,8 @@ img {
 .preplink-btn-link {
     background: #167ec1 !important;
     color: #fff;
-    height: 2.5rem;
     line-height: 1.5rem;
-    padding: 0.5rem 1.25rem;
+    padding: 5px 15px;
     border-radius: 1.5rem;
     white-space: nowrap;
     text-align: center;
@@ -570,9 +576,9 @@ img {
 .p-file-title{
     text-align: center;
 }
-.seo-keyword {
+.keyword-search {
     text-align: left;
-    margin: 30px 0 10px 0;
+    margin: 10px 0 10px 0px;
 }
 
 .featured-image {
@@ -590,11 +596,6 @@ img {
 }
 
 @media only screen and (max-device-width: 480px) {
-    .sv-small-container>.grid-container{
-        margin-right: -10px;
-        margin-left: -10px;
-    }
-
     .p-file {
         padding: 0 10px;
         margin: 0 auto;
@@ -620,11 +621,6 @@ img {
 
     .related-posts-grid {
         display: block
-    }
-
-    .related-post {
-        width: 100%;
-        margin-bottom: 5px
     }
 
     .download-item .left {
@@ -680,16 +676,23 @@ img {
         margin: 0
     }
 
-    .comment, .e-shared-sec, .faq-download, .related_post, .s-feat-outer, .igl-header {
-        padding: 5px;
-    }
-
     .keyword-search p {
-        margin: 0 5px;
         text-align: justify
     }
-
-    .list-server-download {
-        margin: 0 10px 20px 5px
+    .title.prep-title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        line-height: 24px;
+    }
+    .post-download {
+        margin-top: 0;
+    }
+    .preplink-btn-link {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        overflow: hidden;
     }
 }

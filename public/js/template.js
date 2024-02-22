@@ -13,7 +13,8 @@
             page_elm      = $('#prep-request-page'),
             preUrlGo      = page_elm.data('request'),
             t2_timer      = $('#preplink-timer-link'),
-            href_modify   = href_process.modify_href;
+            href_modify   = prep_template.modify_href;
+
         /**
          * Chức năng xử lý sự kiện click để download/nhận liên kết */
         function progressRunning(){
@@ -51,11 +52,6 @@
                                 $('.list-server-download').fadeIn(1000);
 
                                 $progress.fadeOut(100);
-
-                                if (require_vip.length) {
-                                    require_vip.fadeIn(1000);
-                                    $('#prep-request-page').removeAttr('data-request');
-                                }
                             }
 
                             clearInterval(interval);
@@ -91,6 +87,7 @@
                 /**
                  * Template 1
                  */
+
                 if (t2_timer.length) {
                     var data_time = t2_timer.attr('data-time');
 

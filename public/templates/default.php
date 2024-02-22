@@ -42,9 +42,7 @@ set_no_index_page();
 if (file_exists(get_template_directory() . '/header.php')){
     get_header();
 } else {
-    echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
-    echo '<link rel="stylesheet" href="'.plugin_dir_url(__DIR__) . 'css/template.css'.'">';
-    echo '<meta name="robots" content="nofollow, noindex">';
+    wp_head();
 }
 ?>
 
@@ -59,7 +57,7 @@ if (file_exists(get_template_directory() . '/header.php')){
         </h1>
     </header>
     <div class="sv-small-container">
-        <div class="grid-container">
+        <div class="prep-link-container">
             <div class="entry-content prep-content">
                 <?php if (empty($prep_request) || empty($prep_title)) : ?>
                     <div class="session-expired">
