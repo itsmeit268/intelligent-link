@@ -133,8 +133,11 @@
                     return;
                 }
 
-                if (is_meta.length && meta_attr.auto_direct === '1' && parseInt(meta_attr.time) === 0) {
-                    time_cnf = 0;
+                if (is_meta.length) {
+                    if (meta_attr.auto_direct === '1' && parseInt(meta_attr.time) === 0) {
+                        time_cnf = 0;
+                    }
+                    time_cnf = parseInt(meta_attr.time);
                 }
 
                 if (time_cnf === 0 || is_image === '1') {
@@ -184,7 +187,7 @@
 
         function _start_countdown($elm, url, title, is_meta) {
             let downloadTimer;
-            let timeleft = time_cnf;
+            let timeleft = is_meta.length? parseInt(meta_attr.time) : time_cnf;
             var replace_title;
 
             if (text_complete.enable === 'yes') {
@@ -221,7 +224,7 @@
             const parent = $elm.parent('.post-progress-bar');
 
             let currentWidth = 0;
-            let timeleft = time_cnf;
+            let timeleft = is_meta.length? parseInt(meta_attr.time) : time_cnf;
 
             parent.css('width', parent.width());
             $progress.width("0%");
@@ -237,7 +240,12 @@
             const intervalId = setInterval(function () {
                 let replace_title = '';
 
-                currentWidth += progressWidth / (timeleft * 1000 / timeleft);
+                if (timeleft <= 3) {
+                    currentWidth += progressWidth / 100;
+                } else{
+                    currentWidth += progressWidth / (timeleft * 1000 / timeleft);
+                }
+
                 $progress.width(currentWidth);
                 if (currentWidth >= progressWidth) {
                     clearInterval(intervalId);
