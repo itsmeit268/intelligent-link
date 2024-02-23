@@ -1,6 +1,4 @@
-.igl-download-now,
-.igl-download-now > .wrap-countdown,
-.igl-download-now > .post-progress-bar>.prep-request{
+.igl-download-now,.igl-download-now > .wrap-countdown{
     display: flex;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -8,8 +6,7 @@
     overflow: hidden;
 }
 
-.igl-download-now > .wrap-countdown,
-.igl-download-now > .post-progress-bar>.prep-request{
+.igl-download-now > .wrap-countdown {
     margin-left: 10px;
 }
 .igl-download-now > .post-progress-bar,.igl-download-now>.wrap-countdown {

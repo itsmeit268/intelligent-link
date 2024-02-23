@@ -51,7 +51,7 @@ class Preplink_Public {
                 ],
                 'meta_attr'       => [
                     'auto_direct' => !empty($meta_attr['auto_direct']) ? $meta_attr['auto_direct'] : 0,
-                    'time'        => !empty($meta_attr['time']) ? $meta_attr['time'] : 5,
+                    'time'        => isset($meta_attr['time']) ? $meta_attr['time'] : 5,
                 ]
             ]);
         }

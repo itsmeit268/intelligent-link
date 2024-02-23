@@ -127,25 +127,14 @@
                 const url = href_restore(modified_url);
                 const complete = $this.find('.text-hide-complete').data('complete');
                 const is_image = $this.attr('data-image');
-
                 const is_meta = $this.parents('#igl-download-now');
+
                 if (!_isBtoaEncoded(url)) {
                     return;
                 }
 
-                console.log(meta_attr);
-                console.log(is_meta);
-
-                if (is_meta.length && meta_attr.auto_direct && meta_attr.time === '0') {
-                    set_cookie_title(title);
-                    set_cookie_url(modified_url);
-
-                    if (windowWidth > 700) {
-                        window.open(endpoint_url(), '_blank');
-                    } else {
-                        window.location.href = endpoint_url();
-                    }
-                    return;
+                if (is_meta.length && meta_attr.auto_direct === '1' && parseInt(meta_attr.time) === 0) {
+                    time_cnf = 0;
                 }
 
                 if (time_cnf === 0 || is_image === '1') {
@@ -185,15 +174,15 @@
                     $this.off('click');
                     countdownStatus[modified_url] = { active: true };
                     if (display_mode === 'wait_time') {
-                        _start_countdown($this, modified_url, title);
+                        _start_countdown($this, modified_url, title, is_meta);
                     } else {
-                        _start_progress($this, modified_url, title);
+                        _start_progress($this, modified_url, title, is_meta);
                     }
                 }
             });
         }
 
-        function _start_countdown($elm, url, title) {
+        function _start_countdown($elm, url, title, is_meta) {
             let downloadTimer;
             let timeleft = time_cnf;
             var replace_title;
@@ -212,7 +201,7 @@
                     wait_time_html += '<span style="vertical-align: unset;">' + replace_title + '</span>';
                     $elm.html(wait_time_html);
                     $elm.parents('.wrap-countdown').css('color', '#ff0000')
-                    if (auto_direct) {
+                    if (auto_direct || (is_meta.length && meta_attr.auto_direct === '1')) {
                         set_cookie_title(title);
                         set_cookie_url(url);
                         window.location.href = endpoint_url();
@@ -226,7 +215,7 @@
             countdown();
         }
 
-        function _start_progress($elm, url, title) {
+        function _start_progress($elm, url, title, is_meta) {
             const $progress = $elm.find('.post-progress');
             const progressWidth = $progress.width();
             const parent = $elm.parent('.post-progress-bar');
@@ -266,7 +255,7 @@
                     }
 
                     parent.removeAttr('style');
-                    if (auto_direct) {
+                    if (auto_direct || (is_meta.length && meta_attr.auto_direct === '1')) {
                         set_cookie_title(title);
                         set_cookie_url(url);
                         window.location.href = endpoint_url();

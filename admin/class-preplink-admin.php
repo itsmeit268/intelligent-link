@@ -763,7 +763,7 @@ class Preplink_Admin {
             <tr class="tr-time_number">
                 <td class="td-time_number" style="padding: 2px 0">
                     <label><p>The default countdown time is set to 1 seconds.</p></label>
-                    <input type="number" name="meta_attr[time]" placeholder="1" value="<?= !empty($meta_attr['time']) ? $meta_attr['time'] : '1' ?>" max="300"/>
+                    <input type="number" name="meta_attr[time]" placeholder="1" value="<?= !empty($meta_attr['time']) ? ($meta_attr['time'] == '0' ? 0 : $meta_attr['time']) : 0 ?>" min="0" max="300"/>
                 </td>
             </tr>
             </tbody>
