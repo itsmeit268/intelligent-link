@@ -8,6 +8,15 @@
 
 .igl-download-now > .wrap-countdown {
     margin-left: 10px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    line-height: 22px;
+    border-radius: 40px;
+    width: fit-content;
+    white-space: nowrap;
+    z-index: 1;
+    vertical-align: middle
 }
 .igl-download-now > .post-progress-bar,.igl-download-now>.wrap-countdown {
     background-color: #e2e2e2;
@@ -23,18 +32,6 @@
 
 .igl-download-now>.post-progress-bar>.prep-request>.post-progress>.text-complete {
     color:#fff;
-}
-
-.igl-download-now>.wrap-countdown {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    line-height: 22px;
-    border-radius: 40px;
-    width: fit-content;
-    white-space: nowrap;
-    z-index: 1;
-    vertical-align: middle
 }
 
 .igl-download-now > .wrap-countdown span {
@@ -64,6 +61,13 @@
 .wrap-countdown {
     overflow: hidden;
     font-size: 16px;
+    height: 100%;
+    width: 0%;
+    transition: width .2s ease-in-out;
+    line-height: 20px;
+    white-space: nowrap;
+    max-width: 100%;
+    cursor: pointer;
 }
 
 .post-progress-bar a, .wrap-countdown a {
@@ -79,16 +83,6 @@
     display: inline-block;
     max-height: 30px;
     margin-bottom: 1.5px;
-}
-
-.wrap-countdown {
-    height: 100%;
-    width: 0%;
-    transition: width .2s ease-in-out;
-    line-height: 20px;
-    white-space: nowrap;
-    max-width: 100%;
-    cursor: pointer;
 }
 
 .counter {
@@ -109,9 +103,7 @@ i.material-icons {
 }
 
 @media only screen and (max-device-width: 480px) {
-    /*.igl-download-now {*/
-    /*    display: grid;*/
-    /*}*/
+
     .post-progress, .wrap-countdown {
         text-align: left
     }
