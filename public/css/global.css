@@ -1,20 +1,31 @@
-#download-now > .post-progress-bar,#download-now>.wrap-countdown {
+.igl-download-now,.igl-download-now > .wrap-countdown{
+    display: flex;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.igl-download-now > .wrap-countdown {
+    margin-left: 10px;
+}
+.igl-download-now > .post-progress-bar,.igl-download-now>.wrap-countdown {
     background-color: #e2e2e2;
 }
 
-#download-now>.post-progress-bar>.prep-request>.post-progress,
-#download-now>.wrap-countdown {
+.igl-download-now>.post-progress-bar>.prep-request>.post-progress,
+.igl-download-now>.wrap-countdown {
     padding: 5px 10px;
     background-color: #1479b3;
     color:#fff;
     margin-bottom: 0;
 }
 
-#download-now>.post-progress-bar>.prep-request>.post-progress>.text-complete {
+.igl-download-now>.post-progress-bar>.prep-request>.post-progress>.text-complete {
     color:#fff;
 }
 
-#download-now>.wrap-countdown {
+.igl-download-now>.wrap-countdown {
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -26,10 +37,13 @@
     vertical-align: middle
 }
 
-#download-now > .wrap-countdown span {
+.igl-download-now > .wrap-countdown span {
     color:#fff;
 }
-
+.b-h-down {
+    margin-top: 5px;
+    font-size: 18px;
+}
 .post-progress-bar {
     position: relative;
     display: inline-block;
@@ -95,7 +109,7 @@ i.material-icons {
 }
 
 @media only screen and (max-device-width: 480px) {
-    /*#download-now {*/
+    /*.igl-download-now {*/
     /*    display: grid;*/
     /*}*/
     .post-progress, .wrap-countdown {
@@ -112,28 +126,28 @@ i.material-icons {
         max-width: 100%;
         /*overflow: hidden;*/
     }
-    #download-now>.post-progress-bar {
+    .igl-download-now>.post-progress-bar {
         display: contents;
     }
-    #download-now>.post-progress-bar,
-    #download-now>.post-progress-bar > .prep-request > .post-progress  {
+    .igl-download-now>.post-progress-bar,
+    .igl-download-now>.post-progress-bar > .prep-request > .post-progress  {
         white-space: nowrap;
         text-overflow: ellipsis;
         max-width: 100%;
         overflow: hidden;
     }
 
-    #download-now>.wrap-countdown {
+    .igl-download-now>.wrap-countdown {
         align-items: center;
         height: 100%;
     }
 
-    #download-now>.wrap-countdown>.prep-request {
+    .igl-download-now>.wrap-countdown>.prep-request {
         display: flex;
         align-items: center;
     }
 
-    #download-now>.wrap-countdown,.link-countdown {
+    .igl-download-now>.wrap-countdown,.link-countdown {
         white-space: nowrap;
         text-overflow: ellipsis;
         max-width: 100%;

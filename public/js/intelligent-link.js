@@ -219,7 +219,7 @@
             parent.css('width', parent.width());
             $progress.width("0%");
 
-            if (!parent.parent('#download-now').length) {
+            if (!parent.parent('.igl-download-now').length) {
                 $progress.css({
                     'background-color': '#1479B3',
                     'color': '#fff',
@@ -242,7 +242,7 @@
                     progress_html += `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
                     progress_html += '<span class="text-complete">' + replace_title + '</span>';
                     $elm.html('<strong class="post-progress" style="color:#0c7c3f;">' + progress_html + '</strong>');
-                    if (parent.parent('#download-now').length) {
+                    if (parent.parent('.igl-download-now').length) {
                         $elm.html('<strong class="post-progress" style="background-color:#018f06">' + progress_html + '</strong>');
                     }
 

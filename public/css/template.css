@@ -581,6 +581,11 @@ img {
     margin: 10px 0 10px 0px;
 }
 
+.keyword-search > p > a {
+    color: #0697b1;
+    font-weight: 600;
+}
+
 .featured-image {
     max-width: 100%;
     max-height: 450px;

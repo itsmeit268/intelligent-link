@@ -186,7 +186,7 @@ class Preplink_Public {
         $blog_url = base64_encode(get_bloginfo('url'));
         $display_mode = !empty($this->il_settings()['preplink_wait_text']) ? $this->il_settings()['preplink_wait_text'] : 'wait_time';
 
-        $html = '<h3 class="wp-block-heading" id="download-now"><b>Link download: </b>';
+        $html = '<h3 class="wp-block-heading igl-download-now" id="igl-download-now"><b class="b-h-down">Link download: </b>';
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';
