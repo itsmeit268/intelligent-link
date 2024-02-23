@@ -11,6 +11,7 @@ $settings           = get_option('preplink_setting');
 $ads                = get_option('ads_code');
 $faq_conf           = get_option('preplink_faq');
 $endpoint_conf      = get_option('preplink_endpoint');
+$meta_attr          = get_option('meta_attr');
 $isMeta             = false;
 $post_id            = get_the_ID();
 $view_link          = get_permalink($post_id);
@@ -119,7 +120,7 @@ if (file_exists(get_template_directory() . '/header.php')){
 
                         <div class="p-file-hide list-server-download" style="display: none">
                             <div class="p-file-timer-btn">
-                                <?php link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $settings); ?>
+                                <?php link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $meta_attr); ?>
                             </div>
                         </div>
 
@@ -130,7 +131,7 @@ if (file_exists(get_template_directory() . '/header.php')){
                                 <?php svg_render() ?>
                             </div>
                             <div class="p-file-timer-btn" style="opacity:0;pointer-events:none;visibility:hidden;">
-                                <?php link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $settings); ?>
+                                <?php link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $meta_attr); ?>
                             </div>
                         </div>
                     <?php endif;?>

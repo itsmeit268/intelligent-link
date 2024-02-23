@@ -1,11 +1,10 @@
 <?php
 
 /**
- * @link       https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
  * @package    Preplink
  * @subpackage Preplink/admin
  * @author     itsmeit <itsmeit.biz@gmail.com>
- * Website     https://itsmeit.co
+ * Website     https:<?= PREPLINK_PLUGIN_URL ?>
  */
 
 class Preplink_Admin {
@@ -60,8 +59,8 @@ class Preplink_Admin {
     public function add_prep_link_admin_menu(){
 
         add_menu_page(
-            __('Intelligent Link Settings', 'prep-link'),
-            __('Intelligent Link', 'prep-link'),
+            __(PREPLINK_NAME. ' Settings', 'prep-link'),
+            __(PREPLINK_NAME, 'prep-link'),
             'manage_options',
             $this->plugin_name . '-settings',
             [$this, 'prep_link_admin_form_settings'],
@@ -77,6 +76,7 @@ class Preplink_Admin {
         // define tabs array
         $tabs = array(
             'general'   => __( 'General', 'prep-link' ),
+            'meta_attr' => __( 'Meta attribute', 'prep-link' ),
             'advertising'  => __( 'Advertising', 'prep-link' ),
             'faq' => __( 'FAQ', 'prep-link' ),
             'endpoint' => __( 'Endpoint', 'prep-link' )
@@ -98,6 +98,15 @@ class Preplink_Admin {
                 echo '<form method="post" action="options.php">';
                 settings_fields('preplink_general_settings');
                 do_settings_sections('preplink_general_settings');
+                submit_button();
+                echo '</form></div>';
+                break;
+            case 'meta_attr':
+                echo '<div class="wrap"><h1>' . __('Meta attribute Settings', 'preplink') . '</h1>';
+                settings_errors();
+                echo '<form method="post" action="options.php">';
+                settings_fields('preplink_meta_attr');
+                do_settings_sections('preplink_meta_attr');
                 submit_button();
                 echo '</form></div>';
                 break;
@@ -134,6 +143,7 @@ class Preplink_Admin {
     public function prep_link_settings_tabs( $current = 'general' ) {
         $tabs = array(
             'general'   => __( 'General Settings', 'prep-link' ),
+            'meta_attr'   => __( 'Meta Attribute Settings', 'prep-link' ),
             'ads_code'  => __( 'Advertising Settings', 'prep-link' ),
             'preplink_faq'  => __( 'FAQ Settings', 'preplink' ),
             'preplink_endpoint'  => __( 'Endpoint Settings', 'prep-link' )
@@ -163,6 +173,13 @@ class Preplink_Admin {
             '',
             array($this, 'preplink_display_general'),
             'preplink_general_settings'
+        );
+
+        add_settings_section(
+            'preplink_meta_attr_section',
+            '',
+            array($this, 'preplink_meta_display'),
+            'preplink_meta_attr'
         );
 
         add_settings_section(
@@ -202,7 +219,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_endpoint',
-            __('Endpoint', 'prep-link'),
+            __('Endpoint URL string', 'prep-link'),
             array($this, 'preplink_endpoint_field'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section');
@@ -216,7 +233,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_template',
-            __('Display mode', 'prep-link'),
+            __('Display Mode Progress', 'prep-link'),
             array($this, 'enpoint_display_mode'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -240,7 +257,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_textarea',
-            __('Links allowed', 'prep-link'),
+            __('String inside URL or domain', 'prep-link'),
             array($this, 'preplink_textarea_field'),
             'preplink_general_settings',
             'preplink_general_section'
@@ -256,7 +273,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_image',
-            __('Post Image', 'prep-link'),
+            __('Display Post Image', 'prep-link'),
             array($this, 'preplink_image_field'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -277,7 +294,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_related_post',
-            __('Post Related', 'prep-link'),
+            __('Display Post Related', 'prep-link'),
             array($this, 'preplink_related_post'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -289,7 +306,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_comment',
-            __('Comment', 'prep-link'),
+            __('Display Comment', 'prep-link'),
             array($this, 'preplink_comment'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -301,7 +318,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_display_mode',
-            __('Display mode', 'prep-link'),
+            __('Display Mode Progress', 'prep-link'),
             array($this, 'preplink_display_mode'),
             'preplink_general_settings',
             'preplink_general_section',
@@ -395,12 +412,12 @@ class Preplink_Admin {
             'preplink_link_field_lists',
             __('Number link list', 'prep-link'),
             array($this, 'preplink_link_field_lists'),
-            'preplink_general_settings',
-            'preplink_general_section');
+            'preplink_meta_attr',
+            'preplink_meta_attr_section');
 
         add_settings_field(
             'preplink_link_url_rewriting',
-            __('URL Rewriting', 'prep-link'),
+            __('Rewrite URL Encoding', 'prep-link'),
             array($this, 'preplink_link_url_rewriting'),
             'preplink_general_settings',
             'preplink_general_section');
@@ -427,6 +444,11 @@ class Preplink_Admin {
         );
 
         register_setting(
+            'preplink_meta_attr',
+            'meta_attr'
+        );
+
+        register_setting(
             'ads_code_settings',
             'ads_code'
         );
@@ -445,10 +467,21 @@ class Preplink_Admin {
     public function preplink_display_general(){
         ?>
         <div class="prep-link-admin-settings">
-            <h3>These settings are applicable to all Intelligent Link functionalities.</h3>
+            <h3><?= __('These settings are applicable to all Intelligent Link functionalities.')?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
-            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Intelligent Link Plugin</a></span>
+            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>
+        </div>
+        <?php
+    }
+
+    public function preplink_meta_display(){
+        ?>
+        <div class="meta-attr-display">
+            <h3><?= __('This section will allow adding meta attributes such as link, link information, size, etc., for post or product.') ?></h3>
+            <span>Author  : buivanloi.2010@gmail.com</span> |
+            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>
         </div>
         <?php
     }
@@ -457,8 +490,8 @@ class Preplink_Admin {
         ?>
         <div class="prep-link-ads-settings">
             <span>Author  : itsmeit.biz@gmail.com</span> |
-            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span> |
-            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Intelligent Link Plugin</a></span>
+            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span> |
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>l" target="_blank">WordPress <?= PREPLINK_NAME ?>Plugin</a></span>
             <h3>Please enter your advertisement code, allowing HTML, JS, CSS.</h3>
         </div>
         <?php
@@ -469,9 +502,9 @@ class Preplink_Admin {
         <div class="prep-link-faq-settings">
             <h3>You can add the FAQ HTML code here, it will apply to the page endpoint.</h3>
             <span>Author  : itsmeit.biz@gmail.com</span> |
-            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
+            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
             |
-            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Intelligent Link Plugin</a></span>
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>
         </div>
         <?php
     }
@@ -481,9 +514,9 @@ class Preplink_Admin {
         <div class="prep-link-endpoint-settings">
             <h3>This setting will apply only to the endpoint page.</h3>
             <span>Author  : itsmeit.biz@gmail.com</span> |
-            <span>Website : <a href="//itsmeit.co" target="_blank">itsmeit.co</a></span>
+            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
             |
-            <span>Link download/update: <a href="https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html" target="_blank">WordPress Intelligent Link Plugin</a></span>
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>
         </div>
         <?php
     }
@@ -545,10 +578,10 @@ class Preplink_Admin {
     }
 
     public function preplink_link_field_lists(){
-        $settings = get_option('preplink_setting', array());
+        $settings = get_option('meta_attr', array());
         ?>
-        <input type="number" id="preplink_number_field_lists" name="preplink_setting[preplink_number_field_lists]" placeholder="5"
-               value="<?= esc_attr(!empty($settings['preplink_number_field_lists']) ? $settings['preplink_number_field_lists'] : false) ?>"/>
+        <input type="number" name="meta_attr[field_lists]" placeholder="5"
+               value="<?= esc_attr(!empty($settings['field_lists']) ? $settings['field_lists'] : '5') ?>"/>
         <p class="description">The number of related fields, you'll find it within the post or product. Here you can add different links.</p>
         <?php
     }
@@ -556,9 +589,9 @@ class Preplink_Admin {
     public function preplink_link_url_rewriting(){
         $settings = get_option('preplink_setting', array());
         ?>
-        <p><input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(12)) ?>"/></p>
-        <p><input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(11)) ?>"/></p>
-        <p><input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(6)) ?>"/></p>
+        <p><input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/></p>
+        <p><input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/></p>
+        <p><input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(15)) ?>"/></p>
         <p class="description">Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL. This practice serves a security purpose and renders it non-decodable.</p>
         <?php
     }
@@ -572,7 +605,7 @@ class Preplink_Admin {
         $settings = get_option('preplink_endpoint', array());
         ?>
         <input type="number" id="cookie_time" name="preplink_endpoint[cookie_time]" placeholder="5"
-               value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '' ?>"/>
+               value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '5' ?>"/>
         <p class="description">Default link expiration time is 5 minutes</p>
         <?php
     }
@@ -693,7 +726,7 @@ class Preplink_Admin {
         <?php
     }
 
-    public function preplink_comment($args) {
+    public function preplink_comment() {
         $settings = get_option('preplink_endpoint', array());
         ?>
         <select name="preplink_endpoint[preplink_comment]">
@@ -731,7 +764,7 @@ class Preplink_Admin {
             <tr class="countdown-select">
                 <td style="padding: 5px 0;">
                     <input type="text" id="wait_text_replace" name="preplink_setting[wait_text_replace]" placeholder="waiting"
-                           value="<?= esc_attr(!empty($settings['wait_text_replace']) ? $settings['wait_text_replace'] : false) ?>"/>
+                           value="<?= esc_attr(!empty($settings['wait_text_replace']) ? $settings['wait_text_replace'] : 'please wait') ?>"/>
                     <p class="description">Text displayed while the countdown is pending.</p>
                 </td>
             </tr>
@@ -851,6 +884,10 @@ class Preplink_Admin {
         echo $html;
     }
 
+    public function plugin_url() {
+        return PREPLINK_PLUGIN_URL . '/create-download-link-redirect-page-in-wordpress.html';
+    }
+
     public function preplink_delete_option_on_uninstall() {
         $settings = get_option('preplink_setting', array());
         $delete_option = isset( $settings['preplink_delete_option'] ) ? $settings['preplink_delete_option'] : false;
@@ -865,8 +902,7 @@ class Preplink_Admin {
         wp_nonce_field('link_field', 'link_field');
         ?>
 
-        <h2 class="list-h3-title" style="font-size: 14px; padding: 7px 0px 0 0; margin-top: 15px; font-weight: 600; text-transform: none; border-bottom: 4px solid #4350a7; margin-bottom: 10px;max-width: 91%;">
-            Link Details</h2>
+        <h2 class="list-h3-title">Link Details</h2>
         <div class="app-fields">
             <?php
             $fields = array(
@@ -922,8 +958,8 @@ class Preplink_Admin {
                 'file_name', 'link_no_login', 'link_is_login', 'size'
             ];
             $link_download_data = get_post_meta($post->ID, 'link-download-metabox', true);
-            $settings = get_option('preplink_setting', array());
-            $total = !empty($settings['preplink_number_field_lists'])? (int) $settings['preplink_number_field_lists'] : 5;
+            $settings = get_option('meta_attr', array());
+            $total = !empty($settings['field_lists'])? (int) $settings['field_lists'] : 5;
 
             for ($i = 1; $i <= $total; $i++) : ?>
                 <?php
@@ -993,7 +1029,7 @@ class Preplink_Admin {
 
         $field_list = ['file_name', 'link_no_login', 'link_is_login', 'size'];
         $settings = get_option('preplink_setting', array());
-        $total = (int) $settings['preplink_number_field_lists']? : 5;
+        $total = (int) $settings['field_lists']? : 5;
 
         for ($i = 1; $i <= $total; $i++) {
             foreach ($field_list as $field_name) {

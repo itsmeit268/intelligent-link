@@ -19,7 +19,8 @@ if (!defined('ABSPATH')) {
     die;
 }
 
-define('PREPLINK_NAME', 'PrepareLink');
+define('PREPLINK_PLUGIN_URL', 'https://itsmeit.co');
+define('PREPLINK_NAME', 'Intelligent Link');
 define('PREPLINK_VERSION', '1.0.6');
 define('PREPLINK_PLUGIN_FILE',	__FILE__);
 define('PREPLINK_PLUGIN_BASE',	plugin_basename(PREPLINK_PLUGIN_FILE ));

@@ -17,7 +17,7 @@ function render_back_icon($view_link){ ?>
 function get_list_link($post_id, $settings) {
     $list_link = get_post_meta($post_id, 'link-download-metabox', true);
 
-    $total = (int) $settings['preplink_number_field_lists']? : 5;
+    $total = (int) $settings['field_lists']? : 5;
     if (isset($list_link) && !empty($list_link) && is_array($list_link)) { ?>
         <div class="list-link-redirect" >
             <?php for ($i = 1; $i <= $total; $i++) {
