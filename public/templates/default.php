@@ -137,7 +137,7 @@ if (file_exists(get_template_directory() . '/header.php')){
                     <?= !empty($ads['ads_3']) ? '<div class="preplink-ads preplink-ads-3" style="margin: 0 25px;">' . $ads['ads_3'] . '</div>' : '' ?>
 
                     <?php if (!empty($faq_conf['faq_enabled']) && $faq_conf['faq_enabled'] == 1 && !empty($faq_conf['faq_description'])) : ?>
-                        <?php faq_render($faq_conf['faq_enabled'], $faq_conf['faq_description'] ); ?>
+                        <?php faq_render($faq_conf['faq_title'], $faq_conf['faq_description'] ); ?>
                         <?= !empty($ads['ads_4']) ? '<div class="preplink-ads preplink-ads-4" style="margin: 0 25px;">' . $ads['ads_4'] . '</div>' : '' ?>
                     <?php endif; ?>
 

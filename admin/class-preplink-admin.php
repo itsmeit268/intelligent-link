@@ -245,7 +245,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_endpoint_auto_direct',
-            __('Auto redirect', 'prep-link'),
+            __('Automatic redirection', 'prep-link'),
             array($this, 'preplink_endpoint_auto_direct'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -340,72 +340,24 @@ class Preplink_Admin {
             )
         );
 
-        add_settings_field(
-            'preplink_auto_direct',
+        add_settings_field('preplink_auto_direct',
             __('Automatic redirection', 'prep-link'),
             array($this, 'preplink_post_auto_direct'),
-            'preplink_general_settings',
-            'preplink_general_section',
-            array(
-                1 => 'Yes',
-                0 => 'No',
-            )
+            'preplink_general_settings', 'preplink_general_section', array(1 => 'Yes', 0 => 'No')
         );
 
-        add_settings_field(
-            'pr_ad_1',
-            __('Ads code 1', 'prep-link'),
-            array($this, 'pr_ad_1'),
-            'ads_code_settings',
-            'ads_code_section'
-        );
+        add_settings_field('pr_ad_1', __('Ads code 1', 'prep-link'), array($this, 'pr_ad_1'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_2', __('Ads code 2', 'prep-link'), array($this, 'pr_ad_2'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_3', __('Ads code 3', 'prep-link'), array($this, 'pr_ad_3'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_4', __('Ads code 4', 'prep-link'), array($this, 'pr_ad_4'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_5', __('Ads code 5', 'prep-link'), array($this, 'pr_ad_5'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_6', __('Ads code 6', 'prep-link'), array($this, 'pr_ad_6'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_7', __('Ads code 7', 'prep-link'), array($this, 'pr_ad_7'), 'ads_code_settings', 'ads_code_section');
 
-        add_settings_field(
-            'pr_ad_2',
-            __('Ads code 2', 'prep-link'),
-            array($this, 'pr_ad_2'),
-            'ads_code_settings',
-            'ads_code_section'
-        );
-
-        add_settings_field(
-            'pr_ad_3',
-            __('Ads code 3', 'prep-link'),
-            array($this, 'pr_ad_3'),
-            'ads_code_settings',
-            'ads_code_section'
-        );
-
-        add_settings_field(
-            'pr_ad_4',
-            __('Ads code 4', 'prep-link'),
-            array($this, 'pr_ad_4'),
-            'ads_code_settings',
-            'ads_code_section'
-        );
-
-        add_settings_field(
-            'pr_ad_5',
-            __('Ads code 5', 'prep-link'),
-            array($this, 'pr_ad_5'),
-            'ads_code_settings',
-            'ads_code_section'
-        );
-
-        add_settings_field(
-            'pr_ad_6',
-            __('Ads code 6', 'prep-link'),
-            array($this, 'pr_ad_6'),
-            'ads_code_settings',
-            'ads_code_section'
-        );
-
-        add_settings_field(
-            'pr_ad_7',
-            __('Ads code 7', 'prep-link'),
-            array($this, 'pr_ad_7'),
-            'ads_code_settings',
-            'ads_code_section'
+        add_settings_field('meta_attr_auto_direct',
+            __('Automatic redirection', 'prep-link'),
+            array($this, 'meta_attr_auto_direct'),
+            'preplink_meta_attr', 'preplink_meta_attr_section', array(1 => 'Yes', 0 => 'No')
         );
 
         add_settings_field(
@@ -660,26 +612,22 @@ class Preplink_Admin {
             <tbody>
             <tr class="faq_enabled">
                 <td style="padding: 5px 0;">
-                    <label style="width: 160px;display: inline-table;">Enable/Disable</label>
+                    <label style="width: 160px;display: inline-table;">FAQ</label>
                     <select name="preplink_faq[faq_enabled]" id="faq_enabled">
-                        <option value="1" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '1'); ?>>
-                            Yes
-                        </option>
-                        <option value="0" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '0'); ?>>
-                            No
-                        </option>
+                        <option value="1" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '1'); ?>>Enabled</option>
+                        <option value="0" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '0'); ?>>Disabled</option>
                     </select>
                 </td>
             </tr>
             <tr class="faq_title">
                 <td style="padding: 5px 0;">
-                    <label style="width: 160px;display: inline-table;">FAQ Title</label>
+                    <label style="width: 160px;display: inline-table;">Title</label>
                     <input type="text" name="preplink_faq[faq_title]" placeholder="Notes before continuing" value="<?= esc_attr(isset($settings['faq_title']) ? $settings['faq_title'] : false); ?>"/>
                 </td>
             </tr>
             <tr class="faq_description">
                 <td style="padding: 5px 0;">
-                    <label style="width: 160px;display: inline-table;">FAQ Description (HTML)</label>
+                    <label style="width: 160px;display: inline-table;">Description (HTML)</label>
                     <?php
                     $html = '<textarea name="preplink_faq[faq_description]" rows="10" cols="70">';
                     $html .= esc_html(isset($settings['faq_description']) ? $settings['faq_description'] : false);
@@ -792,6 +740,30 @@ class Preplink_Admin {
                     <label><p>The default countdown time is set to 1 seconds.</p></label>
                     <input type="number" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="1"
                            value="<?= !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : '1' ?>" min="1" max="300"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+    }
+
+    public function meta_attr_auto_direct() {
+        $meta_attr = get_option('meta_attr', []);
+        ?>
+        <table class="form-table">
+            <tbody>
+            <tr class="meta_attr_auto_direct">
+                <td style="padding: 2px 0">
+                    <select name="meta_attr[auto_direct]">
+                        <option value="1" <?php selected(!empty($meta_attr['auto_direct']) ? ($meta_attr['auto_direct'] == '1') : false); ?>>Yes</option>
+                        <option value="0" <?php selected(!empty($meta_attr['auto_direct']) ? ($meta_attr['auto_direct'] == '0') : true); ?>>No</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="tr-time_number">
+                <td class="td-time_number" style="padding: 2px 0">
+                    <label><p>The default countdown time is set to 1 seconds.</p></label>
+                    <input type="number" name="meta_attr[time]" placeholder="1" value="<?= !empty($meta_attr['time']) ? $meta_attr['time'] : '1' ?>" max="300"/>
                 </td>
             </tr>
             </tbody>

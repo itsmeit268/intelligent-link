@@ -19,7 +19,8 @@
             exclude_elm = elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
             allow_url = href_process.prep_url,
             windowWidth = $(window).width(),
-            href_modify = href_process.modify_href;
+            href_modify = href_process.modify_href,
+            meta_attr   = href_process.meta_attr;
 
         var countdownStatus = {};
 
@@ -127,7 +128,23 @@
                 const complete = $this.find('.text-hide-complete').data('complete');
                 const is_image = $this.attr('data-image');
 
+                const is_meta = $this.parents('#igl-download-now');
                 if (!_isBtoaEncoded(url)) {
+                    return;
+                }
+
+                console.log(meta_attr);
+                console.log(is_meta);
+
+                if (is_meta.length && meta_attr.auto_direct && meta_attr.time === '0') {
+                    set_cookie_title(title);
+                    set_cookie_url(modified_url);
+
+                    if (windowWidth > 700) {
+                        window.open(endpoint_url(), '_blank');
+                    } else {
+                        window.location.href = endpoint_url();
+                    }
                     return;
                 }
 
@@ -181,10 +198,8 @@
             let timeleft = time_cnf;
             var replace_title;
 
-            console.log(text_complete);
             if (text_complete.enable === 'yes') {
                 replace_title = text_complete.text;
-                console.log(replace_title);
             }
 
             const countdown = () => {

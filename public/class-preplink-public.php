@@ -34,6 +34,7 @@ class Preplink_Public {
             wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link.js', array('jquery'), PREPLINK_VERSION, true);
             
             $settings = $this->il_settings();
+            $meta_attr = get_option('meta_attr', []);
             wp_localize_script('intelligent-link', 'href_process', [
                 'end_point'              => $this->endpoint_conf(),
                 'prep_url'               => $this->allow_domain(),
@@ -47,6 +48,10 @@ class Preplink_Public {
                 'replace_text'           => [
                     'enable' => !empty($settings['replace_text_enable']) ? $settings['replace_text_enable'] : 0,
                     'text'   => !empty($settings['replace_text']) ? $settings['replace_text'] : 'link is ready',
+                ],
+                'meta_attr'       => [
+                    'auto_direct' => !empty($meta_attr['auto_direct']) ? $meta_attr['auto_direct'] : 0,
+                    'time'        => !empty($meta_attr['time']) ? $meta_attr['time'] : 5,
                 ]
             ]);
         }

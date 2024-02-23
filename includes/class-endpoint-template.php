@@ -152,7 +152,7 @@ function faq_render($faq_title, $faq_description) { ?>
     </style>
     <div class="faq-download">
         <h3 class="faq-title"><?= !empty($faq_title) ? $faq_title : '' ?></h3>
-        <?= esc_html($faq_description); ?>
+        <?= $faq_description; ?>
     </div>
 <?php }
 

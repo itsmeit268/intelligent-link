@@ -4,8 +4,8 @@
     $(function () {
         var $waitText = $('#countdown-select');
         var countdown_mode = $('.countdown-select');
-        var $faq1 = $('#faq_enabled');
-        var faq1_des = $('.faq_description,.faq_title');
+        var $faq_enabled = $('#faq_enabled');
+        var $faq_description = $('.faq_description,.faq_title');
         var $related = $('#preplink_related_enabled');
         var related_des = $('.preplink_related_number');
         var $relatedNum = $('#related_number');
@@ -46,16 +46,16 @@
         }
 
         function _faq1_enabled() {
-            if ($faq1.val() === '1') {
-                faq1_des.show();
+            if ($faq_enabled.val() === '1') {
+                $faq_description.show();
             } else {
-                faq1_des.hide();
+                $faq_description.hide();
             }
-            $faq1.on('change', function () {
+            $faq_enabled.on('change', function () {
                 if (this.value === '1') {
-                    faq1_des.show();
+                    $faq_description.show();
                 } else {
-                    faq1_des.hide();
+                    $faq_description.hide();
                 }
             });
         }
