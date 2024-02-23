@@ -105,8 +105,8 @@ class Preplink_Public {
 
         $arr = array(
             'pfix'  => !empty($settings['prefix']) ? $settings['prefix']: 'gqbQ4Wd9NP',
-            'mstr'  => !empty($settings['between']) ? $settings['between']:  'aC5Q1sjvo9AK',
-            'sfix'  => !empty($settings['suffix']) ? $settings['suffix']:  'FTTvYmo0i1DwVf',
+            'mstr'  => !empty($settings['between']) ? $settings['between']: 'aC5Q1sjvo9AK',
+            'sfix'  => !empty($settings['suffix']) ? $settings['suffix']: 'FTTvYmo0i1DwVf',
         );
 
         return $arr;

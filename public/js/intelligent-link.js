@@ -143,9 +143,8 @@
                     return;
                 }
 
-                if (complete === 1) { //fix sau
-                    text_complete = $this.find('.text-hide-complete').data('text');
-                    set_cookie_title(text_complete);
+                if (complete === 1) {
+                    set_cookie_title($this.find('.text-hide-complete').data('text'));
                     set_cookie_url(modified_url);
 
                     if (windowWidth > 700) {
@@ -180,16 +179,20 @@
         function _start_countdown($elm, url, title) {
             let downloadTimer;
             let timeleft = time_cnf;
-            let replace_title;
+            var replace_title;
+
+            console.log(text_complete);
+            if (text_complete.enable === 'yes') {
+                replace_title = text_complete.text;
+                console.log(replace_title);
+            }
 
             const countdown = () => {
                 $elm.html(`<strong> ${wait_text} ${timeleft}s...</strong>`);
                 timeleft--;
                 if (timeleft < 0) {
                     clearInterval(downloadTimer);
-                    if (text_complete.enable === 'yes') {
-                        replace_title = text_complete.text;
-                    }
+
                     let wait_time_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
                     wait_time_html += '<span style="vertical-align: unset;">' + replace_title + '</span>';
                     $elm.html(wait_time_html);
@@ -234,8 +237,6 @@
                 $progress.width(currentWidth);
                 if (currentWidth >= progressWidth) {
                     clearInterval(intervalId);
-
-                    console.log(text_complete);
 
                     if (text_complete.enable === 'yes') {
                         replace_title = text_complete.text;

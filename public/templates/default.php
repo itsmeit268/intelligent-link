@@ -47,8 +47,6 @@ if (file_exists(get_template_directory() . '/header.php')){
 }
 ?>
 
-
-
 <div class="igl-single-page" id="prep-request-page" data-request="<?= esc_attr($prep_request) ?>">
     <?= !empty($ads['ads_1']) ? '<div class="preplink-ads preplink-ads-1" style="margin: 0 25px;">' . $ads['ads_1'] . '</div>' : '' ?>
     <?php render_back_icon($view_link); ?>
@@ -75,7 +73,7 @@ if (file_exists(get_template_directory() . '/header.php')){
                         </div>
                         <?= !empty($ads['ads_2']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_2'] . '</div>' : '' ?>
                     <?php endif;?>
-                    <?php if ($endpoint_conf['ep_mode'] == 'default'): ?>
+                    <?php if ($endpoint_conf['ep_mode'] == 'default' && $isMeta): ?>
                         <div class="download-list">
                             <div class="download-item-box">
                                 <div class="download-item">

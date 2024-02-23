@@ -342,7 +342,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_auto_direct',
-            __('Automatically redirect post to endpoint', 'prep-link'),
+            __('Automatic redirection', 'prep-link'),
             array($this, 'preplink_post_auto_direct'),
             'preplink_general_settings',
             'preplink_general_section',
@@ -580,8 +580,8 @@ class Preplink_Admin {
     public function preplink_link_field_lists(){
         $settings = get_option('meta_attr', array());
         ?>
-        <input type="number" name="meta_attr[field_lists]" placeholder="5"
-               value="<?= esc_attr(!empty($settings['field_lists']) ? $settings['field_lists'] : '5') ?>"/>
+        <input type="number" name="meta_attr[field_lists]" placeholder="3"
+               value="<?= esc_attr(!empty($settings['field_lists']) ? $settings['field_lists'] : '3') ?>" min="1" max="20"/>
         <p class="description">The number of related fields, you'll find it within the post or product. Here you can add different links.</p>
         <?php
     }
@@ -589,10 +589,11 @@ class Preplink_Admin {
     public function preplink_link_url_rewriting(){
         $settings = get_option('preplink_setting', array());
         ?>
-        <p><input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/></p>
-        <p><input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/></p>
-        <p><input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(15)) ?>"/></p>
-        <p class="description">Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL. This practice serves a security purpose and renders it non-decodable.</p>
+        <input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/>
+        <input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/>
+        <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(15)) ?>"/>
+        <p class="description">Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.</p>
+        <p class="description">This practice serves a security purpose and renders it non-decodable.</p>
         <?php
     }
 
@@ -605,7 +606,7 @@ class Preplink_Admin {
         $settings = get_option('preplink_endpoint', array());
         ?>
         <input type="number" id="cookie_time" name="preplink_endpoint[cookie_time]" placeholder="5"
-               value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '5' ?>"/>
+               value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '5' ?>" min="1" max="600"/>
         <p class="description">Default link expiration time is 5 minutes</p>
         <?php
     }
@@ -718,7 +719,7 @@ class Preplink_Admin {
                 <td class="related_number" style="padding: 2px 0;">
                     <label><p>Number of posts displayed, default 10</p></label>
                     <input type="number" id="related_number" name="preplink_endpoint[preplink_related_number]" placeholder="10"
-                           value="<?= !empty($settings['preplink_related_number']) ? ($settings['preplink_related_number'] == '0' ? 0 : $settings['preplink_related_number']) : '' ?>"/>
+                           value="<?= !empty($settings['preplink_related_number']) ? ($settings['preplink_related_number'] == '0' ? 0 : $settings['preplink_related_number']) : '' ?>" min="1" max="50"/>
                 </td>
             </tr>
             </tbody>
@@ -788,9 +789,9 @@ class Preplink_Admin {
             </tr>
             <tr class="preplink_post_number">
                 <td class="preplink_post_number_notice" style="padding: 2px 0">
-                    <label><p>The default countdown time is set to 5 seconds.</p></label>
-                    <input type="number" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="5"
-                           value="<?= !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : '5' ?>"/>
+                    <label><p>The default countdown time is set to 1 seconds.</p></label>
+                    <input type="number" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="1"
+                           value="<?= !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : '1' ?>" min="1" max="300"/>
                 </td>
             </tr>
             </tbody>
@@ -814,7 +815,8 @@ class Preplink_Admin {
             <tr class="preplink_endpoint_number">
                 <td class="preplink_endpoint_number_notice" style="padding: 2px 0">
                     <label><p>The default countdown time is set to 5 seconds.</p></label>
-                    <input type="number" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="5" value="<?= !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : '5' ?>"/>
+                    <input type="number" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="5"
+                           value="<?= !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : '5' ?>" min="1" max="300"/>
                 </td>
             </tr>
             </tbody>
