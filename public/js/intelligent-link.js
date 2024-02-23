@@ -228,12 +228,15 @@
             }
 
             const intervalId = setInterval(function () {
-                let replace_title;
+                let replace_title = '';
 
                 currentWidth += progressWidth / (timeleft * 1000 / timeleft);
                 $progress.width(currentWidth);
                 if (currentWidth >= progressWidth) {
                     clearInterval(intervalId);
+
+                    console.log(text_complete);
+
                     if (text_complete.enable === 'yes') {
                         replace_title = text_complete.text;
                     }

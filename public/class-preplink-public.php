@@ -46,7 +46,7 @@ class Preplink_Public {
                 'modify_href'            => $this->modify_href(),
                 'replace_text'           => [
                     'enable' => !empty($settings['replace_text_enable']) ? $settings['replace_text_enable'] : 0,
-                    'text'   => !empty($settings['replace_text']) ? $settings['replace_text'] : '',
+                    'text'   => !empty($settings['replace_text']) ? $settings['replace_text'] : 'link is ready',
                 ]
             ]);
         }

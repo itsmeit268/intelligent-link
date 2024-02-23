@@ -745,11 +745,11 @@ class Preplink_Admin {
         ?>
         <table class="form-table">
             <tbody>
-            <tr class="preplink_post_enabled">
+            <tr class="preplink_auto_direct">
                 <td style="padding: 2px 0">
-                    <select name="preplink_setting[preplink_auto_direct]" id="preplink_auto_direct" class="preplink_auto_direct">
-                        <option value="1" <?php selected(!empty($settings['preplink_auto_direct']) && $settings['preplink_auto_direct'] == '1'); ?>>Yes</option>
-                        <option value="0" <?php selected(!empty($settings['preplink_auto_direct']) && $settings['preplink_auto_direct'] == '0'); ?>>No</option>
+                    <select name="preplink_setting[preplink_auto_direct]">
+                        <option value="1" <?php selected(!empty($settings['preplink_auto_direct']) ? ($settings['preplink_auto_direct'] == '1') : false); ?>>Yes</option>
+                        <option value="0" <?php selected(!empty($settings['preplink_auto_direct']) ? ($settings['preplink_auto_direct'] == '0') : true); ?>>No</option>
                     </select>
                 </td>
             </tr>
