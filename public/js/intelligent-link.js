@@ -1,6 +1,6 @@
 /**
  * @author     itsmeit <itsmeit.biz@gmail.com>
- * Website     https://itsmeit.co
+ * Website     https://itsmeit.co/
  */
 
 (function ($) {
@@ -23,6 +23,30 @@
             meta_attr   = href_process.meta_attr;
 
         var countdownStatus = {};
+
+        function _isBtoaEncoded(url) {
+            try {
+                const decodedHref = atob(url);
+                return decodedHref.match(/^https?:\/\/.+/) !== null;
+            } catch (e) {
+                console.log(e.message);
+                return false;
+            }
+        }
+
+        function clear_cookie(cookie_name) {
+            document.cookie = cookie_name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+
+        function reset_request(){
+            var regex = new RegExp('(/' + end_point + '/)|(/' + end_point + ')|(.html/' + end_point + ')');
+            if (regex.test(current_url)) {
+                return true;
+            } else {
+                clear_cookie("prep_request");
+                clear_cookie("prep_title");
+            }
+        }
 
         function modify_href(url) {
             url = href_modify.pfix + url;
@@ -129,27 +153,21 @@
                 const is_image = $this.attr('data-image');
                 const is_meta = $this.parents('.igl-download-now');
 
+                var start_time = time_cnf;
+
                 if (!_isBtoaEncoded(url)) {
+                    return;
+                }
+
+                if (exclude_elm.some(sel => $this.is(sel)) || $this.closest(exclude_elm.join(',')).length > 0 || url === undefined || url === null || !url.length) {
                     return;
                 }
 
                 if (is_meta.length) {
                     if (meta_attr.auto_direct === '1' && parseInt(meta_attr.time) === 0) {
-                        time_cnf = 0;
+                        start_time = 0;
                     }
-                    time_cnf = parseInt(meta_attr.time);
-                }
-
-                if (time_cnf === 0 || is_image === '1') {
-                    set_cookie_title(title);
-                    set_cookie_url(modified_url);
-
-                    if (windowWidth > 700) {
-                        window.open(endpoint_url(), '_blank');
-                    } else {
-                        window.location.href = endpoint_url();
-                    }
-                    return;
+                    start_time = parseInt(meta_attr.time);
                 }
 
                 if (complete === 1) {
@@ -168,12 +186,16 @@
                     return;
                 }
 
-                if (exclude_elm.some(sel => $this.is(sel)) || $this.closest(exclude_elm.join(',')).length > 0 || url === undefined || url === null || !url.length) {
-                    return;
-                }
+                if (start_time === 0 || is_image === '1') {
+                    set_cookie_title(title);
+                    set_cookie_url(modified_url);
 
-
-                if (time_cnf > 0) {
+                    if (windowWidth > 700) {
+                        window.open(endpoint_url(), '_blank');
+                    } else {
+                        window.location.href = endpoint_url();
+                    }
+                } else {
                     $this.off('click');
                     countdownStatus[modified_url] = { active: true };
                     if (display_mode === 'wait_time') {
@@ -182,6 +204,7 @@
                         _start_progress($this, modified_url, title, is_meta);
                     }
                 }
+
             });
         }
 
@@ -273,30 +296,6 @@
                     countdownStatus[url] = { active: false };
                 }
             }, timeleft);
-        }
-
-        function _isBtoaEncoded(url) {
-            try {
-                const decodedHref = atob(url);
-                return decodedHref.match(/^https?:\/\/.+/) !== null;
-            } catch (e) {
-                console.log(e.message);
-                return false;
-            }
-        }
-
-        function clear_cookie(cookie_name) {
-            document.cookie = cookie_name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        }
-        
-        function reset_request(){
-            var regex = new RegExp('(/' + end_point + '/)|(/' + end_point + ')|(.html/' + end_point + ')');
-            if (regex.test(current_url)) {
-                return true;
-            } else {
-                clear_cookie("prep_request");
-                clear_cookie("prep_title");
-            }
         }
 
         reset_request();
