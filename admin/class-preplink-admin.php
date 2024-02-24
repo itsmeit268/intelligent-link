@@ -928,15 +928,15 @@ class Preplink_Admin {
         <div class="app-fields">
             <?php
             $fields = array(
+                'file_name' => 'File Name (required)',
+                'file_size' => 'File Size (Ex: 100MB)',
+                'link_no_login' => 'Link No Login (required)',
+                'link_is_login' => 'Link Is Login (required)',
                 'file_format' => 'Format: APK/IPA/ZIP/RAR...',
                 'require' => 'OS/FW: Windows/Wordpress/IOS...',
                 'os_version' => 'OS/FW Version (Ex: 11, 11+)',
                 'file_version' => 'File Version (Ex: 1.0.0)',
-                'mod_feature' => 'MOD Feature (Ex: Unlocked Premium)',
-                'link_no_login' => 'Link No Login (required)',
-                'link_is_login' => 'Link Is Login (required)',
-                'file_name' => 'File Name (required)',
-                'file_size' => 'File Size (100MB)'
+                'mod_feature' => 'MOD Feature (Ex: Unlocked Premium)'
             );
 
             $field_count = count($fields);
@@ -972,8 +972,7 @@ class Preplink_Admin {
             ?>
         </div>
 
-        <h2 class="list-h3-title" style="font-size: 14px; padding: 7px 0px 0 0; margin-top: 15px; font-weight: 600; text-transform: none; border-bottom: 4px solid #4350a7; margin-bottom: 10px;max-width: 91%;">
-            Additional Link Information</h2>
+        <h2 class="list-h3-title">Additional Link Information</h2>
         <div class="list-link-fields">
             <?php
             $list_field = [
@@ -1030,15 +1029,15 @@ class Preplink_Admin {
         }
 
         $fields = array(
+            'file_name',
+            'file_size',
+            'link_no_login',
+            'link_is_login',
             'file_format',
             'require',
             'os_version',
             'file_version',
-            'mod_feature',
-            'link_no_login',
-            'link_is_login',
-            'file_name',
-            'file_size'
+            'mod_feature'
         );
 
         foreach ($fields as $field) {
