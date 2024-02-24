@@ -127,7 +127,7 @@
                 const url = href_restore(modified_url);
                 const complete = $this.find('.text-hide-complete').data('complete');
                 const is_image = $this.attr('data-image');
-                const is_meta = $this.parents('#igl-download-now');
+                const is_meta = $this.parents('.igl-download-now');
 
                 if (!_isBtoaEncoded(url)) {
                     return;

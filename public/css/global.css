@@ -6,6 +6,9 @@
     text-overflow: ellipsis;
     max-width: 100%;
     overflow: hidden;
+    align-items: center;
+    justify-content: left;
+    max-height: 35px;
 }
 
 .igl-download-now>.post-progress-bar>.prep-request>.post-progress{

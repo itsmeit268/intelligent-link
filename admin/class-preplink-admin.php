@@ -368,6 +368,21 @@ class Preplink_Admin {
             'preplink_meta_attr_section');
 
         add_settings_field(
+            'meta_elm_option',
+            __('Render Element', 'prep-link'),
+            array($this, 'meta_elm_option'),
+            'preplink_meta_attr',
+            'preplink_meta_attr_section',
+            array(
+                'div'    => __('div', 'prep-link'),
+                'h2'  => __('h2', 'prep-link'),
+                'h3'  => __('h3', 'prep-link'),
+                'h4'  => __('h4', 'prep-link'),
+                'h5'  => __('h5', 'prep-link'),
+            )
+        );
+
+        add_settings_field(
             'preplink_link_url_rewriting',
             __('Rewrite URL Encoding', 'prep-link'),
             array($this, 'preplink_link_url_rewriting'),
@@ -549,7 +564,7 @@ class Preplink_Admin {
         <?php
     }
 
-    function generateRandomString($length = 20) {
+    public function generateRandomString($length = 20) {
         $regex = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         return preg_replace('/[^' . $regex . ']/', '', substr(str_shuffle(str_repeat($regex, ceil($length / strlen($regex)))), 0, $length));
     }
@@ -605,8 +620,20 @@ class Preplink_Admin {
         echo $html;
     }
 
+    public function meta_elm_option() {
+        $meta_attr = get_option('meta_attr', []); ?>
+        <select name="meta_attr[elm]">
+            <option value="div" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'div' ? 'selected' : '' ?>>div</option>
+            <option value="h2" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h2' ? 'selected' : '' ?>>h3</option>
+            <option value="h3" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h3' ? 'selected' : '' ?>>h3</option>
+            <option value="h4" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h4' ? 'selected' : '' ?>>h4</option>
+            <option value="h5" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h5' ? 'selected' : '' ?>>h5</option>
+        </select>
+        <input type="text" name="meta_attr[pre_fix]" placeholder="Link download:" value="<?= esc_attr(!empty($meta_attr['pre_fix']) ? $meta_attr['pre_fix'] : 'Link download:') ?>"/>
+    <?php }
+
     public function pr_faq(){
-        $settings = get_option('preplink_faq', array());
+        $settings = get_option('preplink_faq', []);
         ?>
         <table class="form-table">
             <tbody>
@@ -804,6 +831,7 @@ class Preplink_Admin {
         $html .= '<p class="description">Display position: At the top of the page.</p>';
         echo $html;
     }
+
     public function pr_ad_2(){
         $settings = get_option('ads_code', array());
         $html = '<textarea name="ads_code[ads_2]" rows="5" cols="50">';
@@ -869,7 +897,7 @@ class Preplink_Admin {
     }
 
     public function add_html_field_content() {
-        add_meta_box( 'link_meta_box', __( 'Link Options (preplink)' ), array($this,'link_meta_box_callback'), 'post', 'side', 'default' );
+        add_meta_box( 'link_meta_box', __( 'Intelligent Link (Options)' ), array($this,'link_meta_box_callback'), ['post', 'product'], 'side', 'default' );
     }
 
     public function link_meta_box_callback($post) {
