@@ -25,7 +25,9 @@
     margin: 0 auto;
     max-width: 100%;
 }
-
+#link_meta_box h2{
+    white-space: nowrap !important;
+}
 .link-embed-input input {
     margin: 10px 10px 0 0;
     line-height: 30px;
@@ -43,16 +45,16 @@
 .list-link-row-wrap {
     max-width: 100%;
 }
+
 .list-h3-title {
-    border-bottom: 4px solid #2271b1;
-    max-width: 91%;
-    font-size: 14px;
-    padding: 7px 0 0 0;
-    margin-top: 15px;
-    font-weight: 600;
+    border-bottom: 4px solid #2271b1 !important;
+    max-width: 100% !important;
+    font-size: 14px !important;
+    padding: 7px 0 0 0 !important;
+    margin-top: 15px !important;
+    font-weight: 600 !important;
     text-transform: none;
-    border-bottom: 4px solid #4350a7;
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
 }
 .app-fields >.app-row>.app-field input {
     max-width: 230px;
