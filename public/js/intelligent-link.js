@@ -203,7 +203,9 @@
                     let wait_time_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
                     wait_time_html += '<span style="vertical-align: unset;">' + replace_title + '</span>';
                     $elm.html(wait_time_html);
-                    $elm.parents('.wrap-countdown').css('color', '#ff0000')
+                    if (!is_meta.length) {
+                        $elm.parents('.wrap-countdown').css('color', '#ff0000')
+                    }
                     if (auto_direct || (is_meta.length && meta_attr.auto_direct === '1')) {
                         set_cookie_title(title);
                         set_cookie_url(url);
@@ -229,7 +231,7 @@
             parent.css('width', parent.width());
             $progress.width("0%");
 
-            if (!parent.parent('.igl-download-now').length) {
+            if (!is_meta.length) {
                 $progress.css({
                     'background-color': '#1479B3',
                     'color': '#fff',

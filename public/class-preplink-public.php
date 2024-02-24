@@ -11,9 +11,7 @@ class Preplink_Public {
         add_action('init', array($this, 'preplink_rewrite_endpoint'), 10, 0);
         add_action('wp_head', array($this, 'add_prep_custom_styles'), 10, 2);
         add_filter('the_content', array($this, 'render_meta_link_info'), 10);
-//        add_action('woocommerce_single_product_summary', array($this,'render_meta_link_info'), 25);
-        add_action('woocommerce_short_description', array($this,'render_meta_link_info'), 10);
-
+        add_action('woocommerce_short_description', array($this,'render_meta_short_description'), 10);
     }
 
     public function il_settings() {
@@ -173,30 +171,51 @@ class Preplink_Public {
         return $allow_domain;
     }
 
-    public function render_meta_link_info($content) {
+    public function meta_option(){
+        return get_option('meta_attr', []);
+    }
 
-        $post_id = get_the_ID();
-        $file_name = get_post_meta($post_id, 'file_name', true);
-        $link_no_login = get_post_meta($post_id, 'link_no_login', true);
-        $link_is_login = get_post_meta($post_id, 'link_is_login', true);
-
+    public function render_meta_short_description($content) {
+        $file_name = get_post_meta(get_the_ID(), 'file_name', true);
+        $link_no_login = get_post_meta(get_the_ID(), 'link_no_login', true);
+        $link_is_login = get_post_meta(get_the_ID(), 'link_is_login', true);
 
         if ($file_name && $link_is_login && $link_no_login) {
-            $html = $this->prep_link_html($file_name);
+            $after_description = isset($this->meta_option()['product_elm'])? $this->meta_option()['product_elm'] == 'after_short_description': '';
+            $html = $this->prep_link_html($this->meta_option(), $file_name);
+            if (!empty(get_the_excerpt()) && $after_description) {
+                return $content. $html;
+            }
+        }
 
-            $last_p = strrpos($content, '</p>');
-            if ($last_p !== false) {
-                $content = substr_replace($content, $html, $last_p + 4, 0);
+        return $content;
+    }
+
+    public function render_meta_link_info($content) {
+        $file_name = get_post_meta(get_the_ID(), 'file_name', true);
+        $link_no_login = get_post_meta(get_the_ID(), 'link_no_login', true);
+        $link_is_login = get_post_meta(get_the_ID(), 'link_is_login', true);
+
+        if ($file_name && $link_is_login && $link_no_login) {
+            $product_elm_after_content = isset($this->meta_option()['product_elm']) && $this->meta_option()['product_elm'] == 'after_product_content';
+            $html = $this->prep_link_html($this->meta_option(), $file_name);
+
+            $is_post_or_product = is_singular('post') || (is_singular('product') && $product_elm_after_content);
+
+            if ($is_post_or_product) {
+                $last_p = strrpos($content, '</p>');
+                if ($last_p !== false) {
+                    $content = substr_replace($content, $html, $last_p + 4, 0);
+                }
             }
         }
         return $content;
     }
 
-    public function prep_link_html($file_name) {
+    public function prep_link_html($meta_attr, $file_name) {
         $blog_url = base64_encode(get_bloginfo('url'));
         $display_mode = !empty($this->il_settings()['preplink_wait_text']) ? $this->il_settings()['preplink_wait_text'] : 'wait_time';
-        $settings = get_option('meta_attr', []);
-        $html = '<' . (!empty($settings['elm']) ? $settings['elm'] : 'h3') . ' class="igl-download-now"><b class="b-h-down">' . (!empty($settings['pre_fix']) ? $settings['pre_fix'] : 'Link download: ') . '</b>';
+        $html = '<' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . ' class="igl-download-now"><b class="b-h-down">' . (!empty($meta_attr['pre_fix']) ? $meta_attr['pre_fix'] : 'Link download: ') . '</b>';
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';
@@ -206,7 +225,7 @@ class Preplink_Public {
             $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
         }
 
-        $html .= '</' . (!empty($settings['elm']) ? $settings['elm'] : 'h3') . '>';
+        $html .= '</' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . '>';
         return $html;
     }
 }

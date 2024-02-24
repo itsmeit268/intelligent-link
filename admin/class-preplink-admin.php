@@ -383,6 +383,18 @@ class Preplink_Admin {
         );
 
         add_settings_field(
+            'product_elm_option',
+            __('Product Display Position', 'prep-link'),
+            array($this, 'product_elm_option'),
+            'preplink_meta_attr',
+            'preplink_meta_attr_section',
+            array(
+                'after_product_content'    => __('After Product Content', 'prep-link'),
+                'after_short_description'  => __('After Short Description', 'prep-link'),
+            )
+        );
+
+        add_settings_field(
             'preplink_link_url_rewriting',
             __('Rewrite URL Encoding', 'prep-link'),
             array($this, 'preplink_link_url_rewriting'),
@@ -630,6 +642,14 @@ class Preplink_Admin {
             <option value="h5" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h5' ? 'selected' : '' ?>>h5</option>
         </select>
         <input type="text" name="meta_attr[pre_fix]" placeholder="Link download:" value="<?= esc_attr(!empty($meta_attr['pre_fix']) ? $meta_attr['pre_fix'] : 'Link download:') ?>"/>
+    <?php }
+
+    public function product_elm_option() {
+        $meta_attr = get_option('meta_attr', []); ?>
+        <select name="meta_attr[product_elm]">
+            <option value="after_product_content" <?= isset($meta_attr['product_elm']) && $meta_attr['product_elm'] === 'after_product_content' ? 'selected' : '' ?>>After product content (Description)</option>
+            <option value="after_short_description" <?= isset($meta_attr['product_elm']) && $meta_attr['product_elm'] === 'after_short_description' ? 'selected' : '' ?>>After short description</option>
+        </select>
     <?php }
 
     public function pr_faq(){
