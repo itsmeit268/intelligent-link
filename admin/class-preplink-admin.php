@@ -586,7 +586,7 @@ class Preplink_Admin {
         ?>
         <input type="number" id="cookie_time" name="preplink_endpoint[cookie_time]" placeholder="5"
                value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '5' ?>" min="1" max="600"/>
-        <p class="description">Default link expiration time is 5 minutes</p>
+        <p class="description">On the page with the added endpoint, the default expiration time will be 5 seconds. After expiration, users will need to re-engage to receive the link.</p>
         <?php
     }
 
@@ -661,27 +661,26 @@ class Preplink_Admin {
                 <td style="padding: 5px 0;">
                     <label style="width: 160px;display: inline-table;">FAQ</label>
                     <select name="preplink_faq[faq_enabled]" id="faq_enabled">
-                        <option value="1" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '1'); ?>>Enabled</option>
                         <option value="0" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '0'); ?>>Disabled</option>
+                        <option value="1" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '1'); ?>>Enabled</option>
                     </select>
                 </td>
             </tr>
             <tr class="faq_title">
                 <td style="padding: 5px 0;">
                     <label style="width: 160px;display: inline-table;">Title</label>
-                    <input type="text" name="preplink_faq[faq_title]" placeholder="Notes before continuing" value="<?= esc_attr(isset($settings['faq_title']) ? $settings['faq_title'] : false); ?>"/>
+                    <input type="text" name="preplink_faq[faq_title]" placeholder="Notes before continuing" value="<?= esc_attr(isset($settings['faq_title']) ? $settings['faq_title'] : 'Frequently Asked Questions'); ?>"/>
                 </td>
             </tr>
             <tr class="faq_description">
                 <td style="padding: 5px 0;">
                     <label style="width: 160px;display: inline-table;">Description (HTML)</label>
                     <?php
-                    $html = '<textarea name="preplink_faq[faq_description]" rows="10" cols="70">';
-                    $html .= esc_html(isset($settings['faq_description']) ? $settings['faq_description'] : false);
-                    $html .= '</textarea>';
-                    $html .= '<p class="description">Click on this <a href="' . plugin_dir_url(__DIR__) . 'faq.txt" target="_blank">link</a> to view the FAQ structure.</p>';
-                    echo $html;
-                    ?></td>
+                    $faq_content = !empty($settings['faq_description']) ? esc_html($settings['faq_description']) : file_get_contents(plugin_dir_path(__DIR__) . 'faq.txt');
+                    echo '<textarea name="preplink_faq[faq_description]" rows="10" cols="70">' . $faq_content . '</textarea>';
+                    ?>
+                    <p class="description">Click on this <a href="<?php echo plugin_dir_url(__DIR__) . 'faq.txt'; ?>" target="_blank">link</a> to view the FAQ structure.</p>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -833,9 +832,9 @@ class Preplink_Admin {
             </tr>
             <tr class="preplink_endpoint_number">
                 <td class="preplink_endpoint_number_notice" style="padding: 2px 0">
-                    <label><p>The default countdown time is set to 5 seconds.</p></label>
-                    <input type="number" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="5"
-                           value="<?= !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : '5' ?>" min="1" max="300"/>
+                    <label><p>The default countdown time is set to 15 seconds.</p></label>
+                    <input type="number" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="15"
+                           value="<?= !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : '15' ?>" min="1" max="300"/>
                 </td>
             </tr>
             </tbody>
