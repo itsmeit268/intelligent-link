@@ -3,8 +3,8 @@
 ##### Example: https://drive.google.com/file/xxxx to https://itsmeit.co/post/download?id=abc
 ------------------------------------------------
 ##### Document: https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
-##### Author  : itsmeit '<itsmeit.biz@gmail.com>'
-##### Website : https://itsmeit.co
+##### Author  : itsmeit '<buivanloi.2010@gmail.com>'
+##### Website : https://itsmeit.co/
 ---------------------------------------------------
 ![img.png](img.png)
 ### ==== How to use Prepare Link Wordpress Plugin ===

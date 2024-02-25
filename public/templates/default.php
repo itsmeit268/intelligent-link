@@ -1,7 +1,7 @@
 <?php
 /**
- * @author     itsmeit <itsmeit.biz@gmail.com>
- * Website     https://itsmeit.co
+ * @author     itsmeit <buivanloi.2010@gmail.com>
+ * Website     https://itsmeit.co/
  */
 
 $prep_title         = isset($_COOKIE['prep_title']) ? $_COOKIE['prep_title'] : '';

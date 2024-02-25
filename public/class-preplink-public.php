@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @author     itsmeit <itsmeit.biz@gmail.com>
- * Website     https://itsmeit.co
+ * @author     itsmeit <buivanloi.2010@gmail.com>
+ * Website     https://itsmeit.co/
  */
 
 class Preplink_Public {

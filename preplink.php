@@ -3,11 +3,11 @@
 /**
  * @wordpress-plugin
  * Plugin Name:       Intelligent Link
- * Plugin URI:        https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html
- * Description:       The plugin will encrypt the links you allow and perform a countdown time before redirecting to the specified "endpoint" page, helping to increase user engagement time and making it suitable for websites that allow file downloads.
+ * Plugin URI:        https://itsmeit.co/
+ * Description:       Encrypts permitted links, initiates countdown timer before redirection, increases user interaction time, boosts page views, and enhances revenue for websites with advertising like AdSense, Ezoic, etc.
  * Version:           1.0.6
- * Author:            itsmeit <itsmeit.biz@gmail.com>
- * Author URI:        https://itsmeit.biz
+ * Author:            itsmeit <buivanloi.2010@gmail.com>
+ * Author URI:        https://itsmeit.co/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       prep-link

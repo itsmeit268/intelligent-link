@@ -25,7 +25,7 @@ msgid "https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html"
 msgstr ""
 
 #. Author of the plugin
-msgid "itsmeit <itsmeit.biz@gmail.com>"
+msgid "itsmeit <buivanloi.2010@gmail.com>"
 msgstr ""
 
 #. Name of the plugin

@@ -3,8 +3,8 @@
 /**
  * @package    Preplink
  * @subpackage Preplink/admin
- * @author     itsmeit <itsmeit.biz@gmail.com>
- * Website     https:<?= PREPLINK_PLUGIN_URL ?>
+ * @author     itsmeit <buivanloi.2010@gmail.com>
+ * Website     https://itsmeit.co/
  */
 
 class Preplink_Admin {
@@ -476,7 +476,7 @@ class Preplink_Admin {
     public function ads_code_display(){
         ?>
         <div class="prep-link-ads-settings">
-            <span>Author  : itsmeit.biz@gmail.com</span> |
+            <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span> |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>l" target="_blank">WordPress <?= PREPLINK_NAME ?>Plugin</a></span>
             <h3>Please enter your advertisement code, allowing HTML, JS, CSS.</h3>
@@ -488,7 +488,7 @@ class Preplink_Admin {
         ?>
         <div class="prep-link-faq-settings">
             <h3>You can add the FAQ HTML code here, it will apply to the page endpoint.</h3>
-            <span>Author  : itsmeit.biz@gmail.com</span> |
+            <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
             |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>
@@ -500,7 +500,7 @@ class Preplink_Admin {
         ?>
         <div class="prep-link-endpoint-settings">
             <h3>This setting will apply only to the endpoint page.</h3>
-            <span>Author  : itsmeit.biz@gmail.com</span> |
+            <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
             |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>

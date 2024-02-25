@@ -61,7 +61,7 @@ msgid "Information about the Features"
 msgstr "Thông tin về các tính năng"
 
 #. Author of the plugin
-msgid "itsmeit <itsmeit.biz@gmail.com>"
+msgid "itsmeit <buivanloi.2010@gmail.com>"
 msgstr ""
 
 msgid "keyword +"
