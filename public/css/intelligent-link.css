@@ -24,12 +24,12 @@
     position: relative;
     display: inline-block;
     cursor: pointer;
-    line-height: 22px;
+    line-height: 20px;
     border-radius: 40px;
     width: fit-content;
     white-space: nowrap;
     z-index: 1;
-    vertical-align: middle
+    vertical-align: middle;
 }
 
 .igl-download-now>.post-progress-bar,
@@ -94,10 +94,6 @@
     box-shadow: none
 }
 
-.post-progress-bar span strong {
-    vertical-align: middle
-}
-
 .counter {
     padding-top: 5px
 }
@@ -123,26 +119,44 @@ i.material-icons {
     color: orangered;
 }
 
+.ilgl-other-version {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+ul li > .post-progress-bar {
+    padding-left: 5px;
+}
+
 @media only screen and (max-device-width: 480px) {
 
     .post-progress, .wrap-countdown {
         text-align: left
     }
     .post-progress {
-        margin-bottom: 0;
-        display: unset;
+        margin-bottom: -5px;
+        display: block;
     }
 
-    h3 a {
-        display: block
+    h3 a,ul li > .post-progress-bar > .prep-request> .post-progress {
+        display: block;
     }
 
-    .post-progress-bar, .post-progress {
+    .post-progress-bar,.post-progress {
         white-space: nowrap;
         text-overflow: ellipsis;
         max-width: 100%;
         /*overflow: hidden;*/
     }
+
+    ul li >.post-progress-bar {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        overflow: hidden;
+        display: block;
+    }
+
 
     .igl-download-now>.wrap-countdown {
         align-items: center;
@@ -155,8 +169,7 @@ i.material-icons {
     }
 
     .igl-download-now>.wrap-countdown,.link-countdown,
-    .igl-download-now>.post-progress-bar,
-    .igl-download-now>.post-progress-bar,.post-progress{
+    .igl-download-now>.post-progress-bar{
         white-space: nowrap;
         text-overflow: ellipsis;
         max-width: 100%;
@@ -164,5 +177,11 @@ i.material-icons {
     }
     .igl-download-now>.post-progress-bar>.prep-request>.post-progress{
         display: inline-block;
+    }
+    .igl-download-now>.post-progress-bar {
+        line-height: 16px;
+    }
+    ul li > .post-progress-bar > .prep-request > .post-progress{
+        margin-bottom: 0;
     }
 }

@@ -211,11 +211,6 @@
         function _start_countdown($elm, url, title, is_meta) {
             let downloadTimer;
             let timeleft = is_meta.length? parseInt(meta_attr.time) : time_cnf;
-            var replace_title;
-
-            if (text_complete.enable === 'yes') {
-                replace_title = text_complete.text;
-            }
 
             const countdown = () => {
                 $elm.html(`<strong> ${wait_text} ${timeleft}s...</strong>`);
@@ -224,11 +219,14 @@
                     clearInterval(downloadTimer);
 
                     let wait_time_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
-                    wait_time_html += '<span style="vertical-align: unset;">' + replace_title + '</span>';
+                    wait_time_html += '<span style="vertical-align: unset;">' + ((text_complete.enable === 'yes') ? text_complete.text : title) + '</span>';
+
                     $elm.html(wait_time_html);
 
                     if (!is_meta.length) {
-                        $elm.parents('.wrap-countdown').css('color', '#ff0000')
+                        $elm.parents('.wrap-countdown').css({'color': '#0c7905', 'font-weight': '600'});
+                    } else {
+                        $elm.parents('.wrap-countdown').css({'background': '#0c7905'});
                     }
 
                     if (is_meta.length && meta_attr.auto_direct === '1') {
@@ -258,7 +256,7 @@
             let currentWidth = 0;
             let timeleft = is_meta.length? parseInt(meta_attr.time) : time_cnf;
 
-            parent.css('width', parent.width());
+            parent.css({'width': parent.width(), 'margin-right': '25px'});
             $progress.width("0%");
 
             if (!is_meta.length) {
@@ -270,7 +268,6 @@
             }
 
             const intervalId = setInterval(function () {
-                let replace_title = '';
 
                 if (timeleft <= 3) {
                     currentWidth += progressWidth / 100;
@@ -282,13 +279,10 @@
                 if (currentWidth >= progressWidth) {
                     clearInterval(intervalId);
 
-                    if (text_complete.enable === 'yes') {
-                        replace_title = text_complete.text;
-                    }
-
+                    parent.css('margin-right', '0');
                     let progress_html = '<i class="fa fa-angle-double-right fa-shake" style="color: #fff;cursor: pointer;font-size: 13px;"></i>';
                     progress_html += `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
-                    progress_html += '<span class="text-complete">' + replace_title + '</span>';
+                    progress_html += '<span class="text-complete">' + ((text_complete.enable === 'yes') ? text_complete.text : title) + '</span>';
                     $elm.html('<strong class="post-progress" style="color:#0c7c3f;">' + progress_html + '</strong>');
                     if (parent.parents('.igl-download-now').length) {
                         $elm.html('<strong class="post-progress" style="background-color:#018f06">' + progress_html + '</strong>');

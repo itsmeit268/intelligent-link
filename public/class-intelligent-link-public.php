@@ -11,6 +11,7 @@ class Intelligent_Link_Public {
         add_action('init', array($this, 'preplink_rewrite_endpoint'), 10, 0);
         add_action('wp_head', array($this, 'add_prep_custom_styles'), 10, 2);
         add_filter('the_content', array($this, 'render_meta_link_info'), 10);
+//        add_filter('the_content', array($this, 'prep_link_html_2'), 10);
         add_action('woocommerce_short_description', array($this,'render_meta_short_description'), 10);
     }
 
@@ -192,20 +193,22 @@ class Intelligent_Link_Public {
     }
 
     public function render_meta_link_info($content) {
-        $file_name = get_post_meta(get_the_ID(), 'file_name', true);
-        $link_no_login = get_post_meta(get_the_ID(), 'link_no_login', true);
-        $link_is_login = get_post_meta(get_the_ID(), 'link_is_login', true);
+        if (!is_admin()) {
+            $file_name = get_post_meta(get_the_ID(), 'file_name', true);
+            $link_no_login = get_post_meta(get_the_ID(), 'link_no_login', true);
+            $link_is_login = get_post_meta(get_the_ID(), 'link_is_login', true);
 
-        if ($file_name && $link_is_login && $link_no_login) {
-            $product_elm_after_content = isset($this->meta_option()['product_elm']) && $this->meta_option()['product_elm'] == 'after_product_content';
-            $html = $this->prep_link_html($this->meta_option(), $file_name);
+            if ($file_name && $link_is_login && $link_no_login) {
+                $product_elm_after_content = isset($this->meta_option()['product_elm']) && $this->meta_option()['product_elm'] == 'after_product_content';
+//                $html = $this->prep_link_html($this->meta_option(), $file_name);
+                $html = $this->prep_link_html_2($this->meta_option(), $file_name);
+                $is_post_or_product = is_singular('post') || (is_singular('product') && $product_elm_after_content);
 
-            $is_post_or_product = is_singular('post') || (is_singular('product') && $product_elm_after_content);
-
-            if ($is_post_or_product) {
-                $last_p = strrpos($content, '</p>');
-                if ($last_p !== false) {
-                    $content = substr_replace($content, $html, $last_p + 4, 0);
+                if ($is_post_or_product) {
+                    $last_p = strrpos($content, '</p>');
+                    if ($last_p !== false) {
+                        $content = substr_replace($content, $html, $last_p + 4, 0);
+                    }
                 }
             }
         }
@@ -226,6 +229,58 @@ class Intelligent_Link_Public {
         }
 
         $html .= '</' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . '>';
+        return $html;
+    }
+
+    public function prep_link_html_2($meta_attr, $file_name) {
+        $blog_url = base64_encode(get_bloginfo('url'));
+        $display_mode = !empty($this->il_settings()['preplink_wait_text']) ? $this->il_settings()['preplink_wait_text'] : 'wait_time';
+        $html = '<' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . ' class="igl-download-now"><b class="b-h-down">' . (!empty($meta_attr['pre_fix']) ? $meta_attr['pre_fix'] : 'Link download: ') . '</b>';
+
+        if ($display_mode === 'progress') {
+            $html .= '<div class="post-progress-bar">';
+            $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="post-progress">' . $file_name . '</strong></span></div>';
+        } else {
+            $html .= '<span class="wrap-countdown">';
+            $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
+        }
+
+        $html .= '</' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . '>';
+
+        $list_link = get_post_meta(get_the_ID(), 'link-download-metabox', true);
+        $settings = get_option('meta_attr', array());
+        $total = (int) $settings['field_lists']? : 5;
+
+
+        if (isset($list_link) && !empty($list_link) && is_array($list_link)) {
+            $html .= '<div class="list-link-redirect">';
+            $html .= '<p class="ilgl-other-version">'.__('Other Version').'</p>';
+            $html .= '<ul>';
+
+            for ($i = 1; $i <= $total; $i++) {
+                $file_name_key = 'file_name-' . $i;
+                $link_no_login_key = 'link_no_login-' . $i;
+                $link_is_login_key = 'link_is_login-' . $i;
+                $size_key = 'size-' . $i;
+
+                if (isset($list_link[$file_name_key]) && !empty($list_link[$link_no_login_key]) && isset($list_link[$link_is_login_key])) {
+                    $file_name = $list_link[$file_name_key];
+                    $size = $list_link[$size_key];
+                    $html .= '<li>';
+                    if (is_user_logged_in()) {
+                        $html .= '<a href="' . esc_html($list_link[$link_is_login_key]) . '" class="preplink-btn-link list-preplink-btn-link">' . esc_html($file_name . ' ' . $size) . '</a>';
+                    } else {
+                        $html .= '<a href="' . esc_html($list_link[$link_no_login_key]) . '" class="preplink-btn-link list-preplink-btn-link">' . esc_html($file_name . ' ' . $size) . '</a>';
+                    }
+                    $html .= '</li>';
+                }
+            }
+
+
+            $html .= '</ul>';
+            $html .= '</div>';
+        }
+
         return $html;
     }
 }
