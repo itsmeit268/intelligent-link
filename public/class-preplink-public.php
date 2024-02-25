@@ -32,7 +32,7 @@ class Preplink_Public {
         if ($this->is_plugin_enable()){
 
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
-            wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link.js', array('jquery'), PREPLINK_VERSION, true);
+            wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/global.js', array('jquery'), PREPLINK_VERSION, true);
             
             $settings = $this->il_settings();
             $meta_attr = get_option('meta_attr', []);
