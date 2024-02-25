@@ -79,7 +79,7 @@ if (file_exists(get_template_directory() . '/header.php')){
                                     <div class="left">
                                         <a class="a-title image" href="javascript:void(0)">
                                             <?php
-                                            $image_src = plugin_dir_url(__DIR__) . 'images/11820285.png';
+                                            $image_src = plugin_dir_url(__DIR__) . 'images/check_icon.png';
                                             $img = '<img src="'. esc_url($image_src).'"/>';
                                             echo has_post_thumbnail() ? get_the_post_thumbnail($post_id, 'thumbnail') : $img; ?>
                                         </a>
