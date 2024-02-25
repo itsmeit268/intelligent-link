@@ -22,6 +22,7 @@ function render_back_icon($view_link){ ?>
         </a>
     </div>
 <?php }
+
 function get_list_link($post_id, $settings) {
     $list_link = get_post_meta($post_id, 'link-download-metabox', true);
 
