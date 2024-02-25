@@ -644,7 +644,7 @@ class Preplink_Admin {
         $meta_attr = get_option('meta_attr', []); ?>
         <select name="meta_attr[elm]">
             <option value="div" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'div' ? 'selected' : '' ?>>div</option>
-            <option value="h2" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h2' ? 'selected' : '' ?>>h3</option>
+            <option value="h2" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h2' ? 'selected' : '' ?>>h2</option>
             <option value="h3" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h3' ? 'selected' : '' ?>>h3</option>
             <option value="h4" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h4' ? 'selected' : '' ?>>h4</option>
             <option value="h5" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h5' ? 'selected' : '' ?>>h5</option>
