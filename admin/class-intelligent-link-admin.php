@@ -86,7 +86,7 @@ class Intelligent_Link_Admin {
         echo '<h2 class="nav-tab-wrapper">';
         foreach ($tabs as $tab => $name) {
             $class = ($tab == $active_tab) ? ' nav-tab-active' : '';
-            echo '<a class="nav-tab' . $class . '" href="?page=preplink-settings&tab=' . $tab . '">' . $name . '</a>';
+            echo '<a class="nav-tab' . $class . '" href="?page=intelligent-link-settings&tab=' . $tab . '">' . $name . '</a>';
         }
         echo '</h2>';
 

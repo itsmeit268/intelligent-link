@@ -85,15 +85,15 @@ class Intelligent_Link_Public {
 
         if (isset($wp_query->query_vars[$this->endpoint_conf()])) {
 
-            wp_enqueue_style('prep-template', plugin_dir_url(__FILE__) . 'css/template.css', [], PREPLINK_VERSION, 'all');
-            wp_enqueue_script('prep-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), PREPLINK_VERSION, false);
-            wp_localize_script('prep-template', 'prep_template', [
+            wp_enqueue_style('intelligent-link-template', plugin_dir_url(__FILE__) . 'css/template.css', [], PREPLINK_VERSION, 'all');
+            wp_enqueue_script('intelligent-link-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), PREPLINK_VERSION, false);
+            wp_localize_script('intelligent-link-template', 'prep_template', [
                 'countdown_endpoint'     => !empty($this->ep_settings()['countdown_endpoint']) ? $this->ep_settings()['countdown_endpoint'] : 5,
                 'endpoint_direct'        => !empty($this->ep_settings()['endpoint_auto_direct']) ? $this->ep_settings()['endpoint_auto_direct'] : 0,
                 'modify_href'            => $this->modify_href()
             ]);
 
-            include_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-endpoint-template.php';
+            include_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-intelligent-link-template.php';
 
             if (is_singular('product')) {
                 remove_all_actions( 'woocommerce_single_product_summary' );
