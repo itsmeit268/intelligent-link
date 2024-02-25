@@ -57,7 +57,6 @@ class Intelligent_Link_Admin {
     }
 
     public function add_prep_link_admin_menu(){
-
         add_menu_page(
             __(PREPLINK_NAME. ' Settings', 'intelligent-link'),
             __(PREPLINK_NAME, 'intelligent-link'),
@@ -151,7 +150,7 @@ class Intelligent_Link_Admin {
         $html = '<h2 class="nav-tab-wrapper">';
         foreach( $tabs as $tab => $name ){
             $class = ( $tab == $current ) ? 'nav-tab-active' : '';
-            $html .= '<a class="nav-tab ' . $class . '" href="?page=preplink-settings&tab=' . $tab . '">' . $name . '</a>';
+            $html .= '<a class="nav-tab ' . $class . '" href="?page=intelligent-link-settings&tab=' . $tab . '">' . $name . '</a>';
         }
         $html .= '</h2>';
         echo $html;
@@ -162,7 +161,7 @@ class Intelligent_Link_Admin {
      * @return mixed
      */
     public function add_plugin_action_link($links){
-        $setting_link = '<a href="' . esc_url(get_admin_url()) . 'admin.php?page=preplink-settings">' . __('Settings', 'intelligent-link') . '</a>';
+        $setting_link = '<a href="' . esc_url(get_admin_url()) . 'admin.php?page=intelligent-link-settings">' . __('Settings', 'intelligent-link') . '</a>';
         array_unshift($links, $setting_link);
         return $links;
     }

@@ -6,7 +6,7 @@
  * Plugin URI:        https://itsmeit.co/
  * Description:       Encrypts permitted links, initiates countdown timer before redirection, increases user interaction time, boosts page views, and enhances revenue for websites with advertising like AdSense, Ezoic, etc.
  * Version:           1.0.6
- * Author:            itsmeit <buivanloi.2010@gmail.com>
+ * Author:            itsmeit.co
  * Author URI:        https://itsmeit.co/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
