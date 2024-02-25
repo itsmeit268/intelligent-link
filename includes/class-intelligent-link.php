@@ -8,8 +8,7 @@
  * Website     https://itsmeit.co
  */
 
-class Preplink
-{
+class Preplink {
 
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
@@ -44,20 +43,18 @@ class Preplink
      * the public-facing side of the site.
      *
      */
-    public function __construct()
-    {
+    public function __construct(){
         if (defined('PREPLINK_VERSION')) {
             $this->version = PREPLINK_VERSION;
         } else {
             $this->version = '1.0.6';
         }
-        $this->plugin_name = 'preplink';
+        $this->plugin_name = 'intelligent-link';
 
         $this->load_dependencies();
         $this->set_locale();
         $this->define_admin_hooks();
         $this->define_public_hooks();
-
     }
 
     /**
@@ -75,31 +72,29 @@ class Preplink
      *
      * @access   private
      */
-    private function load_dependencies()
-    {
-
+    private function load_dependencies(){
         /**
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-preplink-loader.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-intelligent-link-loader.php';
 
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-preplink-i18n.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-intelligent-link-i18n.php';
 
         /**
          * The class responsible for defining all actions that occur in the admin area.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-preplink-admin.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-intelligent-link-admin.php';
 
         /**
          * The class responsible for defining all actions that occur in the public-facing
          * side of the site.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-preplink-public.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-intelligent-link-public.php';
 
         $this->loader = new Preplink_Loader();
 
@@ -113,8 +108,7 @@ class Preplink
      *
      * @access   private
      */
-    private function set_locale()
-    {
+    private function set_locale() {
         $plugin_i18n = new Preplink_i18n();
         $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
     }
@@ -125,11 +119,8 @@ class Preplink
      *
      * @access   private
      */
-    private function define_admin_hooks()
-    {
-
+    private function define_admin_hooks() {
         $plugin_admin = new Preplink_Admin($this->get_plugin_name(), $this->get_version());
-
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
     }
@@ -140,8 +131,7 @@ class Preplink
      *
      * @access   private
      */
-    private function define_public_hooks()
-    {
+    private function define_public_hooks() {
         $plugin_public = new Preplink_Public($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
@@ -152,8 +142,7 @@ class Preplink
      * Run the loader to execute all of the hooks with WordPress.
      *
      */
-    public function run()
-    {
+    public function run() {
         $this->loader->run();
     }
 
@@ -163,8 +152,7 @@ class Preplink
      *
      * @return    string    The name of the plugin.
      */
-    public function get_plugin_name()
-    {
+    public function get_plugin_name() {
         return $this->plugin_name;
     }
 
@@ -173,8 +161,7 @@ class Preplink
      *
      * @return    Preplink_Loader    Orchestrates the hooks of the plugin.
      */
-    public function get_loader()
-    {
+    public function get_loader() {
         return $this->loader;
     }
 
@@ -183,8 +170,7 @@ class Preplink
      *
      * @return    string    The version number of the plugin.
      */
-    public function get_version()
-    {
+    public function get_version() {
         return $this->version;
     }
 }

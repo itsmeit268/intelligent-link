@@ -29,9 +29,8 @@ define('PREPLINK_PLUGIN_BASE',	plugin_basename(PREPLINK_PLUGIN_FILE ));
  * The code that runs during plugin activation.
  * This action is documented in includes/class-preplink-activator.php
  */
-function activate_preplink()
-{
-    require_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-preplink-activator.php';
+function activate_preplink() {
+    require_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-intelligent-link-activator.php';
     Preplink_Activator::activate();
 }
 
@@ -39,9 +38,8 @@ function activate_preplink()
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-preplink-deactivator.php
  */
-function deactivate_preplink()
-{
-    require_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-preplink-deactivator.php';
+function deactivate_preplink() {
+    require_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-intelligent-link-deactivator.php';
     Preplink_Deactivator::deactivate();
 }
 
@@ -52,7 +50,7 @@ register_deactivation_hook(PREPLINK_PLUGIN_FILE, 'deactivate_preplink');
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-preplink.php';
+require plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-intelligent-link.php';
 
 function run_preplink() {
     $plugin = new Preplink();
