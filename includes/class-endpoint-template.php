@@ -79,7 +79,7 @@ function svg_render() { ?>
 
 function ep_related_post($settings, $post_id){ ?>
     <div class="related_post">
-        <h3 class="suggestions-post"><?= __('Related Posts','prep-link') ?></h3>
+        <h3 class="suggestions-post"><?= __('Related Posts', 'intelligent-link') ?></h3>
         <?php
         $categories = get_the_category();
         $category_ids = array();

@@ -76,7 +76,7 @@
             $relatedNum.on('change', function () {
                 if (parseInt($relatedNum.val()) < 1) {
                     $('.prep-notice').remove();
-                    $relatedNum.parents('.related_number').append('<p class="prep-notice">' + __('The value must be greater than 0 to show the number of related posts.', 'prep-link') + '</p>');
+                    $relatedNum.parents('.related_number').append('<p class="prep-notice">' + __('The value must be greater than 0 to show the number of related posts.', 'intelligent-link') + '</p>');
                 } else {
                     $('.prep-notice').remove();
                 }
@@ -88,7 +88,7 @@
             cookie.on('change', function () {
                 if (parseInt(cookie.val()) <= 4) {
                     $('.prep-notice').remove();
-                    cookie.parents('td').append('<p class="prep-notice">'+ __('Value must be greater than 5','prep-link')+'</p>');
+                    cookie.parents('td').append('<p class="prep-notice">'+ __('Value must be greater than 5', 'intelligent-link')+'</p>');
                 } else {
                     $('.prep-notice').remove();
                 }

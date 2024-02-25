@@ -59,8 +59,8 @@ if (file_exists(get_template_directory() . '/header.php')){
             <div class="entry-content prep-content">
                 <?php if (empty($prep_request) || empty($prep_title)) : ?>
                     <div class="session-expired">
-                        <p><?= __('Your session has ended, please click', 'prep-link')?>&nbsp;<a href="<?= $view_link ?>"><span style="color: #0a4ad0;"><?= __('here', 'prep-link')?></span></a>&nbsp;<?= __('and do it again.', 'prep-link')?></p>
-                        <p><?= __('If the issue persists, please try clearing cookies or attempting with a different browser.', 'prep-link') ?></p>
+                        <p><?= __('Your session has ended, please click', 'intelligent-link')?>&nbsp;<a href="<?= $view_link ?>"><span style="color: #0a4ad0;"><?= __('here', 'intelligent-link')?></span></a>&nbsp;<?= __('and do it again.', 'intelligent-link')?></p>
+                        <p><?= __('If the issue persists, please try clearing cookies or attempting with a different browser.', 'intelligent-link') ?></p>
                     </div>
                     <?= !empty($ads['ads_7']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_7'] . '</div>' : '' ?>
                 <?php else: ?>
@@ -85,7 +85,7 @@ if (file_exists(get_template_directory() . '/header.php')){
                                         </a>
                                         <div class="post-download">
                                             <p class="title prep-title"><?= $isMeta ? ($file_name) : $prep_title; ?></p>
-                                            <p class="post-date"><?= __('Update:', 'prep-link') . ' ' . get_the_modified_date('d/m/Y') ?: get_the_date('d/m/Y'); ?></p>
+                                            <p class="post-date"><?= __('Update:', 'intelligent-link') . ' ' . get_the_modified_date('d/m/Y') ?: get_the_date('d/m/Y'); ?></p>
                                         </div>
                                     </div>
                                     <div class="right">
@@ -111,7 +111,7 @@ if (file_exists(get_template_directory() . '/header.php')){
                             <svg class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zm-143.6-28.9L288 302.6V120c0-13.3-10.7-24-24-24h-16c-13.3 0-24 10.7-24 24v182.6l-72.4-75.5c-9.3-9.7-24.8-9.9-34.3-.4l-10.9 11c-9.4 9.4-9.4 24.6 0 33.9L239 404.3c9.4 9.4 24.6 9.4 33.9 0l132.7-132.7c9.4-9.4 9.4-24.6 0-33.9l-10.9-11c-9.5-9.5-25-9.3-34.3.4z"></path>
                             </svg>
-                            <span class="text-down"><?= __('Download', 'prep-link');?></span>
+                            <span class="text-down"><?= __('Download', 'intelligent-link');?></span>
                         </span>
                         </div>
 
@@ -145,10 +145,10 @@ if (file_exists(get_template_directory() . '/header.php')){
 
                     <div class="keyword-search">
                         <p>
-                            <?= __('To search for a specific resource or content on the internet, you can visit', 'prep-link')?>
-                            <a target="_blank" href="//www.google.com/search?q=<?=$prep_title.' '.$baseUrl?>"><?= __('google.com', 'prep-link')?></a>
-                            <?= __('and enter your search query as:', 'prep-link')?>
-                            <a target="_blank" href="//www.google.com/search?q=<?=$prep_title.' '.$baseUrl?>"><?= __('keyword +', 'prep-link') . ' '. $baseUrl?></a>
+                            <?= __('To search for a specific resource or content on the internet, you can visit', 'intelligent-link')?>
+                            <a target="_blank" href="//www.google.com/search?q=<?=$prep_title.' '.$baseUrl?>"><?= __('google.com', 'intelligent-link')?></a>
+                            <?= __('and enter your search query as:', 'intelligent-link')?>
+                            <a target="_blank" href="//www.google.com/search?q=<?=$prep_title.' '.$baseUrl?>"><?= __('keyword +', 'intelligent-link') . ' '. $baseUrl?></a>
                         </p>
                     </div>
 

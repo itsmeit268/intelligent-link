@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.4; wp-6.2\n"
-"X-Domain: prep-link"
+"X-Domain: intelligent-link"
 
 #. Author URI of the plugin
 msgid "https://itsmeit.co"

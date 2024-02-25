@@ -59,8 +59,8 @@ class Preplink_Admin {
     public function add_prep_link_admin_menu(){
 
         add_menu_page(
-            __(PREPLINK_NAME. ' Settings', 'prep-link'),
-            __(PREPLINK_NAME, 'prep-link'),
+            __(PREPLINK_NAME. ' Settings', 'intelligent-link'),
+            __(PREPLINK_NAME, 'intelligent-link'),
             'manage_options',
             $this->plugin_name . '-settings',
             [$this, 'prep_link_admin_form_settings'],
@@ -75,11 +75,11 @@ class Preplink_Admin {
 
         // define tabs array
         $tabs = array(
-            'general'   => __( 'General', 'prep-link' ),
-            'meta_attr' => __( 'Meta attribute', 'prep-link' ),
-            'advertising'  => __( 'Advertising', 'prep-link' ),
-            'faq' => __( 'FAQ', 'prep-link' ),
-            'endpoint' => __( 'Endpoint', 'prep-link' )
+            'general'   => __( 'General', 'intelligent-link' ),
+            'meta_attr' => __( 'Meta attribute', 'intelligent-link' ),
+            'advertising'  => __( 'Advertising', 'intelligent-link' ),
+            'faq' => __( 'FAQ', 'intelligent-link' ),
+            'endpoint' => __( 'Endpoint', 'intelligent-link' )
         );
 
         // output tabs
@@ -142,11 +142,11 @@ class Preplink_Admin {
 
     public function prep_link_settings_tabs( $current = 'general' ) {
         $tabs = array(
-            'general'   => __( 'General Settings', 'prep-link' ),
-            'meta_attr'   => __( 'Meta Attribute Settings', 'prep-link' ),
-            'ads_code'  => __( 'Advertising Settings', 'prep-link' ),
-            'preplink_faq'  => __( 'FAQ Settings', 'preplink' ),
-            'preplink_endpoint'  => __( 'Endpoint Settings', 'prep-link' )
+            'general'   => __( 'General Settings', 'intelligent-link' ),
+            'meta_attr'   => __( 'Meta Attribute Settings', 'intelligent-link' ),
+            'ads_code'  => __( 'Advertising Settings', 'intelligent-link' ),
+            'preplink_faq'  => __( 'FAQ Settings', 'intelligent-link' ),
+            'preplink_endpoint'  => __( 'Endpoint Settings', 'intelligent-link' )
         );
         $html = '<h2 class="nav-tab-wrapper">';
         foreach( $tabs as $tab => $name ){
@@ -162,7 +162,7 @@ class Preplink_Admin {
      * @return mixed
      */
     public function add_plugin_action_link($links){
-        $setting_link = '<a href="' . esc_url(get_admin_url()) . 'admin.php?page=preplink-settings">' . __('Settings', 'prep-link') . '</a>';
+        $setting_link = '<a href="' . esc_url(get_admin_url()) . 'admin.php?page=preplink-settings">' . __('Settings', 'intelligent-link') . '</a>';
         array_unshift($links, $setting_link);
         return $links;
     }
@@ -207,7 +207,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_enable_plugin',
-            __('Enable/Disable', 'prep-link'),
+            __('Enable/Disable', 'intelligent-link'),
             array($this, 'preplink_enable_plugin'),
             'preplink_general_settings',
             'preplink_general_section',
@@ -219,33 +219,33 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_endpoint',
-            __('Endpoint URL string', 'prep-link'),
+            __('Endpoint URL string', 'intelligent-link'),
             array($this, 'preplink_endpoint_field'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section');
 
         add_settings_field(
             'preplink_cookie_time',
-            __('Link expiration time', 'prep-link'),
+            __('Link expiration time', 'intelligent-link'),
             array($this, 'preplink_cookie_time'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section');
 
         add_settings_field(
             'preplink_template',
-            __('Display Mode Progress', 'prep-link'),
+            __('Display Mode Progress', 'intelligent-link'),
             array($this, 'enpoint_display_mode'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
             array(
-                'default'    => __('Default', 'prep-link'),
-                'countdown'  => __('Countdown', 'prep-link'),
+                'default'    => __('Default', 'intelligent-link'),
+                'countdown'  => __('Countdown', 'intelligent-link'),
             )
         );
 
         add_settings_field(
             'preplink_endpoint_auto_direct',
-            __('Automatic redirection', 'prep-link'),
+            __('Automatic redirection', 'intelligent-link'),
             array($this, 'preplink_endpoint_auto_direct'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -257,7 +257,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_textarea',
-            __('String inside URL or domain', 'prep-link'),
+            __('String inside URL or domain', 'intelligent-link'),
             array($this, 'preplink_textarea_field'),
             'preplink_general_settings',
             'preplink_general_section'
@@ -265,7 +265,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_excludes_element',
-            __('Element excluded', 'prep-link'),
+            __('Element excluded', 'intelligent-link'),
             array($this, 'preplink_excludes_element'),
             'preplink_general_settings',
             'preplink_general_section'
@@ -273,7 +273,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_image',
-            __('Display Post Image', 'prep-link'),
+            __('Display Post Image', 'intelligent-link'),
             array($this, 'preplink_image_field'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -285,7 +285,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'pr_faq',
-            __('FAQ Settings', 'prep-link'),
+            __('FAQ Settings', 'intelligent-link'),
             array($this, 'pr_faq'),
             'preplink_faq_settings',
             'preplink_faq_section',
@@ -294,7 +294,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_related_post',
-            __('Display Post Related', 'prep-link'),
+            __('Display Post Related', 'intelligent-link'),
             array($this, 'preplink_related_post'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -306,7 +306,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_comment',
-            __('Display Comment', 'prep-link'),
+            __('Display Comment', 'intelligent-link'),
             array($this, 'preplink_comment'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -318,7 +318,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'redirect_notice',
-            __('Redirection Notice', 'prep-link'),
+            __('Redirection Notice', 'intelligent-link'),
             array($this, 'redirect_notice'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section'
@@ -326,7 +326,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_display_mode',
-            __('Display Mode Progress', 'prep-link'),
+            __('Display Mode Progress', 'intelligent-link'),
             array($this, 'preplink_display_mode'),
             'preplink_general_settings',
             'preplink_general_section',
@@ -338,7 +338,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'replace_text_complete',
-            __('Replace text after complete', 'prep-link'),
+            __('Replace text after complete', 'intelligent-link'),
             array($this, 'replace_text_complete'),
             'preplink_general_settings',
             'preplink_general_section',
@@ -349,69 +349,69 @@ class Preplink_Admin {
         );
 
         add_settings_field('preplink_auto_direct',
-            __('Automatic redirection', 'prep-link'),
+            __('Automatic redirection', 'intelligent-link'),
             array($this, 'preplink_post_auto_direct'),
             'preplink_general_settings', 'preplink_general_section', array(1 => 'Yes', 0 => 'No')
         );
 
-        add_settings_field('pr_ad_1', __('Ads code 1', 'prep-link'), array($this, 'pr_ad_1'), 'ads_code_settings', 'ads_code_section');
-        add_settings_field('pr_ad_2', __('Ads code 2', 'prep-link'), array($this, 'pr_ad_2'), 'ads_code_settings', 'ads_code_section');
-        add_settings_field('pr_ad_3', __('Ads code 3', 'prep-link'), array($this, 'pr_ad_3'), 'ads_code_settings', 'ads_code_section');
-        add_settings_field('pr_ad_4', __('Ads code 4', 'prep-link'), array($this, 'pr_ad_4'), 'ads_code_settings', 'ads_code_section');
-        add_settings_field('pr_ad_5', __('Ads code 5', 'prep-link'), array($this, 'pr_ad_5'), 'ads_code_settings', 'ads_code_section');
-        add_settings_field('pr_ad_6', __('Ads code 6', 'prep-link'), array($this, 'pr_ad_6'), 'ads_code_settings', 'ads_code_section');
-        add_settings_field('pr_ad_7', __('Ads code 7', 'prep-link'), array($this, 'pr_ad_7'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_1', __('Ads code 1', 'intelligent-link'), array($this, 'pr_ad_1'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_2', __('Ads code 2', 'intelligent-link'), array($this, 'pr_ad_2'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_3', __('Ads code 3', 'intelligent-link'), array($this, 'pr_ad_3'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_4', __('Ads code 4', 'intelligent-link'), array($this, 'pr_ad_4'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_5', __('Ads code 5', 'intelligent-link'), array($this, 'pr_ad_5'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_6', __('Ads code 6', 'intelligent-link'), array($this, 'pr_ad_6'), 'ads_code_settings', 'ads_code_section');
+        add_settings_field('pr_ad_7', __('Ads code 7', 'intelligent-link'), array($this, 'pr_ad_7'), 'ads_code_settings', 'ads_code_section');
 
         add_settings_field('meta_attr_auto_direct',
-            __('Automatic redirection', 'prep-link'),
+            __('Automatic redirection', 'intelligent-link'),
             array($this, 'meta_attr_auto_direct'),
             'preplink_meta_attr', 'preplink_meta_attr_section', array(1 => 'Yes', 0 => 'No')
         );
 
         add_settings_field(
             'preplink_link_field_lists',
-            __('Number link list', 'prep-link'),
+            __('Number link list', 'intelligent-link'),
             array($this, 'preplink_link_field_lists'),
             'preplink_meta_attr',
             'preplink_meta_attr_section');
 
         add_settings_field(
             'meta_elm_option',
-            __('Render Element', 'prep-link'),
+            __('Render Element', 'intelligent-link'),
             array($this, 'meta_elm_option'),
             'preplink_meta_attr',
             'preplink_meta_attr_section',
             array(
-                'div'    => __('div', 'prep-link'),
-                'h2'  => __('h2', 'prep-link'),
-                'h3'  => __('h3', 'prep-link'),
-                'h4'  => __('h4', 'prep-link'),
-                'h5'  => __('h5', 'prep-link'),
+                'div'    => __('div', 'intelligent-link'),
+                'h2'  => __('h2', 'intelligent-link'),
+                'h3'  => __('h3', 'intelligent-link'),
+                'h4'  => __('h4', 'intelligent-link'),
+                'h5'  => __('h5', 'intelligent-link'),
             )
         );
 
         add_settings_field(
             'product_elm_option',
-            __('Product Display Position', 'prep-link'),
+            __('Product Display Position', 'intelligent-link'),
             array($this, 'product_elm_option'),
             'preplink_meta_attr',
             'preplink_meta_attr_section',
             array(
-                'after_product_content'    => __('After Product Content', 'prep-link'),
-                'after_short_description'  => __('After Short Description', 'prep-link'),
+                'after_product_content'    => __('After Product Content', 'intelligent-link'),
+                'after_short_description'  => __('After Short Description', 'intelligent-link'),
             )
         );
 
         add_settings_field(
             'preplink_link_url_rewriting',
-            __('Rewrite URL Encoding', 'prep-link'),
+            __('Rewrite URL Encoding', 'intelligent-link'),
             array($this, 'preplink_link_url_rewriting'),
             'preplink_general_settings',
             'preplink_general_section');
 
         add_settings_field(
             'preplink_custom_style',
-            __('Custom Style', 'prep-link'),
+            __('Custom Style', 'intelligent-link'),
             array($this, 'preplink_custom_style'),
             'preplink_general_settings',
             'preplink_general_section'
@@ -419,7 +419,7 @@ class Preplink_Admin {
 
         add_settings_field(
             'preplink_delete_option',
-            __('Delete all data after remove plugin', 'prep-link'),
+            __('Delete all data after remove plugin', 'intelligent-link'),
             array($this, 'preplink_delete_option_on_uninstall'),
             'preplink_general_settings',
             'preplink_general_section'
