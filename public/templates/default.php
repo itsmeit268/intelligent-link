@@ -59,7 +59,7 @@ set_no_index_page();
                     <?= !empty($ads['ads_7']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_7'] . '</div>' : '' ?>
                 <?php else: ?>
                     <?php if ($post_image && $isMeta && has_post_thumbnail()) : ?>
-                        <div class="s-feat-outer">
+                        <div class="ilgl-feat-outer">
                             <div class="featured-image">
                                 <img src="<?= get_the_post_thumbnail_url($post_id, 'full'); ?>" class="prep-thumbnail" alt="<?= $post_title ?>" title="<?= $post_title ?>">
                             </div>
