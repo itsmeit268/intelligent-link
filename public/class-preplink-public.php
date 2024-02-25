@@ -221,7 +221,6 @@ class Preplink_Public {
             $html .= '<div class="post-progress-bar">';
             $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="post-progress">' . $file_name . '</strong></span></div>';
         } else {
-            var_dump($blog_url);
             $html .= '<span class="wrap-countdown">';
             $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
         }
