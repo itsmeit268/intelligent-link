@@ -54,8 +54,7 @@ register_deactivation_hook(PREPLINK_PLUGIN_FILE, 'deactivate_preplink');
  */
 require plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-preplink.php';
 
-function run_preplink()
-{
+function run_preplink() {
     $plugin = new Preplink();
     $plugin->run();
 }
