@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @package    Preplink
- * @subpackage Preplink/admin
+ * @package    intelligent-link
+ * @subpackage intelligent-link/admin
  * @author     itsmeit <buivanloi.2010@gmail.com>
  * Website     https://itsmeit.co/
  */
@@ -49,11 +49,11 @@ class Preplink_Admin {
 
      */
     public function enqueue_styles(){
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/preplink-admin.css', array(), $this->version, 'all');
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/intelligent-link-admin.css', array(), $this->version, 'all');
     }
 
     public function enqueue_scripts(){
-        wp_enqueue_script('preplink-admin', plugin_dir_url(__FILE__) . 'js/preplink-admin.js', array('wp-i18n'), $this->version, false);
+        wp_enqueue_script('preplink-admin', plugin_dir_url(__FILE__) . 'js/intelligent-link-admin.js', array('wp-i18n'), $this->version, false);
     }
 
     public function add_prep_link_admin_menu(){
