@@ -226,14 +226,21 @@
                     let wait_time_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
                     wait_time_html += '<span style="vertical-align: unset;">' + replace_title + '</span>';
                     $elm.html(wait_time_html);
+
                     if (!is_meta.length) {
                         $elm.parents('.wrap-countdown').css('color', '#ff0000')
                     }
-                    if (auto_direct || (is_meta.length && meta_attr.auto_direct === '1')) {
+
+                    if (is_meta.length && meta_attr.auto_direct === '1') {
+                        set_cookie_title(title);
+                        set_cookie_url(url);
+                        window.location.href = endpoint_url();
+                    } else if (!is_meta.length && auto_direct){
                         set_cookie_title(title);
                         set_cookie_url(url);
                         window.location.href = endpoint_url();
                     }
+
                     countdownStatus[url] = { active: false };
                 } else {
                     setTimeout(countdown, 1000);
@@ -288,7 +295,12 @@
                     }
 
                     parent.removeAttr('style');
-                    if (auto_direct || (is_meta.length && meta_attr.auto_direct === '1')) {
+
+                    if (is_meta.length && meta_attr.auto_direct === '1') {
+                        set_cookie_title(title);
+                        set_cookie_url(url);
+                        window.location.href = endpoint_url();
+                    } else if (!is_meta.length && auto_direct){
                         set_cookie_title(title);
                         set_cookie_url(url);
                         window.location.href = endpoint_url();

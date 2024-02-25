@@ -783,9 +783,9 @@ class Preplink_Admin {
             </tr>
             <tr class="preplink_post_number">
                 <td class="preplink_post_number_notice" style="padding: 2px 0">
-                    <label><p>The default countdown time is set to 1 seconds.</p></label>
+                    <label><p>The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.</p></label>
                     <input type="number" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="1"
-                           value="<?= !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : '1' ?>" min="1" max="300"/>
+                           value="<?= !empty($settings['preplink_countdown']) ? ($settings['preplink_countdown'] == '0' ? 0 : $settings['preplink_countdown']) : 0 ?>" min="0" max="300"/>
                 </td>
             </tr>
             </tbody>
@@ -808,7 +808,7 @@ class Preplink_Admin {
             </tr>
             <tr class="tr-time_number">
                 <td class="td-time_number" style="padding: 2px 0">
-                    <label><p>The default countdown time is set to 1 seconds.</p></label>
+                    <label><p>The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.</p></label>
                     <input type="number" name="meta_attr[time]" placeholder="1" value="<?= !empty($meta_attr['time']) ? ($meta_attr['time'] == '0' ? 0 : $meta_attr['time']) : 0 ?>" min="0" max="300"/>
                 </td>
             </tr>
