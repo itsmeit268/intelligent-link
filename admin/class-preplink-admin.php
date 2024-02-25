@@ -317,6 +317,14 @@ class Preplink_Admin {
         );
 
         add_settings_field(
+            'redirect_notice',
+            __('Redirection Notice', 'prep-link'),
+            array($this, 'redirect_notice'),
+            'preplink_endpoint_settings',
+            'preplink_endpoint_section'
+        );
+
+        add_settings_field(
             'preplink_display_mode',
             __('Display Mode Progress', 'prep-link'),
             array($this, 'preplink_display_mode'),
@@ -722,13 +730,23 @@ class Preplink_Admin {
     }
 
     public function preplink_comment() {
-        $settings = get_option('preplink_endpoint', array());
+        $settings = get_option('preplink_endpoint',[]);
         ?>
         <select name="preplink_endpoint[preplink_comment]">
             <option value="1" <?php selected(isset($settings['preplink_comment']) && $settings['preplink_comment'] == '1'); ?>>Yes</option>
             <option value="0" <?php selected(isset($settings['preplink_comment']) && $settings['preplink_comment'] == '0'); ?>>No</option>
         </select>
     <?php }
+
+    public function redirect_notice(){
+        $settings = get_option('preplink_endpoint', []);
+        $example = 'You are being redirected to a link outside of '.str_replace(['https://', 'http://'], '', get_bloginfo('url')) .'. Please click the button below to continue, or press the back arrow to return to the previous page.';
+        $html = '<textarea cols="50" rows="5" name="preplink_endpoint[redirect_notice]">';
+        $html .= isset($settings["redirect_notice"]) ? $settings["redirect_notice"] : $example;
+        $html .= '</textarea>';
+        $html .= '<p class="description">The notification prior to users being redirected to an external link.</p>';
+        echo $html;
+    }
 
     public function preplink_custom_style() {
         $settings = get_option('preplink_setting', array());

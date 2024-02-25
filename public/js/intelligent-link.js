@@ -107,7 +107,7 @@
                 var $this = $(this),
                     href = $this.attr('href'),
                     allow_urls = allow_url.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
-                    text_link = $this.text().trim() || '>> link <<';
+                    text_link = $this.text().trim() || '>> Redirect Link <<';
 
                 if (exclude_elm.some(sel => $this.is(sel)) || $this.closest(exclude_elm.join(',')).length > 0 || href === undefined || href === null || !href.length) {
                     return;
@@ -146,7 +146,7 @@
                 e.preventDefault();
 
                 const $this = $(this);
-                const title = $this.text().trim() || '>> link <<';
+                const title = $this.text().trim() || '>> Redirect Link <<';
                 const modified_url = $this.attr('data-id');
                 const url = href_restore(modified_url);
                 const complete = $this.find('.text-hide-complete').data('complete');

@@ -122,6 +122,9 @@ if (file_exists(get_template_directory() . '/header.php')){
                         </div>
 
                     <?php else: ?>
+                        <div class="keyword-search">
+                            <p><?= !empty($endpoint_conf['redirect_notice']) ? $endpoint_conf['redirect_notice']: ''?></p>
+                        </div>
                         <div class="p-file-hide" id="buttondw">
                             <div class="p-file-timer" style="display:none;">
                                 <span class="p-file-timer-sec fw-b" id="preplink-timer-link" data-time="<?= $time_conf ?>"><?= $time_conf ?></span>
