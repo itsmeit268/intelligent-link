@@ -36,7 +36,7 @@ class Intelligent_Link_Admin {
         $this->version = $version;
         add_action('admin_menu', array($this, 'add_prep_link_admin_menu'), 10);
         add_action('admin_init', array($this, 'register_and_build_fields'));
-        add_action('plugin_action_links_' . PREPLINK_PLUGIN_BASE, array($this, 'add_plugin_action_link'), 20);
+        add_action('plugin_action_links_' . INTELLIGENT_LINK_PLUGIN_BASE, array($this, 'add_plugin_action_link'), 20);
 
         add_action('add_meta_boxes', array($this, 'add_html_field_content'), 22);
         add_action('save_post', array($this, 'save_html_field_content'), 20);
@@ -58,8 +58,8 @@ class Intelligent_Link_Admin {
 
     public function add_prep_link_admin_menu(){
         add_menu_page(
-            __(PREPLINK_NAME. ' Settings', 'intelligent-link'),
-            __(PREPLINK_NAME, 'intelligent-link'),
+            __(INTELLIGENT_LINK_NAME. ' Settings', 'intelligent-link'),
+            __(INTELLIGENT_LINK_NAME, 'intelligent-link'),
             'manage_options',
             $this->plugin_name . '-settings',
             [$this, 'prep_link_admin_form_settings'],
@@ -455,8 +455,8 @@ class Intelligent_Link_Admin {
         <div class="prep-link-admin-settings">
             <h3><?= __('These settings are applicable to all Intelligent Link functionalities.')?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
-            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>
+            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
         <?php
     }
@@ -466,8 +466,8 @@ class Intelligent_Link_Admin {
         <div class="meta-attr-display">
             <h3><?= __('This section will allow adding meta attributes such as link, link information, size, etc., for post or product.') ?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
-            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>
+            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
         <?php
     }
@@ -476,8 +476,8 @@ class Intelligent_Link_Admin {
         ?>
         <div class="prep-link-ads-settings">
             <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span> |
-            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>l" target="_blank">WordPress <?= PREPLINK_NAME ?>Plugin</a></span>
+            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span> |
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>l" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?>Plugin</a></span>
             <h3>Please enter your advertisement code, allowing HTML, JS, CSS.</h3>
         </div>
         <?php
@@ -488,9 +488,9 @@ class Intelligent_Link_Admin {
         <div class="prep-link-faq-settings">
             <h3>You can add the FAQ HTML code here, it will apply to the page endpoint.</h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
+            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
             |
-            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
         <?php
     }
@@ -500,9 +500,9 @@ class Intelligent_Link_Admin {
         <div class="prep-link-endpoint-settings">
             <h3>This setting will apply only to the endpoint page.</h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= PREPLINK_PLUGIN_URL ?>" target="_blank"><?= PREPLINK_PLUGIN_URL?></a></span>
+            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
             |
-            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= PREPLINK_NAME ?> Plugin</a></span>
+            <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
         <?php
     }
@@ -923,7 +923,7 @@ class Intelligent_Link_Admin {
     }
 
     public function plugin_url() {
-        return PREPLINK_PLUGIN_URL . '/create-download-link-redirect-page-in-wordpress.html';
+        return INTELLIGENT_LINK_PLUGIN_URL . '/create-download-link-redirect-page-in-wordpress.html';
     }
 
     public function preplink_delete_option_on_uninstall() {

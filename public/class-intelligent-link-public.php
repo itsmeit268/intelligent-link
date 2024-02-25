@@ -24,7 +24,7 @@ class Intelligent_Link_Public {
 
     public function enqueue_styles(){
         if ($this->is_plugin_enable()){
-            wp_enqueue_style('g-intelligent-link', plugin_dir_url(__FILE__) . 'css/intelligent-link.css', array(), PREPLINK_VERSION, 'all');
+            wp_enqueue_style('g-intelligent-link', plugin_dir_url(__FILE__) . 'css/intelligent-link.css', array(), INTELLIGENT_LINK_VERSION, 'all');
         }
     }
 
@@ -32,7 +32,7 @@ class Intelligent_Link_Public {
         if ($this->is_plugin_enable()){
 
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
-            wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link.js', array('jquery'), PREPLINK_VERSION, true);
+            wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
             
             $settings = $this->il_settings();
             $meta_attr = get_option('meta_attr', []);
@@ -85,15 +85,15 @@ class Intelligent_Link_Public {
 
         if (isset($wp_query->query_vars[$this->endpoint_conf()])) {
 
-            wp_enqueue_style('intelligent-link-template', plugin_dir_url(__FILE__) . 'css/template.css', [], PREPLINK_VERSION, 'all');
-            wp_enqueue_script('intelligent-link-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), PREPLINK_VERSION, false);
+            wp_enqueue_style('intelligent-link-template', plugin_dir_url(__FILE__) . 'css/template.css', [], INTELLIGENT_LINK_VERSION, 'all');
+            wp_enqueue_script('intelligent-link-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
             wp_localize_script('intelligent-link-template', 'prep_template', [
                 'countdown_endpoint'     => !empty($this->ep_settings()['countdown_endpoint']) ? $this->ep_settings()['countdown_endpoint'] : 5,
                 'endpoint_direct'        => !empty($this->ep_settings()['endpoint_auto_direct']) ? $this->ep_settings()['endpoint_auto_direct'] : 0,
                 'modify_href'            => $this->modify_href()
             ]);
 
-            include_once plugin_dir_path(PREPLINK_PLUGIN_FILE) . 'includes/class-intelligent-link-template.php';
+            include_once plugin_dir_path(INTELLIGENT_LINK_PLUGIN_FILE) . 'includes/class-intelligent-link-template.php';
 
             if (is_singular('product')) {
                 remove_all_actions( 'woocommerce_single_product_summary' );

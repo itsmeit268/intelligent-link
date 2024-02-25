@@ -44,7 +44,7 @@ class Intelligent_Link {
      *
      */
     public function __construct(){
-        $this->version = PREPLINK_VERSION;
+        $this->version = INTELLIGENT_LINK_VERSION;
         $this->plugin_name = 'intelligent-link';
 
         $this->load_dependencies();
