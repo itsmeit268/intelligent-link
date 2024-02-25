@@ -16,7 +16,7 @@ $post_id            = get_the_ID();
 $view_link          = get_permalink($post_id);
 $post_title         = get_the_title($post_id) ? get_the_title($post_id) : $prep_title;
 
-$baseUrl            = str_replace('https://', '', !empty(home_url()) ? home_url() : get_bloginfo('url'));
+$baseUrl            = str_replace('https://', '', get_bloginfo('url'));
 $file_format        = get_post_meta($post_id, 'file_format', true);
 $require            = get_post_meta($post_id, 'require', true);
 $os_version         = get_post_meta($post_id, 'os_version', true);
@@ -38,13 +38,7 @@ set_no_index_page();
     echo "<style>{$settings['preplink_custom_style']}</style>";
 } ?>
 
-<?php
-if (file_exists(get_template_directory() . '/header.php')){
-    get_header();
-} else {
-    wp_head();
-}
-?>
+<?php file_exists(get_template_directory() . '/header.php') ? get_header() : wp_head(); ?>
 
 <div class="igl-single-page" id="prep-request-page" data-request="<?= esc_attr($prep_request) ?>">
     <?= !empty($ads['ads_1']) ? '<div class="preplink-ads preplink-ads-1" style="margin: 0 25px;">' . $ads['ads_1'] . '</div>' : '' ?>
@@ -56,10 +50,10 @@ if (file_exists(get_template_directory() . '/header.php')){
     </header>
     <div class="sv-small-container">
         <div class="prep-link-container">
-            <div class="entry-content prep-content">
+            <div class="prep-content">
                 <?php if (empty($prep_request) || empty($prep_title)) : ?>
                     <div class="session-expired">
-                        <p><?= __('Your session has ended, please click', 'intelligent-link')?>&nbsp;<a href="<?= $view_link ?>"><span style="color: #0a4ad0;"><?= __('here', 'intelligent-link')?></span></a>&nbsp;<?= __('and do it again.', 'intelligent-link')?></p>
+                        <p><?= __('Your session has ended, please click', 'intelligent-link')?>&nbsp;<a class="session-end" href="<?= $view_link ?>"><span><?= __('here', 'intelligent-link')?></span></a>&nbsp;<?= __('and do it again.', 'intelligent-link')?></p>
                         <p><?= __('If the issue persists, please try clearing cookies or attempting with a different browser.', 'intelligent-link') ?></p>
                     </div>
                     <?= !empty($ads['ads_7']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_7'] . '</div>' : '' ?>
@@ -104,7 +98,7 @@ if (file_exists(get_template_directory() . '/header.php')){
                             </div>
                         </div>
 
-                        <div class="enpoint-progress" id="enpoint-progress" style="display:none;">
+                        <div class="endpoint-progress" id="endpoint-progress" style="display:none;">
                             <p class="counter">0%</p>
                             <div class="bar"></div>
                             <span class="prep-btn-download" style="display: none">
@@ -115,8 +109,8 @@ if (file_exists(get_template_directory() . '/header.php')){
                         </span>
                         </div>
 
-                        <div class="p-file-hide list-server-download" style="display: none">
-                            <div class="p-file-timer-btn">
+                        <div class="list-file-hide list-server-download" style="display: none">
+                            <div class="ilgl-file-timer-btn">
                                 <?php link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $meta_attr); ?>
                             </div>
                         </div>
@@ -125,12 +119,12 @@ if (file_exists(get_template_directory() . '/header.php')){
                         <div class="keyword-search">
                             <p><?= !empty($endpoint_conf['redirect_notice']) ? $endpoint_conf['redirect_notice']: ''?></p>
                         </div>
-                        <div class="p-file-hide" id="buttondw">
-                            <div class="p-file-timer" style="display:none;">
-                                <span class="p-file-timer-sec fw-b" id="preplink-timer-link" data-time="<?= $time_conf ?>"><?= $time_conf ?></span>
+                        <div class="list-file-hide" id="buttondw">
+                            <div class="ilgl-file-timer" style="display:none;">
+                                <span class="ilgl-file-timer-sec fw-b" id="preplink-timer-link" data-time="<?= $time_conf ?>"><?= $time_conf ?></span>
                                 <?php svg_render() ?>
                             </div>
-                            <div class="p-file-timer-btn" style="opacity:0;pointer-events:none;visibility:hidden;">
+                            <div class="ilgl-file-timer-btn" style="opacity:0;pointer-events:none;visibility:hidden;">
                                 <?php link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $meta_attr); ?>
                             </div>
                         </div>

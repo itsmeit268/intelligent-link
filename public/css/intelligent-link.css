@@ -115,6 +115,14 @@ i.material-icons {
     cursor: pointer;
 }
 
+.session-end span {
+    color: #0a4ad0;
+}
+
+.session-end:hover {
+    color: orangered;
+}
+
 @media only screen and (max-device-width: 480px) {
 
     .post-progress, .wrap-countdown {

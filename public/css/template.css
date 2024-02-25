@@ -86,12 +86,12 @@
     }
 }
 
-.p-file-hide {
+.list-file-hide {
     margin: 5px 0 5px 0;
     position: relative;
 }
 
-.p-file-hide .btn {
+.list-file-hide .btn {
     border-radius: 1.75rem;
     margin-bottom: 0.5rem;
     text-overflow: ellipsis;
@@ -101,7 +101,7 @@
     height: 40px;
 }
 
-.p-file-timer {
+.ilgl-file-timer {
     display: block !important;
     position: absolute;
     left: 50%;
@@ -112,13 +112,13 @@
     color: #fff;
 }
 
-.p-file-timer > svg {
+.ilgl-file-timer > svg {
     display: block;
     width: 100%;
     height: 100%;
 }
 
-.p-file-timer-sec {
+.ilgl-file-timer-sec {
     font-size: 1.5rem;
     position: absolute;
     left: 0;
@@ -132,7 +132,7 @@
     text-align: center;
 }
 
-.p-file-timer > svg {
+.ilgl-file-timer > svg {
     animation: time-rotate 2s linear infinite;
 }
 
@@ -142,17 +142,17 @@
     }
 }
 
-.p-file-timer, .p-file-timer-btn {
+.ilgl-file-timer, .ilgl-file-timer-btn {
     transition: visibility .2s ease, opacity .2s ease;
 }
 
-.p-file-hide.del-timer .p-file-timer {
+.list-file-hide.del-timer .ilgl-file-timer {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
 }
 
-.p-file-hide.del-timer .p-file-timer-btn {
+.list-file-hide.del-timer .ilgl-file-timer-btn {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
@@ -473,7 +473,7 @@ img {
     line-height: 24px;
 }
 
-.enpoint-progress {
+.endpoint-progress {
     position: relative;
     max-width: 100%;
     height: 35px;
@@ -489,7 +489,7 @@ img {
     z-index: 1
 }
 
-.enpoint-progress .bar {
+.endpoint-progress .bar {
     position: absolute;
     border-radius: 40px;
     height: 100%;
@@ -553,7 +553,7 @@ img {
     color: #0874cd;
 }
 
-.p-file-hide .p-file-timer-btn a.preplink-btn-link {
+.list-file-hide .ilgl-file-timer-btn a.preplink-btn-link {
     display: block;
 }
 
@@ -587,6 +587,9 @@ img {
     font-weight: 600;
 }
 
+.keyword-search a:hover,.session-end span:hover{
+    color: orangered;
+}
 .featured-image {
     max-width: 100%;
     max-height: 450px;

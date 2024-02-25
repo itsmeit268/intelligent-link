@@ -7,7 +7,7 @@
     'use strict';
 
     $(function () {
-        var $progress     = $('#enpoint-progress'),
+        var $progress     = $('#endpoint-progress'),
             time_cnf      = parseInt(prep_template.countdown_endpoint),
             auto_direct   = parseInt(prep_template.endpoint_direct),
             page_elm      = $('#prep-request-page'),
