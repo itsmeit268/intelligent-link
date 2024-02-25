@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @link       https://itsmeit.co/
+ * @package    intelligent-link
+ * @subpackage intelligent-link/includes
+ * @author     itsmeit <buivanloi.2010@gmail.com>
+ * Website     https://itsmeit.co
+ */
+
 function render_back_icon($view_link){ ?>
     <div class="igl-back">
         <a href="<?= esc_url($view_link)?>">

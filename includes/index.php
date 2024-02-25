@@ -3,7 +3,7 @@
 /**
  * @link       https://itsmeit.co/
  * @package    intelligent-link
- * @subpackage intelligent-link/admin
+ * @subpackage intelligent-link/includes
  * @author     itsmeit <buivanloi.2010@gmail.com>
  * Website     https://itsmeit.co/
  */

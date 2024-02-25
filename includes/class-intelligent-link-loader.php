@@ -3,13 +3,12 @@
 /**
  * @link       https://itsmeit.co/
  * @package    intelligent-link
- * @subpackage intelligent-link/admin
+ * @subpackage intelligent-link/includes
  * @author     itsmeit <buivanloi.2010@gmail.com>
  * Website     https://itsmeit.co/
  */
 
-class Preplink_Loader
-{
+class Intelligent_Link_Loader {
 
     /**
      * The array of actions registered with WordPress.
@@ -77,9 +76,7 @@ class Preplink_Loader
      * @return   array                                  The collection of actions and filters registered with WordPress.
      * @access   private
      */
-    private function add($hooks, $hook, $component, $callback, $priority, $accepted_args)
-    {
-
+    private function add($hooks, $hook, $component, $callback, $priority, $accepted_args){
         $hooks[] = array(
             'hook' => $hook,
             'component' => $component,
@@ -87,17 +84,13 @@ class Preplink_Loader
             'priority' => $priority,
             'accepted_args' => $accepted_args
         );
-
         return $hooks;
-
     }
 
-    public function run()
-    {
+    public function run() {
         foreach ($this->filters as $hook) {
             add_filter($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
         }
-
         foreach ($this->actions as $hook) {
             add_action($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
         }

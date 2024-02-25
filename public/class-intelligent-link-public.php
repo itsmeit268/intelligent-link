@@ -5,7 +5,7 @@
  * Website     https://itsmeit.co/
  */
 
-class Preplink_Public {
+class Intelligent_Link_Public {
 
     public function __construct(){
         add_action('init', array($this, 'preplink_rewrite_endpoint'), 10, 0);

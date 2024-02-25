@@ -3,12 +3,12 @@
 /**
  * @link       https://itsmeit.co/
  * @package    intelligent-link
- * @subpackage intelligent-link/admin
+ * @subpackage intelligent-link/includes
  * @author     itsmeit <buivanloi.2010@gmail.com>
  * Website     https://itsmeit.co
  */
 
-class Preplink {
+class Intelligent_Link {
 
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
@@ -44,11 +44,7 @@ class Preplink {
      *
      */
     public function __construct(){
-        if (defined('PREPLINK_VERSION')) {
-            $this->version = PREPLINK_VERSION;
-        } else {
-            $this->version = '1.0.6';
-        }
+        $this->version = PREPLINK_VERSION;
         $this->plugin_name = 'intelligent-link';
 
         $this->load_dependencies();
@@ -62,10 +58,10 @@ class Preplink {
      *
      * Include the following files that make up the plugin:
      *
-     * - Preplink_Loader. Orchestrates the hooks of the plugin.
-     * - Preplink_i18n. Defines internationalization functionality.
-     * - Preplink_Admin. Defines all hooks for the admin area.
-     * - Preplink_Public. Defines all hooks for the public side of the site.
+     * - Intelligent_Link_Loader. Orchestrates the hooks of the plugin.
+     * - Intelligent_Link_i18n. Defines internationalization functionality.
+     * - Intelligent_Link_Admin. Defines all hooks for the admin area.
+     * - Intelligent_Link_Public. Defines all hooks for the public side of the site.
      *
      * Create an instance of the loader which will be used to register the hooks
      * with WordPress.
@@ -96,7 +92,7 @@ class Preplink {
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-intelligent-link-public.php';
 
-        $this->loader = new Preplink_Loader();
+        $this->loader = new Intelligent_Link_Loader();
 
     }
 
@@ -109,7 +105,7 @@ class Preplink {
      * @access   private
      */
     private function set_locale() {
-        $plugin_i18n = new Preplink_i18n();
+        $plugin_i18n = new Intelligent_Link_i18n();
         $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
     }
 
@@ -120,7 +116,7 @@ class Preplink {
      * @access   private
      */
     private function define_admin_hooks() {
-        $plugin_admin = new Preplink_Admin($this->get_plugin_name(), $this->get_version());
+        $plugin_admin = new Intelligent_Link_Admin($this->get_plugin_name(), $this->get_version());
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
     }
@@ -132,7 +128,7 @@ class Preplink {
      * @access   private
      */
     private function define_public_hooks() {
-        $plugin_public = new Preplink_Public($this->get_plugin_name(), $this->get_version());
+        $plugin_public = new Intelligent_Link_Public($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
@@ -159,7 +155,7 @@ class Preplink {
     /**
      * The reference to the class that orchestrates the hooks with the plugin.
      *
-     * @return    Preplink_Loader    Orchestrates the hooks of the plugin.
+     * @return    Intelligent_Link_Loader    Orchestrates the hooks of the plugin.
      */
     public function get_loader() {
         return $this->loader;

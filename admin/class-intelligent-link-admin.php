@@ -7,7 +7,7 @@
  * Website     https://itsmeit.co/
  */
 
-class Preplink_Admin {
+class Intelligent_Link_Admin {
 
     /**
      * The ID of this plugin.
@@ -93,7 +93,7 @@ class Preplink_Admin {
         // output settings page content based on active tab
         switch ($active_tab) {
             case 'general':
-                echo '<div class="wrap"><h1>' . __('General Settings', 'preplink') . '</h1>';
+                echo '<div class="wrap"><h1>' . __('General Settings', 'intelligent-link') . '</h1>';
                 settings_errors();
                 echo '<form method="post" action="options.php">';
                 settings_fields('preplink_general_settings');
@@ -102,7 +102,7 @@ class Preplink_Admin {
                 echo '</form></div>';
                 break;
             case 'meta_attr':
-                echo '<div class="wrap"><h1>' . __('Meta attribute Settings', 'preplink') . '</h1>';
+                echo '<div class="wrap"><h1>' . __('Meta attribute Settings', 'intelligent-link') . '</h1>';
                 settings_errors();
                 echo '<form method="post" action="options.php">';
                 settings_fields('preplink_meta_attr');
@@ -111,7 +111,7 @@ class Preplink_Admin {
                 echo '</form></div>';
                 break;
             case 'advertising':
-                echo '<div class="wrap"><h1>' . __('Advertising Settings', 'preplink') . '</h1>';
+                echo '<div class="wrap"><h1>' . __('Advertising Settings', 'intelligent-link') . '</h1>';
                 settings_errors();
                 echo '<form method="post" action="options.php">';
                 settings_fields('ads_code_settings');
@@ -120,7 +120,7 @@ class Preplink_Admin {
                 echo '</form></div>';
                 break;
             case 'faq':
-                echo '<div class="wrap"><h1>' . __('FAQ Settings', 'preplink') . '</h1>';
+                echo '<div class="wrap"><h1>' . __('FAQ Settings', 'intelligent-link') . '</h1>';
                 settings_errors();
                 echo '<form method="post" action="options.php">';
                 settings_fields('preplink_faq_settings');
@@ -129,7 +129,7 @@ class Preplink_Admin {
                 echo '</form></div>';
                 break;
             case 'endpoint':
-                echo '<div class="wrap"><h1>' . __('Endpoint Settings', 'preplink') . '</h1>';
+                echo '<div class="wrap"><h1>' . __('Endpoint Settings', 'intelligent-link') . '</h1>';
                 settings_errors();
                 echo '<form method="post" action="options.php">';
                 settings_fields('preplink_endpoint_settings');
@@ -1105,5 +1105,4 @@ class Preplink_Admin {
         
         delete_post_meta($post_id, 'link-download-metabox');
     }
-
 }
