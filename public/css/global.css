@@ -48,7 +48,9 @@
 .igl-download-now>.post-progress-bar>.prep-request>.post-progress>.text-complete {
     color:#fff;
 }
-
+.text-complete:hover{
+    color: #ff0d0d;
+}
 .b-h-down {
     margin-top: 5px;
     font-size: 18px;
