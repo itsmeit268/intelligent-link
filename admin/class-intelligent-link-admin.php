@@ -455,7 +455,7 @@ class Intelligent_Link_Admin {
         <div class="prep-link-admin-settings">
             <h3><?= __('These settings are applicable to all Intelligent Link functionalities.', 'intelligent-link')?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
+            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span> |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
         <?php
@@ -466,7 +466,7 @@ class Intelligent_Link_Admin {
         <div class="meta-attr-display">
             <h3><?= __('This section will allow adding meta attributes such as link, link information, size, etc., for post or product.', 'intelligent-link') ?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
+            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span> |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
         <?php
@@ -488,8 +488,7 @@ class Intelligent_Link_Admin {
         <div class="prep-link-faq-settings">
             <h3><?= __('You can add the FAQ HTML code here, it will apply to the page endpoint.', 'intelligent-link')?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
-            |
+            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span> |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
         <?php

@@ -196,7 +196,6 @@ class Intelligent_Link_Public {
             $file_name = get_post_meta(get_the_ID(), 'file_name', true);
             $link_no_login = get_post_meta(get_the_ID(), 'link_no_login', true);
             $link_is_login = get_post_meta(get_the_ID(), 'link_is_login', true);
-
             if ($file_name && $link_is_login && $link_no_login) {
                 $product_elm_after_content = isset($this->meta_option()['product_elm']) && $this->meta_option()['product_elm'] == 'after_product_content';
                 $html = $this->prep_link_html($this->meta_option(), $file_name);
@@ -206,10 +205,13 @@ class Intelligent_Link_Public {
                     $last_p = strrpos($content, '</p>');
                     if ($last_p !== false) {
                         $content = substr_replace($content, $html, $last_p + 4, 0);
+                    } else {
+                        $content .= $html;
                     }
                 }
             }
         }
+
         return $content;
     }
 
