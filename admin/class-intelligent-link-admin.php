@@ -644,12 +644,13 @@ class Intelligent_Link_Admin {
         <select name="meta_attr[elm]">
             <option value="div" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'div' ? 'selected' : '' ?>>div</option>
             <option value="h2" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h2' ? 'selected' : '' ?>>h2</option>
-            <option value="h3" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h3' ? 'selected' : '' ?>>h3</option>
+            <option value="h3" <?= (!isset($meta_attr['elm']) || $meta_attr['elm'] === 'h3') ? 'selected' : '' ?>>h3</option>
             <option value="h4" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h4' ? 'selected' : '' ?>>h4</option>
             <option value="h5" <?= isset($meta_attr['elm']) && $meta_attr['elm'] === 'h5' ? 'selected' : '' ?>>h5</option>
         </select>
         <input type="text" name="meta_attr[pre_fix]" placeholder="Link download:" value="<?= esc_attr(!empty($meta_attr['pre_fix']) ? $meta_attr['pre_fix'] : 'Link download:') ?>"/>
     <?php }
+
 
     public function product_elm_option() {
         $meta_attr = get_option('meta_attr', []); ?>
@@ -802,7 +803,7 @@ class Intelligent_Link_Admin {
                 <td class="preplink_post_number_notice" style="padding: 2px 0">
                     <label><p>The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.</p></label>
                     <input type="number" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="1"
-                           value="<?= !empty($settings['preplink_countdown']) ? ($settings['preplink_countdown'] == '0' ? 0 : $settings['preplink_countdown']) : 0 ?>" min="0" max="300"/>
+                           value="<?= !empty($settings['preplink_countdown']) ? ($settings['preplink_countdown'] == '0' ? 0 : $settings['preplink_countdown']) : '1' ?>" min="0" max="300"/>
                 </td>
             </tr>
             </tbody>
@@ -826,7 +827,7 @@ class Intelligent_Link_Admin {
             <tr class="tr-time_number">
                 <td class="td-time_number" style="padding: 2px 0">
                     <label><p>The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.</p></label>
-                    <input type="number" name="meta_attr[time]" placeholder="1" value="<?= !empty($meta_attr['time']) ? ($meta_attr['time'] == '0' ? 0 : $meta_attr['time']) : 0 ?>" min="0" max="300"/>
+                    <input type="number" name="meta_attr[time]" placeholder="1" value="<?= !empty($meta_attr['time']) ? ($meta_attr['time'] == '0' ? 0 : $meta_attr['time']) : '1' ?>" min="0" max="300"/>
                 </td>
             </tr>
             </tbody>
