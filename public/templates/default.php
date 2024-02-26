@@ -66,7 +66,7 @@ set_no_index_page();
                         </div>
                         <?= !empty($ads['ads_2']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_2'] . '</div>' : '' ?>
                     <?php endif;?>
-                    <?php if ($endpoint_conf['ep_mode'] == 'default' && $isMeta): ?>
+                    <?php if (!empty($endpoint_conf['ep_mode'])&& $endpoint_conf['ep_mode'] == 'default' && $isMeta): ?>
                         <div class="download-list">
                             <div class="download-item-box">
                                 <div class="download-item">
@@ -153,7 +153,7 @@ set_no_index_page();
                         <?= !empty($ads['ads_6']) ? '<div class="preplink-ads preplink-ads-6" style="margin: 0 25px;">' . $ads['ads_6'] . '</div>' : '' ?>
                     <?php endif; ?>
 
-                    <?php if (file_exists(get_template_directory() . '/comments.php') && (int)$endpoint_conf['preplink_comment'] == 1 && $isMeta) { ?>
+                    <?php if (file_exists(get_template_directory() . '/comments.php') && !empty($endpoint_conf['preplink_comment']) && (int)$endpoint_conf['preplink_comment'] == 1 && $isMeta) { ?>
                         <div class="comment"><?php comments_template(); ?></div>
                     <?php } ?>
 
