@@ -72,10 +72,7 @@ set_no_index_page();
                                 <div class="download-item">
                                     <div class="left">
                                         <a class="a-title image" href="javascript:void(0)">
-                                            <?php
-                                            $image_src = plugin_dir_url(__DIR__) . 'images/check_icon.png';
-                                            $img = '<img src="'. esc_url($image_src).'"/>';
-                                            echo has_post_thumbnail() ? get_the_post_thumbnail($post_id, 'thumbnail') : $img; ?>
+                                            <?= has_post_thumbnail() ? get_the_post_thumbnail($post_id, 'thumbnail') : '<img src="'. esc_url(plugin_dir_url(__DIR__) . 'images/check_icon.png').'"/>'; ?>
                                         </a>
                                         <div class="post-download">
                                             <p class="title prep-title"><?= $isMeta ? ($file_name) : $prep_title; ?></p>
