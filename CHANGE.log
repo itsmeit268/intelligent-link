@@ -28,7 +28,6 @@
 -- Set noindex endpoint page if use rankmath,yoast,allinone-seo-pack
 -- Add option delete option after remove plugin
 
-
 ----02/05/2023 v1.0.5----
 -- Change Endpoint URL, remove ID URL
 -- Update config
@@ -37,3 +36,37 @@
 -- Update config list download
 -- Fix bug progress not working mobile
 -- Change logic countdown
+
+----26/11/2023 v1.0.7----
+-- Update translate vi-VN
+-- Minor JS bug fixes and optimizations
+
+----05/12/2023 v1.0.8----
+-- Update and optimization CSS, template
+-- Minor JS bug fixes and optimizations
+
+----06/01/2024 v1.0.9----
+-- New feature for all posts, products, categories, etc.
+
+----09/01/2024 v1.1.0----
+-- Fix JavaScript errors and ensure WooCommerce compatibility.
+-- Optimize CSS for compatibility with a wide range of themes.
+
+----20/01/2024 v1.1.1----
+-- Add multiple customizable configurations to simplify optimization for users.
+-- New feature: Meta options for creating additional links and providing supplementary information for those links.
+
+----26/01/2024 v1.1.2----
+-- Rename the plugin from "Prepare Link" to "Intelligent Link".
+-- Optimize ad insertion code and advertisement display positions.
+-- New feature: Implement additional customization configurations for page endpoints. Update JavaScript logic to enhance performance
+
+----10/02/2024 v1.1.3----
+-- Add configuration options for different automatic redirections for external links and custom meta.
+-- New feature: Enables compatibility with all static permalinks except for (Plain).
+
+----26/02/2024 v1.1.4----
+-- New feature: Configuration option to display meta options below product description or short description.
+-- Add a Meta Attributes tab and separate configuration for easy customization.
+-- New feature: Security and URL encryption functionality.
+-- And various other improvements have been updated.

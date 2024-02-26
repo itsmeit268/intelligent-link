@@ -5,7 +5,7 @@
  * Plugin Name:       Intelligent Link
  * Plugin URI:        https://itsmeit.co/
  * Description:       Encrypts permitted links, initiates countdown timer before redirection, increases user interaction time, boosts page views, and enhances revenue for websites with advertising like AdSense, Ezoic, etc.
- * Version:           1.0.6
+ * Version:           1.1.4
  * Author:            itsmeit.co
  * Author URI:        https://itsmeit.co/
  * License:           GPL-2.0+
@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
 
 define('INTELLIGENT_LINK_PLUGIN_URL', 'https://itsmeit.co');
 define('INTELLIGENT_LINK_NAME', 'Intelligent Link');
-define('INTELLIGENT_LINK_VERSION', '1.0.6');
+define('INTELLIGENT_LINK_VERSION', '1.1.4');
 define('INTELLIGENT_LINK_PLUGIN_FILE',	__FILE__);
 define('INTELLIGENT_LINK_PLUGIN_BASE',	plugin_basename(INTELLIGENT_LINK_PLUGIN_FILE ));
 
