@@ -72,11 +72,13 @@
     text-align: center;
     /*overflow: hidden;*/
     font-size: 16px;
-    display: inline-block;
+    display: block;
     max-height: 30px;
     margin-bottom: 1.5px;
 }
-
+ul li > .wrap-countdown > .prep-request > .link-countdown {
+    display: block;
+}
 .wrap-countdown {
     overflow: hidden;
     font-size: 16px;
@@ -175,13 +177,9 @@ ul li > .post-progress-bar {
         max-width: 100%;
         overflow: hidden;
     }
-    .igl-download-now>.post-progress-bar>.prep-request>.post-progress{
-        display: inline-block;
-    }
-    .igl-download-now>.post-progress-bar {
-        line-height: 16px;
-    }
+
     ul li > .post-progress-bar > .prep-request > .post-progress{
         margin-bottom: 0;
+        overflow: hidden;
     }
 }
