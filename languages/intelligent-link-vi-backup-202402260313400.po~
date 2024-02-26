@@ -1,19 +1,18 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Intelligent Link\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-30 16:37+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Bui Van Loi <buivanloi.2010@gmail.com>\n"
-"Language-Team: \n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"PO-Revision-Date: 2024-02-26 03:09+0000\n"
+"Last-Translator: \n"
+"Language-Team: Tiếng Việt\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.6.4; wp-6.2\n"
+"X-Loco-Version: 2.6.6; wp-6.4.3\n"
 "X-Domain: intelligent-link"
 
 #. Author URI of the plugin
@@ -40,10 +39,13 @@ msgid ""
 "downloads."
 msgstr ""
 
-msgid "Your session has ended. Please retry your previous action. If the issue persists, try clearing your cookies or browser history and attempt again."
+msgid ""
+"Your session has ended. Please retry your previous action. If the issue "
+"persists, try clearing your cookies or browser history and attempt again."
 msgstr ""
 
-msgid "To search for a specific resource or content on the internet, you can visit"
+msgid ""
+"To search for a specific resource or content on the internet, you can visit"
 msgstr ""
 
 msgid "and enter your search query as:"
@@ -54,7 +56,6 @@ msgstr ""
 
 msgid "https://google.com"
 msgstr ""
-
 
 msgid "Information about the Features"
 msgstr ""
@@ -83,7 +84,9 @@ msgstr ""
 msgid "Your session has ended, please click"
 msgstr ""
 
-msgid "If the issue persists, please try clearing cookies or attempting with a different browser."
+msgid ""
+"If the issue persists, please try clearing cookies or attempting with a "
+"different browser."
 msgstr ""
 
 msgid "Note"
@@ -188,7 +191,9 @@ msgstr ""
 msgid "These settings are applicable to all Intelligent Link functionalities."
 msgstr ""
 
-msgid "This section will allow adding meta attributes such as link, link information, size, etc., for post or product."
+msgid ""
+"This section will allow adding meta attributes such as link, link "
+"information, size, etc., for post or product."
 msgstr ""
 
 msgid "Please enter your advertisement code, allowing HTML, JS, CSS."
@@ -200,7 +205,8 @@ msgstr ""
 msgid "This setting will apply only to the endpoint page."
 msgstr ""
 
-msgid "Enable or disable plugin (The prepared link will be ready when enabled)."
+msgid ""
+"Enable or disable plugin (The prepared link will be ready when enabled)."
 msgstr ""
 
 msgid "The default endpoint is (1), and it looks like this:"
@@ -221,22 +227,32 @@ msgstr ""
 msgid "The replacement text when the countdown is complete."
 msgstr ""
 
-msgid "The number of related fields, you'll find it within the post or product. Here you can add different links."
+msgid ""
+"The number of related fields, you'll find it within the post or product. "
+"Here you can add different links."
 msgstr ""
 
-msgid "Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL."
+msgid ""
+"Despite the URL being encoded, we additionally incorporate various strings "
+"for insertion into the URL."
 msgstr ""
 
 msgid "This practice serves a security purpose and renders it non-decodable."
 msgstr ""
 
-msgid "On the page with the added endpoint, the default expiration time will be 5 seconds. After expiration, users will need to re-engage to receive the link."
+msgid ""
+"On the page with the added endpoint, the default expiration time will be 5 "
+"seconds. After expiration, users will need to re-engage to receive the link."
 msgstr ""
 
-msgid "Any links containing these specific strings will be redirected to the countdown page. Each link should be separated by a comma."
+msgid ""
+"Any links containing these specific strings will be redirected to the "
+"countdown page. Each link should be separated by a comma."
 msgstr ""
 
-msgid "Please note that these strings could match any text within your post URLs, so you should provide the domain of the link to ensure proper redirection."
+msgid ""
+"Please note that these strings could match any text within your post URLs, "
+"so you should provide the domain of the link to ensure proper redirection."
 msgstr ""
 
 msgid "The elements will be excluded, each separated by a comma (,)."
@@ -266,10 +282,14 @@ msgstr ""
 msgid "Text displayed while the countdown is pending."
 msgstr ""
 
-msgid "The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration."
+msgid ""
+"The default countdown time is set to 1 second. If you set it to 0, it will "
+"bypass the automatic redirection configuration."
 msgstr ""
 
-msgid "The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration."
+msgid ""
+"The default countdown time is set to 1 second. If you set it to 0, it will "
+"bypass the automatic redirection configuration."
 msgstr ""
 
 msgid "The default countdown time is set to 15 seconds."
@@ -295,4 +315,3 @@ msgstr ""
 
 msgid "Display position: At the bottom of the page when the link expires."
 msgstr ""
-

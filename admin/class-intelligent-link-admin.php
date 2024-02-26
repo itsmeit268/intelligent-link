@@ -232,7 +232,7 @@ class Intelligent_Link_Admin {
 
         add_settings_field(
             'preplink_template',
-            __('Display Mode Progress', 'intelligent-link'),
+            __('Display Mode', 'intelligent-link'),
             array($this, 'enpoint_display_mode'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
@@ -325,7 +325,7 @@ class Intelligent_Link_Admin {
 
         add_settings_field(
             'preplink_display_mode',
-            __('Display Mode Progress', 'intelligent-link'),
+            __('Display Mode', 'intelligent-link'),
             array($this, 'preplink_display_mode'),
             'preplink_general_settings',
             'preplink_general_section',
@@ -391,13 +391,13 @@ class Intelligent_Link_Admin {
 
         add_settings_field(
             'product_elm_option',
-            __('Product Display Position', 'intelligent-link'),
+            __('Display position on product page.', 'intelligent-link'),
             array($this, 'product_elm_option'),
             'preplink_meta_attr',
             'preplink_meta_attr_section',
             array(
                 'after_product_content'    => __('After Product Content', 'intelligent-link'),
-                'after_short_description'  => __('After Short Description', 'intelligent-link'),
+                'after_short_description'  => __('Short description below', 'intelligent-link'),
             )
         );
 
@@ -453,7 +453,7 @@ class Intelligent_Link_Admin {
     public function preplink_display_general(){
         ?>
         <div class="prep-link-admin-settings">
-            <h3><?= __('These settings are applicable to all Intelligent Link functionalities.')?></h3>
+            <h3><?= __('These settings are applicable to all Intelligent Link functionalities.', 'intelligent-link')?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
@@ -464,7 +464,7 @@ class Intelligent_Link_Admin {
     public function preplink_meta_display(){
         ?>
         <div class="meta-attr-display">
-            <h3><?= __('This section will allow adding meta attributes such as link, link information, size, etc., for post or product.') ?></h3>
+            <h3><?= __('This section will allow adding meta attributes such as link, link information, size, etc., for post or product.', 'intelligent-link') ?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
@@ -478,7 +478,7 @@ class Intelligent_Link_Admin {
             <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span> |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>l" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?>Plugin</a></span>
-            <h3>Please enter your advertisement code, allowing HTML, JS, CSS.</h3>
+            <h3><?= __('Please enter your advertisement code, allowing HTML, JS, CSS.', 'intelligent-link')?></h3>
         </div>
         <?php
     }
@@ -486,7 +486,7 @@ class Intelligent_Link_Admin {
     public function preplink_faq_display(){
         ?>
         <div class="prep-link-faq-settings">
-            <h3>You can add the FAQ HTML code here, it will apply to the page endpoint.</h3>
+            <h3><?= __('You can add the FAQ HTML code here, it will apply to the page endpoint.', 'intelligent-link')?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
             |
@@ -498,7 +498,7 @@ class Intelligent_Link_Admin {
     public function preplink_endpoint_display(){
         ?>
         <div class="prep-link-endpoint-settings">
-            <h3>This setting will apply only to the endpoint page.</h3>
+            <h3><?= __('This setting will apply only to the endpoint page.', 'intelligent-link')?></h3>
             <span>Author  : buivanloi.2010@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
             |
@@ -515,7 +515,7 @@ class Intelligent_Link_Admin {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }
         $html .= '</select>';
-        $html .= '<p class="description">Enable or disable plugin (The prepared link will be ready when enabled).</p>';
+        $html .= '<p class="description">'.__('Enable or disable plugin (The prepared link will be ready when enabled).', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -525,8 +525,9 @@ class Intelligent_Link_Admin {
         $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($endpoint));
         ?>
         <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="1" value="<?= esc_attr($endpoint ? : false) ?>"/>
-        <p class="description">The default endpoint is '1', and it looks like this: <?= get_bloginfo('url')?>/hello-world/<?= $endpoint ? : '1'?>/.</p>
-        <p class="description"><strong style="color: red">IMPORTANT</strong>: If you make any changes to the endpoint, you need to navigate to <strong style="color: red">Settings -> Permalinks -> Save</strong> to synchronize the endpoint.</p>
+        <p class="description"><?= __('The default endpoint is (1), and it looks like this:', 'intelligent-link')?> <?= get_bloginfo('url')?>/hello-world/<?= $endpoint ? : '1'?>/.</p>
+        <p class="description"><strong style="color: red"><?= __('IMPORTANT:', 'intelligent-link')?></strong> <?= __('If you make any changes to the endpoint, you need to navigate to', 'intelligent-link')?>
+            <strong style="color: red"><?= __('Settings -> Permalinks -> Save', 'intelligent-link')?></strong> <?= __('to synchronize the endpoint.', 'intelligent-link')?></p>
         <?php
         if (isset($_POST['preplink_endpoint'])) {
             $settings = $_POST['preplink_endpoint'];
@@ -555,7 +556,7 @@ class Intelligent_Link_Admin {
                 <td style="padding: 5px 0;">
                     <input type="text" id="replace_text" name="preplink_setting[replace_text]" placeholder="link is ready"
                            value="<?= esc_attr(!empty($settings['replace_text']) ? $settings['replace_text'] : false) ?>"/>
-                    <p class="description">The replacement text when the countdown is complete.</p>
+                    <p class="description"><?= __('The replacement text when the countdown is complete.', 'intelligent-link')?></p>
                 </td>
             </tr>
             </tbody>
@@ -568,7 +569,7 @@ class Intelligent_Link_Admin {
         ?>
         <input type="number" name="meta_attr[field_lists]" placeholder="3"
                value="<?= esc_attr(!empty($settings['field_lists']) ? $settings['field_lists'] : '3') ?>" min="1" max="20"/>
-        <p class="description">The number of related fields, you'll find it within the post or product. Here you can add different links.</p>
+        <p class="description"><?= __("The number of related fields, you'll find it within the post or product. Here you can add different links.", "intelligent-link")?></p>
         <?php
     }
 
@@ -578,8 +579,8 @@ class Intelligent_Link_Admin {
         <input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/>
         <input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/>
         <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(15)) ?>"/>
-        <p class="description">Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.</p>
-        <p class="description">This practice serves a security purpose and renders it non-decodable.</p>
+        <p class="description"><?= __('Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.', 'intelligent-link')?></p>
+        <p class="description"><?= __('This practice serves a security purpose and renders it non-decodable.', 'intelligent-link')?></p>
         <?php
     }
 
@@ -593,7 +594,7 @@ class Intelligent_Link_Admin {
         ?>
         <input type="number" id="cookie_time" name="preplink_endpoint[cookie_time]" placeholder="5"
                value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '5' ?>" min="1" max="600"/>
-        <p class="description">On the page with the added endpoint, the default expiration time will be 5 seconds. After expiration, users will need to re-engage to receive the link.</p>
+        <p class="description"><?= __('On the page with the added endpoint, the default expiration time will be 5 seconds. After expiration, users will need to re-engage to receive the link.', 'intelligent-link')?></p>
         <?php
     }
 
@@ -611,10 +612,8 @@ class Intelligent_Link_Admin {
         $html = '<textarea id="preplink_url" cols="50" rows="5" name="preplink_setting[preplink_url]" placeholder="domain1.com, domain2.com,">';
         $html .= isset($settings["preplink_url"]) ? $settings["preplink_url"] : false;
         $html .= '</textarea>';
-        $html .= '<p class="description">Any links containing these specific strings will be redirected to the countdown page. 
-                    Each link should be separated by a comma. <br>
-                    Please be aware that these strings might match any text in your post, so you should provide the domain of the link to ensure accurate redirection.
-                   </p>';
+        $html .= '<p class="description">'.__('Any links containing these specific strings will be redirected to the countdown page. Each link should be separated by a comma.', 'intelligent-link').'<br>
+                    '.__('Please note that these strings could match any text within your post URLs, so you should provide the domain of the link to ensure proper redirection.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -623,8 +622,8 @@ class Intelligent_Link_Admin {
         $html = '<textarea id="preplink_excludes_element" cols="50" rows="5" name="preplink_setting[preplink_excludes_element]" placeholder=".prep-link-download-btn,.prep-link-btn">';
         $html .= isset($settings["preplink_excludes_element"]) ? $settings["preplink_excludes_element"] : false;
         $html .= '</textarea>';
-        $html .= '<p class="description">The elements will be excluded, each separated by a comma (,).</p>';
-        $html .= '<p class="description">For example: #prep-link-download-btn, .prep-link-download-btn.</p>';
+        $html .= '<p class="description">'.__('The elements will be excluded, each separated by a comma (,).', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('For example: #prep-link-download-btn, .prep-link-download-btn.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -655,8 +654,8 @@ class Intelligent_Link_Admin {
     public function product_elm_option() {
         $meta_attr = get_option('meta_attr', []); ?>
         <select name="meta_attr[product_elm]">
-            <option value="after_product_content" <?= isset($meta_attr['product_elm']) && $meta_attr['product_elm'] === 'after_product_content' ? 'selected' : '' ?>>After product content (Description)</option>
-            <option value="after_short_description" <?= isset($meta_attr['product_elm']) && $meta_attr['product_elm'] === 'after_short_description' ? 'selected' : '' ?>>After short description</option>
+            <option value="after_product_content" <?= isset($meta_attr['product_elm']) && $meta_attr['product_elm'] === 'after_product_content' ? 'selected' : '' ?>><?= __('After product content (Description)', 'intelligent-link')?></option>
+            <option value="after_short_description" <?= isset($meta_attr['product_elm']) && $meta_attr['product_elm'] === 'after_short_description' ? 'selected' : '' ?>><?= __('Short description below', 'intelligent-link')?></option>
         </select>
     <?php }
 
@@ -682,12 +681,12 @@ class Intelligent_Link_Admin {
             </tr>
             <tr class="faq_description">
                 <td style="padding: 5px 0;">
-                    <label style="width: 160px;display: inline-table;">Description (HTML)</label>
+                    <label style="width: 160px;display: inline-table;"><?= __('Description (HTML)', 'intelligent-link')?></label>
                     <?php
                     $faq_content = !empty($settings['faq_description']) ? esc_html($settings['faq_description']) : file_get_contents(plugin_dir_path(__DIR__) . 'faq.txt');
                     echo '<textarea name="preplink_faq[faq_description]" rows="10" cols="70">' . $faq_content . '</textarea>';
                     ?>
-                    <p class="description">Click on this <a href="<?php echo plugin_dir_url(__DIR__) . 'faq.txt'; ?>" target="_blank">link</a> to view the FAQ structure.</p>
+                    <p class="description"><?= __('Click on this', 'intelligent-link')?> <a href="<?php echo plugin_dir_url(__DIR__) . 'faq.txt'; ?>" target="_blank">link</a> <?= __('to view the FAQ structure.', 'intelligent-link')?></p>
                 </td>
             </tr>
             </tbody>
@@ -744,7 +743,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea cols="50" rows="5" name="preplink_endpoint[redirect_notice]">';
         $html .= isset($settings["redirect_notice"]) ? $settings["redirect_notice"] : $example;
         $html .= '</textarea>';
-        $html .= '<p class="description">The notification prior to users being redirected to an external link.</p>';
+        $html .= '<p class="description">'.__('The notification prior to users being redirected to an external link.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -753,7 +752,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea id="preplink_custom_style" cols="50" rows="5" name="preplink_setting[preplink_custom_style]">';
         $html .= !empty($settings["preplink_custom_style"]) ? $settings["preplink_custom_style"] : false;
         $html .= '</textarea>';
-        $html .= '<p class="description">Your CSS code, for example: .backgroud{background-color: transparent;}.</p>';
+        $html .= '<p class="description">'.__('Your CSS code, for example: .backgroud{background-color: transparent;}.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -778,7 +777,7 @@ class Intelligent_Link_Admin {
                 <td style="padding: 5px 0;">
                     <input type="text" id="wait_text_replace" name="preplink_setting[wait_text_replace]" placeholder="waiting"
                            value="<?= esc_attr(!empty($settings['wait_text_replace']) ? $settings['wait_text_replace'] : 'please wait') ?>"/>
-                    <p class="description">Text displayed while the countdown is pending.</p>
+                    <p class="description"><?= __('Text displayed while the countdown is pending.', 'intelligent-link')?></p>
                 </td>
             </tr>
             </tbody>
@@ -801,7 +800,7 @@ class Intelligent_Link_Admin {
             </tr>
             <tr class="preplink_post_number">
                 <td class="preplink_post_number_notice" style="padding: 2px 0">
-                    <label><p>The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.</p></label>
+                    <label><p><?= __('The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.', 'intelligent-link')?></p></label>
                     <input type="number" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="1"
                            value="<?= !empty($settings['preplink_countdown']) ? ($settings['preplink_countdown'] == '0' ? 0 : $settings['preplink_countdown']) : '1' ?>" min="0" max="300"/>
                 </td>
@@ -826,7 +825,7 @@ class Intelligent_Link_Admin {
             </tr>
             <tr class="tr-time_number">
                 <td class="td-time_number" style="padding: 2px 0">
-                    <label><p>The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.</p></label>
+                    <label><p><?= __('The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.', 'intelligent-link')?></p></label>
                     <input type="number" name="meta_attr[time]" placeholder="1" value="<?= !empty($meta_attr['time']) ? ($meta_attr['time'] == '0' ? 0 : $meta_attr['time']) : '1' ?>" min="0" max="300"/>
                 </td>
             </tr>
@@ -850,7 +849,7 @@ class Intelligent_Link_Admin {
             </tr>
             <tr class="preplink_endpoint_number">
                 <td class="preplink_endpoint_number_notice" style="padding: 2px 0">
-                    <label><p>The default countdown time is set to 15 seconds.</p></label>
+                    <label><p><?= __('The default countdown time is set to 15 seconds.', 'intelligent-link')?></p></label>
                     <input type="number" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="15"
                            value="<?= !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : '15' ?>" min="1" max="300"/>
                 </td>
@@ -865,7 +864,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea name="ads_code[ads_1]" rows="5" cols="50">';
         $html .= esc_html(!empty($settings['ads_1']) ? $settings['ads_1'] : false);
         $html .= '</textarea>';
-        $html .= '<p class="description">Display position: At the top of the page.</p>';
+        $html .= '<p class="description">'.__('Display position: At the top of the page.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -874,7 +873,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea name="ads_code[ads_2]" rows="5" cols="50">';
         $html .= esc_html(isset($settings['ads_2']) ? $settings['ads_2'] : false);
         $html .= '</textarea>';
-        $html .= '<p class="description">Display position: Below the featured image.</p>';
+        $html .= '<p class="description">'.__('Display position: Below the featured image.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -883,7 +882,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea name="ads_code[ads_2]" rows="5" cols="50">';
         $html .= esc_html(isset($settings['ads_3']) ? $settings['ads_3'] : false);
         $html .= '</textarea>';
-        $html .= '<p class="description">Display position: Below the download/countdown button.</p>';
+        $html .= '<p class="description">'.__('Display position: Below the download/countdown button.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -892,7 +891,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea name="ads_code[ads_4]" rows="5" cols="50">';
         $html .= esc_html(isset($settings['ads_4']) ? $settings['ads_4'] : false);
         $html .= '</textarea>';
-        $html .= '<p class="description">Display position: Below the FAQ, if the FAQ is enabled.</p>';
+        $html .= '<p class="description">'.__('Display position: Below the FAQ, if the FAQ is enabled.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -901,7 +900,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea name="ads_code[ads_5]" rows="5" cols="50">';
         $html .= esc_html(isset($settings['ads_5']) ? $settings['ads_5'] : false);
         $html .= '</textarea>';
-        $html .= '<p class="description">Display position: Below custom text 2.</p>';
+        $html .= '<p class="description">'.__('Display position: Below custom text 2.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -910,7 +909,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea name="ads_code[ads_6]" rows="5" cols="50">';
         $html .= esc_html(isset($settings['ads_6']) ? $settings['ads_6'] : false);
         $html .= '</textarea>';
-        $html .= '<p class="description">Display position: Below related posts, if related posts are enabled.</p>';
+        $html .= '<p class="description">'.__('Display position: Below related posts, if related posts are enabled.', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -919,7 +918,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea name="ads_code[ads_7]" rows="5" cols="50">';
         $html .= esc_html(isset($settings['ads_7']) ? $settings['ads_7'] : false);
         $html .= '</textarea>';
-        $html .= '<p class="description">Display position: At the bottom of the page when the link expires.</p>';
+        $html .= '<p class="description">'.__('Display position: At the bottom of the page when the link expires.', 'intelligent-link').'</p>';
         echo $html;
     }
 

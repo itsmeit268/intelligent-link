@@ -3,17 +3,23 @@ msgstr ""
 "Project-Id-Version: Intelligent Link\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-30 16:37+0000\n"
-"PO-Revision-Date: 2024-01-31 14:01+0000\n"
+"PO-Revision-Date: 2024-02-26 03:07+0000\n"
 "Last-Translator: \n"
-"Language-Team: Vietnamese\n"
+"Language-Team: Tiếng Việt\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.6.6; wp-6.3.2\n"
+"X-Loco-Version: 2.6.6; wp-6.4.3\n"
 "X-Domain: intelligent-link"
+
+msgid "Advertising Settings"
+msgstr ""
+
+msgid "After product content (Description)"
+msgstr "Bên dưới mô tả sản phẩm"
 
 msgid "Alternative Link"
 msgstr "Liên kết dự phòng"
@@ -24,13 +30,101 @@ msgstr "và thực hiện lại."
 msgid "and enter your search query as:"
 msgstr "và nhập truy vấn tìm kiếm của bạn dưới dạng:"
 
+msgid ""
+"Any links containing these specific strings will be redirected to the "
+"countdown page. Each link should be separated by a comma."
+msgstr ""
+"Bất kỳ liên kết nào chứa các chuỗi cụ thể này sẽ được chuyển hướng đến trang "
+"đếm ngược. Mỗi liên kết phải được phân tách bằng dấu phẩy."
+
+msgid "Automatic redirection"
+msgstr "Tự động chuyển hướng"
+
+msgid "Click on this"
+msgstr "Bấm vào đây"
+
+msgid "Custom Style"
+msgstr ""
+
+msgid "Delete all data after remove plugin"
+msgstr "Xóa tất cả dữ liệu sau khi gỡ bỏ plugin"
+
 msgid "Description"
 msgstr "Mô tả"
+
+msgid ""
+"Despite the URL being encoded, we additionally incorporate various strings "
+"for insertion into the URL."
+msgstr ""
+"Mặc dù URL đã được mã hóa nhưng chúng tôi vẫn kết hợp thêm nhiều chuỗi khác "
+"nhau để chèn vào URL."
+
+msgid "Display Comment"
+msgstr "Hiển thị bình luận"
+
+msgid "Display Mode"
+msgstr "Chế độ hiển thị"
+
+msgid "Display position on product page."
+msgstr ""
+
+msgid "Display position: At the bottom of the page when the link expires."
+msgstr "Vị trí hiển thị: Ở cuối trang khi link hết hạn."
+
+msgid "Display position: At the top of the page."
+msgstr "Vị trí hiển thị: Ở đầu trang."
+
+msgid "Display position: Below custom text 2."
+msgstr "Vị trí hiển thị: Bên dưới văn bản tùy chỉnh 2."
+
+msgid "Display position: Below related posts, if related posts are enabled."
+msgstr ""
+"Vị trí hiển thị: Bên dưới bài viết liên quan, nếu bài viết liên quan được "
+"bật."
+
+msgid "Display position: Below the download/countdown button."
+msgstr "Vị trí hiển thị: Bên dưới nút tải xuống/đếm ngược."
+
+msgid "Display position: Below the FAQ, if the FAQ is enabled."
+msgstr ""
+"Vị trí hiển thị: Bên dưới Câu hỏi thường gặp, nếu Câu hỏi thường gặp được "
+"bật."
+
+msgid "Display position: Below the featured image."
+msgstr "Vị trí hiển thị: Bên dưới ảnh đại diện."
+
+msgid "Display Post Image"
+msgstr "Hiển thị hình ảnh bài đăng"
+
+msgid "Display Post Related"
+msgstr "Hiển thị bài viết liên quan"
 
 msgid "Download"
 msgstr ""
 
+msgid "Element excluded"
+msgstr ""
+
+msgid ""
+"Enable or disable plugin (The prepared link will be ready when enabled)."
+msgstr ""
+
+msgid "Endpoint Settings"
+msgstr ""
+
+msgid "Endpoint URL string"
+msgstr ""
+
+msgid "FAQ Settings"
+msgstr ""
+
 msgid "File"
+msgstr ""
+
+msgid "For example: #prep-link-download-btn, .prep-link-download-btn."
+msgstr "Ví dụ: #prep-link-download-btn, .prep-link-download-btn."
+
+msgid "General Settings"
 msgstr ""
 
 msgid "here"
@@ -41,7 +135,7 @@ msgstr "google.com"
 
 #. Author URI of the plugin
 msgid "https://itsmeit.co"
-msgstr ""
+msgstr "https://itsmeit.co/"
 
 #. URI of the plugin
 msgid "https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html"
@@ -57,8 +151,20 @@ msgstr ""
 "Nếu sự cố vẫn tiếp diễn, vui lòng thử xóa cookie hoặc thử bằng trình duyệt "
 "khác."
 
+msgid "If you make any changes to the endpoint, you need to navigate to"
+msgstr ""
+"Nếu bạn thực hiện bất kỳ thay đổi nào đối với điểm cuối, bạn cần điều hướng "
+"đến"
+
+msgid "IMPORTANT:"
+msgstr "QUAN TRỌNG:"
+
 msgid "Information about the Features"
 msgstr "Thông tin về các tính năng"
+
+#. Name of the plugin
+msgid "Intelligent Link"
+msgstr "Intelligent Link"
 
 #. Author of the plugin
 msgid "itsmeit <buivanloi.2010@gmail.com>"
@@ -67,18 +173,97 @@ msgstr ""
 msgid "keyword +"
 msgstr "từ khóa +"
 
+msgid "Link expiration time"
+msgstr "Thời gian hết hạn liên kết"
+
+msgid "Meta attribute"
+msgstr "Thuộc tính meta"
+
+msgid "Meta attribute Settings"
+msgstr "Cài đặt thuộc tính meta"
+
 msgid "Note"
+msgstr "Ghi chú"
+
+msgid "Number link list"
 msgstr ""
 
-#. Name of the plugin
-msgid "Intelligent Link"
+msgid ""
+"On the page with the added endpoint, the default expiration time will be 5 "
+"seconds. After expiration, users will need to re-engage to receive the link."
 msgstr ""
+"Trên trang có enpoint được thêm vào, thời gian hết hạn mặc định sẽ là 5 giây."
+" Sau khi hết hạn, người dùng sẽ cần phải tương tác lại để nhận link."
+
+msgid "Please enter your advertisement code, allowing HTML, JS, CSS."
+msgstr "Vui lòng nhập mã quảng cáo của bạn, cho phép HTML, JS, CSS."
+
+#| msgid ""
+#| "Please be aware that these strings might match any text in your post, so you "
+#| "should provide the domain of the link to ensure accurate redirection."
+msgid ""
+"Please note that these strings could match any text within your post URLs, "
+"so you should provide the domain of the link to ensure proper redirection."
+msgstr ""
+"Xin lưu ý rằng các chuỗi này có thể khớp với bất kỳ văn bản nào trong URL "
+"bài đăng của bạn, vì vậy bạn nên cung cấp tên miền của liên kết để đảm bảo "
+"chuyển hướng chính xác."
+
+msgid "Redirection Notice"
+msgstr "Thông báo chuyển hướng"
 
 msgid "Related Posts"
 msgstr "Bài viết liên quan"
 
+msgid "Render Element"
+msgstr ""
+
+msgid "Replace text after complete"
+msgstr "Thay thế văn bản sau khi hoàn thành điếm ngược"
+
+msgid "Rewrite URL Encoding"
+msgstr ""
+
+msgid "Settings -> Permalinks -> Save"
+msgstr "Cài đặt -> Đường dẫn tĩnh -> Lưu"
+
+msgid "Short description below"
+msgstr "Bên dưới mô tả ngắn"
+
 msgid "Size"
 msgstr ""
+
+msgid "String inside URL or domain"
+msgstr "Chuỗi bên trong URL hoặc tên miền"
+
+msgid "Text displayed while the countdown is pending."
+msgstr "Văn bản hiển thị trong khi đang chờ đếm ngược."
+
+msgid ""
+"The default countdown time is set to 1 second. If you set it to 0, it will "
+"bypass the automatic redirection configuration."
+msgstr ""
+"Thời gian đếm ngược mặc định được đặt thành 1 giây. Nếu bạn đặt thành 0, nó "
+"sẽ bỏ qua cấu hình chuyển hướng tự động."
+
+msgid "The default countdown time is set to 15 seconds."
+msgstr "Thời gian đếm ngược mặc định được đặt thành 15 giây."
+
+msgid "The default endpoint is (1), and it looks like this:"
+msgstr "Điểm cuối mặc định là (1) và nó trông như thế này:"
+
+msgid "The elements will be excluded, each separated by a comma (,)."
+msgstr ""
+"Các phần tử sẽ bị loại trừ, mỗi phần tử được phân tách bằng dấu phẩy (,)."
+
+msgid "The notification prior to users being redirected to an external link."
+msgstr ""
+"Thông báo trước khi người dùng được chuyển hướng đến một liên kết bên ngoài."
+
+msgid "The number of related fields, you'll find it within the post or product. Here you can add different links."
+msgstr ""
+"Số lượng các trường liên quan, bạn sẽ tìm thấy trong bài viết hoặc sản phẩm. "
+"Tại đây bạn có thể thêm các liên kết khác nhau."
 
 #. Description of the plugin
 msgid ""
@@ -87,10 +272,31 @@ msgid ""
 "user engagement time and making it suitable for websites that allow file "
 "downloads."
 msgstr ""
-"Plugin sẽ mã hóa các liên kết bạn cho phép và thực hiện đếm ngược thời gian "
-"trước khi chuyển hướng đến trang \"endpoint\" được chỉ định, giúp tăng thời "
-"gian tương tác của người dùng và phù hợp với các trang web cho phép tải "
-"xuống tệp."
+"Mã hóa các liên kết được phép, bắt đầu đồng hồ đếm ngược trước khi chuyển "
+"hướng, tăng thời gian tương tác của người dùng, tăng lượt xem trang và nâng "
+"cao doanh thu cho các trang web có quảng cáo như AdSense, Ezoic, v.v."
+
+msgid "The replacement text when the countdown is complete."
+msgstr "Văn bản thay thế khi đếm ngược hoàn tất."
+
+msgid "These settings are applicable to all Intelligent Link functionalities."
+msgstr ""
+"Các cài đặt này có thể áp dụng cho tất cả các chức năng của plugin "
+"Intelligent Link."
+
+msgid "This practice serves a security purpose and renders it non-decodable."
+msgstr ""
+"Thực tiễn này phục vụ mục đích bảo mật và khiến nó không thể giải mã được."
+
+msgid ""
+"This section will allow adding meta attributes such as link, link "
+"information, size, etc., for post or product."
+msgstr ""
+"Phần này sẽ cho phép thêm các thuộc tính meta như liên kết, thông tin liên "
+"kết, kích thước, v.v. cho bài đăng hoặc sản phẩm."
+
+msgid "This setting will apply only to the endpoint page."
+msgstr "Cài đặt này sẽ chỉ áp dụng cho trang được thêm enpoint."
 
 msgid ""
 "To search for a specific resource or content on the internet, you can visit"
@@ -98,11 +304,25 @@ msgstr ""
 "Để tìm kiếm một tài nguyên hoặc nội dung cụ thể trên internet, bạn có thể "
 "truy cập"
 
+msgid "to synchronize the endpoint."
+msgstr "để đồng bộ hóa đường dẫn tĩnh."
+
+msgid "to view the FAQ structure."
+msgstr "để xem cấu trúc câu hỏi thường gặp."
+
 msgid "Update"
 msgstr "Cập nhật"
 
 msgid "Update:"
 msgstr "Cập nhật:"
+
+msgid "You can add the FAQ HTML code here, it will apply to the page endpoint."
+msgstr ""
+"Bạn có thể thêm mã HTML câu hỏi thường gặp tại đây, mã này sẽ áp dụng cho "
+"trang được thêm endpoint."
+
+msgid "Your CSS code, for example: .backgroud{background-color: transparent;}."
+msgstr "Mã CSS của bạn, ví dụ: .backgroud{background-color: Transparent;}."
 
 msgid "Your session has ended, please click"
 msgstr "Phiên của bạn đã kết thúc, vui lòng nhấp vào"
