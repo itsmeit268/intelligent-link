@@ -180,7 +180,7 @@ class Intelligent_Link_Public {
         $link_no_login = get_post_meta(get_the_ID(), 'link_no_login', true);
         $link_is_login = get_post_meta(get_the_ID(), 'link_is_login', true);
 
-        if ($file_name && $link_is_login && $link_no_login) {
+        if ($file_name && $link_is_login && $link_no_login && $this->is_plugin_enable()) {
             $after_description = isset($this->meta_option()['product_elm'])? $this->meta_option()['product_elm'] == 'after_short_description': '';
             $html = $this->prep_link_html($this->meta_option(), $file_name);
             if (!empty(get_the_excerpt()) && $after_description) {
@@ -192,7 +192,7 @@ class Intelligent_Link_Public {
     }
 
     public function render_meta_link_info($content) {
-        if (!is_admin()) {
+        if (!is_admin() && $this->is_plugin_enable()) {
             $file_name = get_post_meta(get_the_ID(), 'file_name', true);
             $link_no_login = get_post_meta(get_the_ID(), 'link_no_login', true);
             $link_is_login = get_post_meta(get_the_ID(), 'link_is_login', true);

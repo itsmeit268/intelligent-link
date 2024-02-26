@@ -134,25 +134,30 @@ i.material-icons {
 ul li > .post-progress-bar {
     padding-left: 5px;
 }
+.woocommerce-product-details__short-description >.igl-download-now,
+.woocommerce-product-details__short-description >.list-link-redirect,
 .product-short-description >.igl-download-now,
 .product-short-description >.list-link-redirect{
     max-width: 350px;
 }
+.woocommerce-product-details__short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress,
 .product-short-description >.list-link-redirect > ul li >.post-progress-bar{
     max-width: 100%;
     display: block;
 }
-.product-short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress {
+.woocommerce-product-details__short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress,
+ .product-short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress {
     white-space: nowrap;
     text-overflow: ellipsis;
     max-width: 100%;
     overflow: hidden;
 }
-@media only screen and (max-device-width: 480px) {
 
+@media only screen and (max-device-width: 480px) {
     .post-progress, .wrap-countdown {
         text-align: left
     }
+
     .post-progress {
         margin-bottom: -5px;
         display: block;
