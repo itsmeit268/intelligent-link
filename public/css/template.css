@@ -520,12 +520,12 @@ img {
     background: #167ec1 !important;
     color: #fff;
     line-height: 1.5rem;
-    padding: 5px 15px;
+    padding: 6px 15px;
     border-radius: 1.5rem;
     white-space: nowrap;
     text-align: center;
     text-transform: uppercase;
-    font-size: .875rem;
+    font-size: 15rem;
     display: inline-block;
     vertical-align: top;
     border: 0;
