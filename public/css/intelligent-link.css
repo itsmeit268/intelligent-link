@@ -79,6 +79,11 @@
 ul li > .wrap-countdown > .prep-request > .link-countdown {
     display: block;
 }
+ul li > .wrap-countdown > .prep-request > .link-countdown:hover,
+ul li > .post-progress-bar > .prep-request > .post-progress:hover {
+    color: orangered;
+}
+
 .wrap-countdown {
     overflow: hidden;
     font-size: 16px;
