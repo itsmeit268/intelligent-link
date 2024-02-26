@@ -88,7 +88,6 @@ function svg_render() { ?>
 
 function ep_related_post($settings, $post_id){ ?>
     <div class="related_post">
-        <h3 class="suggestions-post"><?= __('Related Posts', 'intelligent-link') ?></h3>
         <?php
         $categories = get_the_category();
         $category_ids = array();
@@ -105,9 +104,9 @@ function ep_related_post($settings, $post_id){ ?>
         );
 
         $related_posts = get_posts($args);
-
         // Hiển thị các bài viết liên quan
         if ($related_posts) {
+            echo '<h3 class="suggestions-post">'.__('Related Posts', 'intelligent-link').'</h3>';
             echo '<div class="related-posts-grid">';
             foreach ($related_posts as $post) {
                 setup_postdata($post);
