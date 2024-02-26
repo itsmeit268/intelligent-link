@@ -153,7 +153,7 @@ set_no_index_page();
                         <?= !empty($ads['ads_6']) ? '<div class="preplink-ads preplink-ads-6" style="margin: 0 25px;">' . $ads['ads_6'] . '</div>' : '' ?>
                     <?php endif; ?>
 
-                    <?php if (file_exists(get_template_directory() . '/comments.php') && (int)$endpoint_conf['preplink_comment'] == 1) { ?>
+                    <?php if (file_exists(get_template_directory() . '/comments.php') && (int)$endpoint_conf['preplink_comment'] == 1 && $isMeta) { ?>
                         <div class="comment"><?php comments_template(); ?></div>
                     <?php } ?>
 
