@@ -24,6 +24,7 @@ define('INTELLIGENT_LINK_NAME', 'Intelligent Link');
 define('INTELLIGENT_LINK_VERSION', '1.1.4');
 define('INTELLIGENT_LINK_PLUGIN_FILE',	__FILE__);
 define('INTELLIGENT_LINK_PLUGIN_BASE',	plugin_basename(INTELLIGENT_LINK_PLUGIN_FILE ));
+define('INTELLIGENT_LINK_DEV', 0);
 
 /**
  * The code that runs during plugin activation.
@@ -51,6 +52,7 @@ register_deactivation_hook(INTELLIGENT_LINK_PLUGIN_FILE, 'deactivate_intelligent
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path(INTELLIGENT_LINK_PLUGIN_FILE) . 'includes/class-intelligent-link.php';
+include_once plugin_dir_path(INTELLIGENT_LINK_PLUGIN_FILE) . 'includes/class-intelligent-link-conf.php';
 
 function run_intelligent_link() {
     $plugin = new Intelligent_Link();

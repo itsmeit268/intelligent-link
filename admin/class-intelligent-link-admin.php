@@ -577,7 +577,7 @@ class Intelligent_Link_Admin {
         ?>
         <input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/>
         <input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/>
-        <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(15)) ?>"/>
+        <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(26)) ?>"/>
         <p class="description"><?= __('Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.', 'intelligent-link')?></p>
         <p class="description"><?= __('This practice serves a security purpose and renders it non-decodable.', 'intelligent-link')?></p>
         <?php

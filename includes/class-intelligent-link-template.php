@@ -25,7 +25,6 @@ function render_back_icon($view_link){ ?>
 
 function get_list_link($post_id, $settings) {
     $list_link = get_post_meta($post_id, 'link-download-metabox', true);
-
     $total = (int) $settings['field_lists']? : 5;
     if (isset($list_link) && !empty($list_link) && is_array($list_link)) { ?>
         <div class="list-link-redirect" >
@@ -40,9 +39,9 @@ function get_list_link($post_id, $settings) {
                     $file_name = $list_link[$file_name_key];
                     $size = $list_link[$size_key]; ?>
                     <?php if (is_user_logged_in()) :?>
-                        <a href="javascript:void(0)" data-request="<?= esc_html(base64_encode($list_link[$link_is_login_key]))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
+                        <a href="javascript:void(0)" data-request="<?= esc_html(modify_list_href(base64_encode($list_link[$link_is_login_key])))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
                     <?php else: ?>
-                        <a href="javascript:void(0)" data-request="<?= esc_html(base64_encode($list_link[$link_no_login_key]))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
+                        <a href="javascript:void(0)" data-request="<?= esc_html(modify_list_href(base64_encode($list_link[$link_no_login_key])))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
                     <?php endif;?>
                 <?php }
             } ?>
@@ -52,12 +51,12 @@ function get_list_link($post_id, $settings) {
 
 function link_render($isMeta, $link_is_login, $link_no_login, $prepLinkURL, $file_name, $file_size, $prepLinkText, $post_id, $settings) {
     if (is_user_logged_in()): ?>
-        <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(base64_encode($link_is_login)) : esc_html($prepLinkURL); ?>" class="preplink-btn-link" >
+        <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(modify_href(base64_encode($link_is_login))) : esc_html($prepLinkURL); ?>" class="preplink-btn-link" >
             <?php echo $isMeta ? ($file_name.' '.$file_size) : $prepLinkText; ?>
         </a>
         <?php if ($isMeta) get_list_link($post_id, $settings); ?>
     <?php else: ?>
-        <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(base64_encode($link_no_login)) : esc_html($prepLinkURL); ?>" class="preplink-btn-link" >
+        <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(modify_href(base64_encode($link_no_login))) : esc_html($prepLinkURL); ?>" class="preplink-btn-link" >
             <?php echo $isMeta ? ($file_name.' '.$file_size) : $prepLinkText; ?>
         </a>
         <?php if ($isMeta) get_list_link($post_id, $settings); ?>

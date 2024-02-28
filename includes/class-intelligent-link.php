@@ -15,7 +15,7 @@ class Intelligent_Link {
      * the plugin.
      *
      * @access   protected
-     * @var      Preplink_Loader $loader Maintains and registers all hooks for the plugin.
+     * @var      Intelligent_Link_Loader $loader Maintains and registers all hooks for the plugin.
      */
     protected $loader;
 

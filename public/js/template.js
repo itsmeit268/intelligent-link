@@ -13,7 +13,7 @@
             page_elm      = $('#prep-request-page'),
             preUrlGo      = page_elm.data('request'),
             t2_timer      = $('#preplink-timer-link'),
-            href_modify   = prep_template.modify_href;
+            href_modify   = prep_template.modify_conf;
 
         /**
          * Chức năng xử lý sự kiện click để download/nhận liên kết */
@@ -117,15 +117,16 @@
          * @returns {*}
          */
         function href_restore(url) {
-            return url.replace(atob(href_modify.pfix), '').replace(atob(href_modify.mstr), '').replace(atob(href_modify.sfix), '');
+            if (url.includes(atob(href_modify.mstr)) || url.includes(atob(href_modify.sfix)) ) {
+                return url.replace(href_modify.pfix, '').replace(atob(href_modify.mstr), '').replace(atob(href_modify.sfix), '');
+            }
+            return url.replace(href_modify.pfix, '').replace(href_modify.mstr, '').replace(href_modify.sfix, '');
         }
 
         function redirect_link() {
             $('.preplink-btn-link,.list-preplink-btn-link').on('click', function (e) {
                 e.preventDefault();
-                var data_request = $(this).data('request');
-                var request_link = href_restore(data_request)
-                window.location.href = window.atob(request_link || href_restore(preUrlGo));
+                window.location.href = window.atob(href_restore($(this).data('request')) || href_restore(preUrlGo));
             });
         }
 

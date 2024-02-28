@@ -14,28 +14,18 @@ class Intelligent_Link_Public {
         add_action('woocommerce_short_description', array($this,'render_meta_short_description'), 10);
     }
 
-    public function il_settings() {
-        return get_option('preplink_setting');
-    }
-
-    public function ep_settings() {
-        return get_option('preplink_endpoint');
-    }
-
     public function enqueue_styles(){
-        if ($this->is_plugin_enable()){
-            wp_enqueue_style('g-intelligent-link', plugin_dir_url(__FILE__) . 'css/intelligent-link.min.css', array(), INTELLIGENT_LINK_VERSION, 'all');
+        if (is_plugin_enable()){
+            wp_enqueue_style('intelligent-link', plugin_dir_url(__FILE__) . 'css/intelligent-link'.(INTELLIGENT_LINK_DEV == 1 ? '': '.min').'.css', array(), INTELLIGENT_LINK_VERSION, 'all');
         }
     }
 
     public function enqueue_scripts() {
-        if ($this->is_plugin_enable()){
-            $settings = $this->il_settings();
-            $meta_attr = get_option('meta_attr', []);
+        if (is_plugin_enable()){
             $href_vars = [];
 
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
-            wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link.min.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
+            wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link'.(INTELLIGENT_LINK_DEV == 1 ? '': '.min').'.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
 
             $href_vars = apply_filters('ilgl_href_vars', $href_vars);
             wp_localize_script('intelligent-link', 'href_vars', array_merge(
@@ -43,19 +33,19 @@ class Intelligent_Link_Public {
                     'end_point'              => $this->endpoint_conf(),
                     'prep_url'               => $this->allow_domain(),
                     'pre_elm_exclude'        => $this->exclude_elm(),
-                    'count_down'             => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 0,
-                    'cookie_time'            => !empty($settings['cookie_time']) ? $settings['cookie_time'] : 5,
-                    'display_mode'           => !empty($settings['preplink_wait_text']) ? $settings['preplink_wait_text'] : 'wait_time',
-                    'wait_text'              => !empty($settings['wait_text_replace']) ? $settings['wait_text_replace'] : 'please wait',
-                    'auto_direct'            => !empty($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : 0,
-                    'modify_href'            => $this->modify_href(),
+                    'count_down'             => !empty(ilgl_settings()['preplink_countdown']) ? ilgl_settings()['preplink_countdown'] : 0,
+                    'cookie_time'            => !empty(ilgl_settings()['cookie_time']) ? ilgl_settings()['cookie_time'] : 5,
+                    'display_mode'           => !empty(ilgl_settings()['preplink_wait_text']) ? ilgl_settings()['preplink_wait_text'] : 'wait_time',
+                    'wait_text'              => !empty(ilgl_settings()['wait_text_replace']) ? ilgl_settings()['wait_text_replace'] : 'please wait',
+                    'auto_direct'            => !empty(ilgl_settings()['preplink_auto_direct']) ? ilgl_settings()['preplink_auto_direct'] : 0,
+                    'modify_conf'            => modify_conf(),
                     'replace_text'           => [
-                        'enable' => !empty($settings['replace_text_enable']) ? $settings['replace_text_enable'] : 0,
-                        'text'   => !empty($settings['replace_text']) ? $settings['replace_text'] : 'link is ready',
+                        'enable' => !empty(ilgl_settings()['replace_text_enable']) ? ilgl_settings()['replace_text_enable'] : 0,
+                        'text'   => !empty(ilgl_settings()['replace_text']) ? ilgl_settings()['replace_text'] : 'link is ready',
                     ],
                     'meta_attr'       => [
-                        'auto_direct' => !empty($meta_attr['auto_direct']) ? $meta_attr['auto_direct'] : 0,
-                        'time'        => isset($meta_attr['time']) ? $meta_attr['time'] : 5,
+                        'auto_direct' => !empty(ilgl_meta_option()['auto_direct']) ? ilgl_meta_option()['auto_direct'] : 0,
+                        'time'        => isset(ilgl_meta_option()['time']) ? ilgl_meta_option()['time'] : 5,
                     ]
                 ],
                 $href_vars
@@ -64,20 +54,22 @@ class Intelligent_Link_Public {
     }
 
     public function preplink_rewrite_endpoint(){
-        if ($this->is_plugin_enable()){
+        if (is_plugin_enable()){
             add_rewrite_endpoint($this->endpoint_conf(), EP_ALL );
             add_filter('template_include', [$this, 'intelligent_link_template_include']);
-            flush_rewrite_rules();
+            if (INTELLIGENT_LINK_DEV == 1) {
+                flush_rewrite_rules();
+            }
         }
     }
 
     public function prep_head() {
-        wp_enqueue_style('ilgl-template', plugin_dir_url(__FILE__) . 'css/template.min.css', [], INTELLIGENT_LINK_VERSION, 'all');
-        wp_enqueue_script('ilgl-template', plugin_dir_url(__FILE__) . 'js/template.min.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
+        wp_enqueue_style('ilgl-template', plugin_dir_url(__FILE__) . 'css/template'.(INTELLIGENT_LINK_DEV == 1 ? '': '.min').'.css', [], INTELLIGENT_LINK_VERSION, 'all');
+        wp_enqueue_script('ilgl-template', plugin_dir_url(__FILE__) . 'js/template'.(INTELLIGENT_LINK_DEV == 1 ? '': '.min').'.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
         wp_localize_script('ilgl-template', 'prep_template', [
-            'modify_href'         => $this->modify_href(),
-            'countdown_endpoint'  => !empty($this->ep_settings()['countdown_endpoint']) ? $this->ep_settings()['countdown_endpoint'] : 5,
-            'endpoint_direct'     => !empty($this->ep_settings()['endpoint_auto_direct']) ? $this->ep_settings()['endpoint_auto_direct'] : 0
+            'modify_conf'         => modify_conf(),
+            'countdown_endpoint'  => !empty(ep_settings()['countdown_endpoint']) ? ep_settings()['countdown_endpoint'] : 5,
+            'endpoint_direct'     => !empty(ep_settings()['endpoint_auto_direct']) ? ep_settings()['endpoint_auto_direct'] : 0
         ]);
     }
 
@@ -121,41 +113,24 @@ class Intelligent_Link_Public {
         return $template;
     }
 
-    public function modify_href() {
-        $settings = $this->il_settings();
-
-        $arr = array(
-            'pfix'  => !empty($settings['prefix']) ? base64_encode($settings['prefix']): base64_encode('gqbQ4Wd9NP'),
-            'mstr'  => !empty($settings['between']) ? base64_encode($settings['between']): base64_encode('aC5Q1sjvo9AK'),
-            'sfix'  => !empty($settings['suffix']) ? base64_encode($settings['suffix']): base64_encode('FTTvYmo0i1DwVf'),
-        );
-
-        return $arr;
-    }
-
     public function endpoint_conf(){
         $endpoint = '1';
-        if (!empty($this->ep_settings()['endpoint'])) {
-            $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($this->ep_settings()['endpoint']));
+        if (!empty(ep_settings()['endpoint'])) {
+            $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim(ep_settings()['endpoint']));
         }
         return $endpoint;
     }
 
     public function add_prep_custom_styles(){
-        if ($this->is_plugin_enable() && !empty($this->il_settings()['preplink_custom_style'])) {
+        if (is_plugin_enable() && !empty(ilgl_settings()['preplink_custom_style'])) {
             ?>
-            <style><?= $this->il_settings()['preplink_custom_style'] ?></style>
+            <style><?= ilgl_settings()['preplink_custom_style'] ?></style>
             <?php
         }
     }
 
-    public function is_plugin_enable(){
-        $settings = $this->il_settings();
-        return !empty($settings['preplink_enable_plugin']) && (int)$settings['preplink_enable_plugin'] == 1;
-    }
-
     public function exclude_elm(){
-        $excludeList = $this->il_settings()['preplink_excludes_element'];
+        $excludeList = ilgl_settings()['preplink_excludes_element'];
 
         if (!empty($excludeList)) {
             $excludesArr = explode(',', $excludeList);
@@ -171,7 +146,7 @@ class Intelligent_Link_Public {
 
     public function allow_domain(){
         $allow_domain = '';
-        $prepList = $this->il_settings()['preplink_url'];
+        $prepList = ilgl_settings()['preplink_url'];
         if (!empty($prepList)) {
             $prepArr = explode(',', $prepList);
             $prepArr = array_map('trim', $prepArr);
@@ -186,18 +161,14 @@ class Intelligent_Link_Public {
         return $allow_domain;
     }
 
-    public function meta_option(){
-        return get_option('meta_attr', []);
-    }
-
     public function render_meta_short_description($content) {
         $file_name = get_post_meta(get_the_ID(), 'file_name', true);
         $link_no_login = get_post_meta(get_the_ID(), 'link_no_login', true);
         $link_is_login = get_post_meta(get_the_ID(), 'link_is_login', true);
 
-        if ($file_name && $link_is_login && $link_no_login && $this->is_plugin_enable()) {
-            $after_description = isset($this->meta_option()['product_elm'])? $this->meta_option()['product_elm'] == 'after_short_description': '';
-            $html = $this->prep_link_html($this->meta_option(), $file_name);
+        if ($file_name && $link_is_login && $link_no_login && is_plugin_enable()) {
+            $after_description = isset(ilgl_meta_option()['product_elm'])? ilgl_meta_option()['product_elm'] == 'after_short_description': '';
+            $html = $this->prep_link_html(ilgl_meta_option(), $file_name);
             if (!empty(get_the_excerpt()) && $after_description) {
                 return $content. $html;
             }
@@ -207,13 +178,13 @@ class Intelligent_Link_Public {
     }
 
     public function render_meta_link_info($content) {
-        if (!is_admin() && $this->is_plugin_enable()) {
+        if (!is_admin() && is_plugin_enable()) {
             $file_name = get_post_meta(get_the_ID(), 'file_name', true);
             $link_no_login = get_post_meta(get_the_ID(), 'link_no_login', true);
             $link_is_login = get_post_meta(get_the_ID(), 'link_is_login', true);
             if ($file_name && $link_is_login && $link_no_login) {
-                $product_elm_after_content = isset($this->meta_option()['product_elm']) && $this->meta_option()['product_elm'] == 'after_product_content';
-                $html = $this->prep_link_html($this->meta_option(), $file_name);
+                $product_elm_after_content = isset(ilgl_meta_option()['product_elm']) && ilgl_meta_option()['product_elm'] == 'after_product_content';
+                $html = $this->prep_link_html(ilgl_meta_option(), $file_name);
                 $is_post_or_product = is_singular('post') || (is_singular('product') && $product_elm_after_content);
 
                 if ($is_post_or_product) {
@@ -232,7 +203,7 @@ class Intelligent_Link_Public {
 
     public function prep_link_html($meta_attr, $file_name) {
         $blog_url = base64_encode(get_bloginfo('url'));
-        $display_mode = !empty($this->il_settings()['preplink_wait_text']) ? $this->il_settings()['preplink_wait_text'] : 'wait_time';
+        $display_mode = !empty(ilgl_settings()['preplink_wait_text']) ? ilgl_settings()['preplink_wait_text'] : 'wait_time';
         $html = '<' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . ' class="igl-download-now"><b class="b-h-down">' . (!empty($meta_attr['pre_fix']) ? $meta_attr['pre_fix'] : 'Link download: ') . '</b>';
 
         if ($display_mode === 'progress') {
