@@ -22,11 +22,10 @@ class Intelligent_Link_Public {
 
     public function enqueue_scripts() {
         if (is_plugin_enable()){
-            $href_vars = [];
-
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
             wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link'.(INTELLIGENT_LINK_DEV == 1 ? '': '.min').'.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
 
+            $href_vars = [];
             $href_vars = apply_filters('ilgl_href_vars', $href_vars);
             wp_localize_script('intelligent-link', 'href_vars', array_merge(
                 [
@@ -66,11 +65,17 @@ class Intelligent_Link_Public {
     public function prep_head() {
         wp_enqueue_style('ilgl-template', plugin_dir_url(__FILE__) . 'css/template'.(INTELLIGENT_LINK_DEV == 1 ? '': '.min').'.css', [], INTELLIGENT_LINK_VERSION, 'all');
         wp_enqueue_script('ilgl-template', plugin_dir_url(__FILE__) . 'js/template'.(INTELLIGENT_LINK_DEV == 1 ? '': '.min').'.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
-        wp_localize_script('ilgl-template', 'prep_template', [
-            'modify_conf'         => modify_conf(),
-            'countdown_endpoint'  => !empty(ep_settings()['countdown_endpoint']) ? ep_settings()['countdown_endpoint'] : 5,
-            'endpoint_direct'     => !empty(ep_settings()['endpoint_auto_direct']) ? ep_settings()['endpoint_auto_direct'] : 0
-        ]);
+
+        $prep_template = [];
+        $prep_template = apply_filters('ilgl_prep_template_vars', $prep_template);
+        wp_localize_script('ilgl-template', 'prep_template', array_merge(
+            [
+                'modify_conf'         => modify_conf(),
+                'countdown_endpoint'  => !empty(ep_settings()['countdown_endpoint']) ? ep_settings()['countdown_endpoint'] : 5,
+                'endpoint_direct'     => !empty(ep_settings()['endpoint_auto_direct']) ? ep_settings()['endpoint_auto_direct'] : 0
+            ],
+            $prep_template
+        ));
     }
 
     public function intelligent_link_template_include($template) {
