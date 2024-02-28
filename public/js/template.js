@@ -117,7 +117,7 @@
          * @returns {*}
          */
         function href_restore(url) {
-            return url.replace(href_modify.pfix, '').replace(href_modify.mstr, '').replace(href_modify.sfix, '');
+            return url.replace(atob(href_modify.pfix), '').replace(atob(href_modify.mstr), '').replace(atob(href_modify.sfix), '');
         }
 
         function redirect_link() {

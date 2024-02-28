@@ -7,20 +7,20 @@
     'use strict';
 
     $(function () {
-        var end_point = href_process.end_point.trim(),
+        var end_point = href_vars.end_point.trim(),
             current_url = window.location.href.replace(/#.*/, ''),
-            time_cnf = parseInt(href_process.count_down),
-            cookie_time = parseInt(href_process.cookie_time),
-            wait_text = href_process.wait_text.trim(),
-            display_mode = href_process.display_mode,
-            auto_direct = parseInt(href_process.auto_direct),
-            text_complete = href_process.replace_text,
-            elm_exclude = href_process.pre_elm_exclude.trim(),
+            time_cnf = parseInt(href_vars.count_down),
+            cookie_time = parseInt(href_vars.cookie_time),
+            wait_text = href_vars.wait_text.trim(),
+            display_mode = href_vars.display_mode,
+            auto_direct = parseInt(href_vars.auto_direct),
+            text_complete = href_vars.replace_text,
+            elm_exclude = href_vars.pre_elm_exclude.trim(),
             exclude_elm = elm_exclude.replace(/\\r\\|\r\n|\s/g, "").replace(/^,|,$/g, '').split(","),
-            allow_url = href_process.prep_url,
+            allow_url = href_vars.prep_url,
             windowWidth = $(window).width(),
-            href_modify = href_process.modify_href,
-            meta_attr   = href_process.meta_attr;
+            href_modify = href_vars.modify_href,
+            meta_attr   = href_vars.meta_attr;
 
         var countdownStatus = {};
 
@@ -49,15 +49,15 @@
         }
 
         function modify_href(url) {
-            url = href_modify.pfix + url;
+            url = atob(href_modify.pfix) + url;
             var position = Math.floor(url.length / 2);
-            url = url.substring(0, position) + href_modify.mstr + url.substring(position);
-            url = url + href_modify.sfix;
+            url = url.substring(0, position) + atob(href_modify.mstr) + url.substring(position);
+            url = url + atob(href_modify.sfix);
             return url;
         }
 
         function href_restore(url) {
-            return url.replace(href_modify.pfix, '').replace(href_modify.mstr, '').replace(href_modify.sfix, '');
+            return url.replace(atob(href_modify.pfix), '').replace(atob(href_modify.mstr), '').replace(atob(href_modify.sfix), '');
         }
 
         function _setCookie(n, v) {

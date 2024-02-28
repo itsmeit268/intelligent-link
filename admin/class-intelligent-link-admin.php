@@ -939,6 +939,8 @@ class Intelligent_Link_Admin {
         wp_nonce_field('link_field', 'link_field');
         ?>
 
+        <?php do_action('link_field_meta_box_before', $post); ?>
+
         <h2 class="list-h3-title">Link Details</h2>
         <div class="app-fields">
             <?php
@@ -1027,6 +1029,8 @@ class Intelligent_Link_Admin {
                 </div>
             <?php endfor; ?>
         </div>
+
+        <?php do_action('link_field_meta_box_after', $post); ?>
         <?php
     }
 
@@ -1078,6 +1082,8 @@ class Intelligent_Link_Admin {
             }
         }
         update_post_meta($post_id, 'link-download-metabox', $list_link);
+
+        do_action('intelligent_link_save_field_meta_box', $post_id);
     }
 
     public function delete_links_filed($post_id) {
@@ -1102,5 +1108,6 @@ class Intelligent_Link_Admin {
         }
         
         delete_post_meta($post_id, 'link-download-metabox');
+        do_action('intelligent_link_delete_field_meta_box', $post_id);
     }
 }

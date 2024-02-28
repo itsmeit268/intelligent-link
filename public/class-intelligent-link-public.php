@@ -30,31 +30,36 @@ class Intelligent_Link_Public {
 
     public function enqueue_scripts() {
         if ($this->is_plugin_enable()){
+            $settings = $this->il_settings();
+            $meta_attr = get_option('meta_attr', []);
+            $href_vars = [];
 
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
             wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
-            
-            $settings = $this->il_settings();
-            $meta_attr = get_option('meta_attr', []);
-            wp_localize_script('intelligent-link', 'href_process', [
-                'end_point'              => $this->endpoint_conf(),
-                'prep_url'               => $this->allow_domain(),
-                'pre_elm_exclude'        => $this->exclude_elm(),
-                'count_down'             => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 0,
-                'cookie_time'            => !empty($settings['cookie_time']) ? $settings['cookie_time'] : 5,
-                'display_mode'           => !empty($settings['preplink_wait_text']) ? $settings['preplink_wait_text'] : 'wait_time',
-                'wait_text'              => !empty($settings['wait_text_replace']) ? $settings['wait_text_replace'] : 'please wait',
-                'auto_direct'            => !empty($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : 0,
-                'modify_href'            => $this->modify_href(),
-                'replace_text'           => [
-                    'enable' => !empty($settings['replace_text_enable']) ? $settings['replace_text_enable'] : 0,
-                    'text'   => !empty($settings['replace_text']) ? $settings['replace_text'] : 'link is ready',
+
+            $href_vars = apply_filters('ilgl_href_vars', $href_vars);
+            wp_localize_script('intelligent-link', 'href_vars', array_merge(
+                [
+                    'end_point'              => $this->endpoint_conf(),
+                    'prep_url'               => $this->allow_domain(),
+                    'pre_elm_exclude'        => $this->exclude_elm(),
+                    'count_down'             => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 0,
+                    'cookie_time'            => !empty($settings['cookie_time']) ? $settings['cookie_time'] : 5,
+                    'display_mode'           => !empty($settings['preplink_wait_text']) ? $settings['preplink_wait_text'] : 'wait_time',
+                    'wait_text'              => !empty($settings['wait_text_replace']) ? $settings['wait_text_replace'] : 'please wait',
+                    'auto_direct'            => !empty($settings['preplink_auto_direct']) ? $settings['preplink_auto_direct'] : 0,
+                    'modify_href'            => $this->modify_href(),
+                    'replace_text'           => [
+                        'enable' => !empty($settings['replace_text_enable']) ? $settings['replace_text_enable'] : 0,
+                        'text'   => !empty($settings['replace_text']) ? $settings['replace_text'] : 'link is ready',
+                    ],
+                    'meta_attr'       => [
+                        'auto_direct' => !empty($meta_attr['auto_direct']) ? $meta_attr['auto_direct'] : 0,
+                        'time'        => isset($meta_attr['time']) ? $meta_attr['time'] : 5,
+                    ]
                 ],
-                'meta_attr'       => [
-                    'auto_direct' => !empty($meta_attr['auto_direct']) ? $meta_attr['auto_direct'] : 0,
-                    'time'        => isset($meta_attr['time']) ? $meta_attr['time'] : 5,
-                ]
-            ]);
+                $href_vars
+            ));
         }
     }
 
@@ -62,13 +67,41 @@ class Intelligent_Link_Public {
         if ($this->is_plugin_enable()){
             add_rewrite_endpoint($this->endpoint_conf(), EP_ALL );
             add_filter('template_include', [$this, 'intelligent_link_template_include']);
-//            flush_rewrite_rules();
+            flush_rewrite_rules();
         }
+    }
+
+    public function prep_head() {
+        wp_enqueue_style('ilgl-template', plugin_dir_url(__FILE__) . 'css/template.css', [], INTELLIGENT_LINK_VERSION, 'all');
+        wp_enqueue_script('ilgl-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
+        wp_localize_script('ilgl-template', 'prep_template', [
+            'modify_href'         => $this->modify_href(),
+            'countdown_endpoint'  => !empty($this->ep_settings()['countdown_endpoint']) ? $this->ep_settings()['countdown_endpoint'] : 5,
+            'endpoint_direct'     => !empty($this->ep_settings()['endpoint_auto_direct']) ? $this->ep_settings()['endpoint_auto_direct'] : 0
+        ]);
     }
 
     public function intelligent_link_template_include($template) {
         global $wp_query;
-        $rewrite_template = dirname( __FILE__ ) . '/templates/default.php';
+
+        $intelligent_link_template = apply_filters('intelligent_link_template', '');
+
+        if (empty($template)) {
+            $intelligent_link_template = dirname( __FILE__ ) . '/templates/default.php';
+        }
+
+        include_once plugin_dir_path(INTELLIGENT_LINK_PLUGIN_FILE) . 'includes/class-intelligent-link-template.php';
+
+        if (isset($wp_query->query_vars[$this->endpoint_conf()])) {
+            $this->prep_head();
+            if (is_singular('product')) {
+                remove_all_actions( 'woocommerce_single_product_summary' );
+                include_once $intelligent_link_template;
+                exit;
+            }
+
+            return $intelligent_link_template;
+        }
 
         $product_category = isset($wp_query->query_vars['product_cat']) ? $wp_query->query_vars['product_cat']: '';
 
@@ -79,30 +112,12 @@ class Intelligent_Link_Public {
             remove_all_actions('woocommerce_shop_loop');
             remove_all_actions('woocommerce_after_shop_loop');
             remove_all_actions('woocommerce_sidebar');
-            include_once $rewrite_template;
+
+            $this->prep_head();
+            include_once $intelligent_link_template;
             exit;
         }
 
-        if (isset($wp_query->query_vars[$this->endpoint_conf()])) {
-
-            wp_enqueue_style('intelligent-link-template', plugin_dir_url(__FILE__) . 'css/template.css', [], INTELLIGENT_LINK_VERSION, 'all');
-            wp_enqueue_script('intelligent-link-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
-            wp_localize_script('intelligent-link-template', 'prep_template', [
-                'countdown_endpoint'     => !empty($this->ep_settings()['countdown_endpoint']) ? $this->ep_settings()['countdown_endpoint'] : 5,
-                'endpoint_direct'        => !empty($this->ep_settings()['endpoint_auto_direct']) ? $this->ep_settings()['endpoint_auto_direct'] : 0,
-                'modify_href'            => $this->modify_href()
-            ]);
-
-            include_once plugin_dir_path(INTELLIGENT_LINK_PLUGIN_FILE) . 'includes/class-intelligent-link-template.php';
-
-            if (is_singular('product')) {
-                remove_all_actions( 'woocommerce_single_product_summary' );
-                include_once $rewrite_template;
-                exit;
-            }
-
-            return $rewrite_template;
-        }
         return $template;
     }
 
@@ -110,9 +125,9 @@ class Intelligent_Link_Public {
         $settings = $this->il_settings();
 
         $arr = array(
-            'pfix'  => !empty($settings['prefix']) ? $settings['prefix']: 'gqbQ4Wd9NP',
-            'mstr'  => !empty($settings['between']) ? $settings['between']: 'aC5Q1sjvo9AK',
-            'sfix'  => !empty($settings['suffix']) ? $settings['suffix']: 'FTTvYmo0i1DwVf',
+            'pfix'  => !empty($settings['prefix']) ? base64_encode($settings['prefix']): base64_encode('gqbQ4Wd9NP'),
+            'mstr'  => !empty($settings['between']) ? base64_encode($settings['between']): base64_encode('aC5Q1sjvo9AK'),
+            'sfix'  => !empty($settings['suffix']) ? base64_encode($settings['suffix']): base64_encode('FTTvYmo0i1DwVf'),
         );
 
         return $arr;

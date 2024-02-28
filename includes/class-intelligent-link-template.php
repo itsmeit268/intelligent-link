@@ -10,7 +10,7 @@
 
 function render_back_icon($view_link){ ?>
     <div class="igl-back">
-        <a href="<?= esc_url($view_link)?>">
+        <a href="<?= esc_url($view_link) ?>">
             <i class="c-svg"><svg width="48" height="20"><use xlink:href="#i__back"></use></svg></i>
             <svg aria-hidden="true" style="display:none;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>
