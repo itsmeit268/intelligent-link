@@ -70,3 +70,8 @@
 -- Add a Meta Attributes tab and separate configuration for easy customization.
 -- New feature: Security and URL encryption functionality.
 -- And various other improvements have been updated.
+
+----26/02/2024 v1.1.5----
+-- Implement custom hooks
+-- Update URL security feature
+-- Improve source code
