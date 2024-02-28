@@ -24,7 +24,7 @@ class Intelligent_Link_Public {
 
     public function enqueue_styles(){
         if ($this->is_plugin_enable()){
-            wp_enqueue_style('g-intelligent-link', plugin_dir_url(__FILE__) . 'css/intelligent-link.css', array(), INTELLIGENT_LINK_VERSION, 'all');
+            wp_enqueue_style('g-intelligent-link', plugin_dir_url(__FILE__) . 'css/intelligent-link.min.css', array(), INTELLIGENT_LINK_VERSION, 'all');
         }
     }
 
@@ -35,7 +35,7 @@ class Intelligent_Link_Public {
             $href_vars = [];
 
             wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
-            wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
+            wp_enqueue_script('intelligent-link', plugin_dir_url(__FILE__) . 'js/intelligent-link.min.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
 
             $href_vars = apply_filters('ilgl_href_vars', $href_vars);
             wp_localize_script('intelligent-link', 'href_vars', array_merge(
@@ -72,8 +72,8 @@ class Intelligent_Link_Public {
     }
 
     public function prep_head() {
-        wp_enqueue_style('ilgl-template', plugin_dir_url(__FILE__) . 'css/template.css', [], INTELLIGENT_LINK_VERSION, 'all');
-        wp_enqueue_script('ilgl-template', plugin_dir_url(__FILE__) . 'js/template.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
+        wp_enqueue_style('ilgl-template', plugin_dir_url(__FILE__) . 'css/template.min.css', [], INTELLIGENT_LINK_VERSION, 'all');
+        wp_enqueue_script('ilgl-template', plugin_dir_url(__FILE__) . 'js/template.min.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
         wp_localize_script('ilgl-template', 'prep_template', [
             'modify_href'         => $this->modify_href(),
             'countdown_endpoint'  => !empty($this->ep_settings()['countdown_endpoint']) ? $this->ep_settings()['countdown_endpoint'] : 5,
