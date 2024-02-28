@@ -83,7 +83,7 @@ class Intelligent_Link_Public {
 
         $intelligent_link_template = apply_filters('intelligent_link_template', '');
 
-        if (empty($template)) {
+        if (empty($intelligent_link_template)) {
             $intelligent_link_template = dirname( __FILE__ ) . '/templates/default.php';
         }
 
