@@ -280,8 +280,7 @@
                     clearInterval(intervalId);
 
                     parent.css('margin-right', '0');
-                    let progress_html = '<i class="fa fa-angle-double-right fa-shake" style="color: #fff;cursor: pointer;font-size: 13px;"></i>';
-                    progress_html += `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
+                    let progress_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
                     progress_html += '<span class="text-complete">' + ((text_complete.enable === 'yes') ? text_complete.text : title) + '</span>';
                     $elm.html('<strong class="post-progress" style="color:#0c7c3f;">' + progress_html + '</strong>');
                     if (parent.parents('.igl-download-now').length) {
