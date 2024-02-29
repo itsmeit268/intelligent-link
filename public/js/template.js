@@ -130,25 +130,6 @@
             });
         }
 
-        function faq_download() {
-            if ($('.faq-download').length) {
-                const items = $('.accordion button');
-                function toggleAccordion() {
-                    const itemToggle = $(this).attr('aria-expanded');
-                    items.attr('aria-expanded', 'false');
-                    items.removeClass('faq-active');
-                    if (itemToggle == 'false') {
-                        $(this).addClass('faq-active');
-                        $(this).attr('aria-expanded', 'true');
-                        $(this).next('.content').slideDown(1000);
-                    } else {
-                        $(this).next('.content').slideUp(1000);
-                    }
-                }
-                items.click(toggleAccordion);
-            }
-        }
-
         function scrollToProgressElm() {
             $('.clickable,.prep-title').on('click', function () {
                 if (time_cnf === 0) {
@@ -164,7 +145,6 @@
 
         progressRunning();
         redirect_link();
-        faq_download();
         scrollToProgressElm();
     });
 })(jQuery);

@@ -76,8 +76,14 @@
     max-height: 30px;
     margin-bottom: 1.5px;
 }
-ul li > .wrap-countdown > .prep-request > .link-countdown {
+ul li > .wrap-countdown > .prep-request > .link-countdown,
+ul li > .wrap-countdown > .prep-request > .text-show-complete{
     display: block;
+    vertical-align: unset;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
 }
 ul li > .wrap-countdown > .prep-request > .link-countdown:hover,
 ul li > .post-progress-bar > .prep-request > .post-progress:hover {
@@ -144,7 +150,15 @@ i.material-icons {
     display: block;
 }
 .woocommerce-product-details__short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress,
- .product-short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress {
+.product-short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.text-show-complete {
+    vertical-align: unset;
     white-space: nowrap;
     text-overflow: ellipsis;
     max-width: 100%;

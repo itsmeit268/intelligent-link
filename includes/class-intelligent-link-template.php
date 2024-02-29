@@ -147,10 +147,7 @@ function ep_related_post($settings, $post_id){ ?>
 
 function faq_render() {
     $faq_conf = get_option('preplink_faq', []); ?>
-    <div class="faq-download">
-        <h3 class="faq-title"><?= !empty($faq_conf['faq_title']) ? $faq_conf['faq_title'] : 'Frequently Asked Questions' ?></h3>
-        <?= !empty($faq_conf['faq_description'])? $faq_conf['faq_description'] : file_get_contents(plugin_dir_path(__DIR__) . 'faq.txt'); ?>
-    </div>
+    <?= !empty($faq_conf['faq_description'])? $faq_conf['faq_description'] : file_get_contents(plugin_dir_path(__DIR__) . 'faq.txt'); ?>
 <?php }
 
 function set_no_index_page() {

@@ -586,8 +586,8 @@ class Intelligent_Link_Admin {
     public function preplink_link_field_lists(){
         $settings = get_option('meta_attr', array());
         ?>
-        <input type="number" name="meta_attr[field_lists]" placeholder="3"
-               value="<?= esc_attr(!empty($settings['field_lists']) ? $settings['field_lists'] : '3') ?>" min="1" max="20"/>
+        <input type="number" name="meta_attr[field_lists]" placeholder="5"
+               value="<?= esc_attr(!empty($settings['field_lists']) ? $settings['field_lists'] : '5') ?>" min="1" max="20"/>
         <p class="description"><?= __("The number of related fields, you'll find it within the post or product. Here you can add different links.", "intelligent-link")?></p>
         <?php
     }
@@ -709,12 +709,6 @@ class Intelligent_Link_Admin {
                         <option value="0" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '0'); ?>>Disabled</option>
                         <option value="1" <?php selected(isset($settings['faq_enabled']) && $settings['faq_enabled'] == '1'); ?>>Enabled</option>
                     </select>
-                </td>
-            </tr>
-            <tr class="faq_title">
-                <td style="padding: 5px 0;">
-                    <label style="width: 160px;display: inline-table;">Title</label>
-                    <input type="text" name="preplink_faq[faq_title]" placeholder="Notes before continuing" value="<?= esc_attr(isset($settings['faq_title']) ? $settings['faq_title'] : 'Frequently Asked Questions'); ?>"/>
                 </td>
             </tr>
             <tr class="faq_description">

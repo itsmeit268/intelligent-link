@@ -224,7 +224,7 @@
                     clearInterval(downloadTimer);
 
                     let wait_time_html = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span>`;
-                    wait_time_html += '<span style="vertical-align: unset;">' + ((text_complete.enable === 'yes') ? text_complete.text : title) + '</span>';
+                    wait_time_html += '<span class="text-show-complete">' + ((text_complete.enable === 'yes') ? text_complete.text : title) + '</span>';
 
                     $elm.html(wait_time_html);
 

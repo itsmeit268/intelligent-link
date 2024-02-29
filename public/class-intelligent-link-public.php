@@ -82,6 +82,7 @@ class Intelligent_Link_Public {
     public function intelligent_link_template_include($template) {
         global $wp_query;
 
+
         $intelligent_link_template = apply_filters('intelligent_link_template', '');
 
         if (empty($intelligent_link_template)) {
@@ -104,6 +105,14 @@ class Intelligent_Link_Public {
         $product_category = isset($wp_query->query_vars['product_cat']) ? $wp_query->query_vars['product_cat']: '';
 
         if ($product_category == $this->endpoint_conf()) {
+            $this->prep_head();
+            add_filter( 'pre_get_document_title', function ($title) {
+                if (empty(get_the_title()) || empty($title)) {
+                    return isset($_COOKIE['prep_title']) ? $_COOKIE['prep_title'] . ' – ' . get_bloginfo('name') : get_bloginfo('name');
+                }
+                return $title;
+            });
+
             remove_all_actions('woocommerce_before_main_content');
             remove_all_actions('woocommerce_archive_description');
             remove_all_actions('woocommerce_before_shop_loop');
@@ -111,10 +120,10 @@ class Intelligent_Link_Public {
             remove_all_actions('woocommerce_after_shop_loop');
             remove_all_actions('woocommerce_sidebar');
 
-            $this->prep_head();
             include_once $intelligent_link_template;
             exit;
         }
+
 
         return $template;
     }
