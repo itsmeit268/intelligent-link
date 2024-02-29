@@ -54,7 +54,7 @@ class Intelligent_Link_Public {
 
     public function preplink_rewrite_endpoint(){
         if (is_plugin_enable()){
-            add_rewrite_endpoint($this->endpoint_conf(), EP_ALL );
+            add_rewrite_endpoint($this->endpoint_conf(), EP_PERMALINK | EP_PAGES | EP_ROOT | EP_CATEGORIES | EP_SEARCH);
             add_filter('template_include', [$this, 'intelligent_link_template_include']);
             if (INTELLIGENT_LINK_DEV == 1) {
                 flush_rewrite_rules();
