@@ -24,7 +24,7 @@ define('INTELLIGENT_LINK_NAME', 'Intelligent Link');
 define('INTELLIGENT_LINK_VERSION', '1.1.5');
 define('INTELLIGENT_LINK_PLUGIN_FILE',	__FILE__);
 define('INTELLIGENT_LINK_PLUGIN_BASE',	plugin_basename(INTELLIGENT_LINK_PLUGIN_FILE ));
-define('INTELLIGENT_LINK_DEV', 1);
+define('INTELLIGENT_LINK_DEV', 0);
 
 /**
  * The code that runs during plugin activation.
