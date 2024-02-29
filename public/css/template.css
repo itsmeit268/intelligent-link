@@ -429,7 +429,7 @@ img {
     position: relative;
     max-width: 100%;
     height: 35px;
-    margin-bottom: 20px;
+    margin: 20px 0;
     background-color: #e2e2e2;
     border-radius: 40px
 }
@@ -438,7 +438,13 @@ img {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
-    z-index: 1
+    z-index: 1;
+    line-height: 1;
+    height: 25px;
+    margin: 0;
+    padding-top: 10px;
+    font-size: 16px;
+    color: #1c1a1a;
 }
 
 .endpoint-progress .bar {
@@ -491,6 +497,7 @@ img {
 .preplink-btn-link:hover {
     color: #d7d9db;
 }
+
 .require-level {
     border: 1px solid #11b94c;
     border-radius: 5px;
@@ -552,6 +559,12 @@ img {
 }
 .related_post {
     margin-bottom: 20px;
+}
+
+@keyframes time-rotate {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media only screen and (max-device-width: 480px) {
