@@ -213,10 +213,10 @@ class Intelligent_Link_Public {
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';
-            $html .= '<span class="prep-request" data-request="1" data-id="' . $blog_url . '"><strong class="post-progress">' . $file_name . '</strong></span></div>';
+            $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="post-progress">' . $file_name . '</strong></span></div>';
         } else {
             $html .= '<span class="wrap-countdown">';
-            $html .= '<span class="prep-request" data-request="1" data-id="' . $blog_url . '"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
+            $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
         }
 
         $html .= '</' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . '>';
