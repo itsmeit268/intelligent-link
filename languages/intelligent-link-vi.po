@@ -252,7 +252,7 @@ msgstr "Thời gian đếm ngược mặc định được đặt thành 15 giâ
 msgid "The default endpoint is (1), and it looks like this:"
 msgstr "Điểm cuối mặc định là (1) và nó trông như thế này:"
 
-msgid "The elements will be excluded, each separated by a comma (,)."
+msgid "The elements will be excluded, with each element separated by a comma (,). This will preserve the original URL."
 msgstr ""
 "Các phần tử sẽ bị loại trừ, mỗi phần tử được phân tách bằng dấu phẩy (,)."
 

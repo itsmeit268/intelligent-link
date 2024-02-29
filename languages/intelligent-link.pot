@@ -239,7 +239,7 @@ msgstr ""
 msgid "Please note that these strings could match any text within your post URLs, so you should provide the domain of the link to ensure proper redirection."
 msgstr ""
 
-msgid "The elements will be excluded, each separated by a comma (,)."
+msgid "The elements will be excluded, with each element separated by a comma (,). This will preserve the original URL."
 msgstr ""
 
 msgid "For example: #prep-link-download-btn, .prep-link-download-btn."
@@ -266,10 +266,7 @@ msgstr ""
 msgid "Text displayed while the countdown is pending."
 msgstr ""
 
-msgid "The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration."
-msgstr ""
-
-msgid "The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration."
+msgid "The default countdown time is set to 1 second. If you set it to 0, it will skip the yes/no configuration."
 msgstr ""
 
 msgid "The default countdown time is set to 15 seconds."

@@ -20,7 +20,8 @@
             allow_url = href_vars.prep_url,
             windowWidth = $(window).width(),
             modify_conf = href_vars.modify_conf,
-            meta_attr   = href_vars.meta_attr;
+            meta_attr   = href_vars.meta_attr,
+            href_ex_elm = href_vars.href_ex_elm;
 
         var countdownStatus = {};
 
@@ -126,7 +127,11 @@
                     var svgExists = $this.find("svg").length > 0;
                     var icon_Exists = $this.find("i").length > 0;
 
-                    if (imgExists || svgExists || icon_Exists) {
+                    var excludedElements = href_ex_elm.split(",").map(function(item) {
+                        return item.trim();
+                    });
+
+                    if (imgExists || svgExists || icon_Exists || $this.is(excludedElements.join(','))) {
                         $this.attr({'href': 'javascript:void(0)', 'data-id': modified_url, 'data-text': text_link, 'data-image': '1'}).addClass('prep-request');
                     } else {
                         var replacement;
@@ -262,8 +267,7 @@
             if (!is_meta.length) {
                 $progress.css({
                     'background-color': '#1479B3',
-                    'color': '#fff',
-                    'padding': '0 10px'
+                    'color': '#fff'
                 });
             }
 

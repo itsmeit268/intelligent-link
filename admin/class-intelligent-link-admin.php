@@ -264,8 +264,16 @@ class Intelligent_Link_Admin {
 
         add_settings_field(
             'preplink_excludes_element',
-            __('Element excluded', 'intelligent-link'),
+            __('Element exclude (div, selector)', 'intelligent-link'),
             array($this, 'preplink_excludes_element'),
+            'preplink_general_settings',
+            'preplink_general_section'
+        );
+
+        add_settings_field(
+            'href_exclude',
+            __('Exclude link/URL elements', 'intelligent-link'),
+            array($this, 'href_exclude'),
             'preplink_general_settings',
             'preplink_general_section'
         );
@@ -633,8 +641,19 @@ class Intelligent_Link_Admin {
         $html = '<textarea id="preplink_excludes_element" cols="50" rows="5" name="preplink_setting[preplink_excludes_element]" placeholder=".prep-link-download-btn,.prep-link-btn">';
         $html .= isset($settings["preplink_excludes_element"]) ? $settings["preplink_excludes_element"] : false;
         $html .= '</textarea>';
-        $html .= '<p class="description">'.__('The elements will be excluded, each separated by a comma (,).', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('The elements will be excluded, with each element separated by a comma (,). This will preserve the original URL.', 'intelligent-link').'</p>';
         $html .= '<p class="description">'.__('For example: #prep-link-download-btn, .prep-link-download-btn.', 'intelligent-link').'</p>';
+        echo $html;
+    }
+
+    public function href_exclude(){
+        $settings = get_option('preplink_setting', array());
+        $html = '<textarea id="href_exclude" cols="50" rows="5" name="preplink_setting[href_exclude]" placeholder=".single_add_to_cart_button">';
+        $html .= isset($settings["href_exclude"]) ? $settings["href_exclude"] : false;
+        $html .= '</textarea>';
+        $html .= '<p class="description">'.__('You can add elements such as the class and id of the "a" tag, for example, the "a" tag of the "add to cart" link.', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('This is suitable for affiliate marketing themes. The URL will still be redirected and maintain its default template. Each element is separated by a comma (,).', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('For example: .single_add_to_cart_button,', 'intelligent-link').'</p>';
         echo $html;
     }
 
@@ -819,9 +838,9 @@ class Intelligent_Link_Admin {
             </tr>
             <tr class="preplink_post_number">
                 <td class="preplink_post_number_notice" style="padding: 2px 0">
-                    <label><p><?= __('The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.', 'intelligent-link')?></p></label>
+                    <label><p><?= __('The default countdown time is set to 1 second. If you set it to 0, it will skip the yes/no configuration.', 'intelligent-link')?></p></label>
                     <input type="number" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="1"
-                           value="<?= !empty($settings['preplink_countdown']) ? ($settings['preplink_countdown'] == '0' ? 0 : $settings['preplink_countdown']) : '1' ?>" min="0" max="300"/>
+                           value="<?= !empty($settings['preplink_countdown']) ? ($settings['preplink_countdown'] == '0' ? 0 : $settings['preplink_countdown']) : '0' ?>" min="0" max="300"/>
                 </td>
             </tr>
             </tbody>
@@ -844,7 +863,7 @@ class Intelligent_Link_Admin {
             </tr>
             <tr class="tr-time_number">
                 <td class="td-time_number" style="padding: 2px 0">
-                    <label><p><?= __('The default countdown time is set to 1 second. If you set it to 0, it will bypass the automatic redirection configuration.', 'intelligent-link')?></p></label>
+                    <label><p><?= __('The default countdown time is set to 1 second. If you set it to 0, it will skip the yes/no configuration.', 'intelligent-link')?></p></label>
                     <input type="number" name="meta_attr[time]" placeholder="1" value="<?= !empty($meta_attr['time']) ? ($meta_attr['time'] == '0' ? 0 : $meta_attr['time']) : '1' ?>" min="0" max="300"/>
                 </td>
             </tr>

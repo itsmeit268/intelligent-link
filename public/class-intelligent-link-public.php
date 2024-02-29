@@ -32,6 +32,7 @@ class Intelligent_Link_Public {
                     'end_point'              => $this->endpoint_conf(),
                     'prep_url'               => $this->allow_domain(),
                     'pre_elm_exclude'        => $this->exclude_elm(),
+                    'href_ex_elm'            => $this->href_ex_elm(),
                     'count_down'             => !empty(ilgl_settings()['preplink_countdown']) ? ilgl_settings()['preplink_countdown'] : 0,
                     'cookie_time'            => !empty(ilgl_settings()['cookie_time']) ? ilgl_settings()['cookie_time'] : 5,
                     'display_mode'           => !empty(ilgl_settings()['preplink_wait_text']) ? ilgl_settings()['preplink_wait_text'] : 'wait_time',
@@ -147,6 +148,11 @@ class Intelligent_Link_Public {
             $excludeList = '.prep-link-download-btn,.prep-link-btn,.keyword-search,.session-expired,.comment';
         }
         return $excludeList;
+    }
+
+    public function href_ex_elm(){
+        $href_exclude = ilgl_settings()['href_exclude'];
+        return !empty($href_exclude) ? rtrim($href_exclude, ','): '';
     }
 
     public function allow_domain(){
