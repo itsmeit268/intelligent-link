@@ -12,23 +12,6 @@
     }
 }
 
-.p-file {
-    padding: 1.5rem;
-    margin: 0 auto;
-}
-
-.p-file-title {
-    font-size: 1.375rem;
-    margin-bottom: 20px;
-}
-
-.p-file-cont {
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-
 .igl-back {
     text-align: center;
 }
@@ -48,41 +31,16 @@
     color: #1b96a5;
 }
 
-.p-file-data {
-    white-space: nowrap;
-}
-
-.p-file-data > * {
-    display: inline-block;
-    vertical-align: top;
-}
-
 .section-newgames >.section-title {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
-@media (min-width: 48rem) {
-    .p-file-title {
-        font-size: 1.5rem;
-    }
-}
-
 @media (min-width: 62rem) {
-    .p-file {
-        max-width: 54rem;
-        padding: 2rem;
-    }
-
     .igl-back {
         margin-bottom: 1rem;
         margin-top: 1rem;
-    }
-
-    .p-file-title {
-        font-size: 2rem;
-        color: #000000;
     }
 }
 
@@ -134,12 +92,6 @@
 
 .ilgl-file-timer > svg {
     animation: time-rotate 2s linear infinite;
-}
-
-@keyframes time-rotate {
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 .ilgl-file-timer, .ilgl-file-timer-btn {
@@ -574,9 +526,7 @@ img {
     font-weight: 600;
     font-size: 16px;
 }
-.p-file-title{
-    text-align: center;
-}
+
 .keyword-search {
     text-align: left;
     margin: 10px 0 10px 0px;
@@ -605,10 +555,6 @@ img {
 }
 
 @media only screen and (max-device-width: 480px) {
-    .p-file {
-        padding: 0 10px;
-        margin: 0 auto;
-    }
 
     .featured-image {
         height: 200px;
@@ -621,11 +567,6 @@ img {
     h1.s-title {
         margin: 0 10px 10px 0;
         font-size: 20px
-    }
-
-    .p-file-title{
-        padding: 0 5px;
-        text-align: center;
     }
 
     .related-posts-grid {
