@@ -303,6 +303,13 @@
             }, timeleft);
         }
 
+        function remove_empty_elm(){
+            if ($('.list-link-redirect ul').is(':empty')) {
+                $('.list-link-redirect').remove();
+            }
+        }
+
+        remove_empty_elm();
         reset_request();
         prep_request_link();
         processClick();
