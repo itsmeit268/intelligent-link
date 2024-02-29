@@ -221,38 +221,40 @@ class Intelligent_Link_Public {
 
         $html .= '</' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . '>';
 
-        $list_link = get_post_meta(get_the_ID(), 'link-download-metabox', true);
-        $settings = get_option('meta_attr', array());
-        $total = (int) $settings['field_lists']? : 5;
+        $show_list = !empty($meta_attr['show_list']) ? true: false;
 
+        if ($show_list) {
+            $list_link = get_post_meta(get_the_ID(), 'link-download-metabox', true);
+            $settings = get_option('meta_attr', array());
+            $total = (int) $settings['field_lists']? : 5;
 
-        if (isset($list_link) && !empty($list_link) && is_array($list_link)) {
-            $html .= '<div class="list-link-redirect">';
-            $html .= '<p class="ilgl-other-version">'.__('Other Version').'</p>';
-            $html .= '<ul>';
+            if (isset($list_link) && !empty($list_link) && is_array($list_link)) {
+                $html .= '<div class="list-link-redirect">';
+                $html .= '<p class="ilgl-other-version">'.__('Other Version').'</p>';
+                $html .= '<ul>';
 
-            for ($i = 1; $i <= $total; $i++) {
-                $file_name_key = 'file_name-' . $i;
-                $link_no_login_key = 'link_no_login-' . $i;
-                $link_is_login_key = 'link_is_login-' . $i;
-                $size_key = 'size-' . $i;
+                for ($i = 1; $i <= $total; $i++) {
+                    $file_name_key = 'file_name-' . $i;
+                    $link_no_login_key = 'link_no_login-' . $i;
+                    $link_is_login_key = 'link_is_login-' . $i;
+                    $size_key = 'size-' . $i;
 
-                if (isset($list_link[$file_name_key]) && !empty($list_link[$link_no_login_key]) && isset($list_link[$link_is_login_key])) {
-                    $file_name = $list_link[$file_name_key];
-                    $size = $list_link[$size_key];
-                    $html .= '<li>';
-                    if (is_user_logged_in()) {
-                        $html .= '<a href="' . esc_html($list_link[$link_is_login_key]) . '" class="preplink-btn-link list-preplink-btn-link">' . esc_html($file_name . ' ' . $size) . '</a>';
-                    } else {
-                        $html .= '<a href="' . esc_html($list_link[$link_no_login_key]) . '" class="preplink-btn-link list-preplink-btn-link">' . esc_html($file_name . ' ' . $size) . '</a>';
+                    if (isset($list_link[$file_name_key]) && !empty($list_link[$link_no_login_key]) && isset($list_link[$link_is_login_key])) {
+                        $file_name = $list_link[$file_name_key];
+                        $size = $list_link[$size_key];
+                        $html .= '<li>';
+                        if (is_user_logged_in()) {
+                            $html .= '<a href="' . esc_html($list_link[$link_is_login_key]) . '" class="preplink-btn-link list-preplink-btn-link">' . esc_html($file_name . ' ' . $size) . '</a>';
+                        } else {
+                            $html .= '<a href="' . esc_html($list_link[$link_no_login_key]) . '" class="preplink-btn-link list-preplink-btn-link">' . esc_html($file_name . ' ' . $size) . '</a>';
+                        }
+                        $html .= '</li>';
                     }
-                    $html .= '</li>';
                 }
+
+                $html .= '</ul>';
+                $html .= '</div>';
             }
-
-
-            $html .= '</ul>';
-            $html .= '</div>';
         }
 
         return $html;

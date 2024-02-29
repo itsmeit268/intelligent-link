@@ -402,6 +402,18 @@ class Intelligent_Link_Admin {
         );
 
         add_settings_field(
+            'show_list_meta',
+            __('Show list meta', 'intelligent-link'),
+            array($this, 'show_list_meta'),
+            'preplink_meta_attr',
+            'preplink_meta_attr_section',
+            array(
+                1 => 'Yes',
+                0 => 'No',
+            )
+        );
+
+        add_settings_field(
             'preplink_link_url_rewriting',
             __('Rewrite URL Encoding', 'intelligent-link'),
             array($this, 'preplink_link_url_rewriting'),
@@ -658,6 +670,14 @@ class Intelligent_Link_Admin {
         </select>
     <?php }
 
+    public function show_list_meta() {
+        $meta_attr = get_option('meta_attr', []); ?>
+        <select name="meta_attr[show_list]">
+            <option value="1" <?= isset($meta_attr['show_list']) && $meta_attr['show_list'] === '1' ? 'selected' : '' ?>><?= __('Yes', 'intelligent-link')?></option>
+            <option value="0" <?= isset($meta_attr['show_list']) && $meta_attr['show_list'] === '0' ? 'selected' : '' ?>><?= __('No', 'intelligent-link')?></option>
+        </select>
+    <?php }
+
     public function pr_faq(){
         $settings = get_option('preplink_faq', []);
         ?>
@@ -870,7 +890,7 @@ class Intelligent_Link_Admin {
     public function pr_ad_2(){
         $settings = get_option('ads_code', array());
         $html = '<textarea name="ads_code[ads_2]" rows="5" cols="50">';
-        $html .= esc_html(isset($settings['ads_2']) ? $settings['ads_2'] : false);
+        $html .= esc_html(!empty($settings['ads_2']) ? $settings['ads_2'] : false);
         $html .= '</textarea>';
         $html .= '<p class="description">'.__('Display position: Below the featured image.', 'intelligent-link').'</p>';
         echo $html;
@@ -878,8 +898,8 @@ class Intelligent_Link_Admin {
 
     public function pr_ad_3() {
         $settings = get_option('ads_code', array());
-        $html = '<textarea name="ads_code[ads_2]" rows="5" cols="50">';
-        $html .= esc_html(isset($settings['ads_3']) ? $settings['ads_3'] : false);
+        $html = '<textarea name="ads_code[ads_3]" rows="5" cols="50">';
+        $html .= esc_html(!empty($settings['ads_3']) ? $settings['ads_3'] : false);
         $html .= '</textarea>';
         $html .= '<p class="description">'.__('Display position: Below the download/countdown button.', 'intelligent-link').'</p>';
         echo $html;
@@ -888,7 +908,7 @@ class Intelligent_Link_Admin {
     public function pr_ad_4() {
         $settings = get_option('ads_code', array());
         $html = '<textarea name="ads_code[ads_4]" rows="5" cols="50">';
-        $html .= esc_html(isset($settings['ads_4']) ? $settings['ads_4'] : false);
+        $html .= esc_html(!empty($settings['ads_4']) ? $settings['ads_4'] : false);
         $html .= '</textarea>';
         $html .= '<p class="description">'.__('Display position: Below the FAQ, if the FAQ is enabled.', 'intelligent-link').'</p>';
         echo $html;
@@ -897,7 +917,7 @@ class Intelligent_Link_Admin {
     public function pr_ad_5() {
         $settings = get_option('ads_code', array());
         $html = '<textarea name="ads_code[ads_5]" rows="5" cols="50">';
-        $html .= esc_html(isset($settings['ads_5']) ? $settings['ads_5'] : false);
+        $html .= esc_html(!empty($settings['ads_5']) ? $settings['ads_5'] : false);
         $html .= '</textarea>';
         $html .= '<p class="description">'.__('Display position: Below custom text 2.', 'intelligent-link').'</p>';
         echo $html;
@@ -906,7 +926,7 @@ class Intelligent_Link_Admin {
     public function pr_ad_6() {
         $settings = get_option('ads_code', array());
         $html = '<textarea name="ads_code[ads_6]" rows="5" cols="50">';
-        $html .= esc_html(isset($settings['ads_6']) ? $settings['ads_6'] : false);
+        $html .= esc_html(!empty($settings['ads_6']) ? $settings['ads_6'] : false);
         $html .= '</textarea>';
         $html .= '<p class="description">'.__('Display position: Below related posts, if related posts are enabled.', 'intelligent-link').'</p>';
         echo $html;
@@ -915,7 +935,7 @@ class Intelligent_Link_Admin {
     public function pr_ad_7() {
         $settings = get_option('ads_code', array());
         $html = '<textarea name="ads_code[ads_7]" rows="5" cols="50">';
-        $html .= esc_html(isset($settings['ads_7']) ? $settings['ads_7'] : false);
+        $html .= esc_html(!empty($settings['ads_7']) ? $settings['ads_7'] : false);
         $html .= '</textarea>';
         $html .= '<p class="description">'.__('Display position: At the bottom of the page when the link expires.', 'intelligent-link').'</p>';
         echo $html;
