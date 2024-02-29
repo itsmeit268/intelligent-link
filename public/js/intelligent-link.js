@@ -267,7 +267,8 @@
             if (!is_meta.length) {
                 $progress.css({
                     'background-color': '#1479B3',
-                    'color': '#fff'
+                    'color': '#fff',
+                    'padding': '0 10px'
                 });
             }
 

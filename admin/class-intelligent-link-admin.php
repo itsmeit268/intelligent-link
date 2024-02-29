@@ -651,9 +651,9 @@ class Intelligent_Link_Admin {
         $html = '<textarea id="href_exclude" cols="50" rows="5" name="preplink_setting[href_exclude]" placeholder=".single_add_to_cart_button">';
         $html .= isset($settings["href_exclude"]) ? $settings["href_exclude"] : false;
         $html .= '</textarea>';
-        $html .= '<p class="description">'.__('You can add elements such as the class and id of the "a" tag, for example, the "a" tag of the "add to cart" link.', 'intelligent-link').'</p>';
-        $html .= '<p class="description">'.__('This is suitable for affiliate marketing themes. The URL will still be redirected and maintain its default template. Each element is separated by a comma (,).', 'intelligent-link').'</p>';
-        $html .= '<p class="description">'.__('For example: .single_add_to_cart_button,', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('You can add elements such as the class and id of the "a" tag, for example, the "a" tag of the "add to cart" link. Each element is separated by a comma (,).', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('This is suitable for affiliate marketing themes. The URL will still be redirected and maintain its default template.', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('For example: .single_add_to_cart_button,#you-id,.you-class', 'intelligent-link').'</p>';
         echo $html;
     }
 
