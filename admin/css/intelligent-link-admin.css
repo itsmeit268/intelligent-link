@@ -56,8 +56,10 @@
     text-transform: none;
     margin-bottom: 10px !important;
 }
-.app-fields >.app-row>.app-field input {
-    max-width: 230px;
+
+.app-fields >.app-row>.app-field input,
+.list-link-row>.link-field input{
+    width: 100%;
     padding: 0 8px;
     line-height: 2;
     min-height: 30px;

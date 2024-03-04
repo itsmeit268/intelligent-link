@@ -291,12 +291,12 @@ textarea#comment {
 .download-item {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between
+    justify-content: space-between;
+    width: 100%;
 }
 
 .download-item .left {
     flex: 0 0 calc(60% - 10px);
-    margin-left: 5px;
 }
 
 .download-item .right {
@@ -304,7 +304,6 @@ textarea#comment {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-right: 5px;
 }
 
 .download-item .left .image {
@@ -376,7 +375,9 @@ img {
 }
 
 .image > picture > img {
-    border-radius: 5px
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
 }
 
 .dl-p-url {
@@ -423,6 +424,8 @@ img {
 .post-download {
     height: 100%;
     line-height: 24px;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .endpoint-progress {
@@ -567,6 +570,20 @@ img {
     }
 }
 
+.download-item .left {
+    max-width: 80%;
+}
+
+.download-item .right {
+    max-width: 20%;
+}
+
+.title.prep-title {
+    word-wrap: break-word;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
 @media only screen and (max-device-width: 480px) {
 
     .featured-image {
@@ -588,12 +605,10 @@ img {
 
     .download-item .left {
         flex: 0 0 calc(80% - 10px);
-        margin-left: 5px;
     }
 
     .download-item .right {
         flex: 0 0 calc(20% - 10px);
-        margin-right: 0;
     }
 
     .prep-link-download-btn {
