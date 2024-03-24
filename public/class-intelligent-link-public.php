@@ -224,7 +224,12 @@ class Intelligent_Link_Public {
     public function prep_link_html($meta_attr, $file_name) {
         $blog_url = base64_encode(get_bloginfo('url'));
         $display_mode = !empty(ilgl_settings()['preplink_wait_text']) ? ilgl_settings()['preplink_wait_text'] : 'wait_time';
-        $html = '<' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . ' class="igl-download-now"><b class="b-h-down">' . (!empty($meta_attr['pre_fix']) ? $meta_attr['pre_fix'] : 'Link download: ') . '</b>';
+
+        $element = get_post_meta(get_the_ID(), 'render_element', true);
+        $wrap = !empty($element['wrap_element']) ? $element['wrap_element'] : 'h3';
+        $pre_fix = !empty($element['pre_fix']) ? $element['pre_fix'] .'&nbsp;' : 'Link download: ';
+
+        $html = '<' . $wrap . ' class="igl-download-now"><b class="b-h-down">' . $pre_fix . '</b>';
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';
@@ -235,7 +240,7 @@ class Intelligent_Link_Public {
         }
 
         $element = get_post_meta(get_the_ID(), 'render_element', true);
-        $html .= '</' . (!empty($element) ? $element : 'h3') . '>';
+        $html .= '</' . $wrap . '>';
 
         $show_list = !empty($meta_attr['show_list']) ? true: false;
 
