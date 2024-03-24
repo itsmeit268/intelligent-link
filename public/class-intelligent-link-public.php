@@ -227,7 +227,7 @@ class Intelligent_Link_Public {
 
         $element = get_post_meta(get_the_ID(), 'render_element', true);
         $wrap = !empty($element['wrap_element']) ? $element['wrap_element'] : 'h3';
-        $pre_fix = !empty($element['pre_fix']) ? $element['pre_fix'] .'&nbsp;' : 'Link download: ';
+        $pre_fix = !empty($element['pre_fix']) ? $element['pre_fix'] .'&nbsp;' : '';
 
         $html = '<' . $wrap . ' class="igl-download-now"><b class="b-h-down">' . $pre_fix . '</b>';
 
