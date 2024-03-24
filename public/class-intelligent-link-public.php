@@ -234,7 +234,8 @@ class Intelligent_Link_Public {
             $html .= '<span class="prep-request" data-id="' . $blog_url . '"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
         }
 
-        $html .= '</' . (!empty($meta_attr['elm']) ? $meta_attr['elm'] : 'h3') . '>';
+        $element = get_post_meta(get_the_ID(), 'render_element', true);
+        $html .= '</' . (!empty($element) ? $element : 'h3') . '>';
 
         $show_list = !empty($meta_attr['show_list']) ? true: false;
 
