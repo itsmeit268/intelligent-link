@@ -1,14 +1,14 @@
 # Intelligent Link - Countdown Time Wordpress Plugin
 
-Contributors: Arriveddev
-Donate link: https://arriveddev.com
-Tags: countdown time
-Requires at least: 4.6
-Requires PHP: 7.4
-Tested up to: 6.6.1
-Stable tag: 1.0.6
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Contributors: Arriveddev <br>
+Donate link: https://arriveddev.com <br>
+Tags: countdown time <br>
+Requires at least: 4.6 <br>
+Requires PHP: 7.4 <br>
+Tested up to: 6.6.1 <br>
+Stable tag: 1.0.6 <br>
+License: GPLv2 or later <br>
+License URI: https://www.gnu.org/licenses/gpl-2.0.html <br>
 
 ## == Description ==
 
