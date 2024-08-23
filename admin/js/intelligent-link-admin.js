@@ -86,9 +86,9 @@
         function _checkCookieValue() {
             var cookie = $('#cookie_time');
             cookie.on('change', function () {
-                if (parseInt(cookie.val()) <= 4) {
+                if (parseInt(cookie.val()) < 1) {
                     $('.prep-notice').remove();
-                    cookie.parents('td').append('<p class="prep-notice">'+ __('Value must be greater than 5', 'intelligent-link')+'</p>');
+                    cookie.parents('td').append('<p class="prep-notice">'+ __('Value must be greater than 1', 'intelligent-link')+'</p>');
                 } else {
                     $('.prep-notice').remove();
                 }

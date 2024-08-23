@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author     itsmeit <buivanloi.2010@gmail.com>
+ * @author     itsmeit <itsmeit.biz@gmail.com>
  * Website     https://itsmeit.co/
  */
 

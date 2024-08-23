@@ -4,7 +4,7 @@
  * @link       https://itsmeit.co/
  * @package    intelligent-link
  * @subpackage intelligent-link/includes
- * @author     itsmeit <buivanloi.2010@gmail.com>
+ * @author     itsmeit <itsmeit.biz@gmail.com>
  * Website     https://itsmeit.co
  */
 
@@ -23,9 +23,21 @@ function render_back_icon($view_link){ ?>
     </div>
 <?php }
 
+function _link($endpoint, $link) {
+    $href = $link;
+    $encrypt_url = !empty(ilgl_settings()['encrypt_url']) ? (int)ilgl_settings()['encrypt_url'] : 0;
+    if ($encrypt_url) {
+        $href = get_bloginfo('url').$endpoint.modify_list_href(base64_encode($link));
+    }
+    return $href;
+}
+
 function get_list_link($post_id, $settings) {
     $list_link = get_post_meta($post_id, 'link-download-metabox', true);
     $total = (int) $settings['field_lists']? : 5;
+    $endpoint = '?'.endpoint_conf().'=';
+    $nofollow = !empty(ilgl_settings()['nofollow']) ? 1: 0;
+
     if (isset($list_link) && !empty($list_link) && is_array($list_link)) { ?>
         <div class="list-link-redirect" >
             <?php for ($i = 1; $i <= $total; $i++) {
@@ -33,15 +45,18 @@ function get_list_link($post_id, $settings) {
                 $link_no_login_key = 'link_no_login-' . $i;
                 $link_is_login_key = 'link_is_login-' . $i;
                 $size_key = 'size-' . $i;
-
+                $format_key  = 'format-' . $i;
+                $version_key = 'version-' . $i;
+                $server = ' (SV' .$i+1 .')';
                 if (isset($list_link[$file_name_key]) && !empty($list_link[$link_no_login_key]) && $list_link[$link_is_login_key]) { ?>
                     <?php
-                    $file_name = $list_link[$file_name_key];
+                    $version = !empty($list_link[$version_key]) ? ' v'.$list_link[$version_key]: '';
+                    $file_name = $list_link[$file_name_key]. $version. '.'. $list_link[$format_key];
                     $size = $list_link[$size_key]; ?>
                     <?php if (is_user_logged_in()) :?>
-                        <a href="javascript:void(0)" data-request="<?= esc_html(modify_list_href(base64_encode($list_link[$link_is_login_key])))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
+                        <a <?= ($nofollow ? 'rel="nofollow"' : '')?> href="<?= esc_html(_link($endpoint, $list_link[$link_is_login_key]))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size .$server) ?></a>
                     <?php else: ?>
-                        <a href="javascript:void(0)" data-request="<?= esc_html(modify_list_href(base64_encode($list_link[$link_no_login_key])))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
+                        <a <?= ($nofollow ? 'rel="nofollow"' : '')?> href="<?= esc_html(_link($endpoint, $list_link[$link_no_login_key]))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size .$server) ?></a>
                     <?php endif;?>
                 <?php }
             } ?>
@@ -49,18 +64,35 @@ function get_list_link($post_id, $settings) {
     <?php }
 }
 
-function link_render($isMeta, $link_is_login, $link_no_login, $prepLinkURL, $file_name, $file_size, $prepLinkText, $post_id, $settings) {
-    if (is_user_logged_in()): ?>
-        <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(modify_href(base64_encode($link_is_login))) : esc_html($prepLinkURL); ?>" class="preplink-btn-link" >
-            <?php echo $isMeta ? ($file_name.' '.$file_size) : $prepLinkText; ?>
-        </a>
-        <?php if ($isMeta) get_list_link($post_id, $settings); ?>
-    <?php else: ?>
-        <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(modify_href(base64_encode($link_no_login))) : esc_html($prepLinkURL); ?>" class="preplink-btn-link" >
-            <?php echo $isMeta ? ($file_name.' '.$file_size) : $prepLinkText; ?>
-        </a>
-        <?php if ($isMeta) get_list_link($post_id, $settings); ?>
-    <?php endif;
+function link_render($isMeta, $link_is_login, $link_no_login, $file_name, $file_size, $post_id, $settings, $prepLinkText, $prepLinkURL) {
+    $link = is_user_logged_in() ? $link_is_login : $link_no_login;
+    $endpoint = '?'.endpoint_conf().'=';
+    $nofollow = !empty(ilgl_settings()['nofollow']) ? 1: 0;
+    $file_format = get_post_meta(get_the_ID(), 'file_format', true);
+    $file_version = get_post_meta(get_the_ID(), 'file_version', true);
+
+    $version = !empty($file_version) ? ' v'.$file_version :'';
+    $file_title = $file_name. $version . '.'. $file_format;
+
+    $encrypt_url = !empty(ilgl_settings()['encrypt_url']) ? (int)ilgl_settings()['encrypt_url'] : 0;
+
+    if ($isMeta) {
+        if ($encrypt_url) {
+            $href = get_bloginfo('url').$endpoint.modify_href(base64_encode($link));
+        } else {
+            $href = $link;
+        }
+    } else {
+        if ($encrypt_url) {
+            $href = get_bloginfo('url').$endpoint.base64_encode($prepLinkURL);
+        } else {
+            $href = $prepLinkURL;
+        }
+    }
+    ?>
+    <a <?= ($nofollow ? 'rel="nofollow"' : '')?> href="<?= esc_html($href); ?>" class="preplink-btn-link"><?php echo $isMeta ? ($file_title.' '.$file_size) : $prepLinkText; ?></a>
+    <?php if ($isMeta) get_list_link($post_id, $settings); ?>
+    <?php
 }
 
 function svg_render() { ?>
@@ -85,7 +117,7 @@ function svg_render() { ?>
     </svg>
 <?php }
 
-function ep_related_post($settings, $post_id){ ?>
+function ep_related_post($ep_settings, $post_id){ ?>
     <div class="related_post">
         <?php
         $categories = get_the_category();
@@ -97,7 +129,7 @@ function ep_related_post($settings, $post_id){ ?>
         $args = array(
             'category__in' => $category_ids,
             'post__not_in' => array($post_id),
-            'posts_per_page' => !empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : 4, // Lấy 10 bài viết
+            'posts_per_page' => !empty($ep_settings['preplink_related_number']) ? $ep_settings['preplink_related_number'] : 4, // Lấy 10 bài viết
             'orderby' => 'rand',
             'order' => 'DESC'
         );
@@ -146,22 +178,19 @@ function ep_related_post($settings, $post_id){ ?>
 <?php }
 
 function faq_render() {
-    $faq_conf = get_option('preplink_faq', []); ?>
+    $faq_conf = get_option('preplink_faq', []);?>
     <?= !empty($faq_conf['faq_description'])? $faq_conf['faq_description'] : file_get_contents(plugin_dir_path(__DIR__) . 'faq.txt'); ?>
 <?php }
 
-function set_no_index_page() {
+function meta_robots() {
     if (!function_exists('aioseo' ) && !function_exists('wpseo_init' ) && !function_exists('rank_math' )) {
-        $robots = array('noindex' => true, 'nofollow' => true, 'noarchive' => true, 'nosnippet' => true,);
+        $robots = array('noindex' => true, 'follow' => true);
         add_filter('wp_robots', function() use ($robots) {
             return $robots;
         });
     }
 
-    $robots = array(
-        'index' => 'noindex', 'follow' => 'nofollow',
-        'archive' => 'noarchive', 'snippet' => 'nosnippet',
-    );
+    $robots = array('index' => 'noindex', 'follow' => 'follow');
 
     if (function_exists('rank_math' )){
         add_filter( 'rank_math/frontend/robots', function() use ($robots) {

@@ -239,7 +239,7 @@ msgstr ""
 msgid "Please note that these strings could match any text within your post URLs, so you should provide the domain of the link to ensure proper redirection."
 msgstr ""
 
-msgid "The elements will be excluded, with each element separated by a comma (,). This will preserve the original URL."
+msgid "The elements will be excluded, with each element separated by a comma (,)."
 msgstr ""
 
 msgid "For example: #prep-link-download-btn, .prep-link-download-btn."

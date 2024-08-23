@@ -3,8 +3,8 @@
 /**
  * @package    intelligent-link
  * @subpackage intelligent-link/admin
- * @author     itsmeit <buivanloi.2010@gmail.com>
- * Website     https://itsmeit.co/
+ * @author     itsmeit <itsmeit.biz@gmail.com>
+ * Website     https://arriveddev.com/
  */
 
 class Intelligent_Link_Admin {
@@ -243,9 +243,9 @@ class Intelligent_Link_Admin {
         );
 
         add_settings_field(
-            'preplink_endpoint_auto_direct',
-            __('Automatic redirection', 'intelligent-link'),
-            array($this, 'preplink_endpoint_auto_direct'),
+            'endpoint_time_countdown',
+            __('Countdown Timer', 'intelligent-link'),
+            array($this, 'endpoint_time_countdown'),
             'preplink_endpoint_settings',
             'preplink_endpoint_section',
             array(
@@ -276,6 +276,30 @@ class Intelligent_Link_Admin {
             array($this, 'href_exclude'),
             'preplink_general_settings',
             'preplink_general_section'
+        );
+
+        add_settings_field(
+            'encrypt_url',
+            __('Encrypt Url', 'intelligent-link'),
+            array($this, 'encrypt_url'),
+            'preplink_general_settings',
+            'preplink_general_section',
+            array(
+                1 => 'Yes',
+                0 => 'No',
+            )
+        );
+
+        add_settings_field(
+            'set_nofollow',
+            __('Link Nofollow', 'intelligent-link'),
+            array($this, 'set_nofollow'),
+            'preplink_general_settings',
+            'preplink_general_section',
+            array(
+                1 => 'Yes',
+                0 => 'No',
+            )
         );
 
         add_settings_field(
@@ -331,36 +355,6 @@ class Intelligent_Link_Admin {
             'preplink_endpoint_section'
         );
 
-        add_settings_field(
-            'preplink_display_mode',
-            __('Display Mode', 'intelligent-link'),
-            array($this, 'preplink_display_mode'),
-            'preplink_general_settings',
-            'preplink_general_section',
-            array(
-                'wait_time' => 'Countdown',
-                'progress' => 'ProgressBar',
-            )
-        );
-
-        add_settings_field(
-            'replace_text_complete',
-            __('Replace text after complete', 'intelligent-link'),
-            array($this, 'replace_text_complete'),
-            'preplink_general_settings',
-            'preplink_general_section',
-            array(
-                'yes' => 'Replace',
-                'no' => 'No replace',
-            )
-        );
-
-        add_settings_field('preplink_auto_direct',
-            __('Automatic redirection', 'intelligent-link'),
-            array($this, 'preplink_post_auto_direct'),
-            'preplink_general_settings', 'preplink_general_section', array(1 => 'Yes', 0 => 'No')
-        );
-
         add_settings_field('pr_ad_1', __('Ads code 1', 'intelligent-link'), array($this, 'pr_ad_1'), 'ads_code_settings', 'ads_code_section');
         add_settings_field('pr_ad_2', __('Ads code 2', 'intelligent-link'), array($this, 'pr_ad_2'), 'ads_code_settings', 'ads_code_section');
         add_settings_field('pr_ad_3', __('Ads code 3', 'intelligent-link'), array($this, 'pr_ad_3'), 'ads_code_settings', 'ads_code_section');
@@ -368,12 +362,6 @@ class Intelligent_Link_Admin {
         add_settings_field('pr_ad_5', __('Ads code 5', 'intelligent-link'), array($this, 'pr_ad_5'), 'ads_code_settings', 'ads_code_section');
         add_settings_field('pr_ad_6', __('Ads code 6', 'intelligent-link'), array($this, 'pr_ad_6'), 'ads_code_settings', 'ads_code_section');
         add_settings_field('pr_ad_7', __('Ads code 7', 'intelligent-link'), array($this, 'pr_ad_7'), 'ads_code_settings', 'ads_code_section');
-
-        add_settings_field('meta_attr_auto_direct',
-            __('Automatic redirection', 'intelligent-link'),
-            array($this, 'meta_attr_auto_direct'),
-            'preplink_meta_attr', 'preplink_meta_attr_section', array(1 => 'Yes', 0 => 'No')
-        );
 
         add_settings_field(
             'preplink_link_field_lists',
@@ -394,32 +382,15 @@ class Intelligent_Link_Admin {
             )
         );
 
-        add_settings_field(
-            'show_list_meta',
-            __('Show list meta', 'intelligent-link'),
-            array($this, 'show_list_meta'),
-            'preplink_meta_attr',
-            'preplink_meta_attr_section',
-            array(
-                1 => 'Yes',
-                0 => 'No',
-            )
-        );
-
-        add_settings_field(
-            'preplink_link_url_rewriting',
-            __('Rewrite URL Encoding', 'intelligent-link'),
-            array($this, 'preplink_link_url_rewriting'),
-            'preplink_general_settings',
-            'preplink_general_section');
-
-        add_settings_field(
-            'preplink_custom_style',
-            __('Custom Style', 'intelligent-link'),
-            array($this, 'preplink_custom_style'),
-            'preplink_general_settings',
-            'preplink_general_section'
-        );
+        if (INTELLIGENT_LINK_DEV == 1) {
+            add_settings_field(
+                'preplink_link_url_rewriting',
+                'Fix security URL',
+                array($this, 'preplink_link_url_rewriting'),
+                'preplink_general_settings',
+                'preplink_general_section'
+            );
+        }
 
         add_settings_field(
             'preplink_delete_option',
@@ -459,7 +430,7 @@ class Intelligent_Link_Admin {
         ?>
         <div class="prep-link-admin-settings">
             <h3><?= __('These settings are applicable to all Intelligent Link functionalities.', 'intelligent-link')?></h3>
-            <span>Author  : buivanloi.2010@gmail.com</span> |
+            <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span> |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
@@ -470,7 +441,7 @@ class Intelligent_Link_Admin {
         ?>
         <div class="meta-attr-display">
             <h3><?= __('This section will allow adding meta attributes such as link, link information, size, etc., for post or product.', 'intelligent-link') ?></h3>
-            <span>Author  : buivanloi.2010@gmail.com</span> |
+            <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span> |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
@@ -480,7 +451,7 @@ class Intelligent_Link_Admin {
     public function ads_code_display(){
         ?>
         <div class="prep-link-ads-settings">
-            <span>Author  : buivanloi.2010@gmail.com</span> |
+            <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span> |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>l" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?>Plugin</a></span>
             <h3><?= __('Please enter your advertisement code, allowing HTML, JS, CSS.', 'intelligent-link')?></h3>
@@ -492,7 +463,7 @@ class Intelligent_Link_Admin {
         ?>
         <div class="prep-link-faq-settings">
             <h3><?= __('You can add the FAQ HTML code here, it will apply to the page endpoint.', 'intelligent-link')?></h3>
-            <span>Author  : buivanloi.2010@gmail.com</span> |
+            <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span> |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
         </div>
@@ -503,7 +474,7 @@ class Intelligent_Link_Admin {
         ?>
         <div class="prep-link-endpoint-settings">
             <h3><?= __('This setting will apply only to the endpoint page.', 'intelligent-link')?></h3>
-            <span>Author  : buivanloi.2010@gmail.com</span> |
+            <span>Author  : itsmeit.biz@gmail.com</span> |
             <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
             |
             <span>Link download/update: <a href="<?= esc_url($this->plugin_url())?>" target="_blank">WordPress <?= INTELLIGENT_LINK_NAME ?> Plugin</a></span>
@@ -528,8 +499,8 @@ class Intelligent_Link_Admin {
         $endpoint = !empty($settings['endpoint'])? $settings['endpoint']: '';
         $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($endpoint));
         ?>
-        <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="1" value="<?= esc_attr($endpoint ? : false) ?>"/>
-        <p class="description"><?= __('The default endpoint is (1), and it looks like this:', 'intelligent-link')?> <?= get_bloginfo('url')?>/hello-world/<?= $endpoint ? : '1'?>/.</p>
+        <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="links" value="<?= esc_attr($endpoint ? : ENDPOINT) ?>"/>
+        <p class="description"><?= __('The default endpoint is (links), and it looks like this:', 'intelligent-link')?> <strong><?= get_bloginfo('url')?>/hello-world/?<?= $endpoint ? : ENDPOINT?>=1.</strong></p>
         <p class="description"><strong style="color: red"><?= __('IMPORTANT:', 'intelligent-link')?></strong> <?= __('If you make any changes to the endpoint, you need to navigate to', 'intelligent-link')?>
             <strong style="color: red"><?= __('Settings -> Permalinks -> Save', 'intelligent-link')?></strong> <?= __('to synchronize the endpoint.', 'intelligent-link')?></p>
         <?php
@@ -539,40 +510,10 @@ class Intelligent_Link_Admin {
         }
     }
 
-    public function replace_text_complete() {
-        $settings = get_option('preplink_setting', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_text_enable">
-                <td style="padding: 5px 0;">
-                    <select name="preplink_setting[replace_text_enable]" id="replace_text" class="replace_text_enable">
-                        <option value="yes" <?php selected(isset($settings['replace_text_enable']) && $settings['replace_text_enable'] == 'yes'); ?>>
-                            <?= __('Yes')?>
-                        </option>
-                        <option value="no" <?php selected(isset($settings['replace_text_enable']) && $settings['replace_text_enable'] == 'no'); ?>>
-                            <?= __('No')?>
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="replace_text">
-                <td style="padding: 5px 0;">
-                    <input type="text" id="replace_text" name="preplink_setting[replace_text]" placeholder="link is ready"
-                           value="<?= esc_attr(!empty($settings['replace_text']) ? $settings['replace_text'] : false) ?>"/>
-                    <p class="description"><?= __('The replacement text when the countdown is complete.', 'intelligent-link')?></p>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-    }
-
     public function preplink_link_field_lists(){
         $settings = get_option('meta_attr', array());
         ?>
-        <input type="number" name="meta_attr[field_lists]" placeholder="5"
-               value="<?= esc_attr(!empty($settings['field_lists']) ? $settings['field_lists'] : '5') ?>" min="1" max="20"/>
+        <input type="number" name="meta_attr[field_lists]" placeholder="5" value="<?= esc_attr(!empty($settings['field_lists']) ? $settings['field_lists'] : '5') ?>" min="1" max="20"/>
         <p class="description"><?= __("The number of related fields, you'll find it within the post or product. Here you can add different links.", "intelligent-link")?></p>
         <?php
     }
@@ -580,11 +521,13 @@ class Intelligent_Link_Admin {
     public function preplink_link_url_rewriting(){
         $settings = get_option('preplink_setting', array());
         ?>
-        <input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/>
-        <input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/>
-        <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(26)) ?>"/>
-        <p class="description"><?= __('Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.', 'intelligent-link')?></p>
-        <p class="description"><?= __('This practice serves a security purpose and renders it non-decodable.', 'intelligent-link')?></p>
+        <div style="<?php if (INTELLIGENT_LINK_DEV == 1) { echo ''; } else { echo 'display:none;'; } ?>">
+        <input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(6)) ?>"/>
+            <input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(8)) ?>"/>
+            <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(4)) ?>"/>
+            <p class="description"><?= __('Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.', 'intelligent-link')?></p>
+            <p class="description"><?= __('This practice serves a security purpose and renders it non-decodable.', 'intelligent-link')?></p>
+        </div>
         <?php
     }
 
@@ -596,9 +539,9 @@ class Intelligent_Link_Admin {
     public function preplink_cookie_time(){
         $settings = get_option('preplink_endpoint', array());
         ?>
-        <input type="number" id="cookie_time" name="preplink_endpoint[cookie_time]" placeholder="5"
-               value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '5' ?>" min="1" max="600"/>
-        <p class="description"><?= __('On the page with the added endpoint, the default expiration time will be 5 seconds. After expiration, users will need to re-engage to receive the link.', 'intelligent-link')?></p>
+        <input type="number" id="cookie_time" name="preplink_endpoint[cookie_time]" placeholder="15"
+               value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '15' ?>" min="1" max="600"/>
+        <p class="description"><?= __('On the page with the added endpoint, the default expiration time will be 15 minutes. After expiration, users will need to re-engage to receive the link.', 'intelligent-link')?></p>
         <?php
     }
 
@@ -626,7 +569,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea id="preplink_excludes_element" cols="50" rows="5" name="preplink_setting[preplink_excludes_element]" placeholder=".prep-link-download-btn,.prep-link-btn">';
         $html .= isset($settings["preplink_excludes_element"]) ? $settings["preplink_excludes_element"] : false;
         $html .= '</textarea>';
-        $html .= '<p class="description">'.__('The elements will be excluded, with each element separated by a comma (,). This will preserve the original URL.', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('The elements will be excluded, with each element separated by a comma (,).', 'intelligent-link').'</p>';
         $html .= '<p class="description">'.__('For example: #prep-link-download-btn, .prep-link-download-btn.', 'intelligent-link').'</p>';
         echo $html;
     }
@@ -653,19 +596,27 @@ class Intelligent_Link_Admin {
         echo $html;
     }
 
+    public function encrypt_url() {
+        $settings = get_option('preplink_setting', []); ?>
+        <select name="preplink_setting[encrypt_url]">
+            <option value="0" <?php selected(isset($settings['encrypt_url']) && $settings['encrypt_url'] == '0'); ?>>No</option>
+            <option value="1" <?php selected(isset($settings['encrypt_url']) && $settings['encrypt_url'] == '1'); ?>>Yes</option>
+        </select>
+    <?php }
+
+    public function set_nofollow() {
+        $settings = get_option('preplink_setting', []); ?>
+        <select name="preplink_setting[nofollow]">
+            <option value="1" <?php selected(isset($settings['nofollow']) && $settings['nofollow'] == '1'); ?>>Force nofollow</option>
+            <option value="0" <?php selected(isset($settings['nofollow']) && $settings['nofollow'] == '0'); ?>>Use by default</option>
+        </select>
+    <?php }
+
     public function product_elm_option() {
         $meta_attr = get_option('meta_attr', []); ?>
         <select name="meta_attr[product_elm]">
             <option value="after_product_content" <?= isset($meta_attr['product_elm']) && $meta_attr['product_elm'] === 'after_product_content' ? 'selected' : '' ?>><?= __('After product content (Description)', 'intelligent-link')?></option>
             <option value="after_short_description" <?= isset($meta_attr['product_elm']) && $meta_attr['product_elm'] === 'after_short_description' ? 'selected' : '' ?>><?= __('Short description below', 'intelligent-link')?></option>
-        </select>
-    <?php }
-
-    public function show_list_meta() {
-        $meta_attr = get_option('meta_attr', []); ?>
-        <select name="meta_attr[show_list]">
-            <option value="1" <?= isset($meta_attr['show_list']) && $meta_attr['show_list'] === '1' ? 'selected' : '' ?>><?= __('Yes', 'intelligent-link')?></option>
-            <option value="0" <?= isset($meta_attr['show_list']) && $meta_attr['show_list'] === '0' ? 'selected' : '' ?>><?= __('No', 'intelligent-link')?></option>
         </select>
     <?php }
 
@@ -709,8 +660,7 @@ class Intelligent_Link_Admin {
             <tbody>
             <tr class="preplink_related_enabled">
                 <td style="padding: 2px 0;">
-                    <select name="preplink_endpoint[preplink_related_post]" id="preplink_related_enabled"
-                            class="preplink_related_post">
+                    <select name="preplink_endpoint[preplink_related_post]" id="preplink_related_enabled" class="preplink_related_post">
                         <option value="1" <?php selected(isset($settings['preplink_related_post']) && $settings['preplink_related_post'] == '1'); ?>>
                             Yes
                         </option>
@@ -722,8 +672,8 @@ class Intelligent_Link_Admin {
             </tr>
             <tr class="preplink_related_number">
                 <td class="related_number" style="padding: 2px 0;">
-                    <label><p>Number of posts displayed, default 10</p></label>
-                    <input type="number" id="related_number" name="preplink_endpoint[preplink_related_number]" placeholder="10"
+                    <label><p>Number of posts displayed, default 4</p></label>
+                    <input type="number" id="related_number" name="preplink_endpoint[preplink_related_number]" placeholder="4"
                            value="<?= !empty($settings['preplink_related_number']) ? ($settings['preplink_related_number'] == '0' ? 0 : $settings['preplink_related_number']) : '' ?>" min="1" max="50"/>
                 </td>
             </tr>
@@ -743,123 +693,20 @@ class Intelligent_Link_Admin {
 
     public function redirect_notice(){
         $settings = get_option('preplink_endpoint', []);
-        $example = 'You are being redirected to a link outside of '.str_replace(['https://', 'http://'], '', get_bloginfo('url')) .'. Please click the button below to continue, or press the back arrow to return to the previous page.';
+        $example = '<p style="text-align: center; margin: 20px 0; font-weight: 600;">You are being redirected. Click the button below to continue or go back to the previous page.</p>';
         $html = '<textarea cols="50" rows="5" name="preplink_endpoint[redirect_notice]">';
-        $html .= isset($settings["redirect_notice"]) ? $settings["redirect_notice"] : $example;
+        $html .= !empty($settings["redirect_notice"]) ? $settings["redirect_notice"] : $example;
         $html .= '</textarea>';
         $html .= '<p class="description">'.__('The notification prior to users being redirected to an external link.', 'intelligent-link').'</p>';
         echo $html;
     }
 
-    public function preplink_custom_style() {
-        $settings = get_option('preplink_setting', array());
-        $html = '<textarea id="preplink_custom_style" cols="50" rows="5" name="preplink_setting[preplink_custom_style]">';
-        $html .= !empty($settings["preplink_custom_style"]) ? $settings["preplink_custom_style"] : false;
-        $html .= '</textarea>';
-        $html .= '<p class="description">'.__('Your CSS code, for example: .backgroud{background-color: transparent;}.', 'intelligent-link').'</p>';
-        echo $html;
-    }
-
-    public function preplink_display_mode() {
-        $settings = get_option('preplink_setting', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_wait_text">
-                <td style="padding: 5px 0;">
-                    <select name="preplink_setting[preplink_wait_text]" id="countdown-select" class="preplink_related_post">
-                        <option value="wait_time" <?php selected(!empty($settings['preplink_wait_text']) && $settings['preplink_wait_text'] == 'wait_time'); ?>>
-                            <?= __('Countdown')?>
-                        </option>
-                        <option value="progress" <?php selected(!empty($settings['preplink_wait_text']) && $settings['preplink_wait_text'] == 'progress'); ?>>
-                            <?= __('Progress')?>
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="countdown-select">
-                <td style="padding: 5px 0;">
-                    <input type="text" id="wait_text_replace" name="preplink_setting[wait_text_replace]" placeholder="waiting"
-                           value="<?= esc_attr(!empty($settings['wait_text_replace']) ? $settings['wait_text_replace'] : 'please wait') ?>"/>
-                    <p class="description"><?= __('Text displayed while the countdown is pending.', 'intelligent-link')?></p>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-    }
-
-    public function preplink_post_auto_direct() {
-        $settings = get_option('preplink_setting', array());
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="preplink_auto_direct">
-                <td style="padding: 2px 0">
-                    <select name="preplink_setting[preplink_auto_direct]">
-                        <option value="1" <?php selected(!empty($settings['preplink_auto_direct']) ? ($settings['preplink_auto_direct'] == '1') : false); ?>>Yes</option>
-                        <option value="0" <?php selected(!empty($settings['preplink_auto_direct']) ? ($settings['preplink_auto_direct'] == '0') : true); ?>>No</option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_post_number">
-                <td class="preplink_post_number_notice" style="padding: 2px 0">
-                    <label><p><?= __('The default countdown time is set to 1 second. If you set it to 0, it will skip the yes/no configuration.', 'intelligent-link')?></p></label>
-                    <input type="number" id="preplink_countdown" name="preplink_setting[preplink_countdown]" placeholder="1"
-                           value="<?= !empty($settings['preplink_countdown']) ? ($settings['preplink_countdown'] == '0' ? 0 : $settings['preplink_countdown']) : '0' ?>" min="0" max="300"/>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-    }
-
-    public function meta_attr_auto_direct() {
-        $meta_attr = get_option('meta_attr', []);
-        ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="meta_attr_auto_direct">
-                <td style="padding: 2px 0">
-                    <select name="meta_attr[auto_direct]">
-                        <option value="1" <?php selected(!empty($meta_attr['auto_direct']) ? ($meta_attr['auto_direct'] == '1') : false); ?>>Yes</option>
-                        <option value="0" <?php selected(!empty($meta_attr['auto_direct']) ? ($meta_attr['auto_direct'] == '0') : true); ?>>No</option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="tr-time_number">
-                <td class="td-time_number" style="padding: 2px 0">
-                    <label><p><?= __('The default countdown time is set to 1 second. If you set it to 0, it will skip the yes/no configuration.', 'intelligent-link')?></p></label>
-                    <input type="number" name="meta_attr[time]" placeholder="1" value="<?= !empty($meta_attr['time']) ? ($meta_attr['time'] == '0' ? 0 : $meta_attr['time']) : '1' ?>" min="0" max="300"/>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-    }
-    
-    public function preplink_endpoint_auto_direct() {
+    public function endpoint_time_countdown() {
         $settings = get_option('preplink_endpoint', array());
         ?>
-        <table class="form-table">
-            <tbody>
-            <tr class="auto_direct">
-                <td style="padding: 2px 0">
-                    <select name="preplink_endpoint[endpoint_auto_direct]" id="endpoint_auto_direct" class="endpoint_auto_direct">
-                        <option value="1" <?php selected(!empty($settings['endpoint_auto_direct']) ? ($settings['endpoint_auto_direct'] == '1') : false); ?>>Yes</option>
-                        <option value="0" <?php selected(!empty($settings['endpoint_auto_direct']) ? ($settings['endpoint_auto_direct'] == '0') : true); ?>>No</option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="preplink_endpoint_number">
-                <td class="preplink_endpoint_number_notice" style="padding: 2px 0">
-                    <label><p><?= __('The default countdown time is set to 15 seconds.', 'intelligent-link')?></p></label>
-                    <input type="number" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="15"
-                           value="<?= !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : '15' ?>" min="1" max="300"/>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <input type="number" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="15"
+               value="<?= !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : '15' ?>" min="1" max="300"/>
+        <label><p><?= __('The default countdown time is set to 15 seconds.', 'intelligent-link')?></p></label>
         <?php
     }
 
@@ -927,7 +774,7 @@ class Intelligent_Link_Admin {
     }
 
     public function plugin_url() {
-        return INTELLIGENT_LINK_PLUGIN_URL . '/create-download-link-redirect-page-in-wordpress.html';
+        return INTELLIGENT_LINK_PLUGIN_URL . '/';
     }
 
     public function preplink_delete_option_on_uninstall() {
@@ -947,23 +794,47 @@ class Intelligent_Link_Admin {
         <?php do_action('link_field_meta_box_before', $post); ?>
 
         <h2 class="list-h3-title">Render Element</h2>
-        <div class="render_element" style="display: flex; width: 100%">
-            <?php
-            $elm = get_post_meta($post->ID, 'render_element', true);
-            $wrap_element = !empty($elm['wrap_element']) ? $elm['wrap_element'] : 'h3';
-            $pre_fix = !empty($elm['pre_fix']) ? $elm['pre_fix'] : '';
-            ?>
-            <label for="wrap_element" style="width: 20%; display: flex; align-items: center;">Wrap:</label>
-            <select id="wrap_element" name="wrap_element" style="width: 10%">
-                <option value="div" <?php selected($wrap_element, 'div'); ?>>div</option>
-                <option value="h2" <?php selected($wrap_element, 'h2'); ?>>h2</option>
-                <option value="h3" <?php selected($wrap_element, 'h3'); ?>>h3</option>
-                <option value="h4" <?php selected($wrap_element, 'h4'); ?>>h4</option>
-                <option value="h5" <?php selected($wrap_element, 'h5'); ?>>h5</option>
-            </select>
-            <input type="text" id="pre_fix" name="pre_fix" placeholder="Link download: " style="width: 70%" value="<?= $pre_fix ?>"/>
+        <div class="wrap_render">
+            <div class="render_element" style="display: flex; width: 100%">
+                <?php
+                $elm = get_post_meta($post->ID, 'render_element', true);
+                $wrap_element = !empty($elm['wrap_element']) ? $elm['wrap_element'] : 'div';
+                $pre_fix = !empty($elm['pre_fix']) ? $elm['pre_fix'] : '';
+                ?>
+                <label for="wrap_element" style="width: 20%; display: flex; align-items: center;">Wrap:</label>
+                <select id="wrap_element" name="wrap_element" style="width: 10%">
+                    <option value="div" <?php selected($wrap_element, 'div'); ?>>div</option>
+                    <option value="h2" <?php selected($wrap_element, 'h2'); ?>>h2</option>
+                    <option value="h3" <?php selected($wrap_element, 'h3'); ?>>h3</option>
+                    <option value="h4" <?php selected($wrap_element, 'h4'); ?>>h4</option>
+                    <option value="h5" <?php selected($wrap_element, 'h5'); ?>>h5</option>
+                </select>
+                <input type="text" id="pre_fix" name="pre_fix" placeholder="Link download: " style="width: 70%" value="<?= $pre_fix ?>"/>
+            </div>
+            <br>
+            <div class="metabox_render" style="display: flex; width: 100%">
+                <?php
+                $position = get_post_meta($post->ID, 'show_metabox', true);
+                $position = !empty($position) ? $position : 'hide';
+                ?>
+                <label for="show_metabox" style="width: 60%; display: flex; align-items: center;">Show On Top:</label>
+                <select id="show_metabox" name="show_metabox" style="width: 40%">
+                    <option value="hide" <?php selected($position, 'hide'); ?>>Hide</option>
+                    <option value="show" <?php selected($position, 'show'); ?>>Show</option>
+                </select>
+            </div>
+            <div class="format_render" style="display: flex; width: 100%">
+                <?php
+                $format = get_post_meta($post->ID, 'format_render', true);
+                $format = !empty($format) ? $format : 'default';
+                ?>
+                <label for="replace_format_file" style="width: 60%; display: flex; align-items: center;">File format:</label>
+                <select id="replace_format_file" name="format_render" style="width: 40%">
+                    <option value="default" <?php selected($format, 'default'); ?>>Default</option>
+                    <option value="file" <?php selected($format, 'file'); ?>>File</option>
+                </select>
+            </div>
         </div>
-
 
         <h2 class="list-h3-title">Link Details</h2>
         <div class="app-fields">
@@ -1013,12 +884,17 @@ class Intelligent_Link_Admin {
             ?>
         </div>
 
+        <?php $this->additional_link($post); ?>
+
+        <?php do_action('link_field_meta_box_after', $post); ?>
+        <?php
+    }
+
+    public function additional_link($post) { ?>
         <h2 class="list-h3-title">Additional Link Information</h2>
         <div class="list-link-fields">
             <?php
-            $list_field = [
-                'file_name', 'link_no_login', 'link_is_login', 'size'
-            ];
+            $list_field = ['file_name', 'link_no_login', 'link_is_login', 'size', 'version', 'format', 'feature'];
             $link_download_data = get_post_meta($post->ID, 'link-download-metabox', true);
             $settings = get_option('meta_attr', array());
             $total = !empty($settings['field_lists'])? (int) $settings['field_lists'] : 5;
@@ -1029,6 +905,9 @@ class Intelligent_Link_Admin {
                 $link_no_login = isset($link_download_data[$list_field[1] . '-' . $i]) ? $link_download_data[$list_field[1] . '-' . $i] : '';
                 $link_is_login = isset($link_download_data[$list_field[2] . '-' . $i]) ? $link_download_data[$list_field[2] . '-' . $i] : '';
                 $size_value = isset($link_download_data[$list_field[3] . '-' . $i]) ? $link_download_data[$list_field[3] . '-' . $i] : '';
+                $version = isset($link_download_data[$list_field[4] . '-' . $i]) ? $link_download_data[$list_field[4] . '-' . $i] : '';
+                $format = isset($link_download_data[$list_field[5] . '-' . $i]) ? $link_download_data[$list_field[5] . '-' . $i] : '';
+                $feature = isset($link_download_data[$list_field[6] . '-' . $i]) ? $link_download_data[$list_field[6] . '-' . $i] : '';
                 ?>
                 <div class="list-link-row-wrap">
                     <h3 class="list-h3-title"><?= 'Link ' . $i ?></h3>
@@ -1049,14 +928,24 @@ class Intelligent_Link_Admin {
                             <label for="<?php echo esc_attr($list_field[3] . '-' . $i); ?>">Size (ex: 100 GB):</label>
                             <input type="text" id="<?php echo esc_attr($list_field[3] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[3] . '-' . $i); ?>" value="<?php echo $size_value ? esc_attr($size_value) : ''; ?>" />
                         </div>
+                        <div class="link-field">
+                            <label for="<?php echo esc_attr($list_field[4] . '-' . $i); ?>">Version (ex: 1.0.0):</label>
+                            <input type="text" id="<?php echo esc_attr($list_field[4] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[4] . '-' . $i); ?>" value="<?php echo $version ? esc_attr($version) : ''; ?>" />
+                        </div>
+                        <div class="link-field">
+                            <label for="<?php echo esc_attr($list_field[5] . '-' . $i); ?>">Format (ex: APK/ZIP/RAR/IPA):</label>
+                            <input type="text" id="<?php echo esc_attr($list_field[5] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[5] . '-' . $i); ?>" value="<?php echo $format ? esc_attr($format) : ''; ?>" />
+                        </div>
+                        <div class="link-field">
+                            <label for="<?php echo esc_attr($list_field[6] . '-' . $i); ?>">Feature (ex: Crack/Repack/Unlocked Premium):</label>
+                            <input type="text" id="<?php echo esc_attr($list_field[6] . '-' . $i); ?>" name="<?php echo esc_attr($list_field[6] . '-' . $i); ?>" value="<?php echo $feature ? esc_attr($feature) : ''; ?>" />
+                        </div>
                     </div>
                 </div>
             <?php endfor; ?>
         </div>
 
-        <?php do_action('link_field_meta_box_after', $post); ?>
-        <?php
-    }
+    <?php }
 
     public function save_html_field_content($post_id) {
         if (!isset($_POST['link_field']) || !wp_verify_nonce($_POST['link_field'], 'link_field')) {
@@ -1072,13 +961,21 @@ class Intelligent_Link_Admin {
         }
 
         if (isset($_POST['wrap_element']) || isset($_POST['pre_fix'])) {
-            $wrap_element = !empty($_POST['wrap_element']) ? $_POST['wrap_element'] : 'h3';
+            $wrap_element = !empty($_POST['wrap_element']) ? $_POST['wrap_element'] : 'div';
             $pre_fix = !empty($_POST['pre_fix']) ? $_POST['pre_fix'] : '';
             $data = array(
                 'wrap_element' => sanitize_text_field($wrap_element),
                 'pre_fix' => sanitize_text_field($pre_fix)
             );
             update_post_meta($post_id, 'render_element', $data);
+        }
+
+        if (isset($_POST['show_metabox'])) {
+            update_post_meta($post_id, 'show_metabox', $_POST['show_metabox']);
+        }
+
+        if (isset($_POST['format_render'])) {
+            update_post_meta($post_id, 'format_render', $_POST['format_render']);
         }
 
         $fields = array(
@@ -1101,9 +998,9 @@ class Intelligent_Link_Admin {
 
         $list_link = [];
 
-        $field_list = ['file_name', 'link_no_login', 'link_is_login', 'size'];
+        $field_list = ['file_name', 'link_no_login', 'link_is_login', 'size', 'version', 'format', 'feature'];
         $settings = get_option('preplink_setting', array());
-        $total = (int) $settings['field_lists']? : 5;
+        $total = isset($settings['field_lists']) ? (int) $settings['field_lists'] : 5;
 
         for ($i = 1; $i <= $total; $i++) {
             foreach ($field_list as $field_name) {
@@ -1143,6 +1040,7 @@ class Intelligent_Link_Admin {
         
         delete_post_meta($post_id, 'link-download-metabox');
         delete_post_meta($post_id, 'render_element');
-        do_action('intelligent_link_delete_field_meta_box', $post_id);
+        delete_post_meta($post_id, 'show_metabox');
+        delete_post_meta($post_id, 'format_render');
     }
 }
