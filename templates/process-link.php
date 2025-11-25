@@ -23,8 +23,8 @@ class Process_Link {
     }
 
     public function __construct(){
-        add_action('init', array($this, 'preplink_rewrite_endpoint'), 10, 0);
-        add_filter('the_content', array($this, 'process_all_content'), 99);
+        add_action('init', array($this, 'add_link_param'), 10, 0);
+        add_filter('the_content', array($this, 'process_content'), 99);
         add_action('woocommerce_short_description', array($this,'render_meta_short_description'), 10);
         add_action('wp_enqueue_scripts', array($this, 'process_link_scripts'), 99);
     }
@@ -129,7 +129,7 @@ class Process_Link {
         ]);
     }
 
-    public function preplink_rewrite_endpoint(){
+    public function add_link_param(){
         if (!$this->is_plugin_enable()) {
             return;
         }
@@ -139,12 +139,12 @@ class Process_Link {
             return $vars;
         });
 
-        add_filter('template_include', [$this, 'intelligent_link_template_include']);
+        add_filter('template_include', [$this, 'link_template']);
     }
 
-    public function intelligent_link_template_include($template) {
+    public function link_template($template) {
         include_once plugin_dir_path( __FILE__ ) . '../includes/helper.php';
-        $intelligent_link_template = plugin_dir_path( __FILE__ ) . 'layout/default.php';
+        $link_template = plugin_dir_path( __FILE__ ) . 'layout/default.php';
 
         global $wp_query;
 
@@ -156,11 +156,11 @@ class Process_Link {
 
             if (is_singular('product')) {
                 remove_all_actions('woocommerce_single_product_summary');
-                include_once $intelligent_link_template;
+                include_once $link_template;
                 exit;
             }
 
-            return $intelligent_link_template;
+            return $link_template;
         }
 
         $product_category = isset($wp_query->query_vars['product_cat']) ? $wp_query->query_vars['product_cat']: '';
@@ -174,7 +174,7 @@ class Process_Link {
             remove_all_actions('woocommerce_sidebar');
 
             $this->prep_head();
-            include_once $intelligent_link_template;
+            include_once $link_template;
             exit;
         }
 
@@ -194,7 +194,7 @@ class Process_Link {
         ]);
     }
 
-    public function process_all_content($content) {
+    public function process_content($content) {
         if (!is_single() && !is_page()) {
             return $content;
         }
