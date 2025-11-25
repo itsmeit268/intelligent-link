@@ -23,8 +23,8 @@ class Intelligent_Link_Admin {
     }
 
     public function enqueue_scripts(){
-        wp_enqueue_style('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'admin/css/intelligent-link-admin.css', array(), INTELLIGENT_LINK_VERSION, 'all');
-        wp_enqueue_script('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'admin/js/intelligent-link-admin.js', array('wp-i18n'), INTELLIGENT_LINK_VERSION, false);
+        wp_enqueue_style('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'admin/css/intelligent-link.css', array(), INTELLIGENT_LINK_VERSION, 'all');
+        wp_enqueue_script('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'admin/js/intelligent-link.js', array('wp-i18n'), INTELLIGENT_LINK_VERSION, false);
     }
 
     public function load_intelligent_link_text_domain() {
@@ -422,7 +422,7 @@ class Intelligent_Link_Admin {
         ?>
         <div class="prep-link-admin-settings">
             <h3><?= __('These settings are applicable to all Intelligent Link functionalities.', 'intelligent-link')?></h3>
-            <span>Author  : buivanloi.2010@gmail.com</span> |
+            <span>Author  : buivanloi.2010@gmail.com</span>
         <?php
     }
 
@@ -430,16 +430,14 @@ class Intelligent_Link_Admin {
         ?>
         <div class="meta-attr-display">
             <h3><?= __('This section will allow adding meta attributes such as link, link information, size, etc., for post or product.', 'intelligent-link') ?></h3>
-            <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span></div>
+            <span>Author  : buivanloi.2010@gmail.com</span>
         <?php
     }
 
     public function ads_code_display(){
         ?>
         <div class="prep-link-ads-settings">
-            <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
+            <span>Author  : buivanloi.2010@gmail.com</span>
             <h3><?= __('Please enter your advertisement code, allowing HTML, JS, CSS.', 'intelligent-link')?></h3>
         </div>
         <?php
@@ -449,8 +447,7 @@ class Intelligent_Link_Admin {
         ?>
         <div class="prep-link-faq-settings">
             <h3><?= __('You can add the FAQ HTML code here, it will apply to the page endpoint.', 'intelligent-link')?></h3>
-            <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
+            <span>Author  : buivanloi.2010@gmail.com</span>
         </div>
         <?php
     }
@@ -459,8 +456,7 @@ class Intelligent_Link_Admin {
         ?>
         <div class="prep-link-endpoint-settings">
             <h3><?= __('This setting will apply only to the endpoint page.', 'intelligent-link')?></h3>
-            <span>Author  : buivanloi.2010@gmail.com</span> |
-            <span>Website : <a href="<?= INTELLIGENT_LINK_PLUGIN_URL ?>" target="_blank"><?= INTELLIGENT_LINK_PLUGIN_URL?></a></span>
+            <span>Author  : buivanloi.2010@gmail.com</span>
         </div>
         <?php
     }
@@ -535,10 +531,10 @@ class Intelligent_Link_Admin {
         $settings = get_option('preplink_setting', array());
         ?>
         <input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/>
-        <input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/>
-        <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(26)) ?>"/>
-        <p class="description"><?= __('Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.', 'intelligent-link')?></p>
-        <p class="description"><?= __('This practice serves a security purpose and renders it non-decodable.', 'intelligent-link')?></p>
+            <input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/>
+            <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(26)) ?>"/>
+            <p class="description"><?= __('Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.', 'intelligent-link')?></p>
+            <p class="description"><?= __('This practice serves a security purpose and renders it non-decodable.', 'intelligent-link')?></p>
         <?php
     }
 

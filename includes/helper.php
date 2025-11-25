@@ -1,6 +1,25 @@
 <?php
 
-function render_back_icon($view_link){ ?>
+class ILGL_Helper {
+    private static $file_exists_cache = [];
+    private static $process_link_instance = null;
+
+    public static function get_process_link_instance() {
+        if (self::$process_link_instance === null) {
+            self::$process_link_instance = Process_Link::get_instance();
+        }
+        return self::$process_link_instance;
+    }
+
+    public static function file_exists_cached($path) {
+        if (!isset(self::$file_exists_cache[$path])) {
+            self::$file_exists_cache[$path] = file_exists($path);
+        }
+        return self::$file_exists_cache[$path];
+    }
+}
+
+function render_back_icon($view_link) { ?>
     <div class="igl-back">
         <a href="<?= esc_url($view_link) ?>">
             <i class="c-svg"><svg width="48" height="20"><use xlink:href="#i__back"></use></svg></i>
@@ -17,42 +36,58 @@ function render_back_icon($view_link){ ?>
 
 function get_list_link($post_id, $settings) {
     $list_link = get_post_meta($post_id, 'link-download-metabox', true);
-    $total = (int) $settings['field_lists']? : 5;
-    if (isset($list_link) && !empty($list_link) && is_array($list_link)) { ?>
-        <div class="list-link-redirect" >
-            <?php for ($i = 1; $i <= $total; $i++) {
-                $file_name_key = 'file_name-' . $i;
-                $link_no_login_key = 'link_no_login-' . $i;
-                $link_is_login_key = 'link_is_login-' . $i;
-                $size_key = 'size-' . $i;
 
-                if (isset($list_link[$file_name_key]) && !empty($list_link[$link_no_login_key]) && $list_link[$link_is_login_key]) { ?>
-                    <?php
-                    $file_name = $list_link[$file_name_key];
-                    $size = $list_link[$size_key]; ?>
-                    <?php if (is_user_logged_in()) :?>
-                        <a href="javascript:void(0)" data-request="<?= esc_html(modify_list_href(base64_encode($list_link[$link_is_login_key])))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
-                    <?php else: ?>
-                        <a href="javascript:void(0)" data-request="<?= esc_html(modify_list_href(base64_encode($list_link[$link_no_login_key])))?>" class="preplink-btn-link list-preplink-btn-link"><?= esc_html($file_name . ' ' . $size) ?></a>
-                    <?php endif;?>
-                <?php }
-            } ?>
-        </div>
-    <?php }
+
+    if (empty($list_link) || !is_array($list_link) || !array_filter($list_link)) {
+        return;
+    }
+
+    $total = (int) ($settings['field_lists'] ?? 5);
+    $process_link = ILGL_Helper::get_process_link_instance();
+    $is_logged_in = is_user_logged_in();
+
+    echo '<div class="list-link-redirect">';
+
+    for ($i = 1; $i <= $total; $i++) {
+        $file_name = $list_link["file_name-{$i}"] ?? '';
+        $link_no_login = $list_link["link_no_login-{$i}"] ?? '';
+        $link_is_login = $list_link["link_is_login-{$i}"] ?? '';
+        $size = $list_link["size-{$i}"] ?? '';
+
+        if (empty($file_name) || empty($link_no_login) || empty($link_is_login)) {
+            continue;
+        }
+
+        $link = $is_logged_in ? $link_is_login : $link_no_login;
+        $encoded_link = $process_link->modify_list_href(base64_encode($link));
+        $display_text = esc_html($file_name . ' ' . $size);
+
+        echo '<a href="javascript:void(0)" data-request="' . esc_attr($encoded_link) . '" class="preplink-btn-link list-preplink-btn-link">' . $display_text . '</a>';
+    }
+
+    echo '</div>';
 }
 
-function link_render($isMeta, $link_is_login, $link_no_login, $prepLinkURL, $file_name, $file_size, $prepLinkText, $post_id, $settings) {
-    if (is_user_logged_in()): ?>
-        <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(modify_href(base64_encode($link_is_login))) : esc_html($prepLinkURL); ?>" class="preplink-btn-link" >
-            <?php echo $isMeta ? ($file_name.' '.$file_size) : $prepLinkText; ?>
-        </a>
-        <?php if ($isMeta) get_list_link($post_id, $settings); ?>
-    <?php else: ?>
-        <a href="javascript:void(0)" data-request="<?php echo $isMeta ? esc_html(modify_href(base64_encode($link_no_login))) : esc_html($prepLinkURL); ?>" class="preplink-btn-link" >
-            <?php echo $isMeta ? ($file_name.' '.$file_size) : $prepLinkText; ?>
-        </a>
-        <?php if ($isMeta) get_list_link($post_id, $settings); ?>
-    <?php endif;
+function list_link_render($isMeta, $link_is_login, $link_no_login, $prepLinkURL, $file_name, $file_size, $prepLinkText, $post_id, $settings) {
+    $is_logged_in = is_user_logged_in();
+    $process_link = ILGL_Helper::get_process_link_instance();
+
+    if ($isMeta) {
+        $link = $is_logged_in ? $link_is_login : $link_no_login;
+        $data_request = esc_attr($process_link->modify_href(base64_encode($link)));
+        $display_text = esc_html($file_name . ' ' . $file_size);
+    } else {
+        $data_request = esc_attr($prepLinkURL);
+        $display_text = esc_html($prepLinkText);
+    }
+    ?>
+    <a href="javascript:void(0)" data-request="<?= $data_request ?>" class="preplink-btn-link">
+        <?= $display_text ?>
+    </a>
+    <?php
+    if ($isMeta) {
+        get_list_link($post_id, $settings);
+    }
 }
 
 function svg_render() { ?>
@@ -77,102 +112,136 @@ function svg_render() { ?>
     </svg>
 <?php }
 
-function ep_related_post($settings, $post_id){ ?>
-    <div class="related_post">
-        <?php
-        $categories = get_the_category();
-        $category_ids = array();
-        foreach ($categories as $category) {
-            $category_ids[] = $category->term_id;
-        }
+function ep_related_post($settings, $post_id) {
+    $categories = get_the_category();
+    if (empty($categories)) {
+        return;
+    }
 
-        $args = array(
+    $category_ids = wp_list_pluck($categories, 'term_id');
+    $posts_per_page = !empty($settings['preplink_related_number']) ? (int) $settings['preplink_related_number'] : 4;
+
+    $args = array(
             'category__in' => $category_ids,
             'post__not_in' => array($post_id),
-            'posts_per_page' => !empty($settings['preplink_related_number']) ? $settings['preplink_related_number'] : 4, // Lấy 10 bài viết
+            'posts_per_page' => $posts_per_page,
             'orderby' => 'rand',
-            'order' => 'DESC'
-        );
+            'order' => 'DESC',
+            'update_post_meta_cache' => true,
+            'update_post_term_cache' => true,
+            'no_found_rows' => true,
+    );
 
-        $related_posts = get_posts($args);
-        // Hiển thị các bài viết liên quan
-        if ($related_posts) {
-            echo '<h3 class="suggestions-post">'.__('Related Posts', 'intelligent-link').'</h3>';
-            echo '<div class="related-posts-grid">';
-            foreach ($related_posts as $post) {
+    $related_posts = get_posts($args);
+
+    if (empty($related_posts)) {
+        return;
+    }
+    ?>
+    <div class="related_post">
+        <h3 class="suggestions-post"><?= __('Related Posts', 'intelligent-link') ?></h3>
+        <div class="related-posts-grid">
+            <?php
+
+            foreach ($related_posts as $post) :
                 setup_postdata($post);
+                $permalink = get_permalink($post);
+                $title = get_the_title($post);
+                $thumbnail = has_post_thumbnail($post) ? get_the_post_thumbnail($post, 'thumbnail') : '';
                 $post_categories = get_the_category($post->ID);
                 ?>
                 <div class="related-post">
-                    <a class="related-link" href="<?= get_permalink($post); ?>">
-                        <div class="page_file-img">
-                            <?= has_post_thumbnail() ? get_the_post_thumbnail($post, 'thumbnail') : ''; ?>
-                        </div>
+                    <a class="related-link" href="<?= esc_url($permalink) ?>">
+                        <?php if ($thumbnail) : ?>
+                            <div class="page_file-img">
+                                <?= $thumbnail ?>
+                            </div>
+                        <?php endif; ?>
                         <div class="related-content">
                             <h5 class="entry-title">
-                                <a class="dl-p-url"
-                                   href="<?= get_permalink($post); ?>"><?= get_the_title($post); ?></a>
+                                <a class="dl-p-url" href="<?= esc_url($permalink) ?>">
+                                    <?= esc_html($title) ?>
+                                </a>
                             </h5>
-                            <div class="prep-meta">
-                                <span class="prep-category">
-                                    <?php foreach ($post_categories as $i => $category) {
-                                        echo '<a class="category-link" href="' . esc_url(get_category_link($category->term_id)) . '">' . esc_html($category->name) . '</a>';
-                                        if ($i < count($post_categories) - 1) {
-                                            echo ' | ';
+                            <?php if (!empty($post_categories)) : ?>
+                                <div class="prep-meta">
+                                    <span class="prep-category">
+                                        <?php
+                                        $category_links = array();
+                                        foreach ($post_categories as $category) {
+                                            $category_links[] = '<a class="category-link" href="' . esc_url(get_category_link($category->term_id)) . '">' . esc_html($category->name) . '</a>';
                                         }
-                                    } ?>
-                                </span>
-                            </div>
+                                        echo implode(' | ', $category_links);
+                                        ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </a>
                 </div>
-                <?php
-            }
-            echo '</div>';
-            ?>
-            <?php
-            wp_reset_postdata();
-        }
-        ?>
+            <?php endforeach; ?>
+        </div>
     </div>
-<?php }
+    <?php
+    wp_reset_postdata();
+}
 
 function faq_render() {
-    $faq_conf = get_option('preplink_faq', []); ?>
+    static $faq_content = null;
+
+    if ($faq_content === null) {
+        $faq_conf = wp_cache_get('preplink_faq', 'preplink');
+        if (false === $faq_conf) {
+            $faq_conf = get_option('preplink_faq', []);
+            wp_cache_set('preplink_faq', $faq_conf, 'preplink', 3600);
+        }
+
+        $title = !empty($faq_conf['faq_title']) ? $faq_conf['faq_title'] : 'Frequently Asked Questions';
+        $description = !empty($faq_conf['faq_description']) ? $faq_conf['faq_description'] : file_get_contents(plugin_dir_path(__DIR__) . 'faq.txt');
+
+        $faq_content = array('title' => $title, 'description' => $description);
+    }
+    ?>
     <div class="faq-download">
-        <h3 class="faq-title"><?= !empty($faq_conf['faq_title']) ? $faq_conf['faq_title'] : 'Frequently Asked Questions' ?></h3>
-        <?= !empty($faq_conf['faq_description'])? $faq_conf['faq_description'] : file_get_contents(plugin_dir_path(__DIR__) . 'faq.txt'); ?>
+        <h3 class="faq-title"><?= esc_html($faq_content['title']) ?></h3>
+        <?= $faq_content['description'] ?>
     </div>
-<?php }
+    <?php
+}
 
 function set_no_index_page() {
-    if (!function_exists('aioseo' ) && !function_exists('wpseo_init' ) && !function_exists('rank_math' )) {
-        $robots = array('noindex' => true, 'nofollow' => true, 'noarchive' => true, 'nosnippet' => true,);
-        add_filter('wp_robots', function() use ($robots) {
-            return $robots;
-        });
-    }
-
-    $robots = array(
-        'index' => 'noindex', 'follow' => 'nofollow',
-        'archive' => 'noarchive', 'snippet' => 'nosnippet',
+    $robots_config = array(
+        'noindex' => true,
+        'nofollow' => true,
     );
 
-    if (function_exists('rank_math' )){
-        add_filter( 'rank_math/frontend/robots', function() use ($robots) {
-            return $robots;
+    if (!function_exists('aioseo') && !function_exists('wpseo_init') && !function_exists('rank_math')) {
+        add_filter('wp_robots', function() use ($robots_config) {
+            return $robots_config;
+        });
+        return;
+    }
+
+    $seo_robots = array(
+        'index' => 'noindex',
+        'follow' => 'nofollow',
+    );
+
+    if (function_exists('rank_math')) {
+        add_filter('rank_math/frontend/robots', function() use ($seo_robots) {
+            return $seo_robots;
         });
     }
 
-    if (function_exists('wpseo_init' )){
-        add_filter( 'wpseo_robots', function() use ($robots) {
-            return $robots;
+    if (function_exists('wpseo_init')) {
+        add_filter('wpseo_robots', function() use ($seo_robots) {
+            return $seo_robots;
         });
     }
 
-    if (function_exists('aioseo' )){
-        add_filter( 'aioseo_robots_meta', function() use ($robots) {
-            return $robots;
+    if (function_exists('aioseo')) {
+        add_filter('aioseo_robots_meta', function() use ($seo_robots) {
+            return $seo_robots;
         });
     }
 }

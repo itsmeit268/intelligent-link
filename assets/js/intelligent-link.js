@@ -71,7 +71,7 @@
 
                 const $this = $(this);
                 const title = $this.attr('data-text') || $this.text().trim() || '>> Redirect Link <<';
-                const modified_url = $this.attr('data-id');
+                const modified_url = $this.attr('data-request');
                 const url = href_restore(modified_url);
                 const complete = $this.find('.text-hide-complete').data('complete');
                 const is_image = $this.attr('data-image');
