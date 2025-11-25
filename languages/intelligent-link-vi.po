@@ -252,7 +252,7 @@ msgstr "Thời gian đếm ngược mặc định được đặt thành 15 giâ
 msgid "The default endpoint is (1), and it looks like this:"
 msgstr "Điểm cuối mặc định là (1) và nó trông như thế này:"
 
-msgid "The elements will be excluded, with each element separated by a comma (,)."
+msgid "The elements will be excluded, each separated by a comma (,)."
 msgstr ""
 "Các phần tử sẽ bị loại trừ, mỗi phần tử được phân tách bằng dấu phẩy (,)."
 
@@ -297,12 +297,6 @@ msgstr ""
 
 msgid "This setting will apply only to the endpoint page."
 msgstr "Cài đặt này sẽ chỉ áp dụng cho trang được thêm enpoint."
-
-msgid ""
-"To search for a specific resource or content on the internet, you can visit"
-msgstr ""
-"Để tìm kiếm một tài nguyên hoặc nội dung cụ thể trên internet, bạn có thể "
-"truy cập"
 
 msgid "to synchronize the endpoint."
 msgstr "để đồng bộ hóa đường dẫn tĩnh."

@@ -5,8 +5,8 @@
  * Plugin Name:       Intelligent Link
  * Plugin URI:        https://itsmeit.co/
  * Description:       Encrypts permitted links, initiates countdown timer before redirection, increases user interaction time, boosts page views, and enhances revenue for websites with advertising like AdSense, Ezoic, etc.
- * Version:           1.1.6
- * Author:            Arrived DEV
+ * Version:           1.1.5
+ * Author:            itsmeit.co
  * Author URI:        https://itsmeit.co/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -14,51 +14,32 @@
  * Domain Path:       /languages
  */
 
-// If this file is called directly, abort.
 if (!defined('ABSPATH')) {
     die;
 }
 
-define('ENDPOINT', 'links');
-define('INTELLIGENT_LINK_PLUGIN_URL', 'https://itsmeit.co');
 define('INTELLIGENT_LINK_NAME', 'Intelligent Link');
-define('INTELLIGENT_LINK_VERSION', '1.1.6');
+define('INTELLIGENT_LINK_VERSION', '1.1.5');
 define('INTELLIGENT_LINK_PLUGIN_FILE',	__FILE__);
 define('INTELLIGENT_LINK_PLUGIN_BASE',	plugin_basename(INTELLIGENT_LINK_PLUGIN_FILE ));
-define('INTELLIGENT_LINK_DEV', 0);
+define('INTELLIGENT_LINK_DEV', 1);
+define('INTELLIGENT_LINK_PLUGIN_URL', plugin_dir_url( INTELLIGENT_LINK_PLUGIN_FILE ));
 
+function intelligent_link_load_admin() {
+    $admin_path = plugin_dir_path( __FILE__ ) . 'admin/';
 
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-preplink-activator.php
- */
-function activate_intelligent_link() {
-    require_once plugin_dir_path(INTELLIGENT_LINK_PLUGIN_FILE) . 'includes/class-intelligent-link-activator.php';
-    Intelligent_Link_Activator::activate();
+    if ( is_dir( $admin_path ) ) {
+        foreach ( glob( $admin_path . '*.php' ) as $file ) {
+            require_once $file;
+        }
+    }
 }
 
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-preplink-deactivator.php
- */
-function deactivate_intelligent_link() {
-    require_once plugin_dir_path(INTELLIGENT_LINK_PLUGIN_FILE) . 'includes/class-intelligent-link-deactivator.php';
-    Intelligent_Link_Deactivator::deactivate();
+intelligent_link_load_admin();
+
+function intelligent_link_load_template() {
+    if (!is_admin()) {
+        require_once plugin_dir_path( __FILE__ ) . 'templates/process-link.php';
+    }
 }
-
-register_activation_hook(INTELLIGENT_LINK_PLUGIN_FILE, 'activate_intelligent_link');
-register_deactivation_hook(INTELLIGENT_LINK_PLUGIN_FILE, 'deactivate_intelligent_link');
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path(INTELLIGENT_LINK_PLUGIN_FILE) . 'includes/class-intelligent-link.php';
-include_once plugin_dir_path(INTELLIGENT_LINK_PLUGIN_FILE) . 'includes/class-intelligent-link-conf.php';
-
-function run_intelligent_link() {
-    $plugin = new Intelligent_Link();
-    $plugin->run();
-}
-
-run_intelligent_link();
+intelligent_link_load_template();

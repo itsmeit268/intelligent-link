@@ -1,0 +1,208 @@
+.igl-download-now,
+.igl-download-now>.wrap-countdown,
+.igl-download-now>.post-progress-bar{
+    display: flex;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+    align-items: center;
+    justify-content: left;
+    max-height: 35px;
+}
+
+.igl-download-now>.post-progress-bar>.prep-request>.post-progress{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.igl-download-now>.wrap-countdown,
+.igl-download-now>.post-progress-bar{
+    margin-left: 10px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    line-height: 20px;
+    border-radius: 40px;
+    width: fit-content;
+    white-space: nowrap;
+    z-index: 1;
+    vertical-align: middle;
+}
+
+.igl-download-now>.post-progress-bar,
+.igl-download-now>.wrap-countdown {
+    background-color: #e2e2e2;
+}
+
+.igl-download-now>.post-progress-bar>.prep-request>.post-progress,
+.igl-download-now>.wrap-countdown {
+    padding: 5px 10px;
+    background-color: #1479b3;
+    color:#fff;
+    margin-bottom: 0;
+}
+
+.igl-download-now>.post-progress-bar>.prep-request>.post-progress>.text-complete {
+    color:#fff;
+}
+.text-complete:hover{
+    color: #ff0d0d;
+}
+.b-h-down {
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.post-progress-bar {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    line-height: 22px;
+    border-radius: 40px;
+    width: fit-content;
+    white-space: nowrap;
+    z-index: 1
+}
+
+.post-progress {
+    border-radius: 40px;
+    text-align: center;
+    /*overflow: hidden;*/
+    font-size: 16px;
+    display: block;
+    max-height: 30px;
+    margin-bottom: 1.5px;
+}
+ul li > .wrap-countdown > .prep-request > .link-countdown {
+    display: block;
+}
+ul li > .wrap-countdown > .prep-request > .link-countdown:hover,
+ul li > .post-progress-bar > .prep-request > .post-progress:hover {
+    color: orangered;
+}
+
+.wrap-countdown {
+    overflow: hidden;
+    font-size: 16px;
+    height: 100%;
+    width: 0%;
+    transition: width .2s ease-in-out;
+    line-height: 20px;
+    white-space: nowrap;
+    max-width: 100%;
+    cursor: pointer;
+}
+
+.post-progress-bar a, .wrap-countdown a {
+    text-decoration: none !important;
+    box-shadow: none
+}
+
+.counter {
+    padding-top: 5px
+}
+
+i.material-icons {
+    margin-top: 4px
+}
+
+.wrap-countdown > a:hover {
+    color: #fff !important;
+    text-decoration: none !important
+}
+
+.prep-request {
+    cursor: pointer;
+}
+
+.session-end span {
+    color: #0a4ad0;
+}
+
+.session-end:hover {
+    color: orangered;
+}
+
+.ilgl-other-version {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+ul li > .post-progress-bar {
+    padding-left: 5px;
+}
+.woocommerce-product-details__short-description >.igl-download-now,
+.woocommerce-product-details__short-description >.list-link-redirect,
+.product-short-description >.igl-download-now,
+.product-short-description >.list-link-redirect{
+    max-width: 350px;
+}
+.woocommerce-product-details__short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress,
+.product-short-description >.list-link-redirect > ul li >.post-progress-bar{
+    max-width: 100%;
+    display: block;
+}
+.woocommerce-product-details__short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress,
+ .product-short-description >.list-link-redirect > ul li >.post-progress-bar > .prep-request>.post-progress {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+@media only screen and (max-device-width: 480px) {
+    .post-progress, .wrap-countdown {
+        text-align: left
+    }
+
+    .post-progress {
+        margin-bottom: -5px;
+        display: block;
+    }
+
+    h3 a,ul li > .post-progress-bar > .prep-request> .post-progress {
+        display: block;
+    }
+
+    .post-progress-bar,.post-progress {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        /*overflow: hidden;*/
+    }
+
+    ul li >.post-progress-bar {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        overflow: hidden;
+        display: block;
+    }
+
+
+    .igl-download-now>.wrap-countdown {
+        align-items: center;
+        height: 100%;
+    }
+
+    .igl-download-now>.wrap-countdown>.prep-request {
+        display: flex;
+        align-items: center;
+    }
+
+    .igl-download-now>.wrap-countdown,.link-countdown,
+    .igl-download-now>.post-progress-bar{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    ul li > .post-progress-bar > .prep-request > .post-progress{
+        margin-bottom: 0;
+        overflow: hidden;
+    }
+}

@@ -1,17 +1,32 @@
 .h-menu-links > a {
     color: inherit;
 }
-
 * a {
-    text-decoration: none;
+    text-decoration:none;
 }
-
 @media (min-width: 62rem) {
     body {
-        background-image: url('../images/clouds_bg_dw.svg');
+        background-image: url('../images/clouds_bg_dw.svg' );
         background-position: 50% 0;
         background-size: 316rem auto;
     }
+}
+
+.p-file {
+    padding: 1.5rem;
+    margin: 0 auto;
+}
+
+.p-file-title {
+    font-size: 1.375rem;
+    margin-bottom: 20px;
+}
+
+.p-file-cont {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 .igl-back {
@@ -33,16 +48,41 @@
     color: #1b96a5;
 }
 
-.section-newgames > .section-title {
+.p-file-data {
+    white-space: nowrap;
+}
+
+.p-file-data > * {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.section-newgames >.section-title {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
+@media (min-width: 48rem) {
+    .p-file-title {
+        font-size: 1.5rem;
+    }
+}
+
 @media (min-width: 62rem) {
+    .p-file {
+        max-width: 54rem;
+        padding: 2rem;
+    }
+
     .igl-back {
         margin-bottom: 1rem;
         margin-top: 1rem;
+    }
+
+    .p-file-title {
+        font-size: 2rem;
+        color: #000000;
     }
 }
 
@@ -96,6 +136,12 @@
     animation: time-rotate 2s linear infinite;
 }
 
+@keyframes time-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .ilgl-file-timer, .ilgl-file-timer-btn {
     transition: visibility .2s ease, opacity .2s ease;
 }
@@ -117,7 +163,7 @@
     font-size: 18px;
 }
 
-.faq-title {
+.faq-title{
     margin-bottom: 15px;
 }
 
@@ -125,7 +171,7 @@
     color: #1479b3;
 }
 
-.igl-header, .igl-single-page {
+.igl-header,.igl-single-page {
     max-width: 890px;
     margin: 0 auto;
     overflow: hidden;
@@ -172,8 +218,7 @@
     margin-left: -30px;
     padding: 0 20px;
 }
-
-.igl-header, .igl-back {
+.igl-header,.igl-back {
     padding: 0 10px;
 }
 
@@ -181,10 +226,9 @@
     text-align: center;
     color: #051d24;
     font-size: 16px;
+    margin: 0 20px
 }
-.session-expired p{
-    margin-bottom: 10px;
-}
+
 .feat-caption, .td-link, .title, td, th, tr td:nth-child(2) {
     text-align: left
 }
@@ -299,14 +343,16 @@ textarea#comment {
 }
 
 .download-item .left {
-    width: 80%;
+    flex: 0 0 calc(60% - 10px);
+    margin-left: 5px;
 }
 
 .download-item .right {
-    width: 20%;
+    flex: 0 0 calc(40% - 10px);
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-right: 5px;
 }
 
 .download-item .left .image {
@@ -358,7 +404,7 @@ textarea#comment {
     margin-bottom: 10px
 }
 
-.faq-download, .download-list {
+.faq-download,.download-list{
     margin: 25px 0;
 }
 
@@ -417,13 +463,11 @@ img {
 .clickable:hover {
     background: #2488c1
 }
-
-.prep-title, .post-date {
+.prep-title,.post-date {
     cursor: pointer;
     margin: 0;
     padding: 0;
 }
-
 .post-download {
     height: 100%;
     line-height: 24px;
@@ -433,7 +477,7 @@ img {
     position: relative;
     max-width: 100%;
     height: 35px;
-    margin: 20px 0;
+    margin-bottom: 20px;
     background-color: #e2e2e2;
     border-radius: 40px
 }
@@ -442,13 +486,7 @@ img {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
-    z-index: 1;
-    line-height: 1;
-    height: 25px;
-    margin: 0;
-    padding-top: 10px;
-    font-size: 16px;
-    color: #1c1a1a;
+    z-index: 1
 }
 
 .endpoint-progress .bar {
@@ -478,7 +516,6 @@ img {
     top: -2px;
     font-weight: 700
 }
-
 .preplink-btn-link {
     background: #167ec1 !important;
     color: #fff;
@@ -495,14 +532,13 @@ img {
     font-weight: 700;
     cursor: pointer;
     outline: none;
-    text-decoration: none !important;
+    text-decoration: none!important;
     margin: 5px 0;
 }
 
 .preplink-btn-link:hover {
     color: #d7d9db;
 }
-
 .require-level {
     border: 1px solid #11b94c;
     border-radius: 5px;
@@ -534,28 +570,14 @@ img {
     max-height: 100%;
 }
 
-.faq-active > .accordion-title {
+.faq-active>.accordion-title {
     font-weight: 600;
     font-size: 16px;
 }
-
-.keyword-search {
-    text-align: left;
-    margin: 10px 0 10px 0px;
+.p-file-title{
+    text-align: center;
 }
 
-.keyword-search > p > a {
-    color: #0697b1;
-    font-weight: 600;
-}
-
-.keyword-search a:hover, .session-end span:hover {
-    color: orangered;
-}
-.session-end span {
-    color: #286491;
-    font-weight: 600;
-}
 .featured-image {
     max-width: 100%;
     max-height: 450px;
@@ -566,18 +588,15 @@ img {
     width: 100%;
     height: auto;
 }
-
 .related_post {
     margin-bottom: 20px;
 }
 
-@keyframes time-rotate {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 @media only screen and (max-device-width: 480px) {
+    .p-file {
+        padding: 0 10px;
+        margin: 0 auto;
+    }
 
     .featured-image {
         height: 200px;
@@ -592,8 +611,23 @@ img {
         font-size: 20px
     }
 
+    .p-file-title{
+        padding: 0 5px;
+        text-align: center;
+    }
+
     .related-posts-grid {
         display: block
+    }
+
+    .download-item .left {
+        flex: 0 0 calc(80% - 10px);
+        margin-left: 5px;
+    }
+
+    .download-item .right {
+        flex: 0 0 calc(20% - 10px);
+        margin-right: 0;
     }
 
     .prep-link-download-btn {
@@ -634,14 +668,9 @@ img {
     .page_file-img {
         height: 100px;
     }
-
     .preplink-ads {
         padding: 0 !important;
         margin: 0
-    }
-
-    .keyword-search p {
-        text-align: justify
     }
 
     .title.prep-title {
@@ -651,11 +680,9 @@ img {
         -webkit-line-clamp: 2;
         line-height: 24px;
     }
-
     .post-download {
         margin-top: 0;
     }
-
     .preplink-btn-link {
         white-space: nowrap;
         text-overflow: ellipsis;
