@@ -478,10 +478,8 @@ class Intelligent_Link_Admin {
         $endpoint = !empty($settings['endpoint'])? $settings['endpoint']: '';
         $endpoint = preg_replace('/[^\p{L}a-zA-Z0-9_\-.]/u', '', trim($endpoint));
         ?>
-        <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="1" value="<?= esc_attr($endpoint ? : false) ?>"/>
-        <p class="description"><?= __('The default endpoint is (1), and it looks like this:', 'intelligent-link')?> <?= get_bloginfo('url')?>/hello-world/<?= $endpoint ? : '1'?>/.</p>
-        <p class="description"><strong style="color: red"><?= __('IMPORTANT:', 'intelligent-link')?></strong> <?= __('If you make any changes to the endpoint, you need to navigate to', 'intelligent-link')?>
-            <strong style="color: red"><?= __('Settings -> Permalinks -> Save', 'intelligent-link')?></strong> <?= __('to synchronize the endpoint.', 'intelligent-link')?></p>
+        <input type="text" id="endpoint" name="preplink_endpoint[endpoint]" placeholder="link" value="<?= esc_attr($endpoint ? : false) ?>"/>
+        <p class="description"><?= __('The default endpoint is (1), and it looks like this:', 'intelligent-link')?> <?= get_bloginfo('url')?>/hello-world/?<?= $endpoint ? : 'link'?>=1</p>
         <?php
         if (isset($_POST['preplink_endpoint'])) {
             $settings = $_POST['preplink_endpoint'];

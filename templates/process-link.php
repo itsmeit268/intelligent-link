@@ -3,10 +3,8 @@
 class Process_Link {
     private static $instance = null;
 
-    // Cache TTL constant
-    const CACHE_TTL = 1; // 1 hour
-
-    // Cache properties
+    const CACHE_TTL = 1;
+    const SUBFIX = '1';
     private $settings_cache = null;
     private $ep_settings_cache = null;
     private $meta_cache = null;
@@ -76,9 +74,9 @@ class Process_Link {
         return $this->modify_conf_cache;
     }
 
-    public function endpoint_conf(){
+    public function param_url(){
         if ($this->endpoint_cache === null) {
-            $endpoint = '1';
+            $endpoint = 'link';
             $ep_settings = $this->ep_settings();
             if (!empty($ep_settings['endpoint'])) {
                 $endpoint = preg_replace(
@@ -112,7 +110,8 @@ class Process_Link {
         $ep_settings = $this->ep_settings();
 
         wp_localize_script('intelligent-link', 'href_vars', [
-            'end_point'       => $this->endpoint_conf(),
+            'end_point'       => $this->param_url(),
+            'subfix'          => self::SUBFIX,
             'count_down'      => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 0,
             'cookie_time'     => !empty($ep_settings['cookie_time']) ? $ep_settings['cookie_time'] : 5,
             'display_mode'    => !empty($settings['preplink_wait_text']) ? $settings['preplink_wait_text'] : 'wait_time',
@@ -135,14 +134,53 @@ class Process_Link {
             return;
         }
 
-        add_rewrite_endpoint($this->endpoint_conf(), EP_PERMALINK | EP_ROOT );
-        add_filter('template_include', [$this, 'intelligent_link_template_include']);
+        add_filter('query_vars', function ($vars) {
+            $vars[] = $this->param_url();
+            return $vars;
+        });
 
-        if (INTELLIGENT_LINK_DEV == 1) {
-            flush_rewrite_rules();
-            wp_cache_flush();
-        }
+        add_filter('template_include', [$this, 'intelligent_link_template_include']);
     }
+
+    public function intelligent_link_template_include($template) {
+        include_once plugin_dir_path( __FILE__ ) . '../includes/helper.php';
+        $intelligent_link_template = plugin_dir_path( __FILE__ ) . 'layout/default.php';
+
+        global $wp_query;
+
+        $current_link = get_query_var($this->param_url());
+        $subfix = self::SUBFIX;
+
+        if (!empty($current_link) && $current_link === $subfix) {
+            $this->prep_head();
+
+            if (is_singular('product')) {
+                remove_all_actions('woocommerce_single_product_summary');
+                include_once $intelligent_link_template;
+                exit;
+            }
+
+            return $intelligent_link_template;
+        }
+
+        $product_category = isset($wp_query->query_vars['product_cat']) ? $wp_query->query_vars['product_cat']: '';
+
+        if ($product_category == $subfix) {
+            remove_all_actions('woocommerce_before_main_content');
+            remove_all_actions('woocommerce_archive_description');
+            remove_all_actions('woocommerce_before_shop_loop');
+            remove_all_actions('woocommerce_shop_loop');
+            remove_all_actions('woocommerce_after_shop_loop');
+            remove_all_actions('woocommerce_sidebar');
+
+            $this->prep_head();
+            include_once $intelligent_link_template;
+            exit;
+        }
+
+        return $template;
+    }
+
 
     public function prep_head() {
         wp_enqueue_style('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/css/template.css', [], INTELLIGENT_LINK_VERSION, 'all');
@@ -156,10 +194,6 @@ class Process_Link {
         ]);
     }
 
-    /**
-     * Process all content modifications - Combined filter
-     * Priority 99-100 logic combined into single hook
-     */
     public function process_all_content($content) {
         if (!is_single() && !is_page()) {
             return $content;
@@ -169,19 +203,13 @@ class Process_Link {
             return $content;
         }
 
-        // Step 1: Process content links (original priority 99)
         $content = $this->process_content_links_internal($content);
 
-        // Step 2: Render link info (original priority 100)
         $content = $this->render_link_info_internal($content);
 
         return $content;
     }
 
-    /**
-     * Internal method for processing content links
-     * Extracted from process_content_links, without redundant checks
-     */
     private function process_content_links_internal($content) {
         if (empty($content) || strpos($content, '<a') === false) {
             return $content;
@@ -192,7 +220,6 @@ class Process_Link {
             return $content;
         }
 
-        // Remove excluded parent elements before processing
         $exclude_elm_selectors = $this->exclude_elm();
         if (!empty($exclude_elm_selectors)) {
             $content = $this->remove_excluded_elements($content, $exclude_elm_selectors);
@@ -213,25 +240,20 @@ class Process_Link {
         }, $content);
     }
 
-    /**
-     * Remove links inside excluded parent elements
-     */
+
     private function remove_excluded_elements($content, $exclude_selectors) {
         $selectors = array_map('trim', explode(',', $exclude_selectors));
 
         foreach ($selectors as $selector) {
             if (empty($selector)) continue;
 
-            // Handle class selectors
             if (strpos($selector, '.') === 0) {
                 $class = substr($selector, 1);
                 $pattern = '/<([a-z][a-z0-9]*)\s+[^>]*class=["\'][^"\']*\b' . preg_quote($class, '/') . '\b[^"\']*["\'][^>]*>.*?<\/\1>/is';
                 $content = preg_replace_callback($pattern, function($matches) {
-                    // Replace all <a> tags inside with placeholder
                     return preg_replace('/<a\s+[^>]*>.*?<\/a>/is', '<!-- excluded -->', $matches[0]);
                 }, $content);
             }
-            // Handle id selectors
             elseif (strpos($selector, '#') === 0) {
                 $id = substr($selector, 1);
                 $pattern = '/<([a-z][a-z0-9]*)\s+[^>]*id=["\']' . preg_quote($id, '/') . '["\'][^>]*>.*?<\/\1>/is';
@@ -239,7 +261,6 @@ class Process_Link {
                     return preg_replace('/<a\s+[^>]*>.*?<\/a>/is', '<!-- excluded -->', $matches[0]);
                 }, $content);
             }
-            // Handle tag selectors
             else {
                 $pattern = '/<' . preg_quote($selector, '/') . '\b[^>]*>.*?<\/' . preg_quote($selector, '/') . '>/is';
                 $content = preg_replace_callback($pattern, function($matches) {
@@ -251,10 +272,6 @@ class Process_Link {
         return $content;
     }
 
-    /**
-     * Internal method for rendering link info
-     * Extracted from render_link_info, with caching added
-     */
     private function render_link_info_internal($content) {
         $post_id = get_the_ID();
 
@@ -285,40 +302,6 @@ class Process_Link {
         }
 
         return $content;
-    }
-
-    public function intelligent_link_template_include($template) {
-        include_once plugin_dir_path( __FILE__ ) . '../includes/helper.php';
-        $intelligent_link_template = plugin_dir_path( __FILE__ ) . 'layout/default.php';
-
-        global $wp_query;
-
-        if (isset($wp_query->query_vars[$this->endpoint_conf()])) {
-            $this->prep_head();
-            if (is_singular('product')) {
-                remove_all_actions( 'woocommerce_single_product_summary' );
-                include_once $intelligent_link_template;
-                exit;
-            }
-            return $intelligent_link_template;
-        }
-
-        $product_category = isset($wp_query->query_vars['product_cat']) ? $wp_query->query_vars['product_cat']: '';
-
-        if ($product_category == $this->endpoint_conf()) {
-            remove_all_actions('woocommerce_before_main_content');
-            remove_all_actions('woocommerce_archive_description');
-            remove_all_actions('woocommerce_before_shop_loop');
-            remove_all_actions('woocommerce_shop_loop');
-            remove_all_actions('woocommerce_after_shop_loop');
-            remove_all_actions('woocommerce_sidebar');
-
-            $this->prep_head();
-            include_once $intelligent_link_template;
-            exit;
-        }
-
-        return $template;
     }
 
     public function exclude_elm(){
@@ -367,7 +350,6 @@ class Process_Link {
 
         $post_id = get_the_ID();
 
-        // Reuse cache from render_link_info if available
         if (!isset($this->render_cache[$post_id])) {
             $this->render_cache[$post_id] = [
                 'file_name' => get_post_meta($post_id, 'file_name', true),
@@ -451,7 +433,7 @@ class Process_Link {
         $has_media = preg_match('/<(img|svg|i)\b/i', $inner_html);
 
         if ($has_media) {
-            $new_attrs = 'href="javascript:void(0)" data-id="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '" data-image="1" rel="nofollow noopener noreferrer"';
+            $new_attrs = 'href="javascript:void(0)" data-request="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '" data-image="1" rel="nofollow noopener noreferrer"';
 
             if (preg_match('/class=["\']([^"\']*)["\']/', $full_attributes, $class_match)) {
                 $new_attrs .= ' class="' . esc_attr($class_match[1]) . ' prep-request"';
@@ -463,9 +445,9 @@ class Process_Link {
             return '<a ' . $new_attrs . ' ' . trim($full_attributes) . '>' . $inner_html . '</a>';
         } else {
             if ($display_mode === 'progress') {
-                return '<span class="post-progress-bar" style="display:inline-block;"><span class="prep-request" data-id="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '"><strong class="post-progress">' . esc_html($text_link) . '</strong></span></span>';
+                return '<span class="post-progress-bar" style="display:inline-block;"><span class="prep-request" data-request="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '"><strong class="post-progress">' . esc_html($text_link) . '</strong></span></span>';
             } else {
-                return '<span class="wrap-countdown"><span class="prep-request" data-id="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '"><strong class="link-countdown">' . esc_html($text_link) . '</strong></span></span>';
+                return '<span class="wrap-countdown"><span class="prep-request" data-request="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '"><strong class="link-countdown">' . esc_html($text_link) . '</strong></span></span>';
             }
         }
     }
@@ -517,14 +499,15 @@ class Process_Link {
         $html = '<' . $elm . ' class="igl-download-now"><b class="b-h-down">' . $pre_fix . '</b>';
 
         $link = is_user_logged_in() ? $link_is_login : $link_no_login;
+
         $encoded_link = $this->modify_href(base64_encode($link));
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';
-            $html .= '<span class="prep-request" data-request="'.$encoded_link.'"><strong class="post-progress">' . $file_name . '</strong></span></div>';
+            $html .= '<span class="prep-request" data-request="'.esc_attr($encoded_link).'"><strong class="post-progress">' . $file_name . '</strong></span></div>';
         } else {
             $html .= '<span class="wrap-countdown">';
-            $html .= '<span class="prep-request" data-request="'.$encoded_link.'"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
+            $html .= '<span class="prep-request" data-request="'.esc_attr($encoded_link).'"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
         }
 
         $html .= '</' . $elm . '>';
@@ -547,9 +530,13 @@ class Process_Link {
                     $file_name_item = $list_link[$file_name_key];
                     $size = $list_link[$size_key] ?? '';
                     $link = is_user_logged_in() ? $list_link[$link_is_login_key] : $list_link[$link_no_login_key];
-                    $encoded_link = $this->modify_list_href( base64_encode( $link ) );
+                    $encoded_link = $this->modify_list_href(base64_encode($link));
                     $html .= '<li>';
-                    $html .= '<a href="' . esc_url($encoded_link) . '" class="preplink-btn-link list-preplink-btn-link">' . esc_html($file_name_item . ' ' . $size) . '</a>';
+                    $html .= '<span class="post-progress-bar">';
+                    $html .= '<span class="prep-request" data-request="' . esc_attr($encoded_link) . '">'
+                        . '<strong class="post-progress">' . esc_html($file_name_item . ' ' . $size) . '</strong>'
+                        . '</span>';
+                    $html .= '</span>';
                     $html .= '</li>';
                 }
             }

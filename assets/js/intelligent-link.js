@@ -21,8 +21,9 @@
         }
 
         function reset_request() {
-            var regex = new RegExp('(/' + end_point + '/)|(/' + end_point + ')|(.html/' + end_point + ')');
-            if (regex.test(current_url)) {
+            var hasLinkParam = current_url.indexOf('?link=') !== -1;
+
+            if (hasLinkParam) {
                 return true;
             } else {
                 clear_cookie("prep_request");
@@ -55,14 +56,13 @@
 
             if (current_url.indexOf(".html") > -1 && current_url.includes('.html')) {
                 current_url = current_url.match(/.*\.html/)[0] + '/';
-            } else if (current_url.includes('/' + end_point + '/')) {
-                return current_url;
-            } else if (current_url.indexOf('.html') === -1 && !current_url.endsWith('/')) {
+            } else if (!current_url.endsWith('/')) {
                 current_url = current_url + '/';
             }
 
-            return current_url + end_point;
+            return current_url + '?' + end_point + '=1';
         }
+
 
         function processClick() {
 

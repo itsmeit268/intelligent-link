@@ -81,7 +81,7 @@ function list_link_render($isMeta, $link_is_login, $link_no_login, $prepLinkURL,
         $display_text = esc_html($prepLinkText);
     }
     ?>
-    <a href="javascript:void(0)" data-request="<?= $data_request ?>" class="preplink-btn-link">
+    <a href="javascript:void(0)" data-request="<?= esc_attr($data_request); ?>" class="preplink-btn-link">
         <?= $display_text ?>
     </a>
     <?php

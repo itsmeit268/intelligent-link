@@ -22,7 +22,7 @@ function ilgl_get_cached_options() {
 $options = ilgl_get_cached_options();
 $settings = $options['preplink_setting'];
 $ads = $options['ads_code'];
-$endpoint_conf = $options['preplink_endpoint'];
+$param_url = $options['preplink_endpoint'];
 $meta_attr = $options['meta_attr'];
 $faq_conf = $options['preplink_faq'];
 
@@ -46,8 +46,8 @@ $file_size = $post_meta['file_size'][0] ?? '';
 
 $isMeta = !empty($file_name);
 $download_meta = base64_encode(get_bloginfo('url'));
-$time_conf = !empty($endpoint_conf['countdown_endpoint']) ? (int) $endpoint_conf['countdown_endpoint'] : 15;
-$post_image = !empty($endpoint_conf['preplink_image']);
+$time_conf = !empty($param_url['countdown_endpoint']) ? (int) $param_url['countdown_endpoint'] : 15;
+$post_image = !empty($param_url['preplink_image']);
 
 $has_header = ILGL_Helper::file_exists_cached(get_template_directory() . '/header.php');
 $has_footer = ILGL_Helper::file_exists_cached(get_template_directory() . '/footer.php');
@@ -110,7 +110,7 @@ function render_ad_slot($ads, $slot_name) {
                             <?php render_ad_slot($ads, 'ads_2'); ?>
                         <?php endif; ?>
 
-                        <?php if (!empty($endpoint_conf['ep_mode']) && $endpoint_conf['ep_mode'] == 'default' && $isMeta) : ?>
+                        <?php if (!empty($param_url['ep_mode']) && $param_url['ep_mode'] == 'default' && $isMeta) : ?>
                             <!-- DEFAULT MODE -->
                             <div class="download-list">
                                 <div class="download-item-box">
@@ -187,12 +187,12 @@ function render_ad_slot($ads, $slot_name) {
 
                         <?php render_ad_slot($ads, 'ads_5'); ?>
 
-                        <?php if ($isMeta && !empty($endpoint_conf['preplink_related_post']) && $endpoint_conf['preplink_related_post'] == 1) : ?>
+                        <?php if ($isMeta && !empty($param_url['preplink_related_post']) && $param_url['preplink_related_post'] == 1) : ?>
                             <?php ep_related_post($settings, $post_id) ?>
                             <?php render_ad_slot($ads, 'ads_6'); ?>
                         <?php endif; ?>
 
-                        <?php if ($has_comments && !empty($endpoint_conf['preplink_comment']) && (int)$endpoint_conf['preplink_comment'] == 1 && $isMeta) : ?>
+                        <?php if ($has_comments && !empty($param_url['preplink_comment']) && (int)$param_url['preplink_comment'] == 1 && $isMeta) : ?>
                             <div class="comment">
                                 <?php comments_template(); ?>
                             </div>
