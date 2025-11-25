@@ -13,11 +13,12 @@ $view_link          = get_permalink($post_id);
 $post_title         = get_the_title($post_id) ? get_the_title($post_id) : $prep_title;
 
 $baseUrl            = str_replace('https://', '', get_bloginfo('url'));
+
+$file_name          = get_post_meta($post_id, 'file_name', true);
 $file_format        = get_post_meta($post_id, 'file_format', true);
 $require            = get_post_meta($post_id, 'require', true);
 $os_version         = get_post_meta($post_id, 'os_version', true);
 $file_version       = get_post_meta($post_id, 'file_version', true);
-$file_name          = get_post_meta($post_id, 'file_name', true);
 $download_meta      = base64_encode(get_bloginfo('url'));
 $time_conf          = !empty($endpoint_conf['countdown_endpoint']) ? (int) $endpoint_conf['countdown_endpoint'] : 15;
 $post_image         = !empty($endpoint_conf['preplink_image'] ? true: false);
@@ -25,15 +26,13 @@ $link_no_login      = get_post_meta($post_id, 'link_no_login', true);
 $link_is_login      = get_post_meta($post_id, 'link_is_login', true);
 $file_size          = get_post_meta($post_id, 'file_size', true);
 
-if ($download_meta === $prep_request) {
+if ($file_name) {
     $isMeta = true;
 }
+
 set_no_index_page();
 
 ?>
-<?php if (!empty($settings['preplink_custom_style'])) {
-    echo "<style>{$settings['preplink_custom_style']}</style>";
-} ?>
 
 <?php file_exists(get_template_directory() . '/header.php') ? get_header() : wp_head(); ?>
 
@@ -55,10 +54,10 @@ set_no_index_page();
                     </div>
                     <?= !empty($ads['ads_7']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_7'] . '</div>' : '' ?>
                 <?php else: ?>
-                    <?php if ($post_image && $isMeta && has_post_thumbnail()) : ?>
+                    <?php if ($post_image && has_post_thumbnail()) : ?>
                         <div class="ilgl-feat-outer">
                             <div class="featured-image">
-                                <img src="<?= get_the_post_thumbnail_url($post_id, 'full'); ?>" class="prep-thumbnail" alt="<?= $post_title ?>" title="<?= $post_title ?>">
+                                <img class="prep-thumbnail" src="<?= get_the_post_thumbnail_url($post_id, 'large'); ?>" alt="<?= $post_title ?>">
                             </div>
                         </div>
                         <?= !empty($ads['ads_2']) ? '<div class="preplink-ads preplink-ads-2" style="margin: 0 25px;">' . $ads['ads_2'] . '</div>' : '' ?>

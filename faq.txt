@@ -37,14 +37,14 @@
     transition: transform 0.2s;
 }
 .faq-dl-accordion .faq-dl-icon::before {
-    top: 9px;
+    top: 8px;
     left: 4px;
     width: 10px;
     height: 2px;
 }
 .faq-dl-accordion .faq-dl-icon::after {
     top: 4px;
-    left: 9px;
+    left: 8px;
     width: 2px;
     height: 10px;
 }
