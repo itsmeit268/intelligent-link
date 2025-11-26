@@ -469,7 +469,6 @@ class Intelligent_Link_Admin {
             $html .= sprintf('<option value="%s" %s>%s</option>', $value, selected($selected, $value, false), $label);
         }
         $html .= '</select>';
-        $html .= '<p class="description">'.__('Enable or disable plugin (The prepared link will be ready when enabled).', 'intelligent-link').'</p>';
         echo $html;
     }
 
