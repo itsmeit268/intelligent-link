@@ -553,7 +553,7 @@ img {
     color: #0874cd;
 }
 
-.list-file-hide .ilgl-file-timer-btn a.preplink-btn-link {
+.list-file-hide .ilgl-file-timer-btn .preplink-btn-link {
     display: block;
 }
 

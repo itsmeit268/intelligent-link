@@ -11,6 +11,8 @@
         var $relatedNum = $('#related_number');
         var $replace_text = $('#replace_text');
         var replace_mode = $('.replace_text');
+        var $enableRewrite = $('#preplink_enable_rewrite');
+        var rewrite_fields = $('.preplink-rewrite-fields');
         var __ = wp.i18n.__;
 
         function _countdown_mode() {
@@ -59,6 +61,7 @@
                 }
             });
         }
+
         function _related_enabled() {
             if ($related.val() === '1') {
                 related_des.show();
@@ -79,6 +82,23 @@
                     $relatedNum.parents('.related_number').append('<p class="prep-notice">' + __('The value must be greater than 0 to show the number of related posts.', 'intelligent-link') + '</p>');
                 } else {
                     $('.prep-notice').remove();
+                }
+            });
+        }
+
+        // Thêm function mới cho enable_rewrite
+        function _enable_rewrite_mode() {
+            if ($enableRewrite.val() === 'yes') {
+                rewrite_fields.show();
+            } else {
+                rewrite_fields.hide();
+            }
+
+            $enableRewrite.on('change', function () {
+                if (this.value === 'yes') {
+                    rewrite_fields.show();
+                } else {
+                    rewrite_fields.hide();
                 }
             });
         }
@@ -112,6 +132,7 @@
         _replace_text_mode();
         _faq1_enabled();
         _related_enabled();
+        _enable_rewrite_mode();
         _checkCookieValue();
     });
 

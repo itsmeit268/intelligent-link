@@ -12,7 +12,8 @@
             text_complete = href_vars.replace_text,
             windowWidth = $(window).width(),
             modify_conf = href_vars.modify_conf,
-            meta_attr = href_vars.meta_attr;
+            meta_attr = href_vars.meta_attr,
+            is_rewrite_enabled = href_vars.enable_rewrite || false;
 
         var countdownStatus = {};
 
@@ -26,12 +27,21 @@
             if (hasLinkParam) {
                 return true;
             } else {
+                clear_cookie("prep_meta");
                 clear_cookie("prep_request");
                 clear_cookie("prep_title");
             }
         }
 
         function href_restore(url) {
+            if (!is_rewrite_enabled) {
+                try {
+                    return atob(url);
+                } catch (e) {
+                    return url;
+                }
+            }
+
             return url.replace(modify_conf.pfix, '').replace(atob(modify_conf.mstr), '').replace(atob(modify_conf.sfix), '');
         }
 
@@ -49,6 +59,10 @@
             _setCookie("prep_request", url);
         }
 
+        function set_cookie_meta(meta) {
+            _setCookie("prep_meta", meta);
+        }
+
         function intelligent_link() {
             if (current_url.indexOf('?') !== -1) {
                 current_url = current_url.split('?')[0];
@@ -63,7 +77,6 @@
             return current_url + '?' + end_point + '=1';
         }
 
-
         function processClick() {
 
             $(document).on('click', '.prep-request', function (e) {
@@ -75,7 +88,7 @@
                 const url = href_restore(modified_url);
                 const complete = $this.find('.text-hide-complete').data('complete');
                 const is_image = $this.attr('data-image');
-                const is_meta = $this.parents('.igl-download-now');
+                const is_meta = $this.attr('data-meta') ? parseInt($this.attr('data-meta')):  0;
 
                 var start_time = time_cnf;
 
@@ -83,7 +96,7 @@
                     return;
                 }
 
-                if (is_meta.length) {
+                if (is_meta) {
                     if (meta_attr.auto_direct === '1' && parseInt(meta_attr.time) === 0) {
                         start_time = 0;
                     }
@@ -93,6 +106,7 @@
                 if (complete === 1) {
                     set_cookie_title($this.find('.text-hide-complete').data('text'));
                     set_cookie_url(modified_url);
+                    set_cookie_meta(is_meta);
 
                     if (windowWidth > 700) {
                         window.open(intelligent_link(), '_blank');
@@ -109,6 +123,7 @@
                 if (start_time === 0 || is_image === '1') {
                     set_cookie_title(title);
                     set_cookie_url(modified_url);
+                    set_cookie_meta(is_meta);
 
                     if (windowWidth > 700) {
                         window.open(intelligent_link(), '_blank');
@@ -128,7 +143,7 @@
         }
 
         function _start_countdown($elm, url, title, is_meta) {
-            let timeleft = is_meta.length ? parseInt(meta_attr.time) : time_cnf;
+            let timeleft = is_meta ? parseInt(meta_attr.time) : time_cnf;
 
             const countdown = () => {
                 $elm.html(`<strong>${wait_text} ${timeleft}s...</strong>`);
@@ -140,19 +155,16 @@
 
                     $elm.html(wait_time_html);
 
-                    if (!is_meta.length) {
-                        $elm.parents('.wrap-countdown').css({'color': '#0c7905', 'font-weight': '600'});
-                    } else {
+                    if (is_meta) {
                         $elm.parents('.wrap-countdown').css({'background': '#0c7905'});
+                    } else {
+                        $elm.parents('.wrap-countdown').css({'color': '#0c7905', 'font-weight': '600'});
                     }
 
-                    if (is_meta.length && meta_attr.auto_direct === '1') {
+                    if (meta_attr.auto_direct === '1' || auto_direct) {
                         set_cookie_title(title);
                         set_cookie_url(url);
-                        window.location.href = intelligent_link();
-                    } else if (!is_meta.length && auto_direct) {
-                        set_cookie_title(title);
-                        set_cookie_url(url);
+                        set_cookie_meta(is_meta);
                         window.location.href = intelligent_link();
                     }
 
@@ -170,12 +182,12 @@
             const parent = $elm.parent('.post-progress-bar');
 
             let currentWidth = 0;
-            let timeleft = is_meta.length ? parseInt(meta_attr.time) : time_cnf;
+            let timeleft = is_meta ? parseInt(meta_attr.time) : time_cnf;
 
             parent.css({'width': parent.width(), 'margin-right': '25px'});
             $progress.width("0%");
 
-            if (!is_meta.length) {
+            if (!is_meta) {
                 $progress.css({
                     'background-color': '#1479B3',
                     'color': '#fff',
@@ -208,13 +220,10 @@
 
                     parent.removeAttr('style');
 
-                    if (is_meta.length && meta_attr.auto_direct === '1') {
+                    if (meta_attr.auto_direct === '1' || auto_direct) {
                         set_cookie_title(title);
                         set_cookie_url(url);
-                        window.location.href = intelligent_link();
-                    } else if (!is_meta.length && auto_direct) {
-                        set_cookie_title(title);
-                        set_cookie_url(url);
+                        set_cookie_meta(is_meta);
                         window.location.href = intelligent_link();
                     }
 
@@ -222,6 +231,7 @@
                 }
             }, timeleft);
         }
+
         reset_request();
         processClick();
     });

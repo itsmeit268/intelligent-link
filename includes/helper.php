@@ -34,7 +34,7 @@ function render_back_icon($view_link) { ?>
     </div>
 <?php }
 
-function get_list_link($post_id, $settings) {
+function get_list_link($post_id, $ep_settings) {
     $list_link = get_post_meta($post_id, 'link-download-metabox', true);
 
 
@@ -42,9 +42,12 @@ function get_list_link($post_id, $settings) {
         return;
     }
 
-    $total = (int) ($settings['field_lists'] ?? 5);
+    $total = (int) ($ep_settings['field_lists'] ?? 5);
     $process_link = ILGL_Helper::get_process_link_instance();
     $is_logged_in = is_user_logged_in();
+
+    $settings = $process_link->ilgl_settings();
+    $enable_rewrite = isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes';
 
     echo '<div class="list-link-redirect">';
 
@@ -59,34 +62,45 @@ function get_list_link($post_id, $settings) {
         }
 
         $link = $is_logged_in ? $link_is_login : $link_no_login;
-        $encoded_link = $process_link->modify_list_href(base64_encode($link));
+
+        if ($enable_rewrite) {
+            $link = $process_link->modify_list_href(base64_encode($link));
+        }
+
         $display_text = esc_html($file_name . ' ' . $size);
 
-        echo '<a href="javascript:void(0)" data-request="' . esc_attr($encoded_link) . '" class="preplink-btn-link list-preplink-btn-link">' . $display_text . '</a>';
+        echo '<span data-request="' . esc_attr($link) . '" class="preplink-btn-link list-preplink-btn-link">' . $display_text . '</span>';
     }
 
     echo '</div>';
 }
 
-function list_link_render($isMeta, $link_is_login, $link_no_login, $prepLinkURL, $file_name, $file_size, $prepLinkText, $post_id, $settings) {
+function link_render($isMeta, $link_is_login, $link_no_login, $prepLinkURL, $file_name, $file_size, $prepLinkText, $post_id, $ep_settings) {
+
     $is_logged_in = is_user_logged_in();
     $process_link = ILGL_Helper::get_process_link_instance();
+    $settings = $process_link->ilgl_settings();
+    $enable_rewrite = isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes';
+
+    if ($enable_rewrite) {
+        $link_is_login = esc_attr($process_link->modify_href(base64_encode($link_is_login)));
+        $link_no_login = esc_attr($process_link->modify_href(base64_encode($link_no_login)));
+    }
 
     if ($isMeta) {
         $link = $is_logged_in ? $link_is_login : $link_no_login;
-        $data_request = esc_attr($process_link->modify_href(base64_encode($link)));
         $display_text = esc_html($file_name . ' ' . $file_size);
     } else {
-        $data_request = esc_attr($prepLinkURL);
+        $link = esc_attr($prepLinkURL);
         $display_text = esc_html($prepLinkText);
     }
     ?>
-    <a href="javascript:void(0)" data-request="<?= esc_attr($data_request); ?>" class="preplink-btn-link">
+    <span data-request="<?= esc_attr($link); ?>" class="preplink-btn-link">
         <?= $display_text ?>
-    </a>
+    </span>
     <?php
     if ($isMeta) {
-        get_list_link($post_id, $settings);
+        get_list_link($post_id, $ep_settings);
     }
 }
 
@@ -112,14 +126,14 @@ function svg_render() { ?>
     </svg>
 <?php }
 
-function ep_related_post($settings, $post_id) {
+function ep_related_post($ep_settings, $post_id) {
     $categories = get_the_category();
     if (empty($categories)) {
         return;
     }
 
     $category_ids = wp_list_pluck($categories, 'term_id');
-    $posts_per_page = !empty($settings['preplink_related_number']) ? (int) $settings['preplink_related_number'] : 4;
+    $posts_per_page = !empty($ep_settings['preplink_related_number']) ? (int) $ep_settings['preplink_related_number'] : 4;
 
     $args = array(
             'category__in' => $category_ids,

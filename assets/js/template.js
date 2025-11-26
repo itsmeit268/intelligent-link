@@ -5,10 +5,15 @@
         var $progress     = $('#endpoint-progress'),
             time_cnf      = parseInt(prep_template.countdown_endpoint),
             auto_direct   = parseInt(prep_template.endpoint_direct),
-            page_elm      = $('#prep-request-page'),
-            preUrlGo      = page_elm.data('request'),
             t2_timer      = $('#preplink-timer-link'),
-            href_modify   = prep_template.modify_conf;
+            href_modify   = prep_template.modify_conf,
+            is_rewrite_enabled = prep_template.enable_rewrite || false;
+
+        function getCookie(name) {
+            const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
+            return match ? match[2] : null;
+        }
+
         function progressRunning(){
             if (time_cnf > 0){
 
@@ -47,7 +52,13 @@
                             isProgressRunning = false;
                             $progress.off('click');
                             if (auto_direct){
-                                window.location.href = window.atob(href_restore(preUrlGo));
+                                const link = getCookie('prep_request');
+
+                                if (!is_rewrite_enabled) {
+                                    window.location.href = href_restore(link);
+                                } else {
+                                    window.location.href = window.atob(href_restore(link));
+                                }
                             }
                         } else if (!isCountdownFinished) {
                             const percent = Math.floor((1 - timeRemaining / totalTime) * 100);
@@ -67,14 +78,14 @@
                         if (!isCountdownFinished) {
                             e.preventDefault();
                         } else {
-                            window.location.href = window.atob(href_restore(preUrlGo));
+                            if (!is_rewrite_enabled) {
+                                window.location.href = href_restore(preUrlGo);
+                            } else {
+                                window.location.href = window.atob(href_restore(preUrlGo));
+                            }
                         }
                     });
                 });
-
-                /**
-                 * Template 1
-                 */
 
                 if (t2_timer.length) {
                     var data_time = t2_timer.attr('data-time');
@@ -89,8 +100,15 @@
                         } else {
                             $("#buttondw").addClass('del-timer');
                             if (auto_direct){
-                                var request_link = href_restore(preUrlGo);
-                                window.location.href = window.atob(request_link);
+                                const link = getCookie('prep_request');
+                                const request_link = href_restore(link);
+
+                                if (!is_rewrite_enabled) {
+                                    window.location.href = request_link;
+                                } else {
+                                    window.location.href = window.atob(request_link);
+
+                                }
                             }
                         }
                     }
@@ -101,6 +119,10 @@
         }
 
         function href_restore(url) {
+            if (!is_rewrite_enabled) {
+                return url;
+            }
+
             if (url.includes(atob(href_modify.mstr)) || url.includes(atob(href_modify.sfix)) ) {
                 return url.replace(href_modify.pfix, '').replace(atob(href_modify.mstr), '').replace(atob(href_modify.sfix), '');
             }
@@ -110,16 +132,29 @@
         function redirect_link() {
             $('.preplink-btn-link,.list-preplink-btn-link').on('click', function (e) {
                 e.preventDefault();
-                window.location.href = window.atob(href_restore($(this).data('request')) || href_restore(preUrlGo));
+
+                const link = $(this).data('request');
+                if (!is_rewrite_enabled) {
+                    window.location.href = href_restore(link);
+                } else {
+                    window.location.href = window.atob(href_restore(link));
+                }
             });
         }
 
         function scrollToProgressElm() {
             $('.clickable,.prep-title').on('click', function () {
                 if (time_cnf === 0) {
-                    window.location.href = preUrlGo.atob(href_restore(preUrlGo));
+                    const link = getCookie('prep_request');
+                    if (!is_rewrite_enabled) {
+                        window.location.href = href_restore(link);
+                    } else {
+                        window.location.href = link.atob(href_restore(link));
+                    }
+
                     return;
                 }
+
                 $progress.trigger('click');
                 $('html, body').animate({
                     scrollTop: $progress.offset().top - 150

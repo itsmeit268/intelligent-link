@@ -28,6 +28,7 @@ $faq_conf = $options['preplink_faq'];
 
 $prep_title = $_COOKIE['prep_title'] ?? '';
 $prep_request = $_COOKIE['prep_request'] ?? '';
+$isMeta = $_COOKIE['prep_meta'] ? 1: 0;
 
 $post_id = get_the_ID();
 $view_link = get_permalink($post_id);
@@ -44,7 +45,6 @@ $link_no_login = $post_meta['link_no_login'][0] ?? '';
 $link_is_login = $post_meta['link_is_login'][0] ?? '';
 $file_size = $post_meta['file_size'][0] ?? '';
 
-$isMeta = !empty($file_name);
 $download_meta = base64_encode(get_bloginfo('url'));
 $time_conf = !empty($param_url['countdown_endpoint']) ? (int) $param_url['countdown_endpoint'] : 15;
 $post_image = !empty($param_url['preplink_image']);
@@ -64,7 +64,7 @@ function render_ad_slot($ads, $slot_name) {
 ?>
 
 <?php $has_header ? get_header() : wp_head(); ?>
-    <div class="igl-single-page" id="prep-request-page" data-request="<?= esc_attr($prep_request) ?>">
+    <div class="igl-single-page" id="prep-request-page">
         <?php render_ad_slot($ads, 'ads_1'); ?>
         <?php render_back_icon($view_link); ?>
 
@@ -159,12 +159,11 @@ function render_ad_slot($ads, $slot_name) {
 
                             <div class="list-file-hide list-server-download" style="display: none">
                                 <div class="ilgl-file-timer-btn">
-                                    <?php list_link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $meta_attr); ?>
+                                    <?php link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $meta_attr); ?>
                                 </div>
                             </div>
 
                         <?php else : ?>
-                            <!-- TIMER MODE -->
                             <div class="list-file-hide" id="buttondw">
                                 <div class="ilgl-file-timer" style="display:none;">
                                 <span class="ilgl-file-timer-sec fw-b" id="preplink-timer-link" data-time="<?= esc_attr($time_conf) ?>">
@@ -173,7 +172,7 @@ function render_ad_slot($ads, $slot_name) {
                                     <?php svg_render() ?>
                                 </div>
                                 <div class="ilgl-file-timer-btn" style="opacity:0;pointer-events:none;visibility:hidden;">
-                                    <?php list_link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $meta_attr); ?>
+                                    <?php link_render($isMeta, $link_is_login, $link_no_login, $prep_request, $file_name, $file_size, $prep_title, $post_id, $meta_attr); ?>
                                 </div>
                             </div>
                         <?php endif; ?>

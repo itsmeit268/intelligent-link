@@ -526,13 +526,20 @@ class Intelligent_Link_Admin {
     }
 
     public function preplink_link_url_rewriting(){
-        $settings = get_option('preplink_setting', array());
-        ?>
-        <input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/>
+    $settings = get_option('preplink_setting', array());
+    ?>
+        <select name="preplink_setting[enable_rewrite]" id="preplink_enable_rewrite">
+            <option value="yes" <?= isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes' ? 'selected' : '' ?>><?= __('Yes', 'intelligent-link') ?></option>
+            <option value="no" <?= isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'no' ? 'selected' : '' ?>><?= __('No', 'intelligent-link') ?></option>
+        </select>
+
+        <div class="preplink-rewrite-fields" style="margin-top: 10px">
+            <input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/>
             <input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/>
             <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(26)) ?>"/>
             <p class="description"><?= __('Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.', 'intelligent-link')?></p>
             <p class="description"><?= __('This practice serves a security purpose and renders it non-decodable.', 'intelligent-link')?></p>
+        </div>
         <?php
     }
 

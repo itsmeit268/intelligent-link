@@ -122,11 +122,12 @@ class Process_Link {
                 'enable' => !empty($settings['replace_text_enable']) ? $settings['replace_text_enable'] : 0,
                 'text'   => !empty($settings['replace_text']) ? $settings['replace_text'] : 'link is ready',
             ],
+            'enable_rewrite' => isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes',
             'meta_attr'       => [
-                'auto_direct' => !empty($meta_option['auto_direct']) ? $meta_option['auto_direct'] : 0,
-                'time'        => isset($meta_option['time']) ? $meta_option['time'] : 5,
-            ]
-        ]);
+                    'auto_direct' => !empty($meta_option['auto_direct']) ? $meta_option['auto_direct'] : 0,
+                    'time'        => isset($meta_option['time']) ? $meta_option['time'] : 5,
+                ]
+            ]);
     }
 
     public function add_link_param(){
@@ -181,16 +182,17 @@ class Process_Link {
         return $template;
     }
 
-
     public function prep_head() {
         wp_enqueue_style('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/css/template.css', [], INTELLIGENT_LINK_VERSION, 'all');
         wp_enqueue_script('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/template.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
 
-        $settings = $this->ep_settings();
+        $settings = $this->ilgl_settings();
+        $ep_settings = $this->ep_settings();
         wp_localize_script('ilgl-template', 'prep_template', [
             'modify_conf'         => $this->modify_conf(),
-            'countdown_endpoint'  => !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : 5,
-            'endpoint_direct'     => !empty($settings['endpoint_auto_direct']) ? $settings['endpoint_auto_direct'] : 0
+            'enable_rewrite' =>      isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes',
+            'countdown_endpoint'  => !empty($ep_settings['countdown_endpoint']) ? $ep_settings['countdown_endpoint'] : 5,
+            'endpoint_direct'     => !empty($ep_settings['endpoint_auto_direct']) ? $ep_settings['endpoint_auto_direct'] : 0
         ]);
     }
 
@@ -283,15 +285,23 @@ class Process_Link {
         if (empty($text_link)) {
             $text_link = '>> Redirect Link <<';
         }
-        if (preg_match('/^(https?:\/\/|www\.)/i', $text_link)) {
-            $text_link = $hide_url_text;
+
+
+        $settings = $this->ilgl_settings();
+        $enable_rewrite = isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes';
+
+        if ($enable_rewrite) {
+            if (preg_match('/^(https?:\/\/|www\.)/i', $text_link)) {
+                $text_link = $hide_url_text;
+            }
+
+            $href = $this->modify_href(base64_encode($href));
         }
 
-        $encoded_url = $this->modify_href(base64_encode($href));
         $has_media = preg_match('/<(img|svg|i)\b/i', $inner_html);
 
         if ($has_media) {
-            $new_attrs = 'href="javascript:void(0)" data-request="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '" data-image="1" rel="nofollow noopener noreferrer"';
+            $new_attrs = 'href="javascript:void(0)" data-request="' . esc_attr($href) . '" data-text="' . esc_attr($text_link) . '" data-image="1" rel="nofollow noopener noreferrer"';
 
             if (preg_match('/class=["\']([^"\']*)["\']/', $full_attributes, $class_match)) {
                 $new_attrs .= ' class="' . esc_attr($class_match[1]) . ' prep-request"';
@@ -303,13 +313,12 @@ class Process_Link {
             return '<a ' . $new_attrs . ' ' . trim($full_attributes) . '>' . $inner_html . '</a>';
         } else {
             if ($display_mode === 'progress') {
-                return '<span class="post-progress-bar" style="display:inline-block;"><span class="prep-request" data-request="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '"><strong class="post-progress">' . esc_html($text_link) . '</strong></span></span>';
+                return '<span class="post-progress-bar" style="display:inline-block;"><span class="prep-request" data-request="' . esc_attr($href) . '" data-text="' . esc_attr($text_link) . '"><strong class="post-progress">' . esc_html($text_link) . '</strong></span></span>';
             } else {
-                return '<span class="wrap-countdown"><span class="prep-request" data-request="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '"><strong class="link-countdown">' . esc_html($text_link) . '</strong></span></span>';
+                return '<span class="wrap-countdown"><span class="prep-request" data-request="' . esc_attr($href) . '" data-text="' . esc_attr($text_link) . '"><strong class="link-countdown">' . esc_html($text_link) . '</strong></span></span>';
             }
         }
     }
-
 
     private function render_link_info_internal($content) {
         $post_id = get_the_ID();
@@ -357,7 +366,7 @@ class Process_Link {
             $excludesArr = array_unique($excludesArr);
             $this->exclude_elm_cache = implode(',', $excludesArr);
         } else {
-            $this->exclude_elm_cache = '.prep-link-download-btn,.prep-link-btn,.session-expired';
+            $this->exclude_elm_cache = '.prep-link-download-btn,.prep-link-btn,.session-expire';
         }
 
         return $this->exclude_elm_cache;
@@ -383,6 +392,8 @@ class Process_Link {
     }
 
     public function render_meta_short_description($content) {
+
+
         if (!$this->is_plugin_enable()) {
             return $content;
         }
@@ -406,11 +417,11 @@ class Process_Link {
         $meta_option = $this->ilgl_meta_option();
         $after_description = isset($meta_option['product_elm']) ? $meta_option['product_elm'] == 'after_short_description' : false;
 
+        $content = $this->process_content_links_internal($content);
+
         if (empty(get_the_excerpt()) || !$after_description) {
             return $content;
         }
-
-        $content = $this->process_content_links_internal($content);
 
         $html = $this->prep_link_html($meta_option, $cached['file_name'], $cached['link_is_login'], $cached['link_no_login']);
         return $content . $html;
@@ -471,14 +482,18 @@ class Process_Link {
 
         $link = is_user_logged_in() ? $link_is_login : $link_no_login;
 
-        $encoded_link = $this->modify_href(base64_encode($link));
+        $enable_rewrite = isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes';
+
+        if ($enable_rewrite) {
+            $link = $this->modify_href(base64_encode($link));
+        }
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';
-            $html .= '<span class="prep-request" data-request="'.esc_attr($encoded_link).'"><strong class="post-progress">' . $file_name . '</strong></span></div>';
+            $html .= '<span class="prep-request" data-request="'.esc_attr($link).'" data-meta="1"><strong class="post-progress">' . $file_name . '</strong></span></div>';
         } else {
             $html .= '<span class="wrap-countdown">';
-            $html .= '<span class="prep-request" data-request="'.esc_attr($encoded_link).'"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
+            $html .= '<span class="prep-request" data-request="'.esc_attr($link).'" data-meta="1"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
         }
 
         $html .= '</' . $elm . '>';
@@ -501,12 +516,15 @@ class Process_Link {
                     $file_name_item = $list_link[$file_name_key];
                     $size = $list_link[$size_key] ?? '';
                     $link = is_user_logged_in() ? $list_link[$link_is_login_key] : $list_link[$link_no_login_key];
-                    $encoded_link = $this->modify_list_href(base64_encode($link));
+                    if ($enable_rewrite) {
+                        $link = $this->modify_list_href(base64_encode($link));
+                    }
+
                     $html .= '<li>';
                     $html .= '<span class="post-progress-bar">';
-                    $html .= '<span class="prep-request" data-request="' . esc_attr($encoded_link) . '">'
-                        . '<strong class="post-progress">' . esc_html($file_name_item . ' ' . $size) . '</strong>'
-                        . '</span>';
+                    $html .= '<span class="prep-request" data-request="' . esc_attr($link) . '" data-meta="1">';
+                    $html .= '<strong class="post-progress">' . esc_html($file_name_item . ' ' . $size) . '</strong>';
+                    $html .= '</span>';
                     $html .= '</span>';
                     $html .= '</li>';
                 }
