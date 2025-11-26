@@ -227,7 +227,7 @@ msgstr ""
 msgid "This practice serves a security purpose and renders it non-decodable."
 msgstr ""
 
-msgid "On the page with the added endpoint, the default expiration time will be 5 seconds. After expiration, users will need to re-engage to receive the link."
+msgid "The default expiration is 5 minutes. After that, the user must interact again to get the link."
 msgstr ""
 
 msgid "Any links containing these specific strings will be redirected to the countdown page. Each link should be separated by a comma."

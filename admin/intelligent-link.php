@@ -553,7 +553,7 @@ class Intelligent_Link_Admin {
         ?>
         <input type="number" id="cookie_time" name="preplink_endpoint[cookie_time]" placeholder="5"
                value="<?= isset($settings['cookie_time']) ? ($settings['cookie_time'] == '0' ? 0 : $settings['cookie_time']) : '5' ?>" min="1" max="600"/>
-        <p class="description"><?= __('On the page with the added endpoint, the default expiration time will be 5 seconds. After expiration, users will need to re-engage to receive the link.', 'intelligent-link')?></p>
+        <p class="description"><?= __('The default expiration is 5 minutes. After that, the user must interact again to get the link.', 'intelligent-link')?></p>
         <?php
     }
 
@@ -1043,6 +1043,7 @@ class Intelligent_Link_Admin {
                 }
             }
         }
+
         update_post_meta($post_id, 'link-download-metabox', $list_link);
 
         do_action('intelligent_link_save_field_meta_box', $post_id);

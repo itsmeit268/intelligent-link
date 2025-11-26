@@ -105,15 +105,27 @@
 
         function _checkCookieValue() {
             var cookie = $('#cookie_time');
+
             cookie.on('change', function () {
-                if (parseInt(cookie.val()) <= 4) {
+                var val = parseInt(cookie.val(), 10);
+
+                if (isNaN(val) || val < 1) {
+                    cookie.val(1);
                     $('.prep-notice').remove();
-                    cookie.parents('td').append('<p class="prep-notice">'+ __('Value must be greater than 5', 'intelligent-link')+'</p>');
-                } else {
-                    $('.prep-notice').remove();
+                    cookie.parents('td').append('<p class="prep-notice">'+ __('Value cannot be less than 1', 'intelligent-link') +'</p>');
+
+                    setTimeout(function () {
+                        $('.prep-notice').fadeOut(200, function () { $(this).remove(); });
+                    }, 1000);
+
+                    return;
                 }
+
+                $('.prep-notice').remove();
             });
         }
+
+
 
         $('#submit').on('click', function () {
             var errors = $('.prep-notice');

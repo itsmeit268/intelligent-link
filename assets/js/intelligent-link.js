@@ -59,12 +59,6 @@
             }
         };
 
-        function resetRequest() {
-            if (config.currentUrl.indexOf('?link=') === -1) {
-                ['prep_meta', 'prep_request', 'prep_title'].forEach(CookieManager.clear.bind(CookieManager));
-            }
-        }
-
         function navigate(url, title, modifiedUrl, isMeta) {
             CookieManager.set('prep_title', title);
             CookieManager.set('prep_request', modifiedUrl);
@@ -205,8 +199,14 @@
             });
         }
 
-        // Initialize
-        resetRequest();
+
+        function resetRequest() {
+            if (config.currentUrl.indexOf(`?${config.endPoint}=`) === -1) {
+                ['prep_meta', 'prep_request', 'prep_title'].forEach(CookieManager.clear.bind(CookieManager));
+            }
+        }
+
+        // resetRequest();
         processClick();
     });
 })(jQuery);
