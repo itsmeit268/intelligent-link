@@ -25,7 +25,7 @@ class Process_Link {
     public function __construct(){
         add_action('init', array($this, 'add_link_param'), 10, 0);
         add_filter('the_content', array($this, 'process_content'), 99);
-        add_action('woocommerce_short_description', array($this,'render_meta_short_description'), 10);
+        add_action('woocommerce_short_description', array($this,'render_meta_short_description'), 99);
         add_action('wp_enqueue_scripts', array($this, 'process_link_scripts'), 99);
     }
 
@@ -220,15 +220,15 @@ class Process_Link {
             return $content;
         }
 
-        $exclude_elm_selectors = $this->exclude_elm();
-        if (!empty($exclude_elm_selectors)) {
-            $content = $this->remove_excluded_elements($content, $exclude_elm_selectors);
-        }
-
         $settings = $this->ilgl_settings();
         $allowed_domains = array_map('trim', explode(',', $allow_domains));
-        $exclude_selectors = $settings['preplink_exclude'] ?? '';
+        $exclude_selectors = $this->exclude_elm();
+
         $excludes = !empty($exclude_selectors) ? array_map('trim', explode(',', $exclude_selectors)) : [];
+
+        $excludes = array_filter($excludes, function($val) {
+            return !empty($val);
+        });
 
         $hide_url_text = $settings['hide_url_text'] ?? '[Link]';
         $display_mode = $settings['preplink_display'] ?? 'progress';
@@ -238,148 +238,6 @@ class Process_Link {
         return preg_replace_callback($pattern, function($matches) use ($allowed_domains, $excludes, $hide_url_text, $display_mode) {
             return $this->process_single_link($matches, $allowed_domains, $excludes, $hide_url_text, $display_mode);
         }, $content);
-    }
-
-
-    private function remove_excluded_elements($content, $exclude_selectors) {
-        $selectors = array_map('trim', explode(',', $exclude_selectors));
-
-        foreach ($selectors as $selector) {
-            if (empty($selector)) continue;
-
-            if (strpos($selector, '.') === 0) {
-                $class = substr($selector, 1);
-                $pattern = '/<([a-z][a-z0-9]*)\s+[^>]*class=["\'][^"\']*\b' . preg_quote($class, '/') . '\b[^"\']*["\'][^>]*>.*?<\/\1>/is';
-                $content = preg_replace_callback($pattern, function($matches) {
-                    return preg_replace('/<a\s+[^>]*>.*?<\/a>/is', '<!-- excluded -->', $matches[0]);
-                }, $content);
-            }
-            elseif (strpos($selector, '#') === 0) {
-                $id = substr($selector, 1);
-                $pattern = '/<([a-z][a-z0-9]*)\s+[^>]*id=["\']' . preg_quote($id, '/') . '["\'][^>]*>.*?<\/\1>/is';
-                $content = preg_replace_callback($pattern, function($matches) {
-                    return preg_replace('/<a\s+[^>]*>.*?<\/a>/is', '<!-- excluded -->', $matches[0]);
-                }, $content);
-            }
-            else {
-                $pattern = '/<' . preg_quote($selector, '/') . '\b[^>]*>.*?<\/' . preg_quote($selector, '/') . '>/is';
-                $content = preg_replace_callback($pattern, function($matches) {
-                    return preg_replace('/<a\s+[^>]*>.*?<\/a>/is', '<!-- excluded -->', $matches[0]);
-                }, $content);
-            }
-        }
-
-        return $content;
-    }
-
-    private function render_link_info_internal($content) {
-        $post_id = get_the_ID();
-
-        if (!isset($this->render_cache[$post_id])) {
-            $this->render_cache[$post_id] = [
-                'file_name' => get_post_meta($post_id, 'file_name', true),
-                'link_no_login' => get_post_meta($post_id, 'link_no_login', true),
-                'link_is_login' => get_post_meta($post_id, 'link_is_login', true),
-            ];
-        }
-
-        $cached = $this->render_cache[$post_id];
-
-        if ($cached['file_name'] && $cached['link_is_login'] && $cached['link_no_login']) {
-            $meta_option = $this->ilgl_meta_option();
-            $product_elm_after_content = isset($meta_option['product_elm']) && $meta_option['product_elm'] == 'after_product_content';
-            $html = $this->prep_link_html($meta_option, $cached['file_name'], $cached['link_is_login'], $cached['link_no_login']);
-            $is_post_or_product = is_singular('post') || (is_singular('product') && $product_elm_after_content);
-
-            if ($is_post_or_product) {
-                $last_p = strrpos($content, '</p>');
-                if ($last_p !== false) {
-                    $content = substr_replace($content, $html, $last_p + 4, 0);
-                } else {
-                    $content .= $html;
-                }
-            }
-        }
-
-        return $content;
-    }
-
-    public function exclude_elm(){
-        if ($this->exclude_elm_cache !== null) {
-            return $this->exclude_elm_cache;
-        }
-
-        $settings = $this->ilgl_settings();
-        $excludeList = $settings['preplink_excludes_element'] ?? '';
-
-        if (!empty($excludeList)) {
-            $excludesArr = array_map('trim', explode(',', $excludeList));
-            $excludesArr = array_merge($excludesArr, ['.prep-link-download-btn', '.prep-link-btn', '.comment', '.session-expired']);
-            $excludesArr = array_unique($excludesArr);
-            $this->exclude_elm_cache = implode(',', $excludesArr);
-        } else {
-            $this->exclude_elm_cache = '.prep-link-download-btn,.prep-link-btn,.session-expired,.comment';
-        }
-
-        return $this->exclude_elm_cache;
-    }
-
-    public function allow_domain(){
-        if ($this->allow_domain_cache !== null) {
-            return $this->allow_domain_cache;
-        }
-
-        $settings = $this->ilgl_settings();
-        $prepList = $settings['preplink_url'] ?? '';
-
-        if (!empty($prepList)) {
-            $prepArr = array_map('trim', explode(',', $prepList));
-            $prepArr = array_filter($prepArr);
-            $this->allow_domain_cache = implode(',', $prepArr);
-        } else {
-            $this->allow_domain_cache = '';
-        }
-
-        return $this->allow_domain_cache;
-    }
-
-    public function render_meta_short_description($content) {
-        if (!$this->is_plugin_enable()) {
-            return $content;
-        }
-
-        $post_id = get_the_ID();
-
-        if (!isset($this->render_cache[$post_id])) {
-            $this->render_cache[$post_id] = [
-                'file_name' => get_post_meta($post_id, 'file_name', true),
-                'link_no_login' => get_post_meta($post_id, 'link_no_login', true),
-                'link_is_login' => get_post_meta($post_id, 'link_is_login', true),
-            ];
-        }
-
-        $cached = $this->render_cache[$post_id];
-
-        if (!$cached['file_name'] || !$cached['link_is_login'] || !$cached['link_no_login']) {
-            return $content;
-        }
-
-        $meta_option = $this->ilgl_meta_option();
-        $after_description = isset($meta_option['product_elm']) ? $meta_option['product_elm'] == 'after_short_description' : false;
-
-        if (empty(get_the_excerpt()) || !$after_description) {
-            return $content;
-        }
-
-        $html = $this->prep_link_html($meta_option, $cached['file_name'], $cached['link_is_login'], $cached['link_no_login']);
-        return $content . $html;
-    }
-
-    private function get_compiled_regex() {
-        if ($this->compiled_regex === null) {
-            $this->compiled_regex = '/<a\s+([^>]*?)href=(["\'])([^"\']+)\2([^>]*?)>(.*?)<\/a>/is';
-        }
-        return $this->compiled_regex;
     }
 
     private function process_single_link($matches, $allowed_domains, $excludes, $hide_url_text, $display_mode) {
@@ -450,6 +308,119 @@ class Process_Link {
                 return '<span class="wrap-countdown"><span class="prep-request" data-request="' . esc_attr($encoded_url) . '" data-text="' . esc_attr($text_link) . '"><strong class="link-countdown">' . esc_html($text_link) . '</strong></span></span>';
             }
         }
+    }
+
+
+    private function render_link_info_internal($content) {
+        $post_id = get_the_ID();
+
+        if (!isset($this->render_cache[$post_id])) {
+            $this->render_cache[$post_id] = [
+                'file_name' => get_post_meta($post_id, 'file_name', true),
+                'link_no_login' => get_post_meta($post_id, 'link_no_login', true),
+                'link_is_login' => get_post_meta($post_id, 'link_is_login', true),
+            ];
+        }
+
+        $cached = $this->render_cache[$post_id];
+
+        if ($cached['file_name'] && $cached['link_is_login'] && $cached['link_no_login']) {
+            $meta_option = $this->ilgl_meta_option();
+            $product_elm_after_content = isset($meta_option['product_elm']) && $meta_option['product_elm'] == 'after_product_content';
+            $html = $this->prep_link_html($meta_option, $cached['file_name'], $cached['link_is_login'], $cached['link_no_login']);
+            $is_post_or_product = is_singular('post') || (is_singular('product') && $product_elm_after_content);
+
+            if ($is_post_or_product) {
+                $last_p = strrpos($content, '</p>');
+                if ($last_p !== false) {
+                    $content = substr_replace($content, $html, $last_p + 4, 0);
+                } else {
+                    $content .= $html;
+                }
+            }
+        }
+
+        return $content;
+    }
+
+    public function exclude_elm(){
+        if ($this->exclude_elm_cache !== null) {
+            return $this->exclude_elm_cache;
+        }
+
+        $settings = $this->ilgl_settings();
+        $excludeList = $settings['preplink_excludes_element'] ?? '';
+
+        if (!empty($excludeList)) {
+            $excludesArr = array_map('trim', explode(',', $excludeList));
+            $excludesArr = array_merge($excludesArr, ['.prep-link-download-btn', '.prep-link-btn', '.session-expired']);
+            $excludesArr = array_unique($excludesArr);
+            $this->exclude_elm_cache = implode(',', $excludesArr);
+        } else {
+            $this->exclude_elm_cache = '.prep-link-download-btn,.prep-link-btn,.session-expired';
+        }
+
+        return $this->exclude_elm_cache;
+    }
+
+    public function allow_domain(){
+        if ($this->allow_domain_cache !== null) {
+            return $this->allow_domain_cache;
+        }
+
+        $settings = $this->ilgl_settings();
+        $prepList = $settings['preplink_url'] ?? '';
+
+        if (!empty($prepList)) {
+            $prepArr = array_map('trim', explode(',', $prepList));
+            $prepArr = array_filter($prepArr);
+            $this->allow_domain_cache = implode(',', $prepArr);
+        } else {
+            $this->allow_domain_cache = '';
+        }
+
+        return $this->allow_domain_cache;
+    }
+
+    public function render_meta_short_description($content) {
+        if (!$this->is_plugin_enable()) {
+            return $content;
+        }
+
+        $post_id = get_the_ID();
+
+        if (!isset($this->render_cache[$post_id])) {
+            $this->render_cache[$post_id] = [
+                'file_name' => get_post_meta($post_id, 'file_name', true),
+                'link_no_login' => get_post_meta($post_id, 'link_no_login', true),
+                'link_is_login' => get_post_meta($post_id, 'link_is_login', true),
+            ];
+        }
+
+        $cached = $this->render_cache[$post_id];
+
+        if (!$cached['file_name'] || !$cached['link_is_login'] || !$cached['link_no_login']) {
+            return $content;
+        }
+
+        $meta_option = $this->ilgl_meta_option();
+        $after_description = isset($meta_option['product_elm']) ? $meta_option['product_elm'] == 'after_short_description' : false;
+
+        if (empty(get_the_excerpt()) || !$after_description) {
+            return $content;
+        }
+
+        $content = $this->process_content_links_internal($content);
+
+        $html = $this->prep_link_html($meta_option, $cached['file_name'], $cached['link_is_login'], $cached['link_no_login']);
+        return $content . $html;
+    }
+
+    private function get_compiled_regex() {
+        if ($this->compiled_regex === null) {
+            $this->compiled_regex = '/<a\s+([^>]*?)href=(["\'])([^"\']+)\2([^>]*?)>(.*?)<\/a>/is';
+        }
+        return $this->compiled_regex;
     }
 
     public function modify_href($url_encode) {

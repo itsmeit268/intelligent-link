@@ -211,8 +211,8 @@ function faq_render() {
 
 function set_no_index_page() {
     $robots_config = array(
-        'noindex' => true,
         'nofollow' => true,
+         'noindex' => true,
     );
 
     if (!function_exists('aioseo') && !function_exists('wpseo_init') && !function_exists('rank_math')) {
@@ -223,8 +223,8 @@ function set_no_index_page() {
     }
 
     $seo_robots = array(
-        'index' => 'noindex',
         'follow' => 'nofollow',
+        'index' => 'noindex',
     );
 
     if (function_exists('rank_math')) {

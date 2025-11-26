@@ -121,8 +121,8 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-msgid "For example: #prep-link-download-btn, .prep-link-download-btn."
-msgstr "Ví dụ: #prep-link-download-btn, .prep-link-download-btn."
+msgid "For example: #selector, .selector"
+msgstr "Ví dụ: #selector, .selector"
 
 msgid "General Settings"
 msgstr ""
@@ -252,9 +252,9 @@ msgstr "Thời gian đếm ngược mặc định được đặt thành 15 giâ
 msgid "The default endpoint is (1), and it looks like this:"
 msgstr "Điểm cuối mặc định là (1) và nó trông như thế này:"
 
-msgid "The elements will be excluded, each separated by a comma (,)."
+msgid "The class or ID of the a tag will be preserved; each item is separated by a comma."
 msgstr ""
-"Các phần tử sẽ bị loại trừ, mỗi phần tử được phân tách bằng dấu phẩy (,)."
+"Các thẻ <a> nằm bên trong những phần tử được chỉ định sẽ bị loại trừ. Mỗi phần tử cần được liệt kê và ngăn cách bằng dấu phẩy."
 
 msgid "The notification prior to users being redirected to an external link."
 msgstr ""

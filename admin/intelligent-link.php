@@ -571,11 +571,11 @@ class Intelligent_Link_Admin {
 
     public function preplink_excludes_element(){
         $settings = get_option('preplink_setting', array());
-        $html = '<textarea id="preplink_excludes_element" cols="50" rows="5" name="preplink_setting[preplink_excludes_element]" placeholder=".prep-link-download-btn,.prep-link-btn">';
+        $html = '<textarea id="preplink_excludes_element" cols="50" rows="5" name="preplink_setting[preplink_excludes_element]" placeholder="#selector, .selector">';
         $html .= isset($settings["preplink_excludes_element"]) ? $settings["preplink_excludes_element"] : false;
         $html .= '</textarea>';
-        $html .= '<p class="description">'.__('The elements will be excluded, each separated by a comma (,).', 'intelligent-link').'</p>';
-        $html .= '<p class="description">'.__('For example: #prep-link-download-btn, .prep-link-download-btn.', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.esc_html__('The class or ID of the a tag will be preserved; each item is separated by a comma.', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('For example: #selector, .selector', 'intelligent-link').'</p>';
         echo $html;
     }
 
