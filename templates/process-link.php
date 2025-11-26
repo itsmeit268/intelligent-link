@@ -3,7 +3,7 @@
 class Process_Link {
     private static $instance = null;
 
-    const CACHE_TTL = 1;
+    const CACHE_TTL = 3600;
     const SUBFIX = '1';
     private $settings_cache = null;
     private $ep_settings_cache = null;
@@ -490,7 +490,7 @@ class Process_Link {
 
         if ($display_mode === 'progress') {
             $html .= '<div class="post-progress-bar">';
-            $html .= '<span class="prep-request" data-request="'.esc_attr($link).'" data-meta="1"><strong class="post-progress">' . $file_name . '</strong></span></div>';
+            $html .= '<span class="prep-request" data-request="'.esc_attr($link).'" data-meta="1"><strong class="post-progress meta-link">' . $file_name . '</strong></span></div>';
         } else {
             $html .= '<span class="wrap-countdown">';
             $html .= '<span class="prep-request" data-request="'.esc_attr($link).'" data-meta="1"><strong class="link-countdown">' . $file_name . '</strong></span></span>';
