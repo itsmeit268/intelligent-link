@@ -224,7 +224,7 @@ class Intelligent_Link_Admin {
 
         add_settings_field(
             'preplink_textarea',
-            __('String inside URL or domain', 'intelligent-link'),
+            __('Domain / subdomain', 'intelligent-link'),
             array($this, 'preplink_textarea_field'),
             'preplink_general_settings',
             'preplink_general_section'
@@ -568,11 +568,10 @@ class Intelligent_Link_Admin {
 
     public function preplink_textarea_field(){
         $settings = get_option('preplink_setting', array());
-        $html = '<textarea id="preplink_url" cols="50" rows="5" name="preplink_setting[preplink_url]" placeholder="domain1.com, domain2.com,">';
+        $html = '<textarea id="preplink_url" cols="50" rows="5" name="preplink_setting[preplink_url]" placeholder="domain1.com, domain2.com, sub.domain.com">';
         $html .= isset($settings["preplink_url"]) ? $settings["preplink_url"] : false;
         $html .= '</textarea>';
-        $html .= '<p class="description">'.__('Any links containing these specific strings will be redirected to the countdown page. Each link should be separated by a comma.', 'intelligent-link').'<br>
-                    '.__('Please note that these strings could match any text within your post URLs, so you should provide the domain of the link to ensure proper redirection.', 'intelligent-link').'</p>';
+        $html .= '<p class="description">' . __('Domain or subdomain, or domain string, separated by commas (,).', 'intelligent-link') . '</p>';
         echo $html;
     }
 
