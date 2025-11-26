@@ -103,7 +103,7 @@ class Process_Link {
         wp_enqueue_style('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'assets/css/intelligent-link.css', array(), INTELLIGENT_LINK_VERSION, 'all');
 
         wp_enqueue_script('wp-i18n', includes_url('/js/dist/i18n.js'), array('wp-element'), '1.0', true);
-        wp_enqueue_script('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/intelligent-link.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
+        wp_enqueue_script('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/intelligent-link.min.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
 
         $settings = $this->ilgl_settings();
         $meta_option = $this->ilgl_meta_option();
