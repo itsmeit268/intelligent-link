@@ -24,7 +24,7 @@ class Process_Link {
     }
 
     public function handle_direct_link() {
-        $link = isset($_REQUEST['link']) ? sanitize_text_field($_REQUEST['link']) : '';
+        $link = isset($_POST['link']) ? sanitize_text_field($_POST['link']) : '';
 
         if (empty($link)) {
             wp_send_json_error(['message' => 'No URL provided']);
@@ -180,7 +180,7 @@ class Process_Link {
             return !empty($val);
         });
 
-        $hide_url_text = $settings['hide_url_text'] ?? '[Link]';
+        $hide_url_text = !empty($settings['hide_url_text']) ? $settings['hide_url_text']: '[Link]';
         $display_mode = $settings['preplink_display'] ?? 'progress';
 
         $pattern = '/<a\s+([^>]*?)href=(["\'])([^"\']+)\2([^>]*?)>(.*?)<\/a>/is';
@@ -230,8 +230,9 @@ class Process_Link {
         }
 
         $text_link = trim(strip_tags($inner_html));
+
         if (empty($text_link)) {
-            $text_link = '>> Redirect Link <<';
+            $text_link = '[Link]';
         }
 
         $settings = ilgl_settings()->global_settings();
@@ -351,8 +352,9 @@ class Process_Link {
         $total = (int) ($meta_attr['field_lists'] ?? 5);
 
         if (isset($list_link) && !empty($list_link) && is_array($list_link) && array_filter($list_link)) {
+            $list_title = $meta_attr['list_title'] ? : 'Other Version';
             $html .= '<div class="list-link-redirect">';
-            $html .= '<div class="ilgl-other-version">'.__('Other Version').'</div>';
+            $html .= '<div class="ilgl-other-version">'. $list_title.'</div>';
             $html .= '<ul class="ilgl-list-link">';
 
             for ($i = 1; $i <= $total; $i++) {

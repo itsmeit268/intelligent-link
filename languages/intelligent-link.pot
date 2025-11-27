@@ -16,18 +16,6 @@ msgstr ""
 "X-Loco-Version: 2.6.4; wp-6.2\n"
 "X-Domain: intelligent-link"
 
-#. Author URI of the plugin
-msgid "https://itsmeit.co"
-msgstr ""
-
-#. URI of the plugin
-msgid "https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html"
-msgstr ""
-
-#. Author of the plugin
-msgid "itsmeit <buivanloi.2010@gmail.com>"
-msgstr ""
-
 #. Name of the plugin
 msgid "Intelligent Link"
 msgstr ""
@@ -48,10 +36,6 @@ msgstr ""
 
 msgid "keyword +"
 msgstr ""
-
-msgid "https://google.com"
-msgstr ""
-
 
 msgid "Information about the Features"
 msgstr ""
@@ -176,9 +160,6 @@ msgstr ""
 msgid "Rewrite URL Encoding"
 msgstr ""
 
-msgid "Custom Style"
-msgstr ""
-
 msgid "Delete all data after remove plugin"
 msgstr ""
 
@@ -257,9 +238,6 @@ msgstr ""
 msgid "The notification prior to users being redirected to an external link."
 msgstr ""
 
-msgid "Your CSS code, for example: .backgroud{background-color: transparent;}."
-msgstr ""
-
 msgid "Text displayed while the countdown is pending."
 msgstr ""
 
@@ -291,5 +269,8 @@ msgid "Display position: Below related posts, if related posts are enabled."
 msgstr ""
 
 msgid "Display position: At the bottom of the page when the link expires."
+msgstr ""
+
+msgid "Other Version"
 msgstr ""
 

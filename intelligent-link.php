@@ -25,13 +25,27 @@ define('INTELLIGENT_LINK_PLUGIN_BASE',	plugin_basename(INTELLIGENT_LINK_PLUGIN_F
 define('INTELLIGENT_LINK_DEV', 1);
 define('INTELLIGENT_LINK_PLUGIN_URL', plugin_dir_url( INTELLIGENT_LINK_PLUGIN_FILE ));
 
-$admin_path = plugin_dir_path( __FILE__ ) . 'admin/';
+function load_admin_file() {
 
-if ( is_dir( $admin_path ) ) {
-    foreach ( glob( $admin_path . '*.php' ) as $file ) {
-        require_once $file;
+    if (!is_admin()) {
+        return;
+    }
+
+    $admin_files = array(
+        'ilgl-admin.php',
+    );
+
+    $admin_path = plugin_dir_path( __FILE__ ) . 'admin/';
+
+    foreach ( $admin_files as $file ) {
+        $file_path = $admin_path . $file;
+        if ( file_exists( $file_path ) && is_readable( $file_path ) ) {
+            require_once $file_path;
+        }
     }
 }
+
+load_admin_file();
 
 $include_path = plugin_dir_path( __FILE__ ) . 'includes/';
 
@@ -42,3 +56,8 @@ if ( is_dir( $include_path ) ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'templates/process-link.php';
+
+add_action('init', 'load_text_domain');
+function load_text_domain() {
+    load_plugin_textdomain('intelligent-link', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+}

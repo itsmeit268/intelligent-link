@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Intelligent Link\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-30 16:37+0000\n"
-"PO-Revision-Date: 2024-02-26 03:07+0000\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2025-11-27 08:59+0000\n"
+"Last-Translator: Admin\n"
 "Language-Team: Tiếng Việt\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.6.6; wp-6.4.3\n"
+"X-Loco-Version: 2.8.0; wp-6.8.3; php-8.2.29\n"
 "X-Domain: intelligent-link"
 
 msgid "Advertising Settings"
@@ -43,9 +43,6 @@ msgstr "Tự động chuyển hướng"
 msgid "Click on this"
 msgstr "Bấm vào đây"
 
-msgid "Custom Style"
-msgstr ""
-
 msgid "Delete all data after remove plugin"
 msgstr "Xóa tất cả dữ liệu sau khi gỡ bỏ plugin"
 
@@ -74,9 +71,6 @@ msgstr "Vị trí hiển thị: Ở cuối trang khi link hết hạn."
 msgid "Display position: At the top of the page."
 msgstr "Vị trí hiển thị: Ở đầu trang."
 
-msgid "Display position: Display when session expires."
-msgstr "Vị trí hiển thị: Hiển thị khi session hết hạn."
-
 msgid "Display position: Below related posts, if related posts are enabled."
 msgstr ""
 "Vị trí hiển thị: Bên dưới bài viết liên quan, nếu bài viết liên quan được "
@@ -92,6 +86,9 @@ msgstr ""
 
 msgid "Display position: Below the featured image."
 msgstr "Vị trí hiển thị: Bên dưới ảnh đại diện."
+
+msgid "Display position: Display when session expires."
+msgstr "Vị trí hiển thị: Hiển thị khi session hết hạn."
 
 msgid "Display Post Image"
 msgstr "Hiển thị hình ảnh bài đăng"
@@ -130,17 +127,6 @@ msgstr ""
 msgid "here"
 msgstr "đây"
 
-msgid "https://google.com"
-msgstr "google.com"
-
-#. Author URI of the plugin
-msgid "https://itsmeit.co"
-msgstr "https://itsmeit.co/"
-
-#. URI of the plugin
-msgid "https://itsmeit.co/tao-trang-chuyen-huong-link-download-wordpress.html"
-msgstr ""
-
 msgid "If the file name does not match the article content, please click"
 msgstr "Nếu tên file không khớp với nội dung bài viết vui lòng click vào"
 
@@ -166,10 +152,6 @@ msgstr "Thông tin về các tính năng"
 msgid "Intelligent Link"
 msgstr "Intelligent Link"
 
-#. Author of the plugin
-msgid "itsmeit <buivanloi.2010@gmail.com>"
-msgstr ""
-
 msgid "keyword +"
 msgstr "từ khóa +"
 
@@ -188,19 +170,15 @@ msgstr "Ghi chú"
 msgid "Number link list"
 msgstr ""
 
-msgid ""
-"On the page with the added endpoint, the default expiration time will be 5 "
-"seconds. After expiration, users will need to re-engage to receive the link."
-msgstr ""
-"Trên trang có enpoint được thêm vào, thời gian hết hạn mặc định sẽ là 5 giây."
-" Sau khi hết hạn, người dùng sẽ cần phải tương tác lại để nhận link."
+msgid "Other Version"
+msgstr "Các phiên bản khác"
 
 msgid "Please enter your advertisement code, allowing HTML, JS, CSS."
 msgstr "Vui lòng nhập mã quảng cáo của bạn, cho phép HTML, JS, CSS."
 
 #| msgid ""
-#| "Please be aware that these strings might match any text in your post, so you "
-#| "should provide the domain of the link to ensure accurate redirection."
+#| "Please be aware that these strings might match any text in your post, so "
+#| "you should provide the domain of the link to ensure accurate redirection."
 msgid ""
 "Please note that these strings could match any text within your post URLs, "
 "so you should provide the domain of the link to ensure proper redirection."
@@ -231,13 +209,20 @@ msgid "Short description below"
 msgstr "Bên dưới mô tả ngắn"
 
 msgid "Size"
-msgstr ""
+msgstr "Kích thước"
 
 msgid "String inside URL or domain"
 msgstr "Chuỗi bên trong URL hoặc tên miền"
 
 msgid "Text displayed while the countdown is pending."
 msgstr "Văn bản hiển thị trong khi đang chờ đếm ngược."
+
+msgid ""
+"The class or ID of the a tag will be preserved; each item is separated by a "
+"comma."
+msgstr ""
+"Các thẻ <a> nằm bên trong những phần tử được chỉ định sẽ bị loại trừ. Mỗi "
+"phần tử cần được liệt kê và ngăn cách bằng dấu phẩy."
 
 msgid ""
 "The default countdown time is set to 1 second. If you set it to 0, it will "
@@ -252,15 +237,18 @@ msgstr "Thời gian đếm ngược mặc định được đặt thành 15 giâ
 msgid "The default endpoint is (1), and it looks like this:"
 msgstr "Điểm cuối mặc định là (1) và nó trông như thế này:"
 
-msgid "The class or ID of the a tag will be preserved; each item is separated by a comma."
+msgid ""
+"The default expiration is 5 minutes. After that, the user must interact "
+"again to get the link."
 msgstr ""
-"Các thẻ <a> nằm bên trong những phần tử được chỉ định sẽ bị loại trừ. Mỗi phần tử cần được liệt kê và ngăn cách bằng dấu phẩy."
 
 msgid "The notification prior to users being redirected to an external link."
 msgstr ""
 "Thông báo trước khi người dùng được chuyển hướng đến một liên kết bên ngoài."
 
-msgid "The number of related fields, you'll find it within the post or product. Here you can add different links."
+msgid ""
+"The number of related fields, you'll find it within the post or product. "
+"Here you can add different links."
 msgstr ""
 "Số lượng các trường liên quan, bạn sẽ tìm thấy trong bài viết hoặc sản phẩm. "
 "Tại đây bạn có thể thêm các liên kết khác nhau."
@@ -315,9 +303,6 @@ msgstr ""
 "Bạn có thể thêm mã HTML câu hỏi thường gặp tại đây, mã này sẽ áp dụng cho "
 "trang được thêm endpoint."
 
-msgid "Your CSS code, for example: .backgroud{background-color: transparent;}."
-msgstr "Mã CSS của bạn, ví dụ: .backgroud{background-color: Transparent;}."
-
 msgid "Your session has ended, please click"
 msgstr "Phiên của bạn đã kết thúc, vui lòng nhấp vào"
 
@@ -325,6 +310,3 @@ msgid ""
 "Your session has ended. Please retry your previous action. If the issue "
 "persists, try clearing your cookies or browser history and attempt again."
 msgstr ""
-"Phiên truy cập đã kết thúc. Vui lòng thử lại hành động trước đó của bạn. Nếu "
-"sự cố vẫn tiếp diễn, hãy thử xóa cookie hoặc lịch sử trình duyệt của bạn và "
-"thử lại."

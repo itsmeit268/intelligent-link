@@ -51,12 +51,18 @@
     font-weight: 600 !important;
     text-transform: none;
     margin-bottom: 10px !important;
+    display: flex;
+    justify-content: space-between;
 }
 .app-fields >.app-row>.app-field input {
-    max-width: 230px;
+    width: 100%;
     padding: 0 8px;
     line-height: 2;
     min-height: 30px;
+}
+
+.list-link-row input {
+    width: 100%;
 }
 
 .preplink-rewrite-fields {
@@ -65,4 +71,22 @@
 
 .preplink-rewrite-fields p{
     margin-bottom: 10px !important;
+}
+
+.remove-link-field {
+    color: #fff !important;
+    margin-left: 10px !important;
+    text-decoration: none !important;
+    margin-top: -5px !important;
+    height: 25px;
+    background: #3a3a3a !important;
+    padding: 0 10px !important;
+    border-radius: 5px !important;
+    display: inline-block !important;
+    padding-bottom: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.remove-link-field:hover {
+    background: #000000 !important;
 }
