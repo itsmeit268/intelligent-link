@@ -13,9 +13,8 @@
             autoDirect: parseInt(href_vars.auto_direct),
             textComplete: href_vars.replace_text,
             windowWidth: $(window).width(),
-            modifyConf: href_vars.modify_conf,
-            metaAttr: href_vars.meta_attr,
-            isRewriteEnabled: href_vars.enable_rewrite || false
+            isRewriteEnabled: href_vars.enable_rewrite || false,
+            metaAttr: href_vars.meta_attr || {}
         };
 
         const countdownStatus = {};
@@ -32,20 +31,7 @@
             }
         };
 
-
         const UrlManager = {
-            restore(url) {
-                if (!config.isRewriteEnabled) {
-                    try {
-                        return atob(url);
-                    } catch (e) {
-                        return url;
-                    }
-                }
-                const { pfix, mstr, sfix } = config.modifyConf;
-                return url.replace(pfix, '').replace(atob(mstr), '').replace(atob(sfix), '');
-            },
-
             buildIntelligentLink() {
                 let url = config.currentUrl.split('?')[0];
 
@@ -59,9 +45,9 @@
             }
         };
 
-        function navigate(url, title, modifiedUrl, isMeta) {
+        function navigate(url, title, isMeta) {
             CookieManager.set('prep_title', title);
-            CookieManager.set('prep_request', modifiedUrl);
+            CookieManager.set('prep_request', url);
             CookieManager.set('prep_meta', isMeta);
 
             const targetUrl = UrlManager.buildIntelligentLink();
@@ -77,16 +63,12 @@
             const completeText = config.textComplete.enable === 'yes' ? config.textComplete.text : title;
 
             if (isProgress) {
-                const $parent = $elm.parent('.post-progress-bar');
-                const icon = '<i class="fa fa-angle-double-right fa-shake" style="color: #fff;cursor: pointer;font-size: 13px;"></i>';
-                const content = `${icon}<span class="text-hide-complete" data-complete="1" data-text="${title}"></span><span class="text-complete">${completeText}</span>`;
-
-                const bgColor = $parent.parents('.igl-download-now').length ? '#018f06' : '#0c7c3f';
-                $elm.html(`<strong class="post-progress" style="${$parent.parents('.igl-download-now').length ? 'background-color' : 'color'}:${bgColor}">${content}</strong>`);
-                $parent.css('margin-right', '0').removeAttr('style');
+                $elm.addClass('completed');
+                $elm.attr('data-original-text', title);
+                $elm.find('.post-progress').html(`<span class="text-complete">${completeText}</span>`);
+                $elm.find('.post-progress').removeAttr('style');
             } else {
-                const content = `<span class="text-hide-complete" data-complete="1" data-text="${title}"></span><span style="vertical-align: unset;">${completeText}</span>`;
-                $elm.html(content);
+                $elm.html(`<strong class="link-countdown"><span class="text-complete">${completeText}</span></strong>`);
 
                 const $wrapper = $elm.parents('.wrap-countdown');
                 if (isMeta) {
@@ -96,21 +78,23 @@
                 }
             }
 
-            if (config.metaAttr.auto_direct === '1' || config.autoDirect) {
-                navigate(url, title, url, isMeta);
+            if ((config.metaAttr.auto_direct === '1') || config.autoDirect) {
+                navigate(url, title, isMeta);
             }
 
             countdownStatus[url] = { active: false };
         }
 
         function startCountdown($elm, url, title, isMeta) {
-            let timeleft = isMeta ? parseInt(config.metaAttr.time) : config.timeConfig;
+            let timeleft = isMeta && config.metaAttr ? parseInt(config.metaAttr.time) : config.timeConfig;
 
             const countdown = () => {
-                $elm.html(`<strong>${config.waitText} ${timeleft}s...</strong>`);
+                $elm.html(`<strong class="post-progress">${config.waitText} ${timeleft}s...</strong>`);
                 timeleft--;
 
                 if (timeleft < 0) {
+                    $elm.addClass('completed');
+                    $elm.attr('data-original-text', title);
                     updateCompleteState($elm, title, url, isMeta, false);
                 } else {
                     setTimeout(countdown, 1000);
@@ -121,37 +105,30 @@
         }
 
         function startProgress($elm, url, title, isMeta) {
-            const $progress = $elm.find('.post-progress');
-            const progressWidth = $progress.width();
-            const $parent = $elm.parent('.post-progress-bar');
-            const timeleft = isMeta ? parseInt(config.metaAttr.time) : config.timeConfig;
+            const timeleft = isMeta && config.metaAttr ? parseInt(config.metaAttr.time) : config.timeConfig;
 
-            let currentWidth = 0;
+            $elm.addClass('loading');
+            $elm.css('--progress', '0%');
 
-            $parent.css({ 'width': $parent.width(), 'margin-right': '25px' });
-            $progress.width('0%');
+            const startTime = Date.now();
+            const totalTime = timeleft * 1000;
 
-            if (!$progress.hasClass('meta-link')) {
-                $progress.css({
-                    'background-color': '#1479B3',
-                    'color': '#fff',
-                    'padding': '0 10px'
-                });
-            }
+            function updateProgress() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min((elapsed / totalTime) * 100, 100);
 
-            const intervalId = setInterval(() => {
-                currentWidth += timeleft <= 3
-                    ? progressWidth / 100
-                    : progressWidth / (timeleft * 1000 / timeleft);
+                $elm.css('--progress', progress + '%');
 
-                $progress.width(currentWidth);
-
-                if (currentWidth >= progressWidth) {
-                    clearInterval(intervalId);
+                if (progress < 100) {
+                    requestAnimationFrame(updateProgress);
+                } else {
                     updateCompleteState($elm, title, url, isMeta, true);
                 }
-            }, timeleft);
+            }
+
+            updateProgress();
         }
+
 
         function processClick() {
             $(document).on('click', '.prep-request', function (e) {
@@ -159,46 +136,45 @@
 
                 const $this = $(this);
                 const title = $this.attr('data-text') || $this.text().trim() || '>> Redirect Link <<';
-                const modifiedUrl = $this.attr('data-request');
-                const url = UrlManager.restore(modifiedUrl);
-                const complete = $this.find('.text-hide-complete').data('complete');
+                const url = $this.attr('data-request');
+                // SỬA: Kiểm tra class completed thay vì text-hide-complete
+                const isCompleted = $this.hasClass('completed');
                 const isImage = $this.attr('data-image');
                 const isMeta = $this.attr('data-meta') ? parseInt($this.attr('data-meta')) : 0;
 
-                if (!modifiedUrl || !url) return;
+                if (!url) return;
 
                 let startTime = config.timeConfig;
 
-                if (isMeta) {
+                if (isMeta && config.metaAttr) {
                     startTime = parseInt(config.metaAttr.time);
                     if (config.metaAttr.auto_direct === '1' && startTime === 0) {
                         startTime = 0;
                     }
                 }
 
-                if (complete === 1) {
-                    const completeTitle = $this.find('.text-hide-complete').data('text');
-                    navigate(url, completeTitle, modifiedUrl, isMeta);
+                // SỬA: Kiểm tra nếu đã completed thì navigate luôn
+                if (isCompleted) {
+                    navigate(url, title, isMeta);
                     return;
                 }
 
-                if (countdownStatus[modifiedUrl]?.active) return;
+                if (countdownStatus[url]?.active) return;
 
                 if (startTime === 0 || isImage === '1') {
-                    navigate(url, title, modifiedUrl, isMeta);
+                    navigate(url, title, isMeta);
                 } else {
                     $this.off('click');
-                    countdownStatus[modifiedUrl] = { active: true };
+                    countdownStatus[url] = { active: true };
 
                     if (config.displayMode === 'wait_time') {
-                        startCountdown($this, modifiedUrl, title, isMeta);
+                        startCountdown($this, url, title, isMeta);
                     } else {
-                        startProgress($this, modifiedUrl, title, isMeta);
+                        startProgress($this, url, title, isMeta);
                     }
                 }
             });
         }
-
 
         function resetRequest() {
             if (config.currentUrl.indexOf(`?${config.endPoint}=`) === -1) {

@@ -58,3 +58,11 @@
     line-height: 2;
     min-height: 30px;
 }
+
+.preplink-rewrite-fields {
+    margin-top: 10px;
+}
+
+.preplink-rewrite-fields p{
+    margin-bottom: 10px !important;
+}

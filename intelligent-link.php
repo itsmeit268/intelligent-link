@@ -25,21 +25,20 @@ define('INTELLIGENT_LINK_PLUGIN_BASE',	plugin_basename(INTELLIGENT_LINK_PLUGIN_F
 define('INTELLIGENT_LINK_DEV', 1);
 define('INTELLIGENT_LINK_PLUGIN_URL', plugin_dir_url( INTELLIGENT_LINK_PLUGIN_FILE ));
 
-function intelligent_link_load_admin() {
-    $admin_path = plugin_dir_path( __FILE__ ) . 'admin/';
+$admin_path = plugin_dir_path( __FILE__ ) . 'admin/';
 
-    if ( is_dir( $admin_path ) ) {
-        foreach ( glob( $admin_path . '*.php' ) as $file ) {
-            require_once $file;
-        }
+if ( is_dir( $admin_path ) ) {
+    foreach ( glob( $admin_path . '*.php' ) as $file ) {
+        require_once $file;
     }
 }
 
-intelligent_link_load_admin();
+$include_path = plugin_dir_path( __FILE__ ) . 'includes/';
 
-function intelligent_link_load_template() {
-    if (!is_admin()) {
-        require_once plugin_dir_path( __FILE__ ) . 'templates/process-link.php';
+if ( is_dir( $include_path ) ) {
+    foreach ( glob( $include_path . '*.php' ) as $file ) {
+        require_once $file;
     }
 }
-intelligent_link_load_template();
+
+require_once plugin_dir_path( __FILE__ ) . 'templates/process-link.php';

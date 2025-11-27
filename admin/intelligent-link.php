@@ -326,8 +326,6 @@ class Intelligent_Link_Admin {
         add_settings_field('pr_ad_3', __('Ads code 3', 'intelligent-link'), array($this, 'pr_ad_3'), 'ads_code_settings', 'ads_code_section');
         add_settings_field('pr_ad_4', __('Ads code 4', 'intelligent-link'), array($this, 'pr_ad_4'), 'ads_code_settings', 'ads_code_section');
         add_settings_field('pr_ad_5', __('Ads code 5', 'intelligent-link'), array($this, 'pr_ad_5'), 'ads_code_settings', 'ads_code_section');
-        add_settings_field('pr_ad_6', __('Ads code 6', 'intelligent-link'), array($this, 'pr_ad_6'), 'ads_code_settings', 'ads_code_section');
-        add_settings_field('pr_ad_7', __('Ads code 7', 'intelligent-link'), array($this, 'pr_ad_7'), 'ads_code_settings', 'ads_code_section');
 
         add_settings_field('meta_attr_auto_direct',
             __('Automatic redirection', 'intelligent-link'),
@@ -524,20 +522,24 @@ class Intelligent_Link_Admin {
         <?php
     }
 
-    public function preplink_link_url_rewriting(){
-    $settings = get_option('preplink_setting', array());
-    ?>
+    public function preplink_link_url_rewriting() {
+        $settings = get_option('preplink_setting', array());
+        ?>
         <select name="preplink_setting[enable_rewrite]" id="preplink_enable_rewrite">
             <option value="yes" <?= isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes' ? 'selected' : '' ?>><?= __('Yes', 'intelligent-link') ?></option>
             <option value="no" <?= isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'no' ? 'selected' : '' ?>><?= __('No', 'intelligent-link') ?></option>
         </select>
 
-        <div class="preplink-rewrite-fields" style="margin-top: 10px">
-            <input type="text" name="preplink_setting[prefix]" value="<?= esc_attr(!empty($settings['prefix']) ? $settings['prefix'] : $this->generateRandomString(18)) ?>"/>
-            <input type="text" name="preplink_setting[between]" value="<?= esc_attr(!empty($settings['between']) ? $settings['between'] : $this->generateRandomString(22)) ?>"/>
-            <input type="text" name="preplink_setting[suffix]" value="<?= esc_attr(!empty($settings['suffix']) ? $settings['suffix'] : $this->generateRandomString(26)) ?>"/>
-            <p class="description"><?= __('Despite the URL being encoded, we additionally incorporate various strings for insertion into the URL.', 'intelligent-link')?></p>
-            <p class="description"><?= __('This practice serves a security purpose and renders it non-decodable.', 'intelligent-link')?></p>
+        <div class="preplink-rewrite-fields">
+            <p>Key</p>
+            <input type="text" name="preplink_setting[key]"
+            value="<?= esc_attr(!empty($settings['key']) ? $settings['key'] : $this->generateRandomString(32)) ?>"
+            placeholder="Key (length 32)" style="width: 100%; max-width: 400px; margin-bottom: 10px" maxlength="32"/>
+            <br>
+            <p>IV</p>
+            <input type="text" name="preplink_setting[iv]"
+            value="<?= esc_attr(!empty($settings['iv']) ? $settings['iv'] : $this->generateRandomString(16)) ?>"
+            placeholder="IV (length 16)" style="width: 100%; max-width: 400px;" maxlength="16"/>
         </div>
         <?php
     }
@@ -859,25 +861,7 @@ class Intelligent_Link_Admin {
         $html = '<textarea name="ads_code[ads_5]" rows="5" cols="50">';
         $html .= esc_html(isset($settings['ads_5']) ? $settings['ads_5'] : false);
         $html .= '</textarea>';
-        $html .= '<p class="description">'.__('Display position: Below custom text 2.', 'intelligent-link').'</p>';
-        echo $html;
-    }
-
-    public function pr_ad_6() {
-        $settings = get_option('ads_code', array());
-        $html = '<textarea name="ads_code[ads_6]" rows="5" cols="50">';
-        $html .= esc_html(isset($settings['ads_6']) ? $settings['ads_6'] : false);
-        $html .= '</textarea>';
-        $html .= '<p class="description">'.__('Display position: Below related posts, if related posts are enabled.', 'intelligent-link').'</p>';
-        echo $html;
-    }
-
-    public function pr_ad_7() {
-        $settings = get_option('ads_code', array());
-        $html = '<textarea name="ads_code[ads_7]" rows="5" cols="50">';
-        $html .= esc_html(isset($settings['ads_7']) ? $settings['ads_7'] : false);
-        $html .= '</textarea>';
-        $html .= '<p class="description">'.__('Display position: At the bottom of the page when the link expires.', 'intelligent-link').'</p>';
+        $html .= '<p class="description">'.__('Display position: Display when session expires.', 'intelligent-link').'</p>';
         echo $html;
     }
 

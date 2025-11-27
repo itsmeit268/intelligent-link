@@ -284,7 +284,7 @@ msgstr ""
 msgid "Display position: Below the FAQ, if the FAQ is enabled."
 msgstr ""
 
-msgid "Display position: Below custom text 2."
+msgid "Display position: Display when session expires."
 msgstr ""
 
 msgid "Display position: Below related posts, if related posts are enabled."
