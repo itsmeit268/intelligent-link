@@ -227,12 +227,12 @@ class Form_Html {
         </select>
 
         <div class="preplink-rewrite-fields">
-            <p>Key</p>
+            <p>Key (The key must be exactly 32 characters.)</p>
             <input type="text" name="preplink_setting[key]"
                    value="<?= esc_attr(!empty($settings['key']) ? $settings['key'] : self::generateRandomString(32)) ?>"
                    placeholder="Key (length 32)" style="width: 100%; max-width: 400px; margin-bottom: 10px" maxlength="32"/>
             <br>
-            <p>IV</p>
+            <p>IV (The IV must be exactly 16 characters.)</p>
             <input type="text" name="preplink_setting[iv]"
                    value="<?= esc_attr(!empty($settings['iv']) ? $settings['iv'] : self::generateRandomString(16)) ?>"
                    placeholder="IV (length 16)" style="width: 100%; max-width: 400px;" maxlength="16"/>

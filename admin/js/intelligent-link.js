@@ -86,6 +86,29 @@
             });
         }
 
+        function _check_key_iv() {
+            const key = $('input[name="preplink_setting[key]"]').val().trim();
+            const iv  = $('input[name="preplink_setting[iv]"]').val().trim();
+
+            let errors = [];
+
+            if (key === '' || key.length !== 32) {
+                errors.push('Key phải đúng 32 ký tự.');
+            }
+
+            if (iv === '' || iv.length !== 16) {
+                errors.push('IV phải đúng 16 ký tự.');
+            }
+
+            if (errors.length > 0) {
+                alert(errors.join("\n"));
+                return false;
+            }
+
+            return true;
+        }
+
+
         // Thêm function mới cho enable_rewrite
         function _enable_rewrite_mode() {
             if ($enableRewrite.val() === 'yes') {
