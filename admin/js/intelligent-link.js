@@ -1,96 +1,168 @@
 (function ($) {
     'use strict';
 
-    $(function () {
-        var $waitText = $('#countdown-select');
-        var countdown_mode = $('.countdown-select');
-        var $faq_enabled = $('#faq_enabled');
-        var $faq_description = $('.faq_description,.faq_title');
-        var $related = $('#preplink_related_enabled');
-        var related_des = $('.preplink_related_number');
-        var $relatedNum = $('#related_number');
-        var $replace_text = $('#replace_text');
-        var replace_mode = $('.replace_text');
-        var $enableRewrite = $('#preplink_enable_rewrite');
-        var rewrite_fields = $('.preplink-rewrite-fields');
-        var __ = wp.i18n.__;
+    class PrepLinkSettings {
+        constructor() {
 
-        function _countdown_mode() {
-            if ($waitText.val() === 'wait_time') {
-                countdown_mode.show();
-            } else {
-                countdown_mode.hide();
-            }
+            this.elements = {
+                waitText: $('#countdown-select'),
+                countdownMode: $('.countdown-select'),
+                faqEnabled: $('#faq_enabled'),
+                faqDescription: $('.faq_description,.faq_title'),
+                related: $('#preplink_related_enabled'),
+                relatedDescription: $('.preplink_related_number'),
+                relatedNum: $('#related_number'),
+                replaceText: $('#replace_text'),
+                replaceMode: $('.replace_text'),
+                enableRewrite: $('#preplink_enable_rewrite'),
+                rewriteFields: $('.preplink-rewrite-fields'),
+                keyInput: $('#preplink_key_input'),
+                ivInput: $('#preplink_iv_input'),
+                generateKeyBtn: $('#generate_key_btn'),
+                generateIvBtn: $('#generate_iv_btn'),
+                cookieTime: $('#cookie_time'),
+                submitBtn: $('#submit')
+            };
 
-            $waitText.on('change', function () {
-                if (this.value === 'wait_time') {
-                    countdown_mode.show();
-                } else {
-                    countdown_mode.hide();
+            this.__ = wp.i18n.__;
+            this.init();
+        }
+
+        init() {
+            this.handleCountdownMode();
+            this.handleReplaceTextMode();
+            this.handleFaqEnabled();
+            this.handleRelatedEnabled();
+            this.handleEnableRewriteMode();
+            this.handleCookieValidation();
+            this.handleKeyIvGeneration();
+            this.handleFormSubmit();
+            this.removeFaqLabel();
+        }
+
+        handleCountdownMode() {
+            const toggleCountdown = (value) => {
+                this.elements.countdownMode.toggle(value === 'wait_time');
+            };
+
+            toggleCountdown(this.elements.waitText.val());
+            this.elements.waitText.on('change', (e) => toggleCountdown(e.target.value));
+        }
+
+        handleReplaceTextMode() {
+            const toggleReplaceMode = (value) => {
+                this.elements.replaceMode.toggle(value === 'yes');
+            };
+
+            toggleReplaceMode(this.elements.replaceText.val());
+            this.elements.replaceText.on('change', (e) => toggleReplaceMode(e.target.value));
+        }
+
+        handleFaqEnabled() {
+            const toggleFaq = (value) => {
+                this.elements.faqDescription.toggle(value === '1');
+            };
+
+            toggleFaq(this.elements.faqEnabled.val());
+            this.elements.faqEnabled.on('change', (e) => toggleFaq(e.target.value));
+        }
+
+        handleRelatedEnabled() {
+            const toggleRelated = (value) => {
+                this.elements.relatedDescription.toggle(value === '1');
+            };
+
+            toggleRelated(this.elements.related.val());
+            this.elements.related.on('change', (e) => toggleRelated(e.target.value));
+
+            this.elements.relatedNum.on('change', () => {
+                const value = parseInt(this.elements.relatedNum.val());
+
+                $('.prep-notice').remove();
+
+                if (value < 1) {
+                    const message = this.__('The value must be greater than 0 to show the number of related posts.', 'intelligent-link');
+                    this.showNotice(this.elements.relatedNum.parents('.related_number'), message);
                 }
             });
         }
 
-        function _replace_text_mode() {
-            if ($replace_text.val() === 'yes') {
-                replace_mode.show();
-            } else {
-                replace_mode.hide();
-            }
+        handleEnableRewriteMode() {
+            const toggleRewrite = (value) => {
+                this.elements.rewriteFields.toggle(value === 'yes');
+            };
 
-            $replace_text.on('change', function () {
-                if (this.value === 'yes') {
-                    replace_mode.show();
-                } else {
-                    replace_mode.hide();
+            toggleRewrite(this.elements.enableRewrite.val());
+            this.elements.enableRewrite.on('change', (e) => toggleRewrite(e.target.value));
+        }
+
+        handleCookieValidation() {
+            this.elements.cookieTime.on('change', () => {
+                const value = parseInt(this.elements.cookieTime.val(), 10);
+
+                if (isNaN(value) || value < 1) {
+                    this.elements.cookieTime.val(1);
+
+                    const message = this.__('Value cannot be less than 1', 'intelligent-link');
+                    this.showNotice(this.elements.cookieTime.parents('td'), message);
+
+                    setTimeout(() => {
+                        $('.prep-notice').fadeOut(200, function() { $(this).remove(); });
+                    }, 1000);
                 }
             });
         }
 
-        function _faq1_enabled() {
-            if ($faq_enabled.val() === '1') {
-                $faq_description.show();
-            } else {
-                $faq_description.hide();
-            }
-            $faq_enabled.on('change', function () {
-                if (this.value === '1') {
-                    $faq_description.show();
-                } else {
-                    $faq_description.hide();
+        handleKeyIvGeneration() {
+            this.elements.generateKeyBtn.on('click', () => {
+                this.elements.keyInput.val(this.generateRandomString(32));
+            });
+
+            this.elements.generateIvBtn.on('click', () => {
+                this.elements.ivInput.val(this.generateRandomString(16));
+            });
+        }
+
+        handleFormSubmit() {
+            this.elements.submitBtn.on('click', () => {
+                const errors = $('.prep-notice');
+
+                if (errors.length) {
+                    $('html, body').animate({
+                        scrollTop: errors.offset().top
+                    }, 100);
+                    return false;
                 }
             });
         }
 
-        function _related_enabled() {
-            if ($related.val() === '1') {
-                related_des.show();
-            } else {
-                related_des.hide();
+        removeFaqLabel() {
+            const label = $('label[for="preplink_faq"]');
+            if (label.length > 0) {
+                label.closest('th').remove();
             }
-            $related.on('change', function () {
-                if (this.value === '1') {
-                    related_des.show();
-                } else {
-                    related_des.hide();
-                }
-            });
-
-            $relatedNum.on('change', function () {
-                if (parseInt($relatedNum.val()) < 1) {
-                    $('.prep-notice').remove();
-                    $relatedNum.parents('.related_number').append('<p class="prep-notice">' + __('The value must be greater than 0 to show the number of related posts.', 'intelligent-link') + '</p>');
-                } else {
-                    $('.prep-notice').remove();
-                }
-            });
         }
 
-        function _check_key_iv() {
+        generateRandomString(length) {
+            const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let result = '';
+
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+
+            return result;
+        }
+
+        showNotice($parent, message) {
+            $('.prep-notice').remove();
+            $parent.append(`<p class="prep-notice">${message}</p>`);
+        }
+
+        validateKeyIv() {
             const key = $('input[name="preplink_setting[key]"]').val().trim();
-            const iv  = $('input[name="preplink_setting[iv]"]').val().trim();
-
-            let errors = [];
+            const iv = $('input[name="preplink_setting[iv]"]').val().trim();
+            const errors = [];
 
             if (key === '' || key.length !== 32) {
                 errors.push('Key phải đúng 32 ký tự.');
@@ -107,68 +179,10 @@
 
             return true;
         }
+    }
 
-
-        // Thêm function mới cho enable_rewrite
-        function _enable_rewrite_mode() {
-            if ($enableRewrite.val() === 'yes') {
-                rewrite_fields.show();
-            } else {
-                rewrite_fields.hide();
-            }
-
-            $enableRewrite.on('change', function () {
-                if (this.value === 'yes') {
-                    rewrite_fields.show();
-                } else {
-                    rewrite_fields.hide();
-                }
-            });
-        }
-
-        function _checkCookieValue() {
-            var cookie = $('#cookie_time');
-
-            cookie.on('change', function () {
-                var val = parseInt(cookie.val(), 10);
-
-                if (isNaN(val) || val < 1) {
-                    cookie.val(1);
-                    $('.prep-notice').remove();
-                    cookie.parents('td').append('<p class="prep-notice">'+ __('Value cannot be less than 1', 'intelligent-link') +'</p>');
-
-                    setTimeout(function () {
-                        $('.prep-notice').fadeOut(200, function () { $(this).remove(); });
-                    }, 1000);
-
-                    return;
-                }
-
-                $('.prep-notice').remove();
-            });
-        }
-
-
-
-        $('#submit').on('click', function () {
-            var errors = $('.prep-notice');
-            if (errors.length) {
-                $('html, body').animate({ scrollTop: errors.offset().top }, 100);
-                return false;
-            }
-        });
-
-        var label = $('label[for="preplink_faq"]');
-        if (label.length > 0) {
-            label.closest('th').remove();
-        }
-
-        _countdown_mode();
-        _replace_text_mode();
-        _faq1_enabled();
-        _related_enabled();
-        _enable_rewrite_mode();
-        _checkCookieValue();
+    $(function () {
+        new PrepLinkSettings();
     });
 
 })(jQuery);

@@ -220,7 +220,11 @@ class Form_Html {
 
     public static function preplink_link_url_rewriting() {
         $settings = get_option('preplink_setting', array());
+        $current_key = esc_attr(!empty($settings['key']) ? $settings['key'] : self::generateRandomString(32));
+        $current_iv = esc_attr(!empty($settings['iv']) ? $settings['iv'] : self::generateRandomString(16));
+        $hide_url_text = esc_attr( !empty($settings['hide_url_text']) ? $settings['hide_url_text'] : '[Link]');
         ?>
+
         <select name="preplink_setting[enable_rewrite]" id="preplink_enable_rewrite">
             <option value="yes" <?= (!isset($settings['enable_rewrite']) || $settings['enable_rewrite'] === 'yes') ? 'selected' : '' ?>><?= __('Yes', 'intelligent-link') ?></option>
             <option value="no" <?= isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'no' ? 'selected' : '' ?>><?= __('No', 'intelligent-link') ?></option>
@@ -228,20 +232,21 @@ class Form_Html {
 
         <div class="preplink-rewrite-fields">
             <p>Key (The key must be exactly 32 characters.)</p>
-            <input type="text" name="preplink_setting[key]"
-                   value="<?= esc_attr(!empty($settings['key']) ? $settings['key'] : self::generateRandomString(32)) ?>"
-                   placeholder="Key (length 32)" style="width: 100%; max-width: 400px; margin-bottom: 10px" maxlength="32"/>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="preplink_key_input" name="preplink_setting[key]" value="<?= $current_key ?>" placeholder="Key (length 32)" style="width: 100%; max-width: 400px;" maxlength="32" />
+                <button type="button" class="button button-secondary" id="generate_key_btn">New Key</button>
+            </div>
             <br>
+
             <p>IV (The IV must be exactly 16 characters.)</p>
-            <input type="text" name="preplink_setting[iv]"
-                   value="<?= esc_attr(!empty($settings['iv']) ? $settings['iv'] : self::generateRandomString(16)) ?>"
-                   placeholder="IV (length 16)" style="width: 100%; max-width: 400px;" maxlength="16"/>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="preplink_iv_input" name="preplink_setting[iv]" value="<?= $current_iv ?>" placeholder="IV (length 16)" style="width: 100%; max-width: 400px;" maxlength="16" />
+                <button type="button" class="button button-secondary" id="generate_iv_btn">New IV</button>
+            </div>
+            <br>
 
             <p>Hide URL text</p>
-            <input type="text" id="hide_url_text" name="preplink_setting[hide_url_text]"
-                   placeholder="[Link]"
-                   value="<?= esc_attr( !empty($settings['hide_url_text']) ? $settings['hide_url_text'] : '[Link]')?>"
-                   style="width: 100%; max-width: 400px;" />
+            <input type="text" id="hide_url_text" name="preplink_setting[hide_url_text]" placeholder="[Link]" value="<?= $hide_url_text ?>" style="width: 100%; max-width: 400px;" />
             <p class="description">Text to display when the original link text is a URL. This helps hide direct URLs in the interface.</p>
         </div>
         <?php
