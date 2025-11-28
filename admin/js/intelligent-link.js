@@ -36,6 +36,7 @@
             this.handleEnableRewriteMode();
             this.handleCookieValidation();
             this.handleKeyIvGeneration();
+            this.handleKeyIvValidation();
             this.handleFormSubmit();
             this.removeFaqLabel();
         }
@@ -122,6 +123,26 @@
                 this.elements.ivInput.val(this.generateRandomString(16));
             });
         }
+        
+        handleKeyIvValidation() {
+            const validateInput = ($input, expectedLength, fieldName) => {
+                const value = $input.val().trim();
+                const $parent = $input.parents('td');
+
+                $parent.find('.prep-notice').remove();
+
+                if (value !== '' && value.length !== expectedLength) {
+                    this.showNotice($parent, `${fieldName} phải đúng ${expectedLength} ký tự.`);
+                }
+            };
+
+            const $keyInput = $('input[name="preplink_setting[key]"]');
+            const $ivInput = $('input[name="preplink_setting[iv]"]');
+
+            $keyInput.on('blur input', () => validateInput($keyInput, 32, 'Key'));
+            $ivInput.on('blur input', () => validateInput($ivInput, 16, 'IV'));
+        }
+
 
         handleFormSubmit() {
             this.elements.submitBtn.on('click', () => {
@@ -157,27 +178,6 @@
         showNotice($parent, message) {
             $('.prep-notice').remove();
             $parent.append(`<p class="prep-notice">${message}</p>`);
-        }
-
-        validateKeyIv() {
-            const key = $('input[name="preplink_setting[key]"]').val().trim();
-            const iv = $('input[name="preplink_setting[iv]"]').val().trim();
-            const errors = [];
-
-            if (key === '' || key.length !== 32) {
-                errors.push('Key phải đúng 32 ký tự.');
-            }
-
-            if (iv === '' || iv.length !== 16) {
-                errors.push('IV phải đúng 16 ký tự.');
-            }
-
-            if (errors.length > 0) {
-                alert(errors.join("\n"));
-                return false;
-            }
-
-            return true;
         }
     }
 
