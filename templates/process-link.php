@@ -17,7 +17,7 @@ class Process_Link {
     public function __construct(){
         add_action('init', array($this, 'add_link_param'), 10, 0);
         add_filter('the_content', array($this, 'process_content'), 99);
-        add_action('woocommerce_short_description', array($this,'render_meta_short_description'), 99); //Sửa lỗi lấy cả link lung tung
+        add_action('woocommerce_short_description', array($this,'render_meta_short_description'), 99);
         add_action('wp_enqueue_scripts', array($this, 'process_link_scripts'), 99);
         add_action('wp_ajax_handle_direct_link', array($this, 'handle_direct_link'));
         add_action('wp_ajax_nopriv_handle_direct_link', array($this, 'handle_direct_link'));
@@ -46,7 +46,7 @@ class Process_Link {
         }
 
         wp_enqueue_style('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'assets/css/intelligent-link.css', array(), INTELLIGENT_LINK_VERSION, 'all');
-        wp_enqueue_script('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/intelligent-link.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
+        wp_enqueue_script('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/intelligent-link.min.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
 
         $settings    = ilgl_settings()->global_settings();
         $ep_settings = ilgl_settings()->ep_settings();
@@ -135,7 +135,7 @@ class Process_Link {
             wp_enqueue_style('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/css/template.css', [], INTELLIGENT_LINK_VERSION, 'all');
         }, 99);
 
-        wp_enqueue_script('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/template.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
+        wp_enqueue_script('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/template.min.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
 
         $settings = ilgl_settings()->global_settings();
 
@@ -341,9 +341,9 @@ class Process_Link {
         }
 
         if ($display_mode === 'progress') {
-            $html .= '<a href="#" class="prep-request" data-request="'.esc_attr($link).'" data-meta="1"><strong class="post-progress meta-link">' . $file_name . '</strong>';
+            $html .= '<a href="#" class="prep-request" data-request="'.esc_attr($link).'" data-meta="1"><strong class="post-progress meta-link">' . $file_name . '</strong><a/>';
         } else {
-            $html .= '<a href="#" class="prep-request" data-request="'.esc_attr($link).'" data-meta="1"><strong class="link-countdown">' . $file_name . '</strong></>';
+            $html .= '<a href="#" class="prep-request" data-request="'.esc_attr($link).'" data-meta="1"><strong class="link-countdown">' . $file_name . '</strong><a/>';
         }
 
         $html .= '</' . $elm . '>';
