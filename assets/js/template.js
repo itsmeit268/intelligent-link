@@ -2,21 +2,36 @@
     'use strict';
 
     $(function () {
-
         const $progress = $('#endpoint-progress');
         const $counter = $('.counter');
         const $bar = $('.bar');
         const $t2Timer = $('#preplink-timer-link');
         const $buttonDw = $('#buttondw');
-
         const timeCnf = parseInt(prep_template.countdown_endpoint);
         const autoDirect = parseInt(prep_template.endpoint_direct);
         const enable_rewrite = prep_template.enable_rewrite;
         const ajax_url = prep_template.ajax_url;
 
         function getCookie(name) {
+
             const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
-            return match ? match[2] : null;
+            if (match) {
+                return match[2];
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramMap = {
+                'prep_title': 'pt',
+                'prep_request': 'pr',
+                'prep_meta': 'pm'
+            };
+
+            if (paramMap[name]) {
+                const value = urlParams.get(paramMap[name]);
+                return value ? decodeURIComponent(value) : null;
+            }
+
+            return null;
         }
 
         function process_direct_link(link) {
@@ -47,7 +62,6 @@
         function showDownloadButton() {
             $counter.html('');
             $('.prep-btn-download').appendTo($counter).fadeIn(1000);
-
             if ($('.list-link-redirect,.not-vip-download').length) {
                 $('.list-server-download').fadeIn(1000);
                 $progress.fadeOut(100);
@@ -65,24 +79,19 @@
 
         function progressRunning() {
             if (timeCnf <= 0) return;
-
             let isProgressRunning = false;
 
             $progress.on('click', function (e) {
                 e.preventDefault();
-
                 if (isProgressRunning) return;
                 isProgressRunning = true;
-
                 $progress.show();
-
                 const startTime = Date.now();
                 const totalTime = timeCnf * 1000;
                 let isCountdownFinished = false;
 
                 function updateProgress() {
                     const timeRemaining = totalTime - (Date.now() - startTime);
-
                     if (timeRemaining <= 200) {
                         showDownloadButton();
                         clearInterval(interval);
@@ -114,7 +123,6 @@
 
             if ($t2Timer.length) {
                 const dataTime = parseInt($t2Timer.attr('data-time'));
-
                 function countdown(sec) {
                     if (--sec > 0) {
                         $t2Timer.html(sec);
@@ -124,7 +132,6 @@
                         handleAutoRedirect();
                     }
                 }
-
                 countdown(dataTime);
             }
         }
@@ -148,7 +155,6 @@
                     }
                     return;
                 }
-
                 $progress.trigger('click');
                 $('html, body').animate({
                     scrollTop: $progress.offset().top - 150
@@ -161,3 +167,4 @@
         scrollToProgressElm();
     });
 })(jQuery);
+

@@ -6,9 +6,10 @@ $ep_settings    = ilgl_settings()->ep_settings();
 $meta_option    = ilgl_settings()->meta_option();
 $faq_settings   = ilgl_settings()->faq_settings();
 
-$prep_title     = $_COOKIE['prep_title'] ?? '';
-$prep_request   = $_COOKIE['prep_request'] ?? '';
-$is_meta        = $_COOKIE['prep_meta'] ?? 0;
+$prep_title     = $_COOKIE['prep_title'] ?? ($_GET['pt'] ?? '');
+$prep_request   = $_COOKIE['prep_request'] ?? ($_GET['pr'] ?? '');
+$is_meta        = $_COOKIE['prep_meta'] ?? ($_GET['pm'] ?? 0);
+$prep_title     = htmlspecialchars($prep_title, ENT_QUOTES, 'UTF-8');
 
 $post_id        = get_the_ID();
 $view_link      = get_permalink($post_id);

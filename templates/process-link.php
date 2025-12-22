@@ -46,14 +46,15 @@ class Process_Link {
         }
 
         wp_enqueue_style('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'assets/css/intelligent-link.css', array(), INTELLIGENT_LINK_VERSION, 'all');
-        wp_enqueue_script('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/intelligent-link.min.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
+        wp_enqueue_script('intelligent-link', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/intelligent-link.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
 
         $settings    = ilgl_settings()->global_settings();
         $ep_settings = ilgl_settings()->ep_settings();
         $meta_option = ilgl_settings()->meta_option();
+        $end_point   = ilgl_helper()->param_url();
 
         wp_localize_script('intelligent-link', 'href_vars', [
-                'end_point'       => ilgl_helper()->param_url(),
+                'end_point'       => $end_point,
                 'subfix'          => self::SUBFIX,
                 'count_down'      => !empty($settings['preplink_countdown']) ? $settings['preplink_countdown'] : 0,
                 'cookie_time'     => !empty($ep_settings['cookie_time']) ? $ep_settings['cookie_time'] : 5,
@@ -71,6 +72,24 @@ class Process_Link {
                 ]
             ]
         );
+
+        $request_uri = rawurldecode($_SERVER['REQUEST_URI'] ?? '');
+        if ( strpos($request_uri, '?' . $end_point . '=') !== false ) {
+            ilgl_helper()->set_no_index_page();
+
+            wp_enqueue_style('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/css/template.css', [], INTELLIGENT_LINK_VERSION, 'all');
+            wp_enqueue_script('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/template.js', array('jquery'), INTELLIGENT_LINK_VERSION, true);
+
+            $settings = ilgl_settings()->global_settings();
+
+            $ep_settings = ilgl_settings()->ep_settings();
+            wp_localize_script('ilgl-template', 'prep_template', [
+                'enable_rewrite'      => isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes',
+                'countdown_endpoint'  => !empty($ep_settings['countdown_endpoint']) ? $ep_settings['countdown_endpoint'] : 5,
+                'endpoint_direct'     => !empty($ep_settings['endpoint_auto_direct']) ? $ep_settings['endpoint_auto_direct'] : 0,
+                'ajax_url'            => admin_url('admin-ajax.php'),
+            ]);
+        }
     }
 
     public function add_link_param(){
@@ -100,7 +119,6 @@ class Process_Link {
         $subfix = self::SUBFIX;
 
         if (!empty($current_link) && $current_link === $subfix) {
-            $this->prep_head();
 
             if (is_singular('product')) {
                 remove_all_actions('woocommerce_single_product_summary');
@@ -121,31 +139,11 @@ class Process_Link {
             remove_all_actions('woocommerce_after_shop_loop');
             remove_all_actions('woocommerce_sidebar');
 
-            $this->prep_head();
             include_once $link_template;
             exit;
         }
 
         return $template;
-    }
-
-    private function prep_head() {
-        ilgl_helper()->set_no_index_page();
-        add_action('wp_head', function() {
-            wp_enqueue_style('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/css/template.css', [], INTELLIGENT_LINK_VERSION, 'all');
-        }, 99);
-
-        wp_enqueue_script('ilgl-template', INTELLIGENT_LINK_PLUGIN_URL . 'assets/js/template.min.js', array('jquery'), INTELLIGENT_LINK_VERSION, false);
-
-        $settings = ilgl_settings()->global_settings();
-
-        $ep_settings = ilgl_settings()->ep_settings();
-        wp_localize_script('ilgl-template', 'prep_template', [
-            'enable_rewrite'      => isset($settings['enable_rewrite']) && $settings['enable_rewrite'] === 'yes',
-            'countdown_endpoint'  => !empty($ep_settings['countdown_endpoint']) ? $ep_settings['countdown_endpoint'] : 5,
-            'endpoint_direct'     => !empty($ep_settings['endpoint_auto_direct']) ? $ep_settings['endpoint_auto_direct'] : 0,
-            'ajax_url'            => admin_url('admin-ajax.php'),
-        ]);
     }
 
     public function process_content($content) {
