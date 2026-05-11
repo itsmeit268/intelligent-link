@@ -204,7 +204,7 @@ class ILGL_Helper {
     public function faq_render() {
         $faq_conf = get_option('preplink_faq', []);
 
-        $title = !empty($faq_conf['faq_title']) ? $faq_conf['faq_title'] : 'Frequently Asked Questions';
+        $title = !empty($faq_conf['faq_title']) ? $faq_conf['faq_title'] : __('Frequently Asked Questions', 'intelligent-link');
 
         $description = !empty($faq_conf['faq_description'])
                 ? $faq_conf['faq_description']

@@ -1,170 +1,227 @@
-(function ($) {
+const PrepLink = (($) => {
     'use strict';
 
-    $(function () {
-        const $progress = $('#endpoint-progress');
-        const $counter = $('.counter');
-        const $bar = $('.bar');
-        const $t2Timer = $('#preplink-timer-link');
-        const $buttonDw = $('#buttondw');
-        const timeCnf = parseInt(prep_template.countdown_endpoint);
-        const autoDirect = parseInt(prep_template.endpoint_direct);
-        const enable_rewrite = prep_template.enable_rewrite;
-        const ajax_url = prep_template.ajax_url;
+    const cfg = {
+        get time()       { return parseInt(prep_template.countdown_endpoint); },
+        get autoDirect() { return parseInt(prep_template.endpoint_direct); },
+        get rewrite()    { return prep_template.enable_rewrite; },
+        get ajaxUrl()    { return prep_template.ajax_url; },
+        get txtContinue(){ return prep_template.txt_continue; },
+        get txtValidate(){ return prep_template.txt_validating; },
+    };
 
-        function getCookie(name) {
+    const sel = {
+        progress:   () => $('#endpoint-progress'),
+        counter:    () => $('.counter'),
+        bar:        () => $('.bar'),
+        t2Timer:    () => $('#preplink-timer-link'),
+        buttonDw:   () => $('#buttondw'),
+        dlBtn:      () => $('.prep-btn-download'),
+        serverList: () => $('.list-link-redirect,.not-vip-download'),
+        serverDl:   () => $('.list-server-download'),
+        btnLink:    () => $('.preplink-btn-link,.list-preplink-btn-link'),
+        clickable:  () => $('.clickable,.prep-title'),
+    };
 
-            const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
-            if (match) {
-                return match[2];
-            }
+    const cookie = {
+        get: name => {
+            const m = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
+            return m ? m[2] : null;
+        },
+    };
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const paramMap = {
-                'prep_title': 'pt',
-                'prep_request': 'pr',
-                'prep_meta': 'pm'
+    const api = {
+        post: data => $.ajax({ url: cfg.ajaxUrl, type: 'POST', data }),
+    };
+
+    const modal = {
+        show: link => {
+            const $modal  = $('#ilgl-password-modal');
+            const $input  = $('#ilgl-password-input');
+            const $submit = $('#ilgl-password-submit');
+            const $cancel = $('#ilgl-password-cancel');
+            const $error  = $('#ilgl-password-error');
+
+            const reset = () => {
+                $submit.prop('disabled', false).text(cfg.txtContinue);
+                $input.val('').focus();
             };
 
-            if (paramMap[name]) {
-                const value = urlParams.get(paramMap[name]);
-                return value ? decodeURIComponent(value) : null;
-            }
+            const close = () => {
+                $modal.hide();
+                $(document).off('keydown.ilgl-modal');
+            };
 
-            return null;
-        }
+            $input.val('');
+            $error.hide();
+            $submit.prop('disabled', false).text(cfg.txtContinue);
+            $modal.show();
+            $input.focus();
 
-        function process_direct_link(link) {
-            if (enable_rewrite) {
-                $.ajax({
-                    url: ajax_url,
-                    type: 'POST',
-                    data: {
-                        action: 'handle_direct_link',
-                        link: link
-                    },
-                    success: function(response) {
-                        if (response.success && response.data && response.data.link) {
-                            window.location.href = response.data.link;
-                        } else {
-                            console.error('AJAX failed:', response.data?.message || 'Unknown error');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX request failed:', error);
+            $submit.off('click').on('click', async () => {
+                $submit.prop('disabled', true).text(cfg.txtValidate);
+                $error.hide();
+                try {
+                    const res = await api.post({ action: 'validate_password', password: $input.val(), link });
+                    if (res.success && res.data?.link) {
+                        close();
+                        window.location.href = res.data.link;
+                    } else {
+                        $error.text(res.data?.message || 'Validation failed').show();
+                        reset();
                     }
-                });
-            } else {
-                window.location.href = link;
-            }
-        }
+                } catch {
+                    $error.text('Server error. Please try again.').show();
+                    reset();
+                }
+            });
 
-        function showDownloadButton() {
+            $cancel.off('click').on('click', close);
+
+            $input.off('keypress').on('keypress', e => {
+                if (e.which === 13) $submit.trigger('click');
+            });
+
+            $(document).off('keydown.ilgl-modal').on('keydown.ilgl-modal', e => {
+                if (e.which === 27 && $modal.is(':visible')) close();
+            });
+        },
+    };
+
+    const redirect = {
+        go: href => { window.location.href = href; },
+
+        validate: async link => {
+            try {
+                const res = await api.post({ action: 'validate_password', password: '', link });
+                if (res.success && res.data?.link) redirect.go(res.data.link);
+                else modal.show(link);
+            } catch {
+                modal.show(link);
+            }
+        },
+
+        execute: async link => {
+            if (!cfg.rewrite) { redirect.go(link); return; }
+            try {
+                const res = await api.post({ action: 'handle_direct_link', link });
+                if (res.success && res.data?.link) redirect.go(res.data.link);
+                else console.error('AJAX failed:', res.data?.message || 'Unknown error');
+            } catch (err) {
+                console.error('AJAX request failed:', err);
+            }
+        },
+
+        process: link => cfg.autoDirect === 0 ? redirect.validate(link) : redirect.execute(link),
+
+        autoIfCookie: () => {
+            if (!cfg.autoDirect) return;
+            const link = cookie.get('prep_request');
+            if (link) redirect.process(link);
+        },
+    };
+
+    const progress = {
+        showDownload: () => {
+            const $counter = sel.counter();
             $counter.html('');
-            $('.prep-btn-download').appendTo($counter).fadeIn(1000);
-            if ($('.list-link-redirect,.not-vip-download').length) {
-                $('.list-server-download').fadeIn(1000);
-                $progress.fadeOut(100);
+            sel.dlBtn().appendTo($counter).fadeIn(1000);
+            if (sel.serverList().length) {
+                sel.serverDl().fadeIn(1000);
+                sel.progress().fadeOut(100);
             }
-        }
+        },
 
-        function handleAutoRedirect() {
-            if (autoDirect) {
-                const link = getCookie('prep_request');
-                if (link) {
-                    process_direct_link(link);
-                }
-            }
-        }
+        run: () => {
+            if (cfg.time <= 0) return;
 
-        function progressRunning() {
-            if (timeCnf <= 0) return;
-            let isProgressRunning = false;
+            const $progress = sel.progress();
+            let running = false;
 
-            $progress.on('click', function (e) {
+            $progress.on('click', e => {
                 e.preventDefault();
-                if (isProgressRunning) return;
-                isProgressRunning = true;
+                if (running) return;
+                running = true;
                 $progress.show();
-                const startTime = Date.now();
-                const totalTime = timeCnf * 1000;
-                let isCountdownFinished = false;
 
-                function updateProgress() {
-                    const timeRemaining = totalTime - (Date.now() - startTime);
-                    if (timeRemaining <= 200) {
-                        showDownloadButton();
-                        clearInterval(interval);
-                        isCountdownFinished = true;
-                        isProgressRunning = false;
+                const total = cfg.time * 1000;
+                const start = Date.now();
+                let done = false;
+
+                const tick = setInterval(() => {
+                    const remaining = total - (Date.now() - start);
+                    if (remaining <= 200) {
+                        clearInterval(tick);
+                        done = running = false;
                         $progress.off('click');
-                        handleAutoRedirect();
+                        progress.showDownload();
+                        redirect.autoIfCookie();
                     } else {
-                        const percent = Math.floor((1 - timeRemaining / totalTime) * 100);
-                        $bar.css('width', percent + '%');
-                        $counter.html(percent + '%');
+                        const pct = Math.floor((1 - remaining / total) * 100);
+                        sel.bar().css('width', pct + '%');
+                        sel.counter().html(pct + '%');
                     }
-                }
+                }, 10);
 
-                const interval = setInterval(updateProgress, 10);
-                setTimeout(() => clearInterval(interval), totalTime);
+                setTimeout(() => clearInterval(tick), total);
 
-                $counter.on('click', function (e) {
-                    if (!isCountdownFinished) {
-                        e.preventDefault();
-                    } else {
-                        const link = $(this).data('request');
-                        if (link) {
-                            process_direct_link(link);
-                        }
-                    }
+                sel.counter().on('click', e => {
+                    if (!done) { e.preventDefault(); return; }
+                    const link = $(e.currentTarget).data('request');
+                    if (link) redirect.process(link);
                 });
             });
+        },
 
-            if ($t2Timer.length) {
-                const dataTime = parseInt($t2Timer.attr('data-time'));
-                function countdown(sec) {
-                    if (--sec > 0) {
-                        $t2Timer.html(sec);
-                        setTimeout(() => countdown(sec), 1200);
-                    } else {
-                        $buttonDw.addClass('del-timer');
-                        handleAutoRedirect();
-                    }
+        t2Countdown: () => {
+            const $timer = sel.t2Timer();
+            if (!$timer.length) return;
+
+            const tick = sec => {
+                if (--sec > 0) {
+                    $timer.html(sec);
+                    setTimeout(() => tick(sec), 1200);
+                } else {
+                    sel.buttonDw().addClass('del-timer');
+                    redirect.autoIfCookie();
                 }
-                countdown(dataTime);
-            }
-        }
+            };
 
-        function redirectLink() {
-            $('.preplink-btn-link,.list-preplink-btn-link').on('click', function (e) {
+            tick(parseInt($timer.attr('data-time')));
+        },
+    };
+
+    const bindings = {
+        linkButtons: () => {
+            sel.btnLink().on('click', e => {
                 e.preventDefault();
-                const link = $(this).data('request');
-                if (link) {
-                    process_direct_link(link);
-                }
+                const link = $(e.currentTarget).data('request');
+                if (link) redirect.process(link);
             });
-        }
+        },
 
-        function scrollToProgressElm() {
-            $('.clickable,.prep-title').on('click', function () {
-                if (timeCnf === 0) {
-                    const link = getCookie('prep_request');
-                    if (link) {
-                        process_direct_link(link);
-                    }
+        scrollToProgress: () => {
+            sel.clickable().on('click', () => {
+                if (cfg.time === 0) {
+                    const link = cookie.get('prep_request');
+                    if (link) redirect.process(link);
                     return;
                 }
-                $progress.trigger('click');
-                $('html, body').animate({
-                    scrollTop: $progress.offset().top - 150
-                }, 100);
+                sel.progress().trigger('click');
+                $('html, body').animate({ scrollTop: sel.progress().offset().top - 150 }, 100);
             });
-        }
+        },
+    };
 
-        progressRunning();
-        redirectLink();
-        scrollToProgressElm();
-    });
+    const init = () => {
+        progress.run();
+        progress.t2Countdown();
+        bindings.linkButtons();
+        bindings.scrollToProgress();
+    };
+
+    return { init };
+
 })(jQuery);
 
+jQuery(PrepLink.init);

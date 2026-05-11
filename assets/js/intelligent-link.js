@@ -1,220 +1,153 @@
-(function ($) {
+const HrefVars = (($) => {
     'use strict';
 
-    $(function () {
-        const config = {
-            endPoint: href_vars.end_point.trim(),
-            currentUrl: window.location.href.replace(/#.*/, ''),
-            timeConfig: parseInt(href_vars.count_down),
-            cookieTime: parseInt(href_vars.cookie_time),
-            waitText: href_vars.wait_text.trim(),
-            displayMode: href_vars.display_mode,
-            autoDirect: parseInt(href_vars.auto_direct),
-            textComplete: href_vars.replace_text,
-            windowWidth: $(window).width(),
-            isRewriteEnabled: href_vars.enable_rewrite || false,
-            metaAttr: href_vars.meta_attr || {}
-        };
+    const cfg = {
+        get endPoint()    { return href_vars.end_point.trim(); },
+        get currentUrl()  { return window.location.href.replace(/#.*/, ''); },
+        get time()        { return parseInt(href_vars.count_down); },
+        get cookieTime()  { return parseInt(href_vars.cookie_time); },
+        get waitText()    { return href_vars.wait_text.trim(); },
+        get displayMode() { return href_vars.display_mode; },
+        get autoDirect()  { return parseInt(href_vars.auto_direct); },
+        get textComplete(){ return href_vars.replace_text; },
+        get winWidth()    { return $(window).width(); },
+        get rewrite()     { return href_vars.enable_rewrite || false; },
+        get metaAttr()    { return href_vars.meta_attr || {}; },
+    };
 
-        const countdownStatus = {};
+    const countdownStatus = {};
 
-        const CookieManager = {
-            cookiesEnabled: null,
+    const cookie = {
+        clear: name => {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        },
+        set: (name, value) => {
+            const expires = new Date(Date.now() + cfg.cookieTime * 60 * 1000).toUTCString();
+            cookie.clear(name);
+            document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+        },
+        clearAll: () => ['prep_meta', 'prep_request', 'prep_title'].forEach(cookie.clear),
+    };
 
-            testCookies() {
-                if (this.cookiesEnabled !== null) {
-                    return this.cookiesEnabled;
-                }
+    const url = {
+        buildTarget: () => {
+            let base = cfg.currentUrl.split('?')[0];
+            if (base.includes('.html')) base = base.match(/.*\.html/)[0] + '/';
+            else if (!base.endsWith('/')) base += '/';
+            return `${base}?${cfg.endPoint}=1`;
+        },
+    };
 
-                const testKey = '_cookie_test_';
-                const testValue = '1';
+    const nav = {
+        go: (href, title, isMeta) => {
+            cookie.set('prep_title', title);
+            cookie.set('prep_request', href);
+            cookie.set('prep_meta', isMeta);
+            const target = url.buildTarget();
+            cfg.winWidth > 700 ? window.open(target, '_blank') : (window.location.href = target);
+        },
+    };
 
-                document.cookie = `${testKey}=${testValue}; path=/`;
-                const cookieMatch = document.cookie.match(new RegExp('(^|; )' + testKey + '=([^;]*)'));
-                const canUseCookie = cookieMatch && cookieMatch[2] === testValue;
+    const complete = {
+        text: title => cfg.textComplete.enable === 'yes' ? cfg.textComplete.text : title,
 
-                if (canUseCookie) {
-                    this.clear(testKey);
-                }
-
-                this.cookiesEnabled = canUseCookie;
-                return canUseCookie;
-            },
-
-            clear(name) {
-                document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-            },
-
-            set(name, value) {
-                const expirationTime = new Date(Date.now() + config.cookieTime * 60 * 1000);
-                this.clear(name);
-                document.cookie = `${name}=${value}; expires=${expirationTime.toUTCString()}; path=/`;
-            },
-
-            get(name) {
-                const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
-                return match ? match[2] : null;
-            }
-        };
-
-        const UrlManager = {
-
-            buildIntelligentLink(params) {
-                let baseUrl = config.currentUrl.split('?')[0];
-
-                if (baseUrl.includes('.html')) {
-                    baseUrl = baseUrl.match(/.*\.html/)[0] + '/';
-                } else if (!baseUrl.endsWith('/')) {
-                    baseUrl += '/';
-                }
-
-                let targetUrl = `${baseUrl}?${config.endPoint}=1`;
-
-                if (params && params.title && params.url) {
-                    targetUrl += `&pt=${encodeURIComponent(params.title)}`;
-                    targetUrl += `&pr=${encodeURIComponent(params.url)}`;
-                    targetUrl += `&pm=${params.isMeta || 0}`;
-                }
-
-                return targetUrl;
-            }
-        };
-
-        function navigate(url, title, isMeta) {
-            const cookiesWork = CookieManager.testCookies();
-            let targetUrl;
-
-            if (cookiesWork) {
-
-                CookieManager.set('prep_title', title);
-                CookieManager.set('prep_request', url);
-                CookieManager.set('prep_meta', isMeta);
-                targetUrl = UrlManager.buildIntelligentLink();
-            } else {
-
-                targetUrl = UrlManager.buildIntelligentLink({
-                    title: title,
-                    url: url,
-                    isMeta: isMeta
-                });
-            }
-
-            if (config.windowWidth > 700) {
-                window.open(targetUrl, '_blank');
-            } else {
-                window.location.href = targetUrl;
-            }
-        }
-
-        function updateCompleteState($elm, title, url, isMeta, isProgress = false) {
-            const completeText = config.textComplete.enable === 'yes' ? config.textComplete.text : title;
+        apply: ($elm, title, href, isMeta, isProgress = false) => {
+            const label = complete.text(title);
 
             if (isProgress) {
-                $elm.addClass('completed');
-                $elm.attr('data-original-text', title);
-                $elm.find('.post-progress').html(`${completeText}`);
-                $elm.find('.post-progress').removeAttr('style');
+                $elm.addClass('completed').attr('data-original-text', title);
+                $elm.find('.post-progress')
+                    .html(`<span class="text-complete">${label}</span>`)
+                    .removeAttr('style');
             } else {
-                $elm.html(`${completeText}`);
-                const $wrapper = $elm.parents('.wrap-countdown');
-                if (isMeta) {
-                    $wrapper.css('background', '#0c7905');
-                } else {
-                    $wrapper.css({ 'color': '#0c7905', 'font-weight': '600' });
-                }
+                $elm.html(`<strong class="link-countdown"><span class="text-complete">${label}</span></strong>`);
+                const $wrap = $elm.parents('.wrap-countdown');
+                isMeta
+                    ? $wrap.css('background', '#0c7905')
+                    : $wrap.css({ color: '#0c7905', 'font-weight': '600' });
             }
 
-            if ((config.metaAttr.auto_direct === '1') || config.autoDirect) {
-                navigate(url, title, isMeta);
+            if (cfg.metaAttr.auto_direct === '1' || cfg.autoDirect) {
+                nav.go(href, title, isMeta);
             }
 
-            countdownStatus[url] = { active: false };
-        }
+            countdownStatus[href] = { active: false };
+        },
+    };
 
-        function startCountdown($elm, url, title, isMeta) {
-            let timeleft = isMeta && config.metaAttr ? parseInt(config.metaAttr.time) : config.timeConfig;
-            const countdown = () => {
-                $elm.html(`${config.waitText} ${timeleft}s...`);
-                timeleft--;
-                if (timeleft < 0) {
-                    $elm.addClass('completed');
-                    $elm.attr('data-original-text', title);
-                    updateCompleteState($elm, title, url, isMeta, false);
+    const countdown = {
+        resolveTime: isMeta => isMeta && cfg.metaAttr ? parseInt(cfg.metaAttr.time) : cfg.time,
+
+        text: ($elm, href, title, isMeta) => {
+            let left = countdown.resolveTime(isMeta);
+
+            const tick = () => {
+                $elm.html(`<strong class="post-progress">${cfg.waitText} ${left}s...</strong>`);
+                left--;
+                if (left < 0) {
+                    $elm.addClass('completed').attr('data-original-text', title);
+                    complete.apply($elm, title, href, isMeta, false);
                 } else {
-                    setTimeout(countdown, 1000);
+                    setTimeout(tick, 1000);
                 }
             };
-            countdown();
-        }
 
-        function startProgress($elm, url, title, isMeta) {
-            const timeleft = isMeta && config.metaAttr ? parseInt(config.metaAttr.time) : config.timeConfig;
-            $elm.addClass('loading');
-            $elm.css('--progress', '0%');
-            const startTime = Date.now();
-            const totalTime = timeleft * 1000;
+            tick();
+        },
 
-            function updateProgress() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min((elapsed / totalTime) * 100, 100);
-                $elm.css('--progress', progress + '%');
-                if (progress < 100) {
-                    requestAnimationFrame(updateProgress);
-                } else {
-                    updateCompleteState($elm, title, url, isMeta, true);
-                }
-            }
-            updateProgress();
-        }
+        progress: ($elm, href, title, isMeta) => {
+            const total = countdown.resolveTime(isMeta) * 1000;
+            const start = Date.now();
 
-        function processClick() {
-            $(document).on('click', '.prep-request', function (e) {
+            $elm.addClass('loading').css('--progress', '0%');
+
+            const frame = () => {
+                const pct = Math.min(((Date.now() - start) / total) * 100, 100);
+                $elm.css('--progress', pct + '%');
+                pct < 100 ? requestAnimationFrame(frame) : complete.apply($elm, title, href, isMeta, true);
+            };
+
+            frame();
+        },
+    };
+
+    const bindings = {
+        processClick: () => {
+            $(document).on('click', '.prep-request', e => {
                 e.preventDefault();
-                const $this = $(this);
-                const title = $this.attr('data-text') || $this.text().trim() || '>> Redirect Link <<';
-                const url = $this.attr('data-request');
-                const isCompleted = $this.hasClass('completed');
-                const isImage = $this.attr('data-image');
-                const isMeta = $this.attr('data-meta') ? parseInt($this.attr('data-meta')) : 0;
 
-                if (!url) return;
+                const $elm   = $(e.currentTarget);
+                const href   = $elm.attr('data-request');
+                if (!href) return;
 
-                let startTime = config.timeConfig;
-                if (isMeta && config.metaAttr) {
-                    startTime = parseInt(config.metaAttr.time);
-                    if (config.metaAttr.auto_direct === '1' && startTime === 0) {
-                        startTime = 0;
-                    }
-                }
+                const title  = $elm.attr('data-text') || $elm.text().trim() || '>> Redirect Link <<';
+                const isMeta = $elm.attr('data-meta') ? parseInt($elm.attr('data-meta')) : 0;
+                const isImg  = $elm.attr('data-image');
 
-                if (isCompleted) {
-                    navigate(url, title, isMeta);
-                    return;
-                }
+                if ($elm.hasClass('completed')) { nav.go(href, title, isMeta); return; }
+                if (countdownStatus[href]?.active) return;
 
-                if (countdownStatus[url]?.active) return;
+                let startTime = isMeta && cfg.metaAttr ? parseInt(cfg.metaAttr.time) : cfg.time;
+                if (isMeta && cfg.metaAttr?.auto_direct === '1') startTime = startTime || 0;
 
-                if (startTime === 0 || isImage === '1') {
-                    navigate(url, title, isMeta);
+                if (startTime === 0 || isImg === '1') {
+                    nav.go(href, title, isMeta);
                 } else {
-                    $this.off('click');
-                    countdownStatus[url] = { active: true };
-                    if (config.displayMode === 'wait_time') {
-                        startCountdown($this, url, title, isMeta);
-                    } else {
-                        startProgress($this, url, title, isMeta);
-                    }
+                    $elm.off('click');
+                    countdownStatus[href] = { active: true };
+                    cfg.displayMode === 'wait_time'
+                        ? countdown.text($elm, href, title, isMeta)
+                        : countdown.progress($elm, href, title, isMeta);
                 }
             });
-        }
+        },
+    };
 
-        function resetRequest() {
-            if (config.currentUrl.indexOf(`?${config.endPoint}=`) === -1) {
-                ['prep_meta', 'prep_request', 'prep_title'].forEach(CookieManager.clear.bind(CookieManager));
-            }
-        }
-        // resetRequest();
-        processClick();
-    });
+    const init = () => {
+        bindings.processClick();
+    };
+
+    return { init };
 })(jQuery);
 
+jQuery(HrefVars.init);

@@ -274,3 +274,21 @@ msgstr ""
 msgid "Other Version"
 msgstr ""
 
+msgid "Please enter the password to continue:"
+msgstr ""
+
+msgid "Enter password"
+msgstr ""
+
+msgid "Incorrect password. Please try again."
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Incorrect password"
+msgstr ""
+

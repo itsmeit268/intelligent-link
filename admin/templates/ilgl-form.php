@@ -357,26 +357,48 @@ class Form_Html {
 
     public static function preplink_endpoint_auto_direct() {
         $settings = get_option('preplink_endpoint', array());
+        $auto_direct_value = !empty($settings['endpoint_auto_direct']) ? $settings['endpoint_auto_direct'] : '0';
         ?>
         <table class="form-table">
             <tbody>
             <tr class="auto_direct">
                 <td style="padding: 2px 0">
                     <select name="preplink_endpoint[endpoint_auto_direct]" id="endpoint_auto_direct" class="endpoint_auto_direct">
-                        <option value="1" <?php selected(!empty($settings['endpoint_auto_direct']) ? ($settings['endpoint_auto_direct'] == '1') : false); ?>>Yes</option>
-                        <option value="0" <?php selected(!empty($settings['endpoint_auto_direct']) ? ($settings['endpoint_auto_direct'] == '0') : true); ?>>No</option>
+                        <option value="1" <?php selected($auto_direct_value, '1'); ?>>Yes</option>
+                        <option value="0" <?php selected($auto_direct_value, '0'); ?>>No</option>
                     </select>
                 </td>
             </tr>
-            <tr class="preplink_endpoint_number">
+            <tr class="preplink_endpoint_number" id="countdown_row" style="<?php echo $auto_direct_value == '1' ? '' : 'display:none;'; ?>">
                 <td class="preplink_endpoint_number_notice" style="padding: 2px 0">
                     <label><p><?= __('The default countdown time is set to 15 seconds.', 'intelligent-link')?></p></label>
                     <input type="number" id="countdown_endpoint" name="preplink_endpoint[countdown_endpoint]" placeholder="15"
                            value="<?= !empty($settings['countdown_endpoint']) ? $settings['countdown_endpoint'] : '15' ?>" min="1" max="300"/>
                 </td>
             </tr>
+            <tr class="preplink_endpoint_password" id="password_row" style="<?php echo $auto_direct_value == '0' ? '' : 'display:none;'; ?>">
+                <td class="preplink_endpoint_password_notice" style="padding: 2px 0">
+                    <label><p><?= __('Password protection for link redirection. Leave empty to disable password protection.', 'intelligent-link')?></p></label>
+                    <input type="text" id="endpoint_password" name="preplink_endpoint[endpoint_password]" placeholder="<?= __('Leave empty for no password', 'intelligent-link') ?>"
+                           value="<?= isset($settings['endpoint_password']) ? esc_attr($settings['endpoint_password']) : '' ?>" />
+                </td>
+            </tr>
             </tbody>
         </table>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $('#endpoint_auto_direct').on('change', function() {
+                    var value = $(this).val();
+                    if (value == '1') {
+                        $('#countdown_row').show();
+                        $('#password_row').hide();
+                    } else {
+                        $('#countdown_row').hide();
+                        $('#password_row').show();
+                    }
+                });
+            });
+        </script>
         <?php
     }
 
