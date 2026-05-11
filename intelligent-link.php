@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 define('INTELLIGENT_LINK_NAME', 'Intelligent Link');
-define('INTELLIGENT_LINK_VERSION', time());
+define('INTELLIGENT_LINK_VERSION', '1.1.9');
 define('INTELLIGENT_LINK_PLUGIN_FILE',	__FILE__);
 define('INTELLIGENT_LINK_PLUGIN_BASE',	plugin_basename(INTELLIGENT_LINK_PLUGIN_FILE ));
 define('INTELLIGENT_LINK_PLUGIN_URL', plugin_dir_url( INTELLIGENT_LINK_PLUGIN_FILE ));
